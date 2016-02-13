@@ -1,0 +1,17 @@
+.col-xs-12
+    ul#myTab.nav.nav-tabs(role='tablist')
+        li.active(role='presentation')
+            a(href='#summary', aria-controls='summary', role='tab', data-toggle='tab') Summary
+        li(role='presentation')
+            a(href='#profile', aria-controls='profile', role='tab', data-toggle='tab') Profile
+        li(role='presentation')
+            a(href='#tweets', aria-controls='tweets', role='tab', data-toggle='tab') Tweets
+        li(role='presentation')
+            a(href='#settings', aria-controls='settings', role='tab', data-toggle='tab') Settings
+    .tab-content
+        #summary.tab-pane.active(role='tabpanel')
+            br
+            #movies-list-region
+        #profile.tab-pane(role='tabpanel') 222
+        #tweets.tab-pane(role='tabpanel') 333
+        #settings.tab-pane(role='tabpanel') 444

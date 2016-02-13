@@ -1,0 +1,49 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "bootstrap": "*",
+    "bootstrap-webpack": "*",
+    "cookie-parser": "*",
+    "coffee-script": "*",
+    "debug": "*",
+    "express": "*",
+    "express-session": "*",
+    "gulp": "*",
+    "jade": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "morgan": "*",
+    "nodemon": "*",
+    "serve-favicon": "*",
+    "webpack": "*",
+    "backbone.radio": "*",
+    "async": "*",
+    "passport": "*",
+    "passport-facebook": "*",
+    "passport-google": "*",
+    "passport-local": "*",
+    "twitter": "*",
+    "socket.io": "*",
+    "request": "*"
+  },
+  "devDependencies": {
+    "coffee-loader": "*",
+    "jade-loader": "*",
+    "connect-livereload": "*",
+    "gulp-concat": "*",
+    "gulp-jshint": "*",
+    "gulp-less": "*",
+    "gulp-livereload": "*",
+    "gulp-nodemon": "*",
+    "gulp-util": "*",
+    "jshint": "*",
+    "jshint-stylish": "*",
+    "eyespect": "*"
+  }
+}

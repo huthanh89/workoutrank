@@ -1,0 +1,89 @@
+.col-xs-12
+    nav.navbar.navbar-default.navbar-fixed-top
+        .container-fluid
+            // Brand and toggle get grouped for better mobile display
+            .navbar-header
+                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-user-collapse-btn")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a#navbar-brand.navbar-brand(href="#") App
+                    = ' '
+                    i.fa.fa-navicon.fa-lg
+                    = ' '
+                    i.fa.fa-caret-right
+            // Collect the nav links, forms, and other content for toggling
+            #nav-user-collapse-btn.collapse.navbar-collapse
+                .col-sm-6.col-xs-12.pull-right
+                    ul.nav.navbar-nav.navbar-right
+                        li(data-toggle="collapse", data-target=".nav-collapse")
+                            a.nav-collapse-item(href="#")
+                                i.nav-icon.fa.fa-fw.fa-comments-o.fa-2x
+                                span.hidden-sm.hidden-md.hidden-lg
+                                    = ' '
+                                    | Messages
+                        li.divider-vertical.hidden-xs
+                        li.dropdown
+                            a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
+                                i.fa.fa-cogs.fa-lg
+                                = ' '
+                                i.fa.fa-caret-down
+                            ul.dropdown-menu(role="menu")
+                                li
+                                    a.nav-collapse-item(href="#")
+                                        i.fa.fa-fw.fa-cog.fa-lg
+                                        = ' '
+                                        | Settings
+                                li
+                                    a.nav-collapse-item(href="#")
+                                        i.fa.fa-fw.fa-question.fa-lg
+                                        = ' '
+                                        | Help
+                                li
+                                    a.nav-collapse-item(href="#")
+                                        i.fa.fa-fw.fa-ambulance.fa-lg
+                                        = ' '
+                                        | Report a Problem
+                                li.divider
+                                li
+                                    a.nav-collapse-item(href="#")
+                                        i.fa.fa-fw.fa-sign-out.fa-lg
+                                        = ' '
+                                        | Sign Out
+nav#my-menu.mm-light
+    ul
+        li#nav-user-home
+            a(href="#")
+                i.fa.fa-fw.fa-home.fa-lg
+                | &nbsp Home
+
+        li
+            a(href="#")#nav-user-profile
+                i.fa.fa-fw.fa-user.fa-lg
+                | &nbsp My Profile
+        li
+            a(href="#")#nav-user-contacts
+                i.fa.fa-fw.fa-group.fa-lg
+                | &nbsp Contacts
+            ul
+                li
+                    a(href="#")
+                        i.fa.fa-fw.fa-home.fa-lg
+                        | &nbsp Home
+                li
+                    a(href="#")
+                        i.fa.fa-fw.fa-user.fa-lg
+                        | &nbsp Profile
+        li
+            a(href="#")#nav-user-movies
+                i.fa.fa-fw.fa-video-camera.fa-lg
+                | &nbsp Movies
+        li
+            a(href="#")#nav-user-movie
+                i.fa.fa-fw.fa-video-camera.fa-lg
+                | &nbsp Movie
+        li
+            a(href="#")#nav-user-chat
+                i.fa.fa-fw.fa-comments-o.fa-lg
+                | &nbsp Chat

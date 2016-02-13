@@ -1,0 +1,32 @@
+.detailBox
+    .titleBox
+        label Comment Box
+        button.close(type="button", aria-hidden="true") &#215;
+    .commentBox
+        p.taskDescription Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    .actionBox
+        ul.commentList
+            li
+                .commenterImage
+                    img(src="http://goo.gl/V7RQ3Z")
+                .commentText
+                    p Hello this is a test comment.
+                    span.date.sub-text on March 5th, 2014
+            li
+                .commenterImage
+                    img(src="http://goo.gl/V7RQ3Z")
+                .commentText
+                    p
+                        | Hello this is a test comment and this comment is particularly very long and it goes on and on and on.
+                    span.date.sub-text on March 5th, 2014
+            li
+                .commenterImage
+                    img(src="http://goo.gl/V7RQ3Z")
+                .commentText
+                    p Hello this is a test comment.
+                    span.date.sub-text on March 5th, 2014
+        form.form-inline(role="form")
+            .form-group
+                input.form-control(type="text", placeholder="Your comments")
+            .form-group
+                button.btn.btn-default Add

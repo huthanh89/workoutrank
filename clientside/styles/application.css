@@ -1,0 +1,161 @@
+
+/*------------------------------------------
+Content
+--------------------------------------------*/
+
+/*
+Content padding, to pad body from fixed navbar.
+*/
+
+#content{
+    padding-top: 75px;
+    color: blue;
+}
+
+/*
+#nav-user-profile{
+    background-color: cornflowerblue;
+}
+*/
+
+/*------------------------------------------
+Nav Bar
+--------------------------------------------*/
+
+/*
+Vertical divider for nav bar.
+*/
+.nav-icon{
+    height: 20px;
+    line-height: 20px;
+}
+
+/*
+Vertical divider for nav bar.
+*/
+
+.divider-vertical {
+    height: 50px;
+    margin: 0 9px;
+    border-left: 1px solid #F2F2F2;
+    border-right: 1px solid #FFF;
+}
+
+/*------------------------------------------
+Comment Box
+--------------------------------------------*/
+
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 60px;
+}
+
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+
+.panel-body
+{
+    overflow-y: scroll;
+    height: 250px;
+}
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+/*------------------------------------------
+Movies
+--------------------------------------------*/
+.movie-title{
+    position: relative;
+}
+
+/*
+#movie-detailed-container{
+    background-color: green;
+    height: 150px;
+}
+
+.comment-region{
+    background-color: red;
+    height: 200px;
+}
+*/
+
+/*------------------------------------------
+Movie Search input
+--------------------------------------------*/
+
+#movies-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+#movies-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#movies-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#movies-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#movies-search-input .glyphicon-search{
+    font-size: 23px;
+}
