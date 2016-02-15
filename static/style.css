@@ -1819,10 +1819,23 @@ Content padding, to pad body from fixed navbar.
 }
 
 /*
-Change margin if viewport is 980 pixels wide or smaller.
+Change margin if viewport gets smaller.
 */
 
-@media (max-width: 770px) {
+
+@media (min-width: 1200px) {
+    #content{
+        margin: 50px 200px 0px;
+    }
+}
+
+@media (min-device-width: 800px) and (max-width: 1200px){
+    #content{
+        margin: 50px 120px 0px;
+    }
+}
+
+@media (max-width: 767px) {
     #content{
         margin: 50px 10px 0px;
     }

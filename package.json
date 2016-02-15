@@ -46,6 +46,7 @@
     "jshint":             "*",
     "jshint-stylish":     "*",
     "gulp-coffeelint":    "*",
-    "coffeelint-stylish": "*"
+    "coffeelint-stylish": "*",
+    "pm2":                "*"
   }
 }
