@@ -1,18 +1,18 @@
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Imports
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 _            = require 'lodash'
 $            = require 'jquery'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
-App          = require 'client/webapp'
+App          = require 'src/application'
 viewTemplate = require './view.jade'
 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # View
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 class View extends Marionette.ItemView
 
@@ -74,7 +74,7 @@ class View extends Marionette.ItemView
     #Open menu.
     'click @ui.brand': (event)->
       # Prevent change where a change is added to url.
-      event.preventDefault();
+      event.preventDefault()
       $("#my-menu").trigger("open.mm")
       return
 
@@ -89,7 +89,8 @@ class View extends Marionette.ItemView
 
     'click @ui.collapseItem': (event) ->
       @ui.collapseBtn.collapse('hide')
-      #@ui.collapseBtn.collapse('hide') unless $(event.target).hasClass('dropdown-toggle')
+      #@ui.collapseBtn.collapse('hide') unless $(event.target)
+      # .hasClass('dropdown-toggle')
 
       return
 
@@ -117,10 +118,10 @@ class View extends Marionette.ItemView
     Radio.command 'main', 'app:user:chatbox'
     return
 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Exports
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 module.exports = View
 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
