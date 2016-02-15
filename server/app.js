@@ -19,10 +19,16 @@ require('coffee-script/register');
 //--------------------------------------------------------------
 
 // Connect to Database.
-mongoose.connect('mongodb://localhost:27017/webapp');
+mongoose.connect('mongodb://localhost:27017/local');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.on('open', function callback () {
+    console.log("MongoDb connection opened.");
+});
 
 // Create Schemas.
-require('./models/users')(mongoose);
+require('./models/user')(mongoose);
 
 //--------------------------------------------------------------
 // Express

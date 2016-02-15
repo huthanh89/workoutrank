@@ -2,36 +2,38 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_          = require 'lodash'
-Backbone   = require 'backbone'
-Marionette = require 'marionette'
-IndexView  = require './views/index/view'
+$            = require 'jquery'
+_            = require 'lodash'
+Backbone     = require 'backbone'
+Marionette   = require 'marionette'
+viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Router
+# View
 #-------------------------------------------------------------------------------
 
-class Router extends Marionette.AppRouter
+class View extends Marionette.ItemView
 
-  rootChannel = Backbone.Radio.channel('root')
+  template: viewTemplate
 
-  routes:
-    '':     'index'
-    'home': 'home'
+  ui:
+    reps:      '#reps'
+    touchspin: '#touchspin'
 
-  home: ->
-    console.log 'home'
-    return
+  events:
+    click: (event) ->
+      console.log 'event'
+      event.preventDefault()
+      return
 
-  index: ->
-    rootView = rootChannel.request('rootview')
-    rootView.content.show(new IndexView())
+  onRender: ->
+
     return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = Router
+module.exports = View
 
 #-------------------------------------------------------------------------------

@@ -7,7 +7,6 @@ $            = require 'jquery'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
-App          = require 'src/application'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -29,11 +28,16 @@ class View extends Marionette.ItemView
     collapseItem: '.nav-collapse-item'
     collapseBtn:  '#nav-user-collapse-btn'
 
+  constructor: ->
+    super
+    @channel = Backbone.Radio.channel('root')
+
   # Elements are not ready until onShow.
 
   onShow: ->
 
     # Create menu.
+
     $("#my-menu").mmenu
       offCanvas:
         zposition: "front"
@@ -45,47 +49,40 @@ class View extends Marionette.ItemView
         content: "(c) 2015 WebApp. All rights reserved"
 
     @ui.home.on 'click', =>
-      @home()
+      @channel.request('home')
       return
 
     @ui.profile.on 'click', =>
-      @profile()
+      @channel.request('profile')
       return
 
     @ui.contacts.on 'click', =>
-      @contacts()
+      @channel.request('home')
       return
 
     @ui.movies.on 'click', =>
-      @movies()
+      @channel.request('home')
       return
 
     @ui.movie.on 'click', =>
-      @movie()
+      @channel.request('home')
       return
 
     @ui.chat.on 'click', =>
-      @chat()
+      @channel.request('home')
       return
 
     return
+
   events:
 
     #Open menu.
+
     'click @ui.brand': (event)->
       # Prevent change where a change is added to url.
       event.preventDefault()
       $("#my-menu").trigger("open.mm")
       return
-
-
-    # XXX Events here are not working.
-    # Fallback to listening from onShow() method instead.
-    'click @ui.home':     'home'
-    'click @ui.profile':  'profile'
-    'click @ui.contacts': 'contacts'
-    'click @ui.movies':   'movies'
-    'click @ui.chat':     'chat'
 
     'click @ui.collapseItem': (event) ->
       @ui.collapseBtn.collapse('hide')
@@ -94,28 +91,11 @@ class View extends Marionette.ItemView
 
       return
 
-  'home' : ->
-    Radio.command 'main', 'app:user:home'
-    return
+  'click @ui.home' : ->
 
-  'profile' : ->
-    Radio.command 'main', 'app:user:profile'
-    return
+    console.log 'here'
 
-  'contacts' : ->
-    Radio.command 'main', 'app:user:contacts'
-    return
-
-  'movies' : ->
-    Radio.command 'main', 'app:user:movies'
-    return
-
-  'movie' : ->
-    Radio.command 'main', 'app:user:movie' , 'test'
-    return
-
-  'chat' : ->
-    Radio.command 'main', 'app:user:chatbox'
+#    Radio.command 'main', 'app:user:home'
     return
 
 #-------------------------------------------------------------------------------

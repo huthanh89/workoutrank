@@ -2,26 +2,30 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_           = require 'lodash'
-Marionette  = require 'marionette'
-Application = require 'src/application'
-
-viewTemplate = require './view.jade'
+Backbone = require 'backbone'
 
 #-------------------------------------------------------------------------------
-# View
+# Model
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
-  template: viewTemplate
-  initialize: ->
-    console.log 'init2'
-    return
+class Model extends Backbone.Model
+  defaults:
+    name: ''
+
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.Collection
+  url:  'api/profile'
+  model: Model
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = require './view'
 
 #-------------------------------------------------------------------------------

@@ -2,40 +2,27 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-express = require 'express'
-router  = express.Router()
+mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Import Routes
+# Schema
 #-------------------------------------------------------------------------------
 
-profile = require './profile/module'
+UserSchema = new mongoose.Schema
+  name: String
+,
+  collection: 'user'
 
 #-------------------------------------------------------------------------------
-# Path Routes.
-#   Pass index to all routes.
+# Model Registration
 #-------------------------------------------------------------------------------
 
-index = (req, res, next) ->
-  res.render 'index'
-  return
-
-router.get '/',        index
-router.get '/home',    index
-router.get '/profile', index
-
-#-------------------------------------------------------------------------------
-# API Routes for Resources.
-#-------------------------------------------------------------------------------
-
-# Profile
-
-router.get '/api/profile', profile.get
+model = mongoose.model('user', UserSchema)
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = router
+module.exports = model
 
 #-------------------------------------------------------------------------------

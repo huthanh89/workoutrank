@@ -5,9 +5,9 @@
 
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
-NavView    = require './navbar/view'
+NavView    = require './nav/view'
 
-router = require './routers/router'
+router = require './router/router'
 
 #-------------------------------------------------------------------------------
 # RootView

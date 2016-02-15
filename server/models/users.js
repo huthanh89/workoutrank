@@ -11,7 +11,7 @@ module.exports = function(){
 
     mongoose.model('cat',{name:String});
 
-    mongoose.model('user',{username:String});
+    mongoose.model('userasdf',usersSchema);
 
     mongoose.model('comment',{
         date: Date,

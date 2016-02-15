@@ -7,16 +7,33 @@ Content
 Content padding, to pad body from fixed navbar.
 */
 
+#header{
+    height: 30px;
+}
+
 #content{
-    padding-top: 75px;
-    color: blue;
+    margin:     50px 75px 0px;
+    min-height: 250px;
 }
 
 /*
-#nav-user-profile{
-    background-color: cornflowerblue;
-}
+Change margin if viewport is 980 pixels wide or smaller.
 */
+
+@media (max-width: 770px) {
+    #content{
+        margin: 50px 10px 0px;
+    }
+}
+
+/*------------------------------------------
+Footer
+--------------------------------------------*/
+
+#footer{
+    text-align: center;
+    margin-top: 5px;
+}
 
 /*------------------------------------------
 Nav Bar
@@ -25,6 +42,7 @@ Nav Bar
 /*
 Vertical divider for nav bar.
 */
+
 .nav-icon{
     height: 20px;
     line-height: 20px;
@@ -40,6 +58,25 @@ Vertical divider for nav bar.
     border-left: 1px solid #F2F2F2;
     border-right: 1px solid #FFF;
 }
+
+
+/*------------------------------------------
+Menu
+--------------------------------------------*/
+
+#my-menu{
+    box-shadow: none;
+    z-index: 2000;
+}
+
+
+
+
+
+
+
+
+
 
 /*------------------------------------------
 Comment Box

@@ -67,9 +67,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(24);
+	__webpack_require__(31);
 
-	__webpack_require__(25);
+	__webpack_require__(32);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -84,7 +84,10 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
+	var jQuery = __webpack_require__(2);
+
+	/*!
 	 * jQuery JavaScript Library v2.1.3
 	 * http://jquery.com/
 	 *
@@ -9289,6 +9292,7 @@
 	return jQuery;
 
 	}));
+
 
 
 /***/ },
@@ -27745,7 +27749,7 @@
 
 	NavView = __webpack_require__(10);
 
-	router = __webpack_require__(21);
+	router = __webpack_require__(14);
 
 	RootView = (function(superClass) {
 	  extend(RootView, superClass);
@@ -27799,7 +27803,7 @@
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, App, Backbone, Marionette, Radio, View, _, viewTemplate,
+	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -27813,16 +27817,10 @@
 
 	Marionette = __webpack_require__(8);
 
-	App = __webpack_require__(11);
-
-	viewTemplate = __webpack_require__(20);
+	viewTemplate = __webpack_require__(11);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
 
 	  View.prototype.template = viewTemplate;
 
@@ -27837,6 +27835,11 @@
 	    collapseItem: '.nav-collapse-item',
 	    collapseBtn: '#nav-user-collapse-btn'
 	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.channel = Backbone.Radio.channel('root');
+	  }
 
 	  View.prototype.onShow = function() {
 	    $("#my-menu").mmenu({
@@ -27854,32 +27857,32 @@
 	    });
 	    this.ui.home.on('click', (function(_this) {
 	      return function() {
-	        _this.home();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.profile.on('click', (function(_this) {
 	      return function() {
-	        _this.profile();
+	        _this.channel.request('profile');
 	      };
 	    })(this));
 	    this.ui.contacts.on('click', (function(_this) {
 	      return function() {
-	        _this.contacts();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.movies.on('click', (function(_this) {
 	      return function() {
-	        _this.movies();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.movie.on('click', (function(_this) {
 	      return function() {
-	        _this.movie();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.chat.on('click', (function(_this) {
 	      return function() {
-	        _this.chat();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	  };
@@ -27889,38 +27892,13 @@
 	      event.preventDefault();
 	      $("#my-menu").trigger("open.mm");
 	    },
-	    'click @ui.home': 'home',
-	    'click @ui.profile': 'profile',
-	    'click @ui.contacts': 'contacts',
-	    'click @ui.movies': 'movies',
-	    'click @ui.chat': 'chat',
 	    'click @ui.collapseItem': function(event) {
 	      this.ui.collapseBtn.collapse('hide');
 	    }
 	  };
 
-	  View.prototype['home'] = function() {
-	    Radio.command('main', 'app:user:home');
-	  };
-
-	  View.prototype['profile'] = function() {
-	    Radio.command('main', 'app:user:profile');
-	  };
-
-	  View.prototype['contacts'] = function() {
-	    Radio.command('main', 'app:user:contacts');
-	  };
-
-	  View.prototype['movies'] = function() {
-	    Radio.command('main', 'app:user:movies');
-	  };
-
-	  View.prototype['movie'] = function() {
-	    Radio.command('main', 'app:user:movie', 'test');
-	  };
-
-	  View.prototype['chat'] = function() {
-	    Radio.command('main', 'app:user:chatbox');
+	  View.prototype['click @ui.home'] = function() {
+	    console.log('here');
 	  };
 
 	  return View;
@@ -27934,6 +27912,415 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-user-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-navicon fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-user-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-comments-o fa-2x\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Messages</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-cog fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-question fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-ambulance fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-sign-out fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-user-home\"><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-user-profile\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp My Profile</a></li><li><a href=\"#\" id=\"nav-user-contacts\"><i class=\"fa fa-fw fa-group fa-lg\"></i>&nbsp Contacts</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp Profile</a></li></ul></li><li><a href=\"#\" id=\"nav-user-movies\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movies</a></li><li><a href=\"#\" id=\"nav-user-movie\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movie</a></li><li><a href=\"#\" id=\"nav-user-chat\"><i class=\"fa fa-fw fa-comments-o fa-lg\"></i>&nbsp Chat</a></li></ul></nav>");;return buf.join("");
+	}
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Merge two attribute objects giving precedence
+	 * to values in object `b`. Classes are special-cased
+	 * allowing for arrays and merging/joining appropriately
+	 * resulting in a string.
+	 *
+	 * @param {Object} a
+	 * @param {Object} b
+	 * @return {Object} a
+	 * @api private
+	 */
+
+	exports.merge = function merge(a, b) {
+	  if (arguments.length === 1) {
+	    var attrs = a[0];
+	    for (var i = 1; i < a.length; i++) {
+	      attrs = merge(attrs, a[i]);
+	    }
+	    return attrs;
+	  }
+	  var ac = a['class'];
+	  var bc = b['class'];
+
+	  if (ac || bc) {
+	    ac = ac || [];
+	    bc = bc || [];
+	    if (!Array.isArray(ac)) ac = [ac];
+	    if (!Array.isArray(bc)) bc = [bc];
+	    a['class'] = ac.concat(bc).filter(nulls);
+	  }
+
+	  for (var key in b) {
+	    if (key != 'class') {
+	      a[key] = b[key];
+	    }
+	  }
+
+	  return a;
+	};
+
+	/**
+	 * Filter null `val`s.
+	 *
+	 * @param {*} val
+	 * @return {Boolean}
+	 * @api private
+	 */
+
+	function nulls(val) {
+	  return val != null && val !== '';
+	}
+
+	/**
+	 * join array as classes.
+	 *
+	 * @param {*} val
+	 * @return {String}
+	 */
+	exports.joinClasses = joinClasses;
+	function joinClasses(val) {
+	  return (Array.isArray(val) ? val.map(joinClasses) :
+	    (val && typeof val === 'object') ? Object.keys(val).filter(function (key) { return val[key]; }) :
+	    [val]).filter(nulls).join(' ');
+	}
+
+	/**
+	 * Render the given classes.
+	 *
+	 * @param {Array} classes
+	 * @param {Array.<Boolean>} escaped
+	 * @return {String}
+	 */
+	exports.cls = function cls(classes, escaped) {
+	  var buf = [];
+	  for (var i = 0; i < classes.length; i++) {
+	    if (escaped && escaped[i]) {
+	      buf.push(exports.escape(joinClasses([classes[i]])));
+	    } else {
+	      buf.push(joinClasses(classes[i]));
+	    }
+	  }
+	  var text = joinClasses(buf);
+	  if (text.length) {
+	    return ' class="' + text + '"';
+	  } else {
+	    return '';
+	  }
+	};
+
+
+	exports.style = function (val) {
+	  if (val && typeof val === 'object') {
+	    return Object.keys(val).map(function (style) {
+	      return style + ':' + val[style];
+	    }).join(';');
+	  } else {
+	    return val;
+	  }
+	};
+	/**
+	 * Render the given attribute.
+	 *
+	 * @param {String} key
+	 * @param {String} val
+	 * @param {Boolean} escaped
+	 * @param {Boolean} terse
+	 * @return {String}
+	 */
+	exports.attr = function attr(key, val, escaped, terse) {
+	  if (key === 'style') {
+	    val = exports.style(val);
+	  }
+	  if ('boolean' == typeof val || null == val) {
+	    if (val) {
+	      return ' ' + (terse ? key : key + '="' + key + '"');
+	    } else {
+	      return '';
+	    }
+	  } else if (0 == key.indexOf('data') && 'string' != typeof val) {
+	    if (JSON.stringify(val).indexOf('&') !== -1) {
+	      console.warn('Since Jade 2.0.0, ampersands (`&`) in data attributes ' +
+	                   'will be escaped to `&amp;`');
+	    };
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will eliminate the double quotes around dates in ' +
+	                   'ISO form after 2.0.0');
+	    }
+	    return ' ' + key + "='" + JSON.stringify(val).replace(/'/g, '&apos;') + "'";
+	  } else if (escaped) {
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+	    }
+	    return ' ' + key + '="' + exports.escape(val) + '"';
+	  } else {
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+	    }
+	    return ' ' + key + '="' + val + '"';
+	  }
+	};
+
+	/**
+	 * Render the given attributes object.
+	 *
+	 * @param {Object} obj
+	 * @param {Object} escaped
+	 * @return {String}
+	 */
+	exports.attrs = function attrs(obj, terse){
+	  var buf = [];
+
+	  var keys = Object.keys(obj);
+
+	  if (keys.length) {
+	    for (var i = 0; i < keys.length; ++i) {
+	      var key = keys[i]
+	        , val = obj[key];
+
+	      if ('class' == key) {
+	        if (val = joinClasses(val)) {
+	          buf.push(' ' + key + '="' + val + '"');
+	        }
+	      } else {
+	        buf.push(exports.attr(key, val, false, terse));
+	      }
+	    }
+	  }
+
+	  return buf.join('');
+	};
+
+	/**
+	 * Escape the given string of `html`.
+	 *
+	 * @param {String} html
+	 * @return {String}
+	 * @api private
+	 */
+
+	var jade_encode_html_rules = {
+	  '&': '&amp;',
+	  '<': '&lt;',
+	  '>': '&gt;',
+	  '"': '&quot;'
+	};
+	var jade_match_html = /[&<>"]/g;
+
+	function jade_encode_char(c) {
+	  return jade_encode_html_rules[c] || c;
+	}
+
+	exports.escape = jade_escape;
+	function jade_escape(html){
+	  var result = String(html).replace(jade_match_html, jade_encode_char);
+	  if (result === '' + html) return html;
+	  else return result;
+	};
+
+	/**
+	 * Re-throw the given `err` in context to the
+	 * the jade in `filename` at the given `lineno`.
+	 *
+	 * @param {Error} err
+	 * @param {String} filename
+	 * @param {String} lineno
+	 * @api private
+	 */
+
+	exports.rethrow = function rethrow(err, filename, lineno, str){
+	  if (!(err instanceof Error)) throw err;
+	  if ((typeof window != 'undefined' || !filename) && !str) {
+	    err.message += ' on line ' + lineno;
+	    throw err;
+	  }
+	  try {
+	    str = str || __webpack_require__(13).readFileSync(filename, 'utf8')
+	  } catch (ex) {
+	    rethrow(err, null, lineno)
+	  }
+	  var context = 3
+	    , lines = str.split('\n')
+	    , start = Math.max(lineno - context, 0)
+	    , end = Math.min(lines.length, lineno + context);
+
+	  // Error context
+	  var context = lines.slice(start, end).map(function(line, i){
+	    var curr = i + start + 1;
+	    return (curr == lineno ? '  > ' : '    ')
+	      + curr
+	      + '| '
+	      + line;
+	  }).join('\n');
+
+	  // Alter exception message
+	  err.path = filename;
+	  err.message = (filename || 'Jade') + ':' + lineno
+	    + '\n' + context + '\n\n' + err.message;
+	  throw err;
+	};
+
+	exports.DebugItem = function DebugItem(lineno, filename) {
+	  this.lineno = lineno;
+	  this.filename = filename;
+	}
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	/* (ignored) */
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, IndexView, Marionette, Profile, Router, _,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(7);
+
+	Marionette = __webpack_require__(8);
+
+	IndexView = __webpack_require__(15);
+
+	Profile = __webpack_require__(28);
+
+	Router = (function(superClass) {
+	  extend(Router, superClass);
+
+	  function Router() {
+	    var rootChannel;
+	    Router.__super__.constructor.apply(this, arguments);
+	    rootChannel = Backbone.Radio.channel('root');
+	    this.rootView = rootChannel.request('rootview');
+	    rootChannel.reply({
+	      index: (function(_this) {
+	        return function() {
+	          _this.index();
+	        };
+	      })(this),
+	      home: (function(_this) {
+	        return function() {
+	          _this.home();
+	        };
+	      })(this),
+	      profile: (function(_this) {
+	        return function() {
+	          _this.profile();
+	        };
+	      })(this)
+	    });
+	  }
+
+	  Router.prototype.routes = {
+	    '': 'index',
+	    'home': 'home',
+	    'profile': 'profile'
+	  };
+
+	  Router.prototype.index = function() {
+	    this.rootView.content.show(new IndexView());
+	    this.navigate('');
+	  };
+
+	  Router.prototype.home = function() {
+	    this.navigate('home');
+	    this.rootView.content.show(new IndexView());
+	  };
+
+	  Router.prototype.profile = function() {
+	    var collection;
+	    this.navigate('profile');
+	    collection = new Profile.Collection();
+	    console.log('fetching');
+	    collection.fetch({
+	      success: function(collection) {
+	        console.log('done', collection);
+	      },
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  return Router;
+
+	})(Marionette.AppRouter);
+
+	module.exports = Router;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $, Application, Marionette, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Marionette = __webpack_require__(8);
+
+	Application = __webpack_require__(16);
+
+	viewTemplate = __webpack_require__(27);
+
+	__webpack_require__(23);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    reps: '#reps',
+	    touchspin: '#touchspin'
+	  };
+
+	  View.prototype.events = {
+	    click: function(event) {
+	      console.log('event');
+	      event.preventDefault();
+	    }
+	  };
+
+	  View.prototype.onRender = function() {
+	    this.ui.reps.TouchSpin();
+	    this.ui.touchspin.TouchSpin();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Application, Backbone, Marionette, NavView, RootView, router,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -27942,9 +28329,9 @@
 
 	Marionette = __webpack_require__(8);
 
-	NavView = __webpack_require__(12);
+	NavView = __webpack_require__(17);
 
-	router = __webpack_require__(17);
+	router = __webpack_require__(20);
 
 	RootView = (function(superClass) {
 	  extend(RootView, superClass);
@@ -27995,10 +28382,10 @@
 
 
 /***/ },
-/* 12 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, App, Backbone, Marionette, Radio, View, _, viewTemplate,
+	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -28008,20 +28395,14 @@
 
 	Backbone = __webpack_require__(7);
 
-	Radio = __webpack_require__(13);
+	Radio = __webpack_require__(18);
 
 	Marionette = __webpack_require__(8);
 
-	App = __webpack_require__(11);
-
-	viewTemplate = __webpack_require__(14);
+	viewTemplate = __webpack_require__(19);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
 
 	  View.prototype.template = viewTemplate;
 
@@ -28036,6 +28417,11 @@
 	    collapseItem: '.nav-collapse-item',
 	    collapseBtn: '#nav-user-collapse-btn'
 	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.channel = Backbone.Radio.channel('root');
+	  }
 
 	  View.prototype.onShow = function() {
 	    $("#my-menu").mmenu({
@@ -28053,32 +28439,32 @@
 	    });
 	    this.ui.home.on('click', (function(_this) {
 	      return function() {
-	        _this.home();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.profile.on('click', (function(_this) {
 	      return function() {
-	        _this.profile();
+	        _this.channel.request('profile');
 	      };
 	    })(this));
 	    this.ui.contacts.on('click', (function(_this) {
 	      return function() {
-	        _this.contacts();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.movies.on('click', (function(_this) {
 	      return function() {
-	        _this.movies();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.movie.on('click', (function(_this) {
 	      return function() {
-	        _this.movie();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	    this.ui.chat.on('click', (function(_this) {
 	      return function() {
-	        _this.chat();
+	        _this.channel.request('home');
 	      };
 	    })(this));
 	  };
@@ -28088,38 +28474,13 @@
 	      event.preventDefault();
 	      $("#my-menu").trigger("open.mm");
 	    },
-	    'click @ui.home': 'home',
-	    'click @ui.profile': 'profile',
-	    'click @ui.contacts': 'contacts',
-	    'click @ui.movies': 'movies',
-	    'click @ui.chat': 'chat',
 	    'click @ui.collapseItem': function(event) {
 	      this.ui.collapseBtn.collapse('hide');
 	    }
 	  };
 
-	  View.prototype['home'] = function() {
-	    Radio.command('main', 'app:user:home');
-	  };
-
-	  View.prototype['profile'] = function() {
-	    Radio.command('main', 'app:user:profile');
-	  };
-
-	  View.prototype['contacts'] = function() {
-	    Radio.command('main', 'app:user:contacts');
-	  };
-
-	  View.prototype['movies'] = function() {
-	    Radio.command('main', 'app:user:movies');
-	  };
-
-	  View.prototype['movie'] = function() {
-	    Radio.command('main', 'app:user:movie', 'test');
-	  };
-
-	  View.prototype['chat'] = function() {
-	    Radio.command('main', 'app:user:chatbox');
+	  View.prototype['click @ui.home'] = function() {
+	    console.log('here');
 	  };
 
 	  return View;
@@ -28130,7 +28491,7 @@
 
 
 /***/ },
-/* 13 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Backbone.Radio v1.0.2
@@ -28471,10 +28832,10 @@
 	//# sourceMappingURL=./backbone.radio.js.map
 
 /***/ },
-/* 14 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(15);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -28482,384 +28843,13 @@
 	var jade_interp;
 
 	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-user-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-navicon fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-user-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-comments-o fa-2x\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Messages</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-cog fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-question fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-ambulance fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-sign-out fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-user-home\"><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-user-profile\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp My Profile</a></li><li><a href=\"#\" id=\"nav-user-contacts\"><i class=\"fa fa-fw fa-group fa-lg\"></i>&nbsp Contacts</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp Profile</a></li></ul></li><li><a href=\"#\" id=\"nav-user-movies\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movies</a></li><li><a href=\"#\" id=\"nav-user-movie\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movie</a></li><li><a href=\"#\" id=\"nav-user-chat\"><i class=\"fa fa-fw fa-comments-o fa-lg\"></i>&nbsp Chat</a></li></ul></nav>");;return buf.join("");
-	}
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Merge two attribute objects giving precedence
-	 * to values in object `b`. Classes are special-cased
-	 * allowing for arrays and merging/joining appropriately
-	 * resulting in a string.
-	 *
-	 * @param {Object} a
-	 * @param {Object} b
-	 * @return {Object} a
-	 * @api private
-	 */
-
-	exports.merge = function merge(a, b) {
-	  if (arguments.length === 1) {
-	    var attrs = a[0];
-	    for (var i = 1; i < a.length; i++) {
-	      attrs = merge(attrs, a[i]);
-	    }
-	    return attrs;
-	  }
-	  var ac = a['class'];
-	  var bc = b['class'];
-
-	  if (ac || bc) {
-	    ac = ac || [];
-	    bc = bc || [];
-	    if (!Array.isArray(ac)) ac = [ac];
-	    if (!Array.isArray(bc)) bc = [bc];
-	    a['class'] = ac.concat(bc).filter(nulls);
-	  }
-
-	  for (var key in b) {
-	    if (key != 'class') {
-	      a[key] = b[key];
-	    }
-	  }
-
-	  return a;
-	};
-
-	/**
-	 * Filter null `val`s.
-	 *
-	 * @param {*} val
-	 * @return {Boolean}
-	 * @api private
-	 */
-
-	function nulls(val) {
-	  return val != null && val !== '';
-	}
-
-	/**
-	 * join array as classes.
-	 *
-	 * @param {*} val
-	 * @return {String}
-	 */
-	exports.joinClasses = joinClasses;
-	function joinClasses(val) {
-	  return (Array.isArray(val) ? val.map(joinClasses) :
-	    (val && typeof val === 'object') ? Object.keys(val).filter(function (key) { return val[key]; }) :
-	    [val]).filter(nulls).join(' ');
-	}
-
-	/**
-	 * Render the given classes.
-	 *
-	 * @param {Array} classes
-	 * @param {Array.<Boolean>} escaped
-	 * @return {String}
-	 */
-	exports.cls = function cls(classes, escaped) {
-	  var buf = [];
-	  for (var i = 0; i < classes.length; i++) {
-	    if (escaped && escaped[i]) {
-	      buf.push(exports.escape(joinClasses([classes[i]])));
-	    } else {
-	      buf.push(joinClasses(classes[i]));
-	    }
-	  }
-	  var text = joinClasses(buf);
-	  if (text.length) {
-	    return ' class="' + text + '"';
-	  } else {
-	    return '';
-	  }
-	};
-
-
-	exports.style = function (val) {
-	  if (val && typeof val === 'object') {
-	    return Object.keys(val).map(function (style) {
-	      return style + ':' + val[style];
-	    }).join(';');
-	  } else {
-	    return val;
-	  }
-	};
-	/**
-	 * Render the given attribute.
-	 *
-	 * @param {String} key
-	 * @param {String} val
-	 * @param {Boolean} escaped
-	 * @param {Boolean} terse
-	 * @return {String}
-	 */
-	exports.attr = function attr(key, val, escaped, terse) {
-	  if (key === 'style') {
-	    val = exports.style(val);
-	  }
-	  if ('boolean' == typeof val || null == val) {
-	    if (val) {
-	      return ' ' + (terse ? key : key + '="' + key + '"');
-	    } else {
-	      return '';
-	    }
-	  } else if (0 == key.indexOf('data') && 'string' != typeof val) {
-	    if (JSON.stringify(val).indexOf('&') !== -1) {
-	      console.warn('Since Jade 2.0.0, ampersands (`&`) in data attributes ' +
-	                   'will be escaped to `&amp;`');
-	    };
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will eliminate the double quotes around dates in ' +
-	                   'ISO form after 2.0.0');
-	    }
-	    return ' ' + key + "='" + JSON.stringify(val).replace(/'/g, '&apos;') + "'";
-	  } else if (escaped) {
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
-	    }
-	    return ' ' + key + '="' + exports.escape(val) + '"';
-	  } else {
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
-	    }
-	    return ' ' + key + '="' + val + '"';
-	  }
-	};
-
-	/**
-	 * Render the given attributes object.
-	 *
-	 * @param {Object} obj
-	 * @param {Object} escaped
-	 * @return {String}
-	 */
-	exports.attrs = function attrs(obj, terse){
-	  var buf = [];
-
-	  var keys = Object.keys(obj);
-
-	  if (keys.length) {
-	    for (var i = 0; i < keys.length; ++i) {
-	      var key = keys[i]
-	        , val = obj[key];
-
-	      if ('class' == key) {
-	        if (val = joinClasses(val)) {
-	          buf.push(' ' + key + '="' + val + '"');
-	        }
-	      } else {
-	        buf.push(exports.attr(key, val, false, terse));
-	      }
-	    }
-	  }
-
-	  return buf.join('');
-	};
-
-	/**
-	 * Escape the given string of `html`.
-	 *
-	 * @param {String} html
-	 * @return {String}
-	 * @api private
-	 */
-
-	var jade_encode_html_rules = {
-	  '&': '&amp;',
-	  '<': '&lt;',
-	  '>': '&gt;',
-	  '"': '&quot;'
-	};
-	var jade_match_html = /[&<>"]/g;
-
-	function jade_encode_char(c) {
-	  return jade_encode_html_rules[c] || c;
-	}
-
-	exports.escape = jade_escape;
-	function jade_escape(html){
-	  var result = String(html).replace(jade_match_html, jade_encode_char);
-	  if (result === '' + html) return html;
-	  else return result;
-	};
-
-	/**
-	 * Re-throw the given `err` in context to the
-	 * the jade in `filename` at the given `lineno`.
-	 *
-	 * @param {Error} err
-	 * @param {String} filename
-	 * @param {String} lineno
-	 * @api private
-	 */
-
-	exports.rethrow = function rethrow(err, filename, lineno, str){
-	  if (!(err instanceof Error)) throw err;
-	  if ((typeof window != 'undefined' || !filename) && !str) {
-	    err.message += ' on line ' + lineno;
-	    throw err;
-	  }
-	  try {
-	    str = str || __webpack_require__(16).readFileSync(filename, 'utf8')
-	  } catch (ex) {
-	    rethrow(err, null, lineno)
-	  }
-	  var context = 3
-	    , lines = str.split('\n')
-	    , start = Math.max(lineno - context, 0)
-	    , end = Math.min(lines.length, lineno + context);
-
-	  // Error context
-	  var context = lines.slice(start, end).map(function(line, i){
-	    var curr = i + start + 1;
-	    return (curr == lineno ? '  > ' : '    ')
-	      + curr
-	      + '| '
-	      + line;
-	  }).join('\n');
-
-	  // Alter exception message
-	  err.path = filename;
-	  err.message = (filename || 'Jade') + ':' + lineno
-	    + '\n' + context + '\n\n' + err.message;
-	  throw err;
-	};
-
-	exports.DebugItem = function DebugItem(lineno, filename) {
-	  this.lineno = lineno;
-	  this.filename = filename;
-	}
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	/* (ignored) */
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, IndexView, Marionette, Router, _,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	Backbone = __webpack_require__(7);
-
-	Marionette = __webpack_require__(8);
-
-	IndexView = __webpack_require__(18);
-
-	Router = (function(superClass) {
-	  var rootChannel;
-
-	  extend(Router, superClass);
-
-	  function Router() {
-	    return Router.__super__.constructor.apply(this, arguments);
-	  }
-
-	  rootChannel = Backbone.Radio.channel('root');
-
-	  Router.prototype.routes = {
-	    '': 'index',
-	    'home': 'home'
-	  };
-
-	  Router.prototype.home = function() {
-	    console.log('home');
-	  };
-
-	  Router.prototype.index = function() {
-	    var rootView;
-	    rootView = rootChannel.request('rootview');
-	    rootView.content.show(new IndexView());
-	  };
-
-	  return Router;
-
-	})(Marionette.AppRouter);
-
-	module.exports = Router;
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Application, Marionette, View, _, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	Marionette = __webpack_require__(8);
-
-	Application = __webpack_require__(11);
-
-	viewTemplate = __webpack_require__(19);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.initialize = function() {
-	    console.log('init2');
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(15);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<span>some text here GOOD</span>");;return buf.join("");
 	}
 
 /***/ },
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(15);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-user-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-navicon fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-user-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-comments-o fa-2x\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Messages</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-cog fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-question fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-ambulance fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-sign-out fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-user-home\"><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-user-profile\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp My Profile</a></li><li><a href=\"#\" id=\"nav-user-contacts\"><i class=\"fa fa-fw fa-group fa-lg\"></i>&nbsp Contacts</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp Profile</a></li></ul></li><li><a href=\"#\" id=\"nav-user-movies\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movies</a></li><li><a href=\"#\" id=\"nav-user-movie\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movie</a></li><li><a href=\"#\" id=\"nav-user-chat\"><i class=\"fa fa-fw fa-comments-o fa-lg\"></i>&nbsp Chat</a></li></ul></nav>");;return buf.join("");
-	}
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, IndexView, Marionette, Router, _,
+	var Backbone, IndexView, Marionette, Profile, Router, _,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -28869,32 +28859,67 @@
 
 	Marionette = __webpack_require__(8);
 
-	IndexView = __webpack_require__(22);
+	IndexView = __webpack_require__(21);
+
+	Profile = __webpack_require__(24);
 
 	Router = (function(superClass) {
-	  var rootChannel;
-
 	  extend(Router, superClass);
 
 	  function Router() {
-	    return Router.__super__.constructor.apply(this, arguments);
+	    var rootChannel;
+	    Router.__super__.constructor.apply(this, arguments);
+	    rootChannel = Backbone.Radio.channel('root');
+	    this.rootView = rootChannel.request('rootview');
+	    rootChannel.reply({
+	      index: (function(_this) {
+	        return function() {
+	          _this.index();
+	        };
+	      })(this),
+	      home: (function(_this) {
+	        return function() {
+	          _this.home();
+	        };
+	      })(this),
+	      profile: (function(_this) {
+	        return function() {
+	          _this.profile();
+	        };
+	      })(this)
+	    });
 	  }
-
-	  rootChannel = Backbone.Radio.channel('root');
 
 	  Router.prototype.routes = {
 	    '': 'index',
-	    'home': 'home'
-	  };
-
-	  Router.prototype.home = function() {
-	    console.log('home');
+	    'home': 'home',
+	    'profile': 'profile'
 	  };
 
 	  Router.prototype.index = function() {
-	    var rootView;
-	    rootView = rootChannel.request('rootview');
-	    rootView.content.show(new IndexView());
+	    this.rootView.content.show(new IndexView());
+	    this.navigate('');
+	  };
+
+	  Router.prototype.home = function() {
+	    this.navigate('home');
+	    this.rootView.content.show(new IndexView());
+	  };
+
+	  Router.prototype.profile = function() {
+	    var collection;
+	    this.navigate('profile');
+	    collection = new Profile.Collection();
+	    console.log('fetching');
+	    collection.fetch({
+	      success: function(collection) {
+	        console.log('done', collection);
+	      },
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	    this.rootView.content.show(new Profile.View());
 	  };
 
 	  return Router;
@@ -28905,20 +28930,24 @@
 
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Marionette, View, _, viewTemplate,
+	var $, Application, Marionette, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
 
 	_ = __webpack_require__(3);
 
 	Marionette = __webpack_require__(8);
 
-	Application = __webpack_require__(11);
+	Application = __webpack_require__(16);
 
-	viewTemplate = __webpack_require__(23);
+	viewTemplate = __webpack_require__(22);
+
+	__webpack_require__(23);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -28929,8 +28958,21 @@
 
 	  View.prototype.template = viewTemplate;
 
-	  View.prototype.initialize = function() {
-	    console.log('init2');
+	  View.prototype.ui = {
+	    reps: '#reps',
+	    touchspin: '#touchspin'
+	  };
+
+	  View.prototype.events = {
+	    click: function(event) {
+	      console.log('event');
+	      event.preventDefault();
+	    }
+	  };
+
+	  View.prototype.onRender = function() {
+	    this.ui.reps.TouchSpin();
+	    this.ui.touchspin.TouchSpin();
 	  };
 
 	  return View;
@@ -28941,22 +28983,956 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(15);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<span>some text here GOOD</span>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Add weight lift</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"reps\" class=\"col-sm-2 control-label\">Reps</label><div class=\"col-sm-10\"><input id=\"reps\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"touchspin\" class=\"col-sm-2 control-label\">Reps</label><div class=\"col-sm-10\"><input id=\"touchspin\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Save</button></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var jQuery = __webpack_require__(2);
+
+	(function($) {
+	  'use strict';
+
+	  var _currentSpinnerId = 0;
+
+	  function _scopedEventName(name, id) {
+	    return name + '.touchspin_' + id;
+	  }
+
+	  function _scopeEventNames(names, id) {
+	    return $.map(names, function(name) {
+	      return _scopedEventName(name, id);
+	    });
+	  }
+
+	  $.fn.TouchSpin = function(options) {
+
+	    if (options === 'destroy') {
+	      this.each(function() {
+	        var originalinput = $(this),
+	            originalinput_data = originalinput.data();
+	        $(document).off(_scopeEventNames([
+	          'mouseup',
+	          'touchend',
+	          'touchcancel',
+	          'mousemove',
+	          'touchmove',
+	          'scroll',
+	          'scrollstart'], originalinput_data.spinnerid).join(' '));
+	      });
+	      return;
+	    }
+
+	    var defaults = {
+	      min: 0,
+	      max: 100,
+	      initval: '',
+	      replacementval: '',
+	      step: 1,
+	      decimals: 0,
+	      stepinterval: 100,
+	      forcestepdivisibility: 'round', // none | floor | round | ceil
+	      stepintervaldelay: 500,
+	      verticalbuttons: false,
+	      verticalupclass: 'glyphicon glyphicon-chevron-up',
+	      verticaldownclass: 'glyphicon glyphicon-chevron-down',
+	      prefix: '',
+	      postfix: '',
+	      prefix_extraclass: '',
+	      postfix_extraclass: '',
+	      booster: true,
+	      boostat: 10,
+	      maxboostedstep: false,
+	      mousewheel: true,
+	      buttondown_class: 'btn btn-default',
+	      buttonup_class: 'btn btn-default',
+		  buttondown_txt: '-',
+		  buttonup_txt: '+'
+	    };
+
+	    var attributeMap = {
+	      min: 'min',
+	      max: 'max',
+	      initval: 'init-val',
+	      replacementval: 'replacement-val',
+	      step: 'step',
+	      decimals: 'decimals',
+	      stepinterval: 'step-interval',
+	      verticalbuttons: 'vertical-buttons',
+	      verticalupclass: 'vertical-up-class',
+	      verticaldownclass: 'vertical-down-class',
+	      forcestepdivisibility: 'force-step-divisibility',
+	      stepintervaldelay: 'step-interval-delay',
+	      prefix: 'prefix',
+	      postfix: 'postfix',
+	      prefix_extraclass: 'prefix-extra-class',
+	      postfix_extraclass: 'postfix-extra-class',
+	      booster: 'booster',
+	      boostat: 'boostat',
+	      maxboostedstep: 'max-boosted-step',
+	      mousewheel: 'mouse-wheel',
+	      buttondown_class: 'button-down-class',
+	      buttonup_class: 'button-up-class',
+		  buttondown_txt: 'button-down-txt',
+		  buttonup_txt: 'button-up-txt'
+	    };
+
+	    return this.each(function() {
+
+	      var settings,
+	          originalinput = $(this),
+	          originalinput_data = originalinput.data(),
+	          container,
+	          elements,
+	          value,
+	          downSpinTimer,
+	          upSpinTimer,
+	          downDelayTimeout,
+	          upDelayTimeout,
+	          spincount = 0,
+	          spinning = false;
+
+	      init();
+
+
+	      function init() {
+	        if (originalinput.data('alreadyinitialized')) {
+	          return;
+	        }
+
+	        originalinput.data('alreadyinitialized', true);
+	        _currentSpinnerId += 1;
+	        originalinput.data('spinnerid', _currentSpinnerId);
+
+
+	        if (!originalinput.is('input')) {
+	          console.log('Must be an input.');
+	          return;
+	        }
+
+	        _initSettings();
+	        _setInitval();
+	        _checkValue();
+	        _buildHtml();
+	        _initElements();
+	        _hideEmptyPrefixPostfix();
+	        _bindEvents();
+	        _bindEventsInterface();
+	        elements.input.css('display', 'block');
+	      }
+
+	      function _setInitval() {
+	        if (settings.initval !== '' && originalinput.val() === '') {
+	          originalinput.val(settings.initval);
+	        }
+	      }
+
+	      function changeSettings(newsettings) {
+	        _updateSettings(newsettings);
+	        _checkValue();
+
+	        var value = elements.input.val();
+
+	        if (value !== '') {
+	          value = Number(elements.input.val());
+	          elements.input.val(value.toFixed(settings.decimals));
+	        }
+	      }
+
+	      function _initSettings() {
+	        settings = $.extend({}, defaults, originalinput_data, _parseAttributes(), options);
+	      }
+
+	      function _parseAttributes() {
+	        var data = {};
+	        $.each(attributeMap, function(key, value) {
+	          var attrName = 'bts-' + value + '';
+	          if (originalinput.is('[data-' + attrName + ']')) {
+	            data[key] = originalinput.data(attrName);
+	          }
+	        });
+	        return data;
+	      }
+
+	      function _updateSettings(newsettings) {
+	        settings = $.extend({}, settings, newsettings);
+	      }
+
+	      function _buildHtml() {
+	        var initval = originalinput.val(),
+	            parentelement = originalinput.parent();
+
+	        if (initval !== '') {
+	          initval = Number(initval).toFixed(settings.decimals);
+	        }
+
+	        originalinput.data('initvalue', initval).val(initval);
+	        originalinput.addClass('form-control');
+
+	        if (parentelement.hasClass('input-group')) {
+	          _advanceInputGroup(parentelement);
+	        }
+	        else {
+	          _buildInputGroup();
+	        }
+	      }
+
+	      function _advanceInputGroup(parentelement) {
+	        parentelement.addClass('bootstrap-touchspin');
+
+	        var prev = originalinput.prev(),
+	            next = originalinput.next();
+
+	        var downhtml,
+	            uphtml,
+	            prefixhtml = '<span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span>',
+	            postfixhtml = '<span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span>';
+
+	        if (prev.hasClass('input-group-btn')) {
+	          downhtml = '<button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button>';
+	          prev.append(downhtml);
+	        }
+	        else {
+	          downhtml = '<span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span>';
+	          $(downhtml).insertBefore(originalinput);
+	        }
+
+	        if (next.hasClass('input-group-btn')) {
+	          uphtml = '<button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button>';
+	          next.prepend(uphtml);
+	        }
+	        else {
+	          uphtml = '<span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span>';
+	          $(uphtml).insertAfter(originalinput);
+	        }
+
+	        $(prefixhtml).insertBefore(originalinput);
+	        $(postfixhtml).insertAfter(originalinput);
+
+	        container = parentelement;
+	      }
+
+	      function _buildInputGroup() {
+	        var html;
+
+	        if (settings.verticalbuttons) {
+	          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn-vertical"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-up" type="button"><i class="' + settings.verticalupclass + '"></i></button><button class="' + settings.buttonup_class + ' bootstrap-touchspin-down" type="button"><i class="' + settings.verticaldownclass + '"></i></button></span></div>';
+	        }
+	        else {
+	          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span></div>';
+	        }
+
+	        container = $(html).insertBefore(originalinput);
+
+	        $('.bootstrap-touchspin-prefix', container).after(originalinput);
+
+	        if (originalinput.hasClass('input-sm')) {
+	          container.addClass('input-group-sm');
+	        }
+	        else if (originalinput.hasClass('input-lg')) {
+	          container.addClass('input-group-lg');
+	        }
+	      }
+
+	      function _initElements() {
+	        elements = {
+	          down: $('.bootstrap-touchspin-down', container),
+	          up: $('.bootstrap-touchspin-up', container),
+	          input: $('input', container),
+	          prefix: $('.bootstrap-touchspin-prefix', container).addClass(settings.prefix_extraclass),
+	          postfix: $('.bootstrap-touchspin-postfix', container).addClass(settings.postfix_extraclass)
+	        };
+	      }
+
+	      function _hideEmptyPrefixPostfix() {
+	        if (settings.prefix === '') {
+	          elements.prefix.hide();
+	        }
+
+	        if (settings.postfix === '') {
+	          elements.postfix.hide();
+	        }
+	      }
+
+	      function _bindEvents() {
+	        originalinput.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 38) {
+	            if (spinning !== 'up') {
+	              upOnce();
+	              startUpSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	          else if (code === 40) {
+	            if (spinning !== 'down') {
+	              downOnce();
+	              startDownSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        originalinput.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 38) {
+	            stopSpin();
+	          }
+	          else if (code === 40) {
+	            stopSpin();
+	          }
+	        });
+
+	        originalinput.on('blur', function() {
+	          _checkValue();
+	        });
+
+	        elements.down.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            if (spinning !== 'down') {
+	              downOnce();
+	              startDownSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        elements.down.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            stopSpin();
+	          }
+	        });
+
+	        elements.up.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            if (spinning !== 'up') {
+	              upOnce();
+	              startUpSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        elements.up.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            stopSpin();
+	          }
+	        });
+
+	        elements.down.on('mousedown.touchspin', function(ev) {
+	          elements.down.off('touchstart.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          downOnce();
+	          startDownSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.down.on('touchstart.touchspin', function(ev) {
+	          elements.down.off('mousedown.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          downOnce();
+	          startDownSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('mousedown.touchspin', function(ev) {
+	          elements.up.off('touchstart.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          upOnce();
+	          startUpSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('touchstart.touchspin', function(ev) {
+	          elements.up.off('mousedown.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          upOnce();
+	          startUpSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('mouseout touchleave touchend touchcancel', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          stopSpin();
+	        });
+
+	        elements.down.on('mouseout touchleave touchend touchcancel', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          stopSpin();
+	        });
+
+	        elements.down.on('mousemove touchmove', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+	        });
+
+	        elements.up.on('mousemove touchmove', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+	        });
+
+	        $(document).on(_scopeEventNames(['mouseup', 'touchend', 'touchcancel'], _currentSpinnerId).join(' '), function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.preventDefault();
+	          stopSpin();
+	        });
+
+	        $(document).on(_scopeEventNames(['mousemove', 'touchmove', 'scroll', 'scrollstart'], _currentSpinnerId).join(' '), function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.preventDefault();
+	          stopSpin();
+	        });
+
+	        originalinput.on('mousewheel DOMMouseScroll', function(ev) {
+	          if (!settings.mousewheel || !originalinput.is(':focus')) {
+	            return;
+	          }
+
+	          var delta = ev.originalEvent.wheelDelta || -ev.originalEvent.deltaY || -ev.originalEvent.detail;
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+
+	          if (delta < 0) {
+	            downOnce();
+	          }
+	          else {
+	            upOnce();
+	          }
+	        });
+	      }
+
+	      function _bindEventsInterface() {
+	        originalinput.on('touchspin.uponce', function() {
+	          stopSpin();
+	          upOnce();
+	        });
+
+	        originalinput.on('touchspin.downonce', function() {
+	          stopSpin();
+	          downOnce();
+	        });
+
+	        originalinput.on('touchspin.startupspin', function() {
+	          startUpSpin();
+	        });
+
+	        originalinput.on('touchspin.startdownspin', function() {
+	          startDownSpin();
+	        });
+
+	        originalinput.on('touchspin.stopspin', function() {
+	          stopSpin();
+	        });
+
+	        originalinput.on('touchspin.updatesettings', function(e, newsettings) {
+	          changeSettings(newsettings);
+	        });
+	      }
+
+	      function _forcestepdivisibility(value) {
+	        switch (settings.forcestepdivisibility) {
+	          case 'round':
+	            return (Math.round(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          case 'floor':
+	            return (Math.floor(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          case 'ceil':
+	            return (Math.ceil(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          default:
+	            return value;
+	        }
+	      }
+
+	      function _checkValue() {
+	        var val, parsedval, returnval;
+
+	        val = originalinput.val();
+
+	        if (val === '') {
+	          if (settings.replacementval !== '') {
+	            originalinput.val(settings.replacementval);
+	            originalinput.trigger('change');
+	          }
+	          return;
+	        }
+
+	        if (settings.decimals > 0 && val === '.') {
+	          return;
+	        }
+
+	        parsedval = parseFloat(val);
+
+	        if (isNaN(parsedval)) {
+	          if (settings.replacementval !== '') {
+	            parsedval = settings.replacementval;
+	          }
+	          else {
+	            parsedval = 0;
+	          }
+	        }
+
+	        returnval = parsedval;
+
+	        if (parsedval.toString() !== val) {
+	          returnval = parsedval;
+	        }
+
+	        if (parsedval < settings.min) {
+	          returnval = settings.min;
+	        }
+
+	        if (parsedval > settings.max) {
+	          returnval = settings.max;
+	        }
+
+	        returnval = _forcestepdivisibility(returnval);
+
+	        if (Number(val).toString() !== returnval.toString()) {
+	          originalinput.val(returnval);
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function _getBoostedStep() {
+	        if (!settings.booster) {
+	          return settings.step;
+	        }
+	        else {
+	          var boosted = Math.pow(2, Math.floor(spincount / settings.boostat)) * settings.step;
+
+	          if (settings.maxboostedstep) {
+	            if (boosted > settings.maxboostedstep) {
+	              boosted = settings.maxboostedstep;
+	              value = Math.round((value / boosted)) * boosted;
+	            }
+	          }
+
+	          return Math.max(settings.step, boosted);
+	        }
+	      }
+
+	      function upOnce() {
+	        _checkValue();
+
+	        value = parseFloat(elements.input.val());
+	        if (isNaN(value)) {
+	          value = 0;
+	        }
+
+	        var initvalue = value,
+	            boostedstep = _getBoostedStep();
+
+	        value = value + boostedstep;
+
+	        if (value > settings.max) {
+	          value = settings.max;
+	          originalinput.trigger('touchspin.on.max');
+	          stopSpin();
+	        }
+
+	        elements.input.val(Number(value).toFixed(settings.decimals));
+
+	        if (initvalue !== value) {
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function downOnce() {
+	        _checkValue();
+
+	        value = parseFloat(elements.input.val());
+	        if (isNaN(value)) {
+	          value = 0;
+	        }
+
+	        var initvalue = value,
+	            boostedstep = _getBoostedStep();
+
+	        value = value - boostedstep;
+
+	        if (value < settings.min) {
+	          value = settings.min;
+	          originalinput.trigger('touchspin.on.min');
+	          stopSpin();
+	        }
+
+	        elements.input.val(value.toFixed(settings.decimals));
+
+	        if (initvalue !== value) {
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function startDownSpin() {
+	        stopSpin();
+
+	        spincount = 0;
+	        spinning = 'down';
+
+	        originalinput.trigger('touchspin.on.startspin');
+	        originalinput.trigger('touchspin.on.startdownspin');
+
+	        downDelayTimeout = setTimeout(function() {
+	          downSpinTimer = setInterval(function() {
+	            spincount++;
+	            downOnce();
+	          }, settings.stepinterval);
+	        }, settings.stepintervaldelay);
+	      }
+
+	      function startUpSpin() {
+	        stopSpin();
+
+	        spincount = 0;
+	        spinning = 'up';
+
+	        originalinput.trigger('touchspin.on.startspin');
+	        originalinput.trigger('touchspin.on.startupspin');
+
+	        upDelayTimeout = setTimeout(function() {
+	          upSpinTimer = setInterval(function() {
+	            spincount++;
+	            upOnce();
+	          }, settings.stepinterval);
+	        }, settings.stepintervaldelay);
+	      }
+
+	      function stopSpin() {
+	        clearTimeout(downDelayTimeout);
+	        clearTimeout(upDelayTimeout);
+	        clearInterval(downSpinTimer);
+	        clearInterval(upSpinTimer);
+
+	        switch (spinning) {
+	          case 'up':
+	            originalinput.trigger('touchspin.on.stopupspin');
+	            originalinput.trigger('touchspin.on.stopspin');
+	            break;
+	          case 'down':
+	            originalinput.trigger('touchspin.on.stopdownspin');
+	            originalinput.trigger('touchspin.on.stopspin');
+	            break;
+	        }
+
+	        spincount = 0;
+	        spinning = false;
+	      }
+
+	    });
+
+	  };
+
+	})(jQuery);
+
+
+
+/***/ },
 /* 24 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(7);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.defaults = {
+	    name: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = 'api/profile';
+
+	  Collection.prototype.model = Model;
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	exports.Model = Model;
+
+	exports.Collection = Collection;
+
+	exports.View = __webpack_require__(25);
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $, Backbone, Marionette, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(7);
+
+	Marionette = __webpack_require__(8);
+
+	viewTemplate = __webpack_require__(26);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    reps: '#reps',
+	    touchspin: '#touchspin'
+	  };
+
+	  View.prototype.events = {
+	    click: function(event) {
+	      console.log('event');
+	      event.preventDefault();
+	    }
+	  };
+
+	  View.prototype.onRender = function() {};
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Profile</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"profile-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"profile-name\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"profile-email\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"profile-password\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Update</button></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Add weight lift</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"reps\" class=\"col-sm-2 control-label\">Reps</label><div class=\"col-sm-10\"><input id=\"reps\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"touchspin\" class=\"col-sm-2 control-label\">Reps</label><div class=\"col-sm-10\"><input id=\"touchspin\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Save</button></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(7);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.defaults = {
+	    name: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = 'api/profile';
+
+	  Collection.prototype.model = Model;
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	exports.Model = Model;
+
+	exports.Collection = Collection;
+
+	exports.View = __webpack_require__(29);
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $, Backbone, Marionette, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(7);
+
+	Marionette = __webpack_require__(8);
+
+	viewTemplate = __webpack_require__(30);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    reps: '#reps',
+	    touchspin: '#touchspin'
+	  };
+
+	  View.prototype.events = {
+	    click: function(event) {
+	      console.log('event');
+	      event.preventDefault();
+	    }
+	  };
+
+	  View.prototype.onRender = function() {};
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Profile</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"profile-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"profile-name\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"profile-email\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"profile-password\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Update</button></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var jQuery = __webpack_require__(2);
 
 	/*	
 	 * jQuery mmenu v4.7.5
@@ -29042,8 +30018,9 @@
 	 */
 	!function(e){var t="mmenu",s="toggles";e[t].addons[s]={_init:function(t){var a=this;this.opts[s],this.conf[s],this.__refactorClass(e("input",t),this.conf.classNames[s].toggle,"toggle"),this.__refactorClass(e("input",t),this.conf.classNames[s].check,"check"),e("input."+c.toggle+", input."+c.check,t).each(function(){var t=e(this),s=t.closest("li"),l=t.hasClass(c.toggle)?"toggle":"check",n=t.attr("id")||a.__getUniqueId();s.children('label[for="'+n+'"]').length||(t.attr("id",n),s.prepend(t),e('<label for="'+n+'" class="'+c[l]+'"></label>').insertBefore(s.children("a, span").last()))})},_setup:function(){},_add:function(){c=e[t]._c,a=e[t]._d,l=e[t]._e,c.add("toggle check"),n=e[t].glbl}},e[t].defaults[s]={},e[t].configuration.classNames[s]={toggle:"Toggle",check:"Check"};var c,a,l,n}(jQuery);
 
+
 /***/ },
-/* 25 */
+/* 32 */
 /***/ function(module, exports) {
 
 	/*!
