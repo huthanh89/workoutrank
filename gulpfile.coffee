@@ -118,6 +118,7 @@ gulp.task 'scripts', (callback) ->
         jquery:                'scripts/jquery.js'
         mmenu:                 'scripts/jquery.mmenu.min.all.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
+        multiselect:           'scripts/jquery.bootstrap-multiselect.js'
 
       extensions: [
         ''
@@ -137,24 +138,29 @@ gulp.task 'scripts', (callback) ->
 
 #-------------------------------------------------------------------------------
 # Compile CSS
+#   Compile style.css and move to public folder.
+#   Be sure to compile our css last so our css will have
+#   priority over the others.
 #-------------------------------------------------------------------------------
 
 gulp.task 'css', ->
-# Compile style.css and move to public folder.
+
   gulp.src([
 
-    './clientside/styles/css/font-awesome.css'
-    './clientside/styles/application.css'
 
     './clientside/styles/bootstrap/css/bootstrap.css'
     './clientside/styles/bootstrap/css/bootstrap-theme.css'
 
+    './clientside/styles/css/font-awesome.css'
     './clientside/styles/css/jquery.mmenu.all.css'
     './clientside/styles/css/jquery.mmenu.counters.css'
     './clientside/styles/css/jquery.mmenu.footer.css'
     './clientside/styles/css/jquery.mmenu.header.css'
     './clientside/styles/css/jquery.mmenu.themes.css'
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
+    './clientside/styles/css/bootstrap-multiselect.css'
+
+    './clientside/styles/application.css'
 
   ]).pipe(concat('style.css')).pipe gulp.dest('./static/')
 
@@ -204,14 +210,14 @@ gulp.task 'watch', ->
   livereload.listen start: true
 
   # Watch for change and re compile.
-  gulp.watch './clientside/**', [ 'compile:client' ]
+  gulp.watch './clientside/**', [ 'compile:client']
 
   # When compiling if finish, reload browser's page.
 
   gulp.watch [
     './static/**'
     './views/**'
-  ], [ 'page:reload' ]
+  ]
 
   return
 
@@ -237,10 +243,11 @@ gulp.task 'all', [
 ]
 
 gulp.task 'compile:client', [
-  'scripts'
-  'css'
-  'lint'
-]
+    'scripts'
+    'css'
+    'lint'
+  ], ->
+    livereload.reload()
 
 # Default task
 

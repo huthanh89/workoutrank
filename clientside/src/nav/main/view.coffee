@@ -27,6 +27,7 @@ class View extends Marionette.ItemView
     chat:         '#nav-user-chat'
     collapseItem: '.nav-collapse-item'
     collapseBtn:  '#nav-user-collapse-btn'
+    menu:         '#my-menu'
 
   constructor: ->
     super
@@ -38,7 +39,7 @@ class View extends Marionette.ItemView
 
     # Create menu.
 
-    $("#my-menu").mmenu
+    @ui.menu.mmenu
       offCanvas:
         zposition: "front"
       onClick:

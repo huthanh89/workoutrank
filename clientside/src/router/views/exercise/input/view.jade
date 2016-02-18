@@ -1,0 +1,29 @@
+.row
+    .col-sm-12
+        span.lead Add new Exercise
+br
+.row
+    .col-sm-12
+        form.form-horizontal
+            .form-group
+                label.col-sm-2.control-label(for='exercise-name') Name
+                .col-sm-10
+                    input.form-control#exercise-name(placeholder='Name')
+            .form-group
+                label.col-sm-2.control-label(for='exercise-type') Type
+                .col-sm-10
+                    select.form-control#exercise-type
+            .form-group
+                label.col-sm-2.control-label(for='exercise-rep') Reps
+                .col-sm-10.app-multiselect
+                    input.form-control#exercise-rep(placeholder='0')
+            .form-group
+                label.col-sm-2.control-label(for='exercise-set') Sets
+                .col-sm-10
+                    input.form-control#exercise-set(placeholder='0')
+            .form-group
+                .col-sm-12
+                    button.btn.btn-primary.pull-right
+                        i.fa.fa-plus
+                        = ' '
+                        | Add

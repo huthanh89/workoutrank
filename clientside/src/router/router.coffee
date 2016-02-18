@@ -10,6 +10,7 @@ Signup     = require './views/signup/module'
 Login      = require './views/login/module'
 Home       = require './views/home/module'
 Profile    = require './views/profile/module'
+Exercise   = require './views/exercise/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -56,14 +57,20 @@ class Router extends Marionette.AppRouter
         @profile()
         return
 
+      exercise: =>
+        @navigate('exercise')
+        @exercise()
+        return
+
   # Routes used for backbone urls.
 
   routes:
-    '':        'signup'
-    'signup':  'signup'
-    'login':   'login'
-    'home':    'home'
-    'profile': 'profile'
+    '':         'signup'
+    'signup':   'signup'
+    'login':    'login'
+    'home':     'home'
+    'profile':  'profile'
+    'exercise': 'exercise'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -92,6 +99,12 @@ class Router extends Marionette.AppRouter
 
   profile: ->
     @navChannel.request('nav:main')
+    @rootView.content.show new Profile.View()
+    return
+
+  exercise: ->
+
+    @navChannel.request('nav:main')
     collection = new Profile.Collection()
 
     collection.fetch
@@ -102,7 +115,7 @@ class Router extends Marionette.AppRouter
         console.log 'error'
         return
 
-    @rootView.content.show(new Profile.View())
+    @rootView.content.show(new Exercise.View())
     return
 
 #-------------------------------------------------------------------------------

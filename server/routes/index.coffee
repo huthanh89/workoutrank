@@ -22,11 +22,13 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/',        index
-router.get '/signup',  index
-router.get '/login',   index
-router.get '/home',    index
-router.get '/profile', index
+router.get '/',         index
+router.get '/signup',   index
+router.get '/login',    index
+router.get '/home',     index
+router.get '/profile',  index
+router.get '/exercise', index
+router.get '/cardio',   index
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.

@@ -2,42 +2,33 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
-_            = require 'lodash'
-Marionette   = require 'marionette'
-Application  = require 'src/application'
-viewTemplate = require './view.jade'
-
-require 'touchspin'
+Backbone = require 'backbone'
 
 #-------------------------------------------------------------------------------
-# View
+# Model
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class Model extends Backbone.Model
+  defaults:
+    name:   ''
+    rep:    ''
+    set:    ''
+    weight: ''
 
-  template: viewTemplate
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
 
-  ui:
-    reps:      '#reps'
-    touchspin: '#touchspin'
-
-  events:
-    click: (event) ->
-      console.log 'event'
-      event.preventDefault()
-      return
-
-  onRender: ->
-    @ui.reps.TouchSpin()
-    @ui.touchspin.TouchSpin()
-
-    return
+class Collection extends Backbone.Collection
+  url:  'api/exercise'
+  model: Model
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = require './input/view'
 
 #-------------------------------------------------------------------------------
