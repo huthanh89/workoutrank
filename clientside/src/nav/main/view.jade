@@ -19,10 +19,10 @@
                     ul.nav.navbar-nav.navbar-right
                         li(data-toggle="collapse", data-target=".nav-collapse")
                             a.nav-collapse-item(href="#")
-                                i.nav-icon.fa.fa-fw.fa-comments-o.fa-2x
+                                i.nav-icon.fa.fa-fw.fa-2x.fa-home
                                 span.hidden-sm.hidden-md.hidden-lg
                                     = ' '
-                                    | Messages
+                                    | Home
                         li.divider-vertical.hidden-xs
                         li.dropdown
                             a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
@@ -62,28 +62,6 @@ nav#my-menu.mm-light
             a(href="#")
                 i.fa.fa-fw.fa-lg.fa-home
                 | &nbsp Home
-
-        li
-            a(href="#")#nav-dashboard
-                i.fa.fa-fw.fa-lg.fa-dashboard
-                | &nbsp Dashboard
-        li
-            a(href="#")#nav-contacts
-                i.fa.fa-fw.fa-lg.fa-group
-                | &nbsp Multiplayers
-            ul
-                li
-                    a(href="#")
-                        i.fa.fa-fw.fa-lg.fa-th-list
-                        | &nbsp Friends
-                li
-                    a(href="#")
-                        i.fa.fa-fw.fa-lg.fa-trophy
-                        | &nbsp Ranking
-                li
-                    a(href="#")#nav-chat
-                        i.fa.fa-fw.fa-lg.fa-comments-o
-                        | &nbsp Chat
         li
             a(href="#")#nav-exercise
                 i.fa.fa-fw.fa-heartbeat
@@ -106,6 +84,31 @@ nav#my-menu.mm-light
                             i.fa.fa-fw.fa-lg.fa-paper-plane
                             | &nbsp Balance
         li
+            a(href="#")#nav-schedule
+                i.fa.fa-fw.fa-lg.fa-calendar
+                | &nbsp Schedule
+        li
             a(href="#")#nav-stat
                 i.fa.fa-fw.fa-lg.fa-line-chart
                 | &nbsp Stats
+        li
+            a(href="#")#nav-log
+                i.fa.fa-fw.fa-lg.fa-area-chart
+                | &nbsp Logs
+        li
+            a(href="#")#nav-contacts
+                i.fa.fa-fw.fa-lg.fa-group
+                | &nbsp Multiplayers
+            ul
+                li
+                    a(href="#")
+                        i.fa.fa-fw.fa-lg.fa-th-list
+                        | &nbsp Friends
+                li
+                    a(href="#")
+                        i.fa.fa-fw.fa-lg.fa-trophy
+                        | &nbsp Ranking
+                li
+                    a(href="#")#nav-chat
+                        i.fa.fa-fw.fa-lg.fa-comments-o
+                        | &nbsp Chat
