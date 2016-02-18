@@ -75,6 +75,7 @@ gulp.task 'scripts', (callback) ->
       filename: 'bundle.js'
 
     # For files with jquery in the name, import 'jQuery' into it.
+    # Expose Backbone variable for files such as backbone.validation.
 
     module:
       loaders: [
@@ -86,6 +87,9 @@ gulp.task 'scripts', (callback) ->
       ,
         test: /jquery/
         loader: "imports?jQuery=jquery"
+      ,
+        test: /backbone./
+        loader: "imports?Backbone=backbone"
       ]
 
     # Absolute path is used and not relative path.
@@ -99,20 +103,21 @@ gulp.task 'scripts', (callback) ->
       root: './clientside'
       alias:
 
-        underscore:           'scripts/underscore.js'
-        lodash:               'scripts/lodash.js'
-        moment:               'scripts/moment.js'
-        backbone:             'scripts/backbone.js'
-        'backbone.paginator': 'scripts/backbone.paginator.js'
-        stickit:              'scripts/backbone.stickit.js'
-        'socket.io':          'scripts/socket.io.js'
-        marionette:           'scripts/backbone.marionette.js'
-        async:                'scripts/async.js'
+        underscore:            'scripts/underscore.js'
+        lodash:                'scripts/lodash.js'
+        moment:                'scripts/moment.js'
+        backbone:              'scripts/backbone.js'
+        'backbone.paginator':  'scripts/backbone.paginator.js'
+        'backbone.stickit':    'scripts/backbone.stickit.js'
+        'backbone.validation': 'scripts/backbone.validation.js'
+        'socket.io':           'scripts/socket.io.js'
+        marionette:            'scripts/backbone.marionette.js'
+        async:                 'scripts/async.js'
 
-        bootstrap:            'scripts/bootstrap.js'
-        jquery:               'scripts/jquery.js'
-        mmenu:                'scripts/jquery.mmenu.min.all.js'
-        touchspin:            'scripts/jquery.bootstrap-touchspin.js'
+        bootstrap:             'scripts/bootstrap.js'
+        jquery:                'scripts/jquery.js'
+        mmenu:                 'scripts/jquery.mmenu.min.all.js'
+        touchspin:             'scripts/jquery.bootstrap-touchspin.js'
 
       extensions: [
         ''

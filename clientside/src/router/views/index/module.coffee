@@ -2,38 +2,30 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-mongoose = require 'mongoose'
+Backbone = require 'backbone'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Model
 #-------------------------------------------------------------------------------
 
-UserSchema = new mongoose.Schema
-  created:
-    type: Date
-  lastlogin:
-    type: Date
-  firstname:
-    type: String
-  lastname:
-    type: String
-  email:
-    type: String
-  password:
-    type: String
-,
-  collection: 'user'
+class Model extends Backbone.Model
+  defaults:
+    name: ''
 
 #-------------------------------------------------------------------------------
-# Model Registration
+# Collection
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('user', UserSchema)
+class Collection extends Backbone.Collection
+  url:  'api/user'
+  model: Model
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = model
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = require './view/view'
 
 #-------------------------------------------------------------------------------

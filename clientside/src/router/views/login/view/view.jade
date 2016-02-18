@@ -1,0 +1,35 @@
+.row
+    .col-sm-12
+        span.lead Welcome
+br
+.row
+    .col-sm-12
+        // Nav tabs
+        ul.nav.nav-tabs(role='tablist')
+            li#index-tab-signup(role='presentation')
+                a(href='#index-tab-signup', aria-controls='signup', role='tab', data-toggle='tab')
+                    b Sign Up
+            li.active#index-tab-login(role='presentation')
+                a(href='#index-tab-login', aria-controls='login', role='tab', data-toggle='tab')
+                    b Login
+        br
+        // Tab panes
+        .tab-content
+            #index-tab-pane-login.tab-pane.active(role='tabpanel')
+                .row
+                    .col-sm-12
+                        form.form-horizontal
+                            .form-group
+                                label.col-sm-2.control-label(for='index-login-email') Email
+                                .col-sm-10
+                                    input.form-control#index-login-email(placeholder='Email')
+                            .form-group
+                                label.col-sm-2.control-label(for='index-login-password') Password
+                                .col-sm-10
+                                    input.form-control#index-login-password(placeholder='Password')
+                            .form-group
+                                .col-sm-12
+                                    button.btn.btn-primary.pull-right
+                                        i.fa.fa-sign-in
+                                        = ' '
+                                        | Log In

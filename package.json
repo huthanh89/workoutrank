@@ -30,7 +30,9 @@
     "passport-local":    "*",
     "twitter":           "*",
     "socket.io":         "*",
-    "request":           "*"
+    "request":           "*",
+    "moment":            "*",
+    "passport-remember-me": "*"
   },
   "devDependencies": {
     "coffee-loader":      "*",

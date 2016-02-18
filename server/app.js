@@ -12,6 +12,8 @@ var mongoose     = require('mongoose');
 var session      = require('express-session');
 var passport     = require('passport');
 
+var RememberMeStrategy = require('passport-remember-me');
+
 require('coffee-script/register');
 
 //--------------------------------------------------------------
@@ -79,11 +81,13 @@ app.use(session({
 // Passport Middleware
 //--------------------------------------------------------------
 
+
 //--------------------------------------------------------------
 // Application Middleware
 //--------------------------------------------------------------
 
 var routes = require('./routes/index');
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -122,7 +126,7 @@ app.use(function(err, req, res, next) {
 // Websocket Handler
 //--------------------------------------------------------------
 
-var port = 5000;
+var port = 80;
 
 
 //var io = require('socket.io').listen(server);

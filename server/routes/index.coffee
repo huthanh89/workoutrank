@@ -10,6 +10,7 @@ router  = express.Router()
 #-------------------------------------------------------------------------------
 
 profile = require './profile/module'
+signup  = require './signup/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -21,6 +22,8 @@ index = (req, res, next) ->
   return
 
 router.get '/',        index
+router.get '/signup',  index
+router.get '/login',   index
 router.get '/home',    index
 router.get '/profile', index
 
@@ -28,9 +31,10 @@ router.get '/profile', index
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-# Profile
-
 router.get '/api/profile', profile.get
+
+router.post '/api/signup', signup.post
+router.get  '/api/signup', signup.get
 
 #-------------------------------------------------------------------------------
 # Exports
