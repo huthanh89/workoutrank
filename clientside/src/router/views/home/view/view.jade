@@ -2,13 +2,34 @@
     .col-sm-12
         span.lead Home
 br
-.row
-    .col-sm-12
-        // Nav tabs
-        ul.nav.nav-tabs(role='tablist')
-            li.active#index-tab-signup(role='presentation')
-                a(href='#index-tab-signup', aria-controls='signup', role='tab', data-toggle='tab')
-                    b Sign Up
-            li#index-tab-login(role='presentation')
-                a(href='#index-tab-login', aria-controls='login', role='tab', data-toggle='tab')
-                    b Login
+.col-sm-12#home-content
+    .row
+        .col-sm-12
+            .col-sm-4
+                button.btn.btn-default
+                    i.fa.fa-fw.fa-lg.fa-heartbeat
+                    = ' '
+                    | Exercise
+            .col-sm-4
+                button.btn.btn-default
+                    i.fa.fa-fw.fa-lg.fa-line-chart
+                    = ' '
+                    | Stats
+            .col-sm-4
+                button.btn.btn-default
+                    i.fa.fa-fw.fa-lg.fa-calendar
+                    = ' '
+                    | Schedule
+    .row
+        .col-sm-12
+            .col-sm-4
+                button.btn.btn-default
+                    i.fa.fa-fw.fa-lg.fa-area-chart
+                    = ' '
+                    | Logs
+            .col-sm-4
+                button.btn.btn-default
+                    i.fa.fa-fw.fa-lg.fa-group
+                    = ' '
+                    | Multiplayer
+
