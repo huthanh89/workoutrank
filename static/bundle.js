@@ -28236,14 +28236,14 @@
 
 	  View.prototype.ui = {
 	    brand: '#navbar-brand',
-	    home: '#nav-user-home',
-	    profile: '#nav-user-profile',
-	    contacts: '#nav-user-contacts',
-	    movies: '#nav-user-movies',
-	    movie: '#nav-user-movie',
-	    chat: '#nav-user-chat',
+	    home: '#nav-home',
+	    profile: '#nav-profile',
+	    contacts: '#nav-contacts',
+	    exercise: '#nav-exercise',
+	    movie: '#nav-movie',
+	    chat: '#nav-chat',
 	    collapseItem: '.nav-collapse-item',
-	    collapseBtn: '#nav-user-collapse-btn',
+	    collapseBtn: '#nav-collapse-btn',
 	    menu: '#my-menu'
 	  };
 
@@ -28281,19 +28281,9 @@
 	        _this.channel.request('home');
 	      };
 	    })(this));
-	    this.ui.movies.on('click', (function(_this) {
+	    this.ui.exercise.on('click', (function(_this) {
 	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.movie.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.chat.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
+	        _this.channel.request('exercise');
 	      };
 	    })(this));
 	  };
@@ -28330,7 +28320,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-user-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-user-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-comments-o fa-2x\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Messages</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-cog fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-question fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-ambulance fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-sign-out fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-user-home\"><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-user-profile\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp My Profile</a></li><li><a href=\"#\" id=\"nav-user-contacts\"><i class=\"fa fa-fw fa-group fa-lg\"></i>&nbsp Contacts</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-home fa-lg\"></i>&nbsp Home</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-user fa-lg\"></i>&nbsp Profile</a></li></ul></li><li><a href=\"#\" id=\"nav-user-movies\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movies</a></li><li><a href=\"#\" id=\"nav-user-movie\"><i class=\"fa fa-fw fa-video-camera fa-lg\"></i>&nbsp Movie</a></li><li><a href=\"#\" id=\"nav-user-chat\"><i class=\"fa fa-fw fa-comments-o fa-lg\"></i>&nbsp Chat</a></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-comments-o fa-2x\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Messages</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-dashboard\"><i class=\"fa fa-fw fa-lg fa-dashboard\"></i>&nbsp Dashboard</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-paper-plane\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },

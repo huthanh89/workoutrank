@@ -19,14 +19,15 @@ class View extends Marionette.ItemView
 
   ui:
     brand:        '#navbar-brand'
-    home:         '#nav-user-home'
-    profile:      '#nav-user-profile'
-    contacts:     '#nav-user-contacts'
-    movies:       '#nav-user-movies'
-    movie:        '#nav-user-movie'
-    chat:         '#nav-user-chat'
+    home:         '#nav-home'
+    profile:      '#nav-profile'
+    contacts:     '#nav-contacts'
+    exercise:     '#nav-exercise'
+
+    movie:        '#nav-movie'
+    chat:         '#nav-chat'
     collapseItem: '.nav-collapse-item'
-    collapseBtn:  '#nav-user-collapse-btn'
+    collapseBtn:  '#nav-collapse-btn'
     menu:         '#my-menu'
 
   constructor: ->
@@ -61,16 +62,8 @@ class View extends Marionette.ItemView
       @channel.request('home')
       return
 
-    @ui.movies.on 'click', =>
-      @channel.request('home')
-      return
-
-    @ui.movie.on 'click', =>
-      @channel.request('home')
-      return
-
-    @ui.chat.on 'click', =>
-      @channel.request('home')
+    @ui.exercise.on 'click', =>
+      @channel.request('exercise')
       return
 
     return

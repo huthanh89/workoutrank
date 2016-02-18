@@ -3,7 +3,7 @@
         .container-fluid
             // Brand and toggle get grouped for better mobile display
             .navbar-header
-                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-user-collapse-btn")
+                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-collapse-btn")
                     span.sr-only Toggle navigation
                     span.icon-bar
                     span.icon-bar
@@ -14,7 +14,7 @@
                     = ' '
                     i.fa.fa-lg.fa-angle-double-right
             // Collect the nav links, forms, and other content for toggling
-            #nav-user-collapse-btn.collapse.navbar-collapse
+            #nav-collapse-btn.collapse.navbar-collapse
                 .col-sm-6.col-xs-12.pull-right
                     ul.nav.navbar-nav.navbar-right
                         li(data-toggle="collapse", data-target=".nav-collapse")
@@ -32,58 +32,80 @@
                             ul.dropdown-menu(role="menu")
                                 li
                                     a.nav-collapse-item(href="#")
-                                        i.fa.fa-fw.fa-cog.fa-lg
+                                        i.fa.fa-fw.fa-lg.fa-user
+                                        = ' '
+                                        | My Profile
+                                li
+                                    a.nav-collapse-item(href="#")
+                                        i.fa.fa-fw.fa-lg.fa-cog
                                         = ' '
                                         | Settings
                                 li
                                     a.nav-collapse-item(href="#")
-                                        i.fa.fa-fw.fa-question.fa-lg
+                                        i.fa.fa-fw.fa-lg.fa-question
                                         = ' '
                                         | Help
                                 li
                                     a.nav-collapse-item(href="#")
-                                        i.fa.fa-fw.fa-ambulance.fa-lg
+                                        i.fa.fa-fw.fa-lg.fa-ambulance
                                         = ' '
                                         | Report a Problem
                                 li.divider
                                 li
                                     a.nav-collapse-item(href="#")
-                                        i.fa.fa-fw.fa-sign-out.fa-lg
+                                        i.fa.fa-fw.fa-lg.fa-sign-out
                                         = ' '
                                         | Sign Out
 nav#my-menu.mm-light
     ul
-        li#nav-user-home
+        li#nav-home
             a(href="#")
-                i.fa.fa-fw.fa-home.fa-lg
+                i.fa.fa-fw.fa-lg.fa-home
                 | &nbsp Home
 
         li
-            a(href="#")#nav-user-profile
-                i.fa.fa-fw.fa-user.fa-lg
-                | &nbsp My Profile
+            a(href="#")#nav-dashboard
+                i.fa.fa-fw.fa-lg.fa-dashboard
+                | &nbsp Dashboard
         li
-            a(href="#")#nav-user-contacts
-                i.fa.fa-fw.fa-group.fa-lg
-                | &nbsp Contacts
+            a(href="#")#nav-contacts
+                i.fa.fa-fw.fa-lg.fa-group
+                | &nbsp Multiplayers
             ul
                 li
                     a(href="#")
-                        i.fa.fa-fw.fa-home.fa-lg
-                        | &nbsp Home
+                        i.fa.fa-fw.fa-lg.fa-th-list
+                        | &nbsp Friends
                 li
                     a(href="#")
-                        i.fa.fa-fw.fa-user.fa-lg
-                        | &nbsp Profile
+                        i.fa.fa-fw.fa-lg.fa-trophy
+                        | &nbsp Ranking
+                li
+                    a(href="#")#nav-chat
+                        i.fa.fa-fw.fa-lg.fa-comments-o
+                        | &nbsp Chat
         li
-            a(href="#")#nav-user-movies
-                i.fa.fa-fw.fa-video-camera.fa-lg
-                | &nbsp Movies
+            a(href="#")#nav-exercise
+                i.fa.fa-fw.fa-heartbeat
+                | &nbsp Exercises
+                ul
+                    li
+                        a(href="#")
+                            i.fa.fa-fw.fa-lg.fa-shield
+                            | &nbsp Strength
+                    li
+                        a(href="#")
+                            i.fa.fa-fw.fa-lg.fa-bicycle
+                            | &nbsp Endurance
+                    li
+                        a(href="#")
+                            i.fa.fa-fw.fa-lg.fa-heart
+                            | &nbsp Flexibility
+                    li
+                        a(href="#")
+                            i.fa.fa-fw.fa-lg.fa-paper-plane
+                            | &nbsp Balance
         li
-            a(href="#")#nav-user-movie
-                i.fa.fa-fw.fa-video-camera.fa-lg
-                | &nbsp Movie
-        li
-            a(href="#")#nav-user-chat
-                i.fa.fa-fw.fa-comments-o.fa-lg
-                | &nbsp Chat
+            a(href="#")#nav-stat
+                i.fa.fa-fw.fa-lg.fa-line-chart
+                | &nbsp Stats
