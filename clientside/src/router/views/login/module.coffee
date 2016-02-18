@@ -9,23 +9,18 @@ Backbone = require 'backbone'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
+
+  url:  'api/login'
+
   defaults:
-    name: ''
-
-#-------------------------------------------------------------------------------
-# Collection
-#-------------------------------------------------------------------------------
-
-class Collection extends Backbone.Collection
-  url:  'api/user'
-  model: Model
+    email:    ''
+    password: ''
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Model      = Model
-exports.Collection = Collection
-exports.View       = require './view/view'
+exports.Model = Model
+exports.View  = require './view/view'
 
 #-------------------------------------------------------------------------------

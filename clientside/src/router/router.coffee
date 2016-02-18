@@ -81,7 +81,8 @@ class Router extends Marionette.AppRouter
 
   login: ->
     @navChannel.request('nav:index')
-    @rootView.content.show new Login.View()
+    @rootView.content.show new Login.View
+      model: new Login.Model()
     return
 
   home: ->
@@ -92,8 +93,6 @@ class Router extends Marionette.AppRouter
   profile: ->
     @navChannel.request('nav:main')
     collection = new Profile.Collection()
-
-    console.log 'fetching'
 
     collection.fetch
       success: (collection) ->

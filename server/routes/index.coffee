@@ -11,6 +11,7 @@ router  = express.Router()
 
 profile = require './profile/module'
 signup  = require './signup/module'
+login   = require './login/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -34,7 +35,8 @@ router.get '/profile', index
 router.get '/api/profile', profile.get
 
 router.post '/api/signup', signup.post
-router.get  '/api/signup', signup.get
+
+router.post  '/api/login', login.post
 
 #-------------------------------------------------------------------------------
 # Exports

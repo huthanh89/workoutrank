@@ -28420,7 +28420,9 @@
 
 	  Router.prototype.login = function() {
 	    this.navChannel.request('nav:index');
-	    this.rootView.content.show(new Login.View());
+	    this.rootView.content.show(new Login.View({
+	      model: new Login.Model()
+	    }));
 	  };
 
 	  Router.prototype.home = function() {
@@ -28432,7 +28434,6 @@
 	    var collection;
 	    this.navChannel.request('nav:main');
 	    collection = new Profile.Collection();
-	    console.log('fetching');
 	    collection.fetch({
 	      success: function(collection) {
 	        console.log('done', collection);
@@ -29983,7 +29984,7 @@
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	var Backbone, Model,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -29996,32 +29997,18 @@
 	    return Model.__super__.constructor.apply(this, arguments);
 	  }
 
+	  Model.prototype.url = 'api/login';
+
 	  Model.prototype.defaults = {
-	    name: ''
+	    email: '',
+	    password: ''
 	  };
 
 	  return Model;
 
 	})(Backbone.Model);
 
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = 'api/user';
-
-	  Collection.prototype.model = Model;
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
 	exports.Model = Model;
-
-	exports.Collection = Collection;
 
 	exports.View = __webpack_require__(27);
 
@@ -30040,6 +30027,10 @@
 
 	viewTemplate = __webpack_require__(28);
 
+	__webpack_require__(24);
+
+	__webpack_require__(25);
+
 	View = (function(superClass) {
 	  extend(View, superClass);
 
@@ -30049,9 +30040,27 @@
 	    signup: '#index-tab-signup'
 	  };
 
+	  View.prototype.bindings = {
+	    '#index-login-email': 'email',
+	    '#index-login-password': 'password'
+	  };
+
 	  View.prototype.events = {
 	    'click @ui.signup': function() {
 	      this.rootChannel.request('signup');
+	    },
+	    'submit': function(event) {
+	      event.preventDefault();
+	      return this.model.save({}, {
+	        success: (function(_this) {
+	          return function(model) {
+	            _this.rootChannel.request('home');
+	          };
+	        })(this),
+	        error: function() {
+	          console.log('fail');
+	        }
+	      });
 	    }
 	  };
 
@@ -30059,6 +30068,14 @@
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	  }
+
+	  View.prototype.onRender = function() {
+	    this.model.set({
+	      email: 'admin',
+	      password: '1234'
+	    });
+	    this.stickit();
+	  };
 
 	  return View;
 
@@ -30078,7 +30095,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-login-email\" placeholder=\"Email\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-login-password\" placeholder=\"Password\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-login-email\" placeholder=\"Email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-login-password\" placeholder=\"Password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
