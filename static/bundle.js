@@ -67,9 +67,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(39);
+	__webpack_require__(43);
 
-	__webpack_require__(40);
+	__webpack_require__(44);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -28320,14 +28320,14 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-paper-plane\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-paper-plane\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Exercise, Home, Index, Login, Marionette, Profile, Router, Signup, _,
+	var Backbone, Exercise, Home, Index, Login, Marionette, Profile, Router, Signup, Strength, _,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -28348,6 +28348,8 @@
 	Profile = __webpack_require__(32);
 
 	Exercise = __webpack_require__(35);
+
+	Strength = __webpack_require__(39);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -28394,6 +28396,12 @@
 	          _this.exercise();
 	        };
 	      })(this),
+	      strength: (function(_this) {
+	        return function() {
+	          _this.navigate('strength');
+	          _this.strength();
+	        };
+	      })(this),
 	      stat: (function(_this) {
 	        return function() {
 	          _this.navigate('stat');
@@ -28428,6 +28436,7 @@
 	    'home': 'home',
 	    'profile': 'profile',
 	    'exercise': 'exercise',
+	    'strength': 'strength',
 	    'stat': 'stat',
 	    'schedule': 'schdeule',
 	    'log': 'log',
@@ -28480,6 +28489,13 @@
 	        console.log('error');
 	      }
 	    });
+	  };
+
+	  Router.prototype.strength = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Strength.View({
+	      model: new Strength.Model()
+	    }));
 	  };
 
 	  Router.prototype.stat = function() {
@@ -32173,6 +32189,848 @@
 /* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Backbone, Collection, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(6);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = 'api/strength';
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    type: 0,
+	    note: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = 'api/exercise';
+
+	  Collection.prototype.model = Model;
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	exports.Model = Model;
+
+	exports.Collection = Collection;
+
+	exports.View = __webpack_require__(40);
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $, Backbone, Marionette, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	viewTemplate = __webpack_require__(41);
+
+	__webpack_require__(42);
+
+	__webpack_require__(24);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    name: '#exercise-strength-name',
+	    type: '#exercise-strength-type',
+	    set: '#exercise-strength-set',
+	    rep: '#exercise-strength-rep'
+	  };
+
+	  View.prototype.bindings = {
+	    '#exercise-strength-name': 'name',
+	    '#exercise-strength-note': 'note'
+	  };
+
+	  View.prototype.events = {
+	    'submit': function(event) {
+	      event.preventDefault();
+	      this.model.save({}, {
+	        success: (function(_this) {
+	          return function() {
+	            _this.rootChannel.request('home');
+	          };
+	        })(this),
+	        error: function() {
+	          console.log('fail');
+	        }
+	      });
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.ui.set.TouchSpin();
+	    this.ui.rep.TouchSpin();
+	    this.stickit();
+	  };
+
+	  View.prototype.onDestroy = function() {
+	    this.ui.set.TouchSpin('destroy');
+	    this.ui.rep.TouchSpin('destroy');
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(13);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-set\" class=\"col-sm-2 control-label\">Set</label><div class=\"col-sm-10\"><input id=\"exercise-strength-set\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-rep\" class=\"col-sm-2 control-label\">Set</label><div class=\"col-sm-10\"><input id=\"exercise-strength-rep\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var jQuery = __webpack_require__(2);
+
+	(function($) {
+	  'use strict';
+
+	  var _currentSpinnerId = 0;
+
+	  function _scopedEventName(name, id) {
+	    return name + '.touchspin_' + id;
+	  }
+
+	  function _scopeEventNames(names, id) {
+	    return $.map(names, function(name) {
+	      return _scopedEventName(name, id);
+	    });
+	  }
+
+	  $.fn.TouchSpin = function(options) {
+
+	    if (options === 'destroy') {
+	      this.each(function() {
+	        var originalinput = $(this),
+	            originalinput_data = originalinput.data();
+	        $(document).off(_scopeEventNames([
+	          'mouseup',
+	          'touchend',
+	          'touchcancel',
+	          'mousemove',
+	          'touchmove',
+	          'scroll',
+	          'scrollstart'], originalinput_data.spinnerid).join(' '));
+	      });
+	      return;
+	    }
+
+	    var defaults = {
+	      min: 0,
+	      max: 100,
+	      initval: '',
+	      replacementval: '',
+	      step: 1,
+	      decimals: 0,
+	      stepinterval: 100,
+	      forcestepdivisibility: 'round', // none | floor | round | ceil
+	      stepintervaldelay: 500,
+	      verticalbuttons: false,
+	      verticalupclass: 'glyphicon glyphicon-chevron-up',
+	      verticaldownclass: 'glyphicon glyphicon-chevron-down',
+	      prefix: '',
+	      postfix: '',
+	      prefix_extraclass: '',
+	      postfix_extraclass: '',
+	      booster: true,
+	      boostat: 10,
+	      maxboostedstep: false,
+	      mousewheel: true,
+	      buttondown_class: 'btn btn-default',
+	      buttonup_class: 'btn btn-default',
+		  buttondown_txt: '-',
+		  buttonup_txt: '+'
+	    };
+
+	    var attributeMap = {
+	      min: 'min',
+	      max: 'max',
+	      initval: 'init-val',
+	      replacementval: 'replacement-val',
+	      step: 'step',
+	      decimals: 'decimals',
+	      stepinterval: 'step-interval',
+	      verticalbuttons: 'vertical-buttons',
+	      verticalupclass: 'vertical-up-class',
+	      verticaldownclass: 'vertical-down-class',
+	      forcestepdivisibility: 'force-step-divisibility',
+	      stepintervaldelay: 'step-interval-delay',
+	      prefix: 'prefix',
+	      postfix: 'postfix',
+	      prefix_extraclass: 'prefix-extra-class',
+	      postfix_extraclass: 'postfix-extra-class',
+	      booster: 'booster',
+	      boostat: 'boostat',
+	      maxboostedstep: 'max-boosted-step',
+	      mousewheel: 'mouse-wheel',
+	      buttondown_class: 'button-down-class',
+	      buttonup_class: 'button-up-class',
+		  buttondown_txt: 'button-down-txt',
+		  buttonup_txt: 'button-up-txt'
+	    };
+
+	    return this.each(function() {
+
+	      var settings,
+	          originalinput = $(this),
+	          originalinput_data = originalinput.data(),
+	          container,
+	          elements,
+	          value,
+	          downSpinTimer,
+	          upSpinTimer,
+	          downDelayTimeout,
+	          upDelayTimeout,
+	          spincount = 0,
+	          spinning = false;
+
+	      init();
+
+
+	      function init() {
+	        if (originalinput.data('alreadyinitialized')) {
+	          return;
+	        }
+
+	        originalinput.data('alreadyinitialized', true);
+	        _currentSpinnerId += 1;
+	        originalinput.data('spinnerid', _currentSpinnerId);
+
+
+	        if (!originalinput.is('input')) {
+	          console.log('Must be an input.');
+	          return;
+	        }
+
+	        _initSettings();
+	        _setInitval();
+	        _checkValue();
+	        _buildHtml();
+	        _initElements();
+	        _hideEmptyPrefixPostfix();
+	        _bindEvents();
+	        _bindEventsInterface();
+	        elements.input.css('display', 'block');
+	      }
+
+	      function _setInitval() {
+	        if (settings.initval !== '' && originalinput.val() === '') {
+	          originalinput.val(settings.initval);
+	        }
+	      }
+
+	      function changeSettings(newsettings) {
+	        _updateSettings(newsettings);
+	        _checkValue();
+
+	        var value = elements.input.val();
+
+	        if (value !== '') {
+	          value = Number(elements.input.val());
+	          elements.input.val(value.toFixed(settings.decimals));
+	        }
+	      }
+
+	      function _initSettings() {
+	        settings = $.extend({}, defaults, originalinput_data, _parseAttributes(), options);
+	      }
+
+	      function _parseAttributes() {
+	        var data = {};
+	        $.each(attributeMap, function(key, value) {
+	          var attrName = 'bts-' + value + '';
+	          if (originalinput.is('[data-' + attrName + ']')) {
+	            data[key] = originalinput.data(attrName);
+	          }
+	        });
+	        return data;
+	      }
+
+	      function _updateSettings(newsettings) {
+	        settings = $.extend({}, settings, newsettings);
+	      }
+
+	      function _buildHtml() {
+	        var initval = originalinput.val(),
+	            parentelement = originalinput.parent();
+
+	        if (initval !== '') {
+	          initval = Number(initval).toFixed(settings.decimals);
+	        }
+
+	        originalinput.data('initvalue', initval).val(initval);
+	        originalinput.addClass('form-control');
+
+	        if (parentelement.hasClass('input-group')) {
+	          _advanceInputGroup(parentelement);
+	        }
+	        else {
+	          _buildInputGroup();
+	        }
+	      }
+
+	      function _advanceInputGroup(parentelement) {
+	        parentelement.addClass('bootstrap-touchspin');
+
+	        var prev = originalinput.prev(),
+	            next = originalinput.next();
+
+	        var downhtml,
+	            uphtml,
+	            prefixhtml = '<span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span>',
+	            postfixhtml = '<span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span>';
+
+	        if (prev.hasClass('input-group-btn')) {
+	          downhtml = '<button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button>';
+	          prev.append(downhtml);
+	        }
+	        else {
+	          downhtml = '<span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span>';
+	          $(downhtml).insertBefore(originalinput);
+	        }
+
+	        if (next.hasClass('input-group-btn')) {
+	          uphtml = '<button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button>';
+	          next.prepend(uphtml);
+	        }
+	        else {
+	          uphtml = '<span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span>';
+	          $(uphtml).insertAfter(originalinput);
+	        }
+
+	        $(prefixhtml).insertBefore(originalinput);
+	        $(postfixhtml).insertAfter(originalinput);
+
+	        container = parentelement;
+	      }
+
+	      function _buildInputGroup() {
+	        var html;
+
+	        if (settings.verticalbuttons) {
+	          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn-vertical"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-up" type="button"><i class="' + settings.verticalupclass + '"></i></button><button class="' + settings.buttonup_class + ' bootstrap-touchspin-down" type="button"><i class="' + settings.verticaldownclass + '"></i></button></span></div>';
+	        }
+	        else {
+	          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span></div>';
+	        }
+
+	        container = $(html).insertBefore(originalinput);
+
+	        $('.bootstrap-touchspin-prefix', container).after(originalinput);
+
+	        if (originalinput.hasClass('input-sm')) {
+	          container.addClass('input-group-sm');
+	        }
+	        else if (originalinput.hasClass('input-lg')) {
+	          container.addClass('input-group-lg');
+	        }
+	      }
+
+	      function _initElements() {
+	        elements = {
+	          down: $('.bootstrap-touchspin-down', container),
+	          up: $('.bootstrap-touchspin-up', container),
+	          input: $('input', container),
+	          prefix: $('.bootstrap-touchspin-prefix', container).addClass(settings.prefix_extraclass),
+	          postfix: $('.bootstrap-touchspin-postfix', container).addClass(settings.postfix_extraclass)
+	        };
+	      }
+
+	      function _hideEmptyPrefixPostfix() {
+	        if (settings.prefix === '') {
+	          elements.prefix.hide();
+	        }
+
+	        if (settings.postfix === '') {
+	          elements.postfix.hide();
+	        }
+	      }
+
+	      function _bindEvents() {
+	        originalinput.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 38) {
+	            if (spinning !== 'up') {
+	              upOnce();
+	              startUpSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	          else if (code === 40) {
+	            if (spinning !== 'down') {
+	              downOnce();
+	              startDownSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        originalinput.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 38) {
+	            stopSpin();
+	          }
+	          else if (code === 40) {
+	            stopSpin();
+	          }
+	        });
+
+	        originalinput.on('blur', function() {
+	          _checkValue();
+	        });
+
+	        elements.down.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            if (spinning !== 'down') {
+	              downOnce();
+	              startDownSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        elements.down.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            stopSpin();
+	          }
+	        });
+
+	        elements.up.on('keydown', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            if (spinning !== 'up') {
+	              upOnce();
+	              startUpSpin();
+	            }
+	            ev.preventDefault();
+	          }
+	        });
+
+	        elements.up.on('keyup', function(ev) {
+	          var code = ev.keyCode || ev.which;
+
+	          if (code === 32 || code === 13) {
+	            stopSpin();
+	          }
+	        });
+
+	        elements.down.on('mousedown.touchspin', function(ev) {
+	          elements.down.off('touchstart.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          downOnce();
+	          startDownSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.down.on('touchstart.touchspin', function(ev) {
+	          elements.down.off('mousedown.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          downOnce();
+	          startDownSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('mousedown.touchspin', function(ev) {
+	          elements.up.off('touchstart.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          upOnce();
+	          startUpSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('touchstart.touchspin', function(ev) {
+	          elements.up.off('mousedown.touchspin');  // android 4 workaround
+
+	          if (originalinput.is(':disabled')) {
+	            return;
+	          }
+
+	          upOnce();
+	          startUpSpin();
+
+	          ev.preventDefault();
+	          ev.stopPropagation();
+	        });
+
+	        elements.up.on('mouseout touchleave touchend touchcancel', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          stopSpin();
+	        });
+
+	        elements.down.on('mouseout touchleave touchend touchcancel', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          stopSpin();
+	        });
+
+	        elements.down.on('mousemove touchmove', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+	        });
+
+	        elements.up.on('mousemove touchmove', function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+	        });
+
+	        $(document).on(_scopeEventNames(['mouseup', 'touchend', 'touchcancel'], _currentSpinnerId).join(' '), function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.preventDefault();
+	          stopSpin();
+	        });
+
+	        $(document).on(_scopeEventNames(['mousemove', 'touchmove', 'scroll', 'scrollstart'], _currentSpinnerId).join(' '), function(ev) {
+	          if (!spinning) {
+	            return;
+	          }
+
+	          ev.preventDefault();
+	          stopSpin();
+	        });
+
+	        originalinput.on('mousewheel DOMMouseScroll', function(ev) {
+	          if (!settings.mousewheel || !originalinput.is(':focus')) {
+	            return;
+	          }
+
+	          var delta = ev.originalEvent.wheelDelta || -ev.originalEvent.deltaY || -ev.originalEvent.detail;
+
+	          ev.stopPropagation();
+	          ev.preventDefault();
+
+	          if (delta < 0) {
+	            downOnce();
+	          }
+	          else {
+	            upOnce();
+	          }
+	        });
+	      }
+
+	      function _bindEventsInterface() {
+	        originalinput.on('touchspin.uponce', function() {
+	          stopSpin();
+	          upOnce();
+	        });
+
+	        originalinput.on('touchspin.downonce', function() {
+	          stopSpin();
+	          downOnce();
+	        });
+
+	        originalinput.on('touchspin.startupspin', function() {
+	          startUpSpin();
+	        });
+
+	        originalinput.on('touchspin.startdownspin', function() {
+	          startDownSpin();
+	        });
+
+	        originalinput.on('touchspin.stopspin', function() {
+	          stopSpin();
+	        });
+
+	        originalinput.on('touchspin.updatesettings', function(e, newsettings) {
+	          changeSettings(newsettings);
+	        });
+	      }
+
+	      function _forcestepdivisibility(value) {
+	        switch (settings.forcestepdivisibility) {
+	          case 'round':
+	            return (Math.round(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          case 'floor':
+	            return (Math.floor(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          case 'ceil':
+	            return (Math.ceil(value / settings.step) * settings.step).toFixed(settings.decimals);
+	          default:
+	            return value;
+	        }
+	      }
+
+	      function _checkValue() {
+	        var val, parsedval, returnval;
+
+	        val = originalinput.val();
+
+	        if (val === '') {
+	          if (settings.replacementval !== '') {
+	            originalinput.val(settings.replacementval);
+	            originalinput.trigger('change');
+	          }
+	          return;
+	        }
+
+	        if (settings.decimals > 0 && val === '.') {
+	          return;
+	        }
+
+	        parsedval = parseFloat(val);
+
+	        if (isNaN(parsedval)) {
+	          if (settings.replacementval !== '') {
+	            parsedval = settings.replacementval;
+	          }
+	          else {
+	            parsedval = 0;
+	          }
+	        }
+
+	        returnval = parsedval;
+
+	        if (parsedval.toString() !== val) {
+	          returnval = parsedval;
+	        }
+
+	        if (parsedval < settings.min) {
+	          returnval = settings.min;
+	        }
+
+	        if (parsedval > settings.max) {
+	          returnval = settings.max;
+	        }
+
+	        returnval = _forcestepdivisibility(returnval);
+
+	        if (Number(val).toString() !== returnval.toString()) {
+	          originalinput.val(returnval);
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function _getBoostedStep() {
+	        if (!settings.booster) {
+	          return settings.step;
+	        }
+	        else {
+	          var boosted = Math.pow(2, Math.floor(spincount / settings.boostat)) * settings.step;
+
+	          if (settings.maxboostedstep) {
+	            if (boosted > settings.maxboostedstep) {
+	              boosted = settings.maxboostedstep;
+	              value = Math.round((value / boosted)) * boosted;
+	            }
+	          }
+
+	          return Math.max(settings.step, boosted);
+	        }
+	      }
+
+	      function upOnce() {
+	        _checkValue();
+
+	        value = parseFloat(elements.input.val());
+	        if (isNaN(value)) {
+	          value = 0;
+	        }
+
+	        var initvalue = value,
+	            boostedstep = _getBoostedStep();
+
+	        value = value + boostedstep;
+
+	        if (value > settings.max) {
+	          value = settings.max;
+	          originalinput.trigger('touchspin.on.max');
+	          stopSpin();
+	        }
+
+	        elements.input.val(Number(value).toFixed(settings.decimals));
+
+	        if (initvalue !== value) {
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function downOnce() {
+	        _checkValue();
+
+	        value = parseFloat(elements.input.val());
+	        if (isNaN(value)) {
+	          value = 0;
+	        }
+
+	        var initvalue = value,
+	            boostedstep = _getBoostedStep();
+
+	        value = value - boostedstep;
+
+	        if (value < settings.min) {
+	          value = settings.min;
+	          originalinput.trigger('touchspin.on.min');
+	          stopSpin();
+	        }
+
+	        elements.input.val(value.toFixed(settings.decimals));
+
+	        if (initvalue !== value) {
+	          originalinput.trigger('change');
+	        }
+	      }
+
+	      function startDownSpin() {
+	        stopSpin();
+
+	        spincount = 0;
+	        spinning = 'down';
+
+	        originalinput.trigger('touchspin.on.startspin');
+	        originalinput.trigger('touchspin.on.startdownspin');
+
+	        downDelayTimeout = setTimeout(function() {
+	          downSpinTimer = setInterval(function() {
+	            spincount++;
+	            downOnce();
+	          }, settings.stepinterval);
+	        }, settings.stepintervaldelay);
+	      }
+
+	      function startUpSpin() {
+	        stopSpin();
+
+	        spincount = 0;
+	        spinning = 'up';
+
+	        originalinput.trigger('touchspin.on.startspin');
+	        originalinput.trigger('touchspin.on.startupspin');
+
+	        upDelayTimeout = setTimeout(function() {
+	          upSpinTimer = setInterval(function() {
+	            spincount++;
+	            upOnce();
+	          }, settings.stepinterval);
+	        }, settings.stepintervaldelay);
+	      }
+
+	      function stopSpin() {
+	        clearTimeout(downDelayTimeout);
+	        clearTimeout(upDelayTimeout);
+	        clearInterval(downSpinTimer);
+	        clearInterval(upSpinTimer);
+
+	        switch (spinning) {
+	          case 'up':
+	            originalinput.trigger('touchspin.on.stopupspin');
+	            originalinput.trigger('touchspin.on.stopspin');
+	            break;
+	          case 'down':
+	            originalinput.trigger('touchspin.on.stopdownspin');
+	            originalinput.trigger('touchspin.on.stopspin');
+	            break;
+	        }
+
+	        spincount = 0;
+	        spinning = false;
+	      }
+
+	    });
+
+	  };
+
+	})(jQuery);
+
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/*** IMPORTS FROM imports-loader ***/
 	var jQuery = __webpack_require__(2);
 
@@ -32262,7 +33120,7 @@
 
 
 /***/ },
-/* 40 */
+/* 44 */
 /***/ function(module, exports) {
 
 	/*!

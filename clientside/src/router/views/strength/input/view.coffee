@@ -2,6 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
+_            = require 'lodash'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -10,8 +12,8 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
+require 'touchspin'
 require 'backbone.stickit'
-require 'backbone.validation'
 
 #-------------------------------------------------------------------------------
 # View
@@ -22,21 +24,16 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    login:  '#index-tab-login'
-    submit: '#index-signup-submit'
+    name: '#exercise-strength-name'
+    type: '#exercise-strength-type'
+    set:  '#exercise-strength-set'
+    rep:  '#exercise-strength-rep'
 
   bindings:
-    '#index-signup-firstname': 'firstname'
-    '#index-signup-lastname':  'lastname'
-    '#index-signup-email':     'email'
-    '#index-signup-password':  'password'
+    '#exercise-strength-name': 'name'
+    '#exercise-strength-note': 'note'
 
   events:
-
-    'click @ui.login': ->
-      @rootChannel.request('login')
-      return
-
     'submit': (event) ->
       event.preventDefault()
       @model.save {},
@@ -52,16 +49,15 @@ class View extends Marionette.ItemView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-  # Bind validation to view and model.
-
-  initialize: ->
-    Backbone.Validation.bind(@, @model)
-    @model.validate()
-
+  onRender: ->
+    @ui.set.TouchSpin()
+    @ui.rep.TouchSpin()
+    @stickit()
     return
 
-  onRender: ->
-    @stickit()
+  onDestroy: ->
+    @ui.set.TouchSpin('destroy')
+    @ui.rep.TouchSpin('destroy')
     return
 
 #-------------------------------------------------------------------------------

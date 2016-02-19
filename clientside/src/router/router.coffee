@@ -11,6 +11,7 @@ Login      = require './views/login/module'
 Home       = require './views/home/module'
 Profile    = require './views/profile/module'
 Exercise   = require './views/exercise/module'
+Strength   = require './views/strength/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -62,6 +63,11 @@ class Router extends Marionette.AppRouter
         @exercise()
         return
 
+      strength: =>
+        @navigate('strength')
+        @strength()
+        return
+
       stat: =>
         @navigate('stat')
         @stat()
@@ -91,6 +97,7 @@ class Router extends Marionette.AppRouter
     'home':        'home'
     'profile':     'profile'
     'exercise':    'exercise'
+    'strength':    'strength'
     'stat':        'stat'
     'schedule':    'schdeule'
     'log':         'log'
@@ -142,11 +149,17 @@ class Router extends Marionette.AppRouter
         return
     return
 
+  strength: ->
+    @navChannel.request('nav:main')
+    @rootView.content.show new Strength.View
+      model: new Strength.Model()
+    return
+
   stat: ->
     @navChannel.request('nav:main')
     @rootView.content.show new Profile.View()
     return
-    
+
   schedule: ->
     @navChannel.request('nav:main')
     @rootView.content.show new Profile.View()

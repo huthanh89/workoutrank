@@ -1,0 +1,33 @@
+.row
+    .col-sm-12
+        span.lead Strength
+br
+.row
+    .col-sm-12
+        form.form-horizontal
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-name') Name
+                .col-sm-10
+                    input.form-control#exercise-strength-name
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-type') Type
+                .col-sm-10
+                    select.form-control#exercise-strength-type
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-note') Note
+                .col-sm-10
+                    input.form-control#exercise-strength-note
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-set') Set
+                .col-sm-10
+                    input.form-control#exercise-strength-set(placeholder=0)
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-rep') Set
+                .col-sm-10
+                    input.form-control#exercise-strength-rep(placeholder=0)
+            .form-group
+                .col-sm-12
+                    button.btn.btn-primary.pull-right
+                        i.fa.fa-plus
+                        = ' '
+                        | Add
