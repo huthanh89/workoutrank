@@ -1,11 +1,16 @@
 .row
     .col-sm-12
         span.lead Strength
+.row
+    .col-sm-12
+        button.btn.btn-success.pull-right
+            i.fa.fa-plus
+            = ' '
+            | Add
 br
 .row
     .col-sm-12
         form.form-horizontal
-            .form-group
             .form-group
                 label.col-sm-2.control-label(for='exercise-strength-date') Date
                 .col-sm-10
@@ -40,9 +45,3 @@ br
                 label.col-sm-2.control-label(for='exercise-strength-rep') Rep
                 .col-sm-10
                     input.form-control#exercise-strength-rep(placeholder=0)
-            .form-group
-                .col-sm-12
-                    button.btn.btn-primary.pull-right
-                        i.fa.fa-plus
-                        = ' '
-                        | Add Set
