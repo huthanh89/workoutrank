@@ -9,11 +9,11 @@ Backbone = require 'backbone'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
+  url:  'api/exercise'
   defaults:
-    name:   ''
-    rep:    ''
-    set:    ''
-    weight: ''
+    name: ''
+    type: 0
+    note: ''
 
 #-------------------------------------------------------------------------------
 # Collection

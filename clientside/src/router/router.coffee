@@ -62,15 +62,39 @@ class Router extends Marionette.AppRouter
         @exercise()
         return
 
-  # Routes used for backbone urls.
+      stat: =>
+        @navigate('stat')
+        @stat()
+        return
+
+      schedule: =>
+        @navigate('schedule')
+        @schedule()
+        return
+
+      log: =>
+        @navigate('log')
+        @log()
+        return
+
+      multiplayer: =>
+        @navigate('multiplayer')
+        @multiplayer()
+        return
+
+# Routes used for backbone urls.
 
   routes:
-    '':         'signup'
-    'signup':   'signup'
-    'login':    'login'
-    'home':     'home'
-    'profile':  'profile'
-    'exercise': 'exercise'
+    '':            'signup'
+    'signup':      'signup'
+    'login':       'login'
+    'home':        'home'
+    'profile':     'profile'
+    'exercise':    'exercise'
+    'stat':        'stat'
+    'schedule':    'schdeule'
+    'log':         'log'
+    'multiplayer': 'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -105,17 +129,37 @@ class Router extends Marionette.AppRouter
   exercise: ->
 
     @navChannel.request('nav:main')
-    collection = new Profile.Collection()
+    collection = new Exercise.Collection()
 
     collection.fetch
-      success: (collection) ->
-        console.log 'done', collection
+      success: (collection) =>
+        @rootView.content.show new Exercise.View
+          collection: collection
+          model: new Exercise.Model()
         return
       error: ->
         console.log 'error'
         return
+    return
 
-    @rootView.content.show(new Exercise.View())
+  stat: ->
+    @navChannel.request('nav:main')
+    @rootView.content.show new Profile.View()
+    return
+    
+  schedule: ->
+    @navChannel.request('nav:main')
+    @rootView.content.show new Profile.View()
+    return
+
+  log: ->
+    @navChannel.request('nav:main')
+    @rootView.content.show new Profile.View()
+    return
+
+  multiplayer: ->
+    @navChannel.request('nav:main')
+    @rootView.content.show new Profile.View()
     return
 
 #-------------------------------------------------------------------------------

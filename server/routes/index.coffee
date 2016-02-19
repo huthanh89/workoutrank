@@ -9,9 +9,11 @@ router  = express.Router()
 # Import Routes
 #-------------------------------------------------------------------------------
 
-profile = require './profile/module'
-signup  = require './signup/module'
-login   = require './login/module'
+signup   = require './signup/module'
+login    = require './login/module'
+
+profile  = require './profile/module'
+exercise = require './exercise/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -35,6 +37,9 @@ router.get '/cardio',   index
 #-------------------------------------------------------------------------------
 
 router.get '/api/profile', profile.get
+
+router.get  '/api/exercise', exercise.get
+router.post '/api/exercise', exercise.post
 
 router.post '/api/signup', signup.post
 

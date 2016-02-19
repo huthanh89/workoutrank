@@ -6,21 +6,17 @@ br
     .col-sm-12
         form.form-horizontal
             .form-group
-                label.col-sm-2.control-label(for='exercise-name') Name
+                label.col-sm-2.control-label(for='exercise-name', required) Name
                 .col-sm-10
-                    input.form-control#exercise-name(placeholder='Name')
+                    input.form-control#exercise-name
             .form-group
                 label.col-sm-2.control-label(for='exercise-type') Type
                 .col-sm-10
                     select.form-control#exercise-type
             .form-group
-                label.col-sm-2.control-label(for='exercise-rep') Reps
-                .col-sm-10.app-multiselect
-                    input.form-control#exercise-rep(placeholder='0')
-            .form-group
-                label.col-sm-2.control-label(for='exercise-set') Sets
+                label.col-sm-2.control-label(for='exercise-note') Note
                 .col-sm-10
-                    input.form-control#exercise-set(placeholder='0')
+                    input.form-control#exercise-note
             .form-group
                 .col-sm-12
                     button.btn.btn-primary.pull-right

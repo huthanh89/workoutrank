@@ -12,8 +12,6 @@ var mongoose     = require('mongoose');
 var session      = require('express-session');
 var passport     = require('passport');
 
-var RememberMeStrategy = require('passport-remember-me');
-
 require('coffee-script/register');
 
 //--------------------------------------------------------------
@@ -29,8 +27,12 @@ db.on('open', function callback () {
     console.log("MongoDb connection opened.");
 });
 
-// Create Schemas.
+//--------------------------------------------------------------
+// // Create Schemas from models
+//--------------------------------------------------------------
+
 require('./models/user')(mongoose);
+require('./models/exercise')(mongoose);
 
 //--------------------------------------------------------------
 // Express
@@ -126,7 +128,7 @@ app.use(function(err, req, res, next) {
 // Websocket Handler
 //--------------------------------------------------------------
 
-var port = 80;
+var port = 5000;
 
 
 //var io = require('socket.io').listen(server);

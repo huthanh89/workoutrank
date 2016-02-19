@@ -11,14 +11,14 @@ mongoose = require 'mongoose'
 ExerciseSchema = new mongoose.Schema
   date:
     type: Date
-  rep:
-    type: Date
-  weight:
+  name:
     type: String
+  type:
+    type: Number
   note:
     type: String
 ,
-  collection: 'lift'
+  collection: 'exercise'
 
 #-------------------------------------------------------------------------------
 # Model Registration

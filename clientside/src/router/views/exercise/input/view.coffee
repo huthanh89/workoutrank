@@ -4,6 +4,7 @@
 
 $            = require 'jquery'
 _            = require 'lodash'
+Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
 
@@ -11,8 +12,8 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'touchspin'
 require 'multiselect'
+require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
 # View
@@ -25,19 +26,27 @@ class View extends Marionette.ItemView
   ui:
     name: '#exercise-name'
     type: '#exercise-type'
-    rep:  '#exercise-rep'
-    set:  '#exercise-set'
+
+  bindings:
+    '#exercise-name': 'name'
 
   events:
-    click: (event) ->
-      console.log 'event'
+    'submit': (event) ->
       event.preventDefault()
+      @model.save {},
+        success: =>
+          @rootChannel.request('home')
+          return
+        error: ->
+          console.log 'fail'
+          return
       return
 
-  onRender: ->
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
 
-    @ui.rep.TouchSpin()
-    @ui.set.TouchSpin()
+  onRender: ->
 
     @ui.type.multiselect
       buttonWidth: '100%'
@@ -49,12 +58,12 @@ class View extends Marionette.ItemView
       { value: 3, label: 'balance'     }
     ]
 
+    @stickit()
+
     return
 
   onDestroy: ->
     @ui.type.multiselect('destroy')
-    @ui.rep.TouchSpin('destroy')
-    @ui.set.TouchSpin('destroy')
     return
 
 #-------------------------------------------------------------------------------
