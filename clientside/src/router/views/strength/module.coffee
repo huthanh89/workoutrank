@@ -11,16 +11,19 @@ Backbone = require 'backbone'
 class Model extends Backbone.Model
   url:  'api/strength'
   defaults:
+    date: new Date()
     name: ''
     type: 0
     note: ''
+    set:  0
+    rep:  0
 
 #-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
-  url:  'api/exercise'
+  url:  'api/strength'
   model: Model
 
 #-------------------------------------------------------------------------------

@@ -13,6 +13,8 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'touchspin'
+require 'datepicker'
+require 'timepicker'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
@@ -28,12 +30,18 @@ class View extends Marionette.ItemView
     type: '#exercise-strength-type'
     set:  '#exercise-strength-set'
     rep:  '#exercise-strength-rep'
+    date: '#exercise-strength-date'
+    time: '#exercise-strength-time'
 
   bindings:
     '#exercise-strength-name': 'name'
     '#exercise-strength-note': 'note'
 
   events:
+    'click #exercise-strength-time': ->
+      @ui.time.timepicker('showWidget')
+      return
+
     'submit': (event) ->
       event.preventDefault()
       @model.save {},
@@ -50,12 +58,28 @@ class View extends Marionette.ItemView
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
+
     @ui.set.TouchSpin()
     @ui.rep.TouchSpin()
+
+    @ui.date.datepicker
+      todayBtn:      'linked'
+      todayHighlight: true
+    .on 'changeDate', =>
+      @model.set('date', new Date(@ui.date.val()))
+      return
+    .datepicker('setDate', new Date())
+
+    @ui.time
+    .timepicker
+        template: 'dropdown'
+    .timepicker('setTime', '12:45 AM')
+
     @stickit()
     return
 
   onDestroy: ->
+    @ui.date.datepicker('destroy')
     @ui.set.TouchSpin('destroy')
     @ui.rep.TouchSpin('destroy')
     return

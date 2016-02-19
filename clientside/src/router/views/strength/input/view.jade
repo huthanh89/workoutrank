@@ -6,6 +6,21 @@ br
     .col-sm-12
         form.form-horizontal
             .form-group
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-date') Date
+                .col-sm-10
+                    .input-group.date
+                        input.form-control#exercise-strength-date(type="text")
+                        .input-group-addon
+                            span.fa.fa-fw.fa-lg.fa-calendar
+            .form-group
+                label.col-sm-2.control-label(for='exercise-strength-time') Time
+                .col-sm-10
+                    .input-group.bootstrap-timepicker.timepicker
+                        input.form-control#exercise-strength-time
+                        .input-group-addon
+                            span.fa.fa-fw.fa-lg.fa-clock-o
+            .form-group
                 label.col-sm-2.control-label(for='exercise-strength-name') Name
                 .col-sm-10
                     input.form-control#exercise-strength-name
@@ -22,7 +37,7 @@ br
                 .col-sm-10
                     input.form-control#exercise-strength-set(placeholder=0)
             .form-group
-                label.col-sm-2.control-label(for='exercise-strength-rep') Set
+                label.col-sm-2.control-label(for='exercise-strength-rep') Rep
                 .col-sm-10
                     input.form-control#exercise-strength-rep(placeholder=0)
             .form-group
@@ -30,4 +45,4 @@ br
                     button.btn.btn-primary.pull-right
                         i.fa.fa-plus
                         = ' '
-                        | Add
+                        | Add Set

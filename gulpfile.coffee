@@ -88,6 +88,9 @@ gulp.task 'scripts', (callback) ->
         test: /jquery/
         loader: "imports?jQuery=jquery"
       ,
+        test: /timeentry.js/
+        loader: "imports?JQPlugin=JQPlugin"
+      ,
         test: /backbone./
         loader: "imports?Backbone=backbone"
       ]
@@ -119,6 +122,10 @@ gulp.task 'scripts', (callback) ->
         mmenu:                 'scripts/jquery.mmenu.min.all.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
         multiselect:           'scripts/jquery.bootstrap-multiselect.js'
+        datepicker:            'scripts/jquery.bootstrap-datepicker.js'
+        JQPlugin:              'scripts/jquery.plugin.js'
+        timeentry:             'scripts/jquery.timeentry.js'
+        timepicker:            'scripts/jquery.bootstrap-timepicker.js'
 
       extensions: [
         ''
@@ -159,6 +166,9 @@ gulp.task 'css', ->
     './clientside/styles/css/jquery.mmenu.themes.css'
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
     './clientside/styles/css/bootstrap-multiselect.css'
+    './clientside/styles/css/bootstrap-datepicker.css'
+    './clientside/styles/css/jquery.timeentry.css'
+    './clientside/styles/css/timepicker.css'
 
     './clientside/styles/application.css'
 
