@@ -11144,6 +11144,7 @@ Content padding, to pad body from fixed navbar.
     height: 30px;
 }
 
+
 #content{
     margin:     50px 75px 0px;
     min-height: 250px;
@@ -11152,7 +11153,6 @@ Content padding, to pad body from fixed navbar.
 /*
 Change margin if viewport gets smaller.
 */
-
 
 @media (min-width: 1200px) {
     #content{
@@ -11171,7 +11171,6 @@ Change margin if viewport gets smaller.
         margin: 50px 10px 0px;
     }
 }
-
 /*-----------------------------------------------------------------------------
 Footer
 -----------------------------------------------------------------------------*/
@@ -11224,7 +11223,9 @@ Multiselect
     background-color: white;
     box-shadow:       none;
     text-align:       left;
+/*
     padding-left:     13px;
+*/
     border:           solid 1px lightgray;
     border-radius:    4px;
     height:           32px;
