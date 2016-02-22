@@ -15,8 +15,8 @@ Router     = require './router/router'
 class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
-    header:  '#header'
-    content: '#content'
+    header:  '.header'
+    content: '.content'
 
 #-------------------------------------------------------------------------------
 # Create Application.

@@ -51,19 +51,13 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, Application, Backbone, Marionette, Radio, _;
+	var $, Application, _;
 
 	$ = __webpack_require__(2);
 
 	_ = __webpack_require__(3);
 
-	Radio = __webpack_require__(5);
-
-	Backbone = __webpack_require__(6);
-
-	Marionette = __webpack_require__(8);
-
-	Application = __webpack_require__(9);
+	Application = __webpack_require__(5);
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
@@ -21165,345 +21159,72 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*** IMPORTS FROM imports-loader ***/
-	var Backbone = __webpack_require__(6);
+	var Application, Backbone, Marionette, Nav, RootView, Router,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
 
-	// Backbone.Radio v1.0.2
-	(function (global, factory) {
-	   true ? module.exports = factory(__webpack_require__(7), __webpack_require__(6)) : typeof define === "function" && define.amd ? define(["underscore", "backbone"], factory) : global.Backbone.Radio = factory(global._, global.Backbone);
-	})(this, function (_, Backbone) {
-	  "use strict";
+	Backbone = __webpack_require__(6);
 
-	  var previousRadio = Backbone.Radio;
+	Marionette = __webpack_require__(8);
 
-	  var Radio = Backbone.Radio = {};
+	Nav = __webpack_require__(9);
 
-	  Radio.VERSION = "1.0.2";
+	Router = __webpack_require__(17);
 
-	  // This allows you to run multiple instances of Radio on the same
-	  // webapp. After loading the new version, call `noConflict()` to
-	  // get a reference to it. At the same time the old version will be
-	  // returned to Backbone.Radio.
-	  Radio.noConflict = function () {
-	    Backbone.Radio = previousRadio;
-	    return this;
-	  };
+	RootView = (function(superClass) {
+	  extend(RootView, superClass);
 
-	  // Whether or not we're in DEBUG mode or not. DEBUG mode helps you
-	  // get around the issues of lack of warnings when events are mis-typed.
-	  Radio.DEBUG = false;
-
-	  // Format debug text.
-	  Radio._debugText = function (warning, eventName, channelName) {
-	    return warning + (channelName ? " on the " + channelName + " channel" : "") + ": \"" + eventName + "\"";
-	  };
-
-	  // This is the method that's called when an unregistered event was called.
-	  // By default, it logs warning to the console. By overriding this you could
-	  // make it throw an Error, for instance. This would make firing a nonexistent event
-	  // have the same consequence as firing a nonexistent method on an Object.
-	  Radio.debugLog = function (warning, eventName, channelName) {
-	    if (Radio.DEBUG && console && console.warn) {
-	      console.warn(Radio._debugText(warning, eventName, channelName));
-	    }
-	  };
-
-	  var eventSplitter = /\s+/;
-
-	  // An internal method used to handle Radio's method overloading for Requests.
-	  // It's borrowed from Backbone.Events. It differs from Backbone's overload
-	  // API (which is used in Backbone.Events) in that it doesn't support space-separated
-	  // event names.
-	  Radio._eventsApi = function (obj, action, name, rest) {
-	    if (!name) {
-	      return false;
-	    }
-
-	    var results = {};
-
-	    // Handle event maps.
-	    if (typeof name === "object") {
-	      for (var key in name) {
-	        var result = obj[action].apply(obj, [key, name[key]].concat(rest));
-	        eventSplitter.test(key) ? _.extend(results, result) : results[key] = result;
-	      }
-	      return results;
-	    }
-
-	    // Handle space separated event names.
-	    if (eventSplitter.test(name)) {
-	      var names = name.split(eventSplitter);
-	      for (var i = 0, l = names.length; i < l; i++) {
-	        results[names[i]] = obj[action].apply(obj, [names[i]].concat(rest));
-	      }
-	      return results;
-	    }
-
-	    return false;
-	  };
-
-	  // An optimized way to execute callbacks.
-	  Radio._callHandler = function (callback, context, args) {
-	    var a1 = args[0],
-	        a2 = args[1],
-	        a3 = args[2];
-	    switch (args.length) {
-	      case 0:
-	        return callback.call(context);
-	      case 1:
-	        return callback.call(context, a1);
-	      case 2:
-	        return callback.call(context, a1, a2);
-	      case 3:
-	        return callback.call(context, a1, a2, a3);
-	      default:
-	        return callback.apply(context, args);
-	    }
-	  };
-
-	  // A helper used by `off` methods to the handler from the store
-	  function removeHandler(store, name, callback, context) {
-	    var event = store[name];
-	    if ((!callback || (callback === event.callback || callback === event.callback._callback)) && (!context || context === event.context)) {
-	      delete store[name];
-	      return true;
-	    }
+	  function RootView() {
+	    return RootView.__super__.constructor.apply(this, arguments);
 	  }
 
-	  function removeHandlers(store, name, callback, context) {
-	    store || (store = {});
-	    var names = name ? [name] : _.keys(store);
-	    var matched = false;
+	  RootView.prototype.el = 'body';
 
-	    for (var i = 0, length = names.length; i < length; i++) {
-	      name = names[i];
-
-	      // If there's no event by this name, log it and continue
-	      // with the loop
-	      if (!store[name]) {
-	        continue;
-	      }
-
-	      if (removeHandler(store, name, callback, context)) {
-	        matched = true;
-	      }
-	    }
-
-	    return matched;
-	  }
-
-	  /*
-	   * tune-in
-	   * -------
-	   * Get console logs of a channel's activity
-	   *
-	   */
-
-	  var _logs = {};
-
-	  // This is to produce an identical function in both tuneIn and tuneOut,
-	  // so that Backbone.Events unregisters it.
-	  function _partial(channelName) {
-	    return _logs[channelName] || (_logs[channelName] = _.partial(Radio.log, channelName));
-	  }
-
-	  _.extend(Radio, {
-
-	    // Log information about the channel and event
-	    log: function log(channelName, eventName) {
-	      var args = _.rest(arguments, 2);
-	      console.log("[" + channelName + "] \"" + eventName + "\"", args);
-	    },
-
-	    // Logs all events on this channel to the console. It sets an
-	    // internal value on the channel telling it we're listening,
-	    // then sets a listener on the Backbone.Events
-	    tuneIn: function tuneIn(channelName) {
-	      var channel = Radio.channel(channelName);
-	      channel._tunedIn = true;
-	      channel.on("all", _partial(channelName));
-	      return this;
-	    },
-
-	    // Stop logging all of the activities on this channel to the console
-	    tuneOut: function tuneOut(channelName) {
-	      var channel = Radio.channel(channelName);
-	      channel._tunedIn = false;
-	      channel.off("all", _partial(channelName));
-	      delete _logs[channelName];
-	      return this;
-	    }
-	  });
-
-	  /*
-	   * Backbone.Radio.Requests
-	   * -----------------------
-	   * A messaging system for requesting data.
-	   *
-	   */
-
-	  function makeCallback(callback) {
-	    return _.isFunction(callback) ? callback : function () {
-	      return callback;
-	    };
-	  }
-
-	  Radio.Requests = {
-
-	    // Make a request
-	    request: function request(name) {
-	      var args = _.rest(arguments);
-	      var results = Radio._eventsApi(this, "request", name, args);
-	      if (results) {
-	        return results;
-	      }
-	      var channelName = this.channelName;
-	      var requests = this._requests;
-
-	      // Check if we should log the request, and if so, do it
-	      if (channelName && this._tunedIn) {
-	        Radio.log.apply(this, [channelName, name].concat(args));
-	      }
-
-	      // If the request isn't handled, log it in DEBUG mode and exit
-	      if (requests && (requests[name] || requests["default"])) {
-	        var handler = requests[name] || requests["default"];
-	        args = requests[name] ? args : arguments;
-	        return Radio._callHandler(handler.callback, handler.context, args);
-	      } else {
-	        Radio.debugLog("An unhandled request was fired", name, channelName);
-	      }
-	    },
-
-	    // Set up a handler for a request
-	    reply: function reply(name, callback, context) {
-	      if (Radio._eventsApi(this, "reply", name, [callback, context])) {
-	        return this;
-	      }
-
-	      this._requests || (this._requests = {});
-
-	      if (this._requests[name]) {
-	        Radio.debugLog("A request was overwritten", name, this.channelName);
-	      }
-
-	      this._requests[name] = {
-	        callback: makeCallback(callback),
-	        context: context || this
-	      };
-
-	      return this;
-	    },
-
-	    // Set up a handler that can only be requested once
-	    replyOnce: function replyOnce(name, callback, context) {
-	      if (Radio._eventsApi(this, "replyOnce", name, [callback, context])) {
-	        return this;
-	      }
-
-	      var self = this;
-
-	      var once = _.once(function () {
-	        self.stopReplying(name);
-	        return makeCallback(callback).apply(this, arguments);
-	      });
-
-	      return this.reply(name, once, context);
-	    },
-
-	    // Remove handler(s)
-	    stopReplying: function stopReplying(name, callback, context) {
-	      if (Radio._eventsApi(this, "stopReplying", name)) {
-	        return this;
-	      }
-
-	      // Remove everything if there are no arguments passed
-	      if (!name && !callback && !context) {
-	        delete this._requests;
-	      } else if (!removeHandlers(this._requests, name, callback, context)) {
-	        Radio.debugLog("Attempted to remove the unregistered request", name, this.channelName);
-	      }
-
-	      return this;
-	    }
+	  RootView.prototype.regions = {
+	    header: '.header',
+	    content: '.content'
 	  };
 
-	  /*
-	   * Backbone.Radio.channel
-	   * ----------------------
-	   * Get a reference to a channel by name.
-	   *
-	   */
+	  return RootView;
 
-	  Radio._channels = {};
+	})(Marionette.LayoutView);
 
-	  Radio.channel = function (channelName) {
-	    if (!channelName) {
-	      throw new Error("You must provide a name for the channel.");
-	    }
+	Application = (function(superClass) {
+	  extend(Application, superClass);
 
-	    if (Radio._channels[channelName]) {
-	      return Radio._channels[channelName];
-	    } else {
-	      return Radio._channels[channelName] = new Radio.Channel(channelName);
-	    }
-	  };
+	  function Application() {
+	    return Application.__super__.constructor.apply(this, arguments);
+	  }
 
-	  /*
-	   * Backbone.Radio.Channel
-	   * ----------------------
-	   * A Channel is an object that extends from Backbone.Events,
-	   * and Radio.Requests.
-	   *
-	   */
-
-	  Radio.Channel = function (channelName) {
-	    this.channelName = channelName;
-	  };
-
-	  _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Requests, {
-
-	    // Remove all handlers from the messaging systems of this channel
-	    reset: function reset() {
-	      this.off();
-	      this.stopListening();
-	      this.stopReplying();
-	      return this;
-	    }
-	  });
-
-	  /*
-	   * Top-level API
-	   * -------------
-	   * Supplies the 'top-level API' for working with Channels directly
-	   * from Backbone.Radio.
-	   *
-	   */
-
-	  var channel,
-	      args,
-	      systems = [Backbone.Events, Radio.Commands, Radio.Requests];
-
-	  _.each(systems, function (system) {
-	    _.each(system, function (method, methodName) {
-	      Radio[methodName] = function (channelName) {
-	        args = _.rest(arguments);
-	        channel = this.channel(channelName);
-	        return channel[methodName].apply(channel, args);
-	      };
+	  Application.prototype.onStart = function() {
+	    var navChannel, rootChannel, rootView;
+	    rootView = new RootView();
+	    rootChannel = Backbone.Radio.channel('root');
+	    navChannel = Backbone.Radio.channel('nav');
+	    rootChannel.reply({
+	      'rootview': function() {
+	        return rootView;
+	      }
 	    });
-	  });
-
-	  Radio.reset = function (channelName) {
-	    var channels = !channelName ? this._channels : [this._channels[channelName]];
-	    _.invoke(channels, "reset");
+	    navChannel.reply({
+	      'nav:index': function() {
+	        rootView.showChildView('header', new Nav.Index());
+	      },
+	      'nav:main': function() {
+	        rootView.showChildView('header', new Nav.Main());
+	      }
+	    });
+	    new Router();
+	    Backbone.history.start({
+	      pushState: true
+	    });
 	  };
 
-	  var backbone_radio = Radio;
+	  return Application;
 
-	  return backbone_radio;
-	});
-	//# sourceMappingURL=./backbone.radio.js.map
+	})(Marionette.Application);
+
+	module.exports = new Application();
 
 
 /***/ },
@@ -28377,85 +28098,13 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Backbone, Marionette, Nav, RootView, Router,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(6);
-
-	Marionette = __webpack_require__(8);
-
-	Nav = __webpack_require__(10);
-
-	Router = __webpack_require__(17);
-
-	RootView = (function(superClass) {
-	  extend(RootView, superClass);
-
-	  function RootView() {
-	    return RootView.__super__.constructor.apply(this, arguments);
-	  }
-
-	  RootView.prototype.el = 'body';
-
-	  RootView.prototype.regions = {
-	    header: '#header',
-	    content: '#content'
-	  };
-
-	  return RootView;
-
-	})(Marionette.LayoutView);
-
-	Application = (function(superClass) {
-	  extend(Application, superClass);
-
-	  function Application() {
-	    return Application.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Application.prototype.onStart = function() {
-	    var navChannel, rootChannel, rootView;
-	    rootView = new RootView();
-	    rootChannel = Backbone.Radio.channel('root');
-	    navChannel = Backbone.Radio.channel('nav');
-	    rootChannel.reply({
-	      'rootview': function() {
-	        return rootView;
-	      }
-	    });
-	    navChannel.reply({
-	      'nav:index': function() {
-	        rootView.showChildView('header', new Nav.Index());
-	      },
-	      'nav:main': function() {
-	        rootView.showChildView('header', new Nav.Main());
-	      }
-	    });
-	    new Router();
-	    Backbone.history.start({
-	      pushState: true
-	    });
-	  };
-
-	  return Application;
-
-	})(Marionette.Application);
-
-	module.exports = new Application();
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports.Index = __webpack_require__(11);
+	exports.Index = __webpack_require__(10);
 
 	exports.Main = __webpack_require__(15);
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
@@ -28468,7 +28117,7 @@
 
 	Backbone = __webpack_require__(6);
 
-	Radio = __webpack_require__(5);
+	Radio = __webpack_require__(11);
 
 	Marionette = __webpack_require__(8);
 
@@ -28564,6 +28213,351 @@
 
 
 /***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var Backbone = __webpack_require__(6);
+
+	// Backbone.Radio v1.0.2
+	(function (global, factory) {
+	   true ? module.exports = factory(__webpack_require__(7), __webpack_require__(6)) : typeof define === "function" && define.amd ? define(["underscore", "backbone"], factory) : global.Backbone.Radio = factory(global._, global.Backbone);
+	})(this, function (_, Backbone) {
+	  "use strict";
+
+	  var previousRadio = Backbone.Radio;
+
+	  var Radio = Backbone.Radio = {};
+
+	  Radio.VERSION = "1.0.2";
+
+	  // This allows you to run multiple instances of Radio on the same
+	  // webapp. After loading the new version, call `noConflict()` to
+	  // get a reference to it. At the same time the old version will be
+	  // returned to Backbone.Radio.
+	  Radio.noConflict = function () {
+	    Backbone.Radio = previousRadio;
+	    return this;
+	  };
+
+	  // Whether or not we're in DEBUG mode or not. DEBUG mode helps you
+	  // get around the issues of lack of warnings when events are mis-typed.
+	  Radio.DEBUG = false;
+
+	  // Format debug text.
+	  Radio._debugText = function (warning, eventName, channelName) {
+	    return warning + (channelName ? " on the " + channelName + " channel" : "") + ": \"" + eventName + "\"";
+	  };
+
+	  // This is the method that's called when an unregistered event was called.
+	  // By default, it logs warning to the console. By overriding this you could
+	  // make it throw an Error, for instance. This would make firing a nonexistent event
+	  // have the same consequence as firing a nonexistent method on an Object.
+	  Radio.debugLog = function (warning, eventName, channelName) {
+	    if (Radio.DEBUG && console && console.warn) {
+	      console.warn(Radio._debugText(warning, eventName, channelName));
+	    }
+	  };
+
+	  var eventSplitter = /\s+/;
+
+	  // An internal method used to handle Radio's method overloading for Requests.
+	  // It's borrowed from Backbone.Events. It differs from Backbone's overload
+	  // API (which is used in Backbone.Events) in that it doesn't support space-separated
+	  // event names.
+	  Radio._eventsApi = function (obj, action, name, rest) {
+	    if (!name) {
+	      return false;
+	    }
+
+	    var results = {};
+
+	    // Handle event maps.
+	    if (typeof name === "object") {
+	      for (var key in name) {
+	        var result = obj[action].apply(obj, [key, name[key]].concat(rest));
+	        eventSplitter.test(key) ? _.extend(results, result) : results[key] = result;
+	      }
+	      return results;
+	    }
+
+	    // Handle space separated event names.
+	    if (eventSplitter.test(name)) {
+	      var names = name.split(eventSplitter);
+	      for (var i = 0, l = names.length; i < l; i++) {
+	        results[names[i]] = obj[action].apply(obj, [names[i]].concat(rest));
+	      }
+	      return results;
+	    }
+
+	    return false;
+	  };
+
+	  // An optimized way to execute callbacks.
+	  Radio._callHandler = function (callback, context, args) {
+	    var a1 = args[0],
+	        a2 = args[1],
+	        a3 = args[2];
+	    switch (args.length) {
+	      case 0:
+	        return callback.call(context);
+	      case 1:
+	        return callback.call(context, a1);
+	      case 2:
+	        return callback.call(context, a1, a2);
+	      case 3:
+	        return callback.call(context, a1, a2, a3);
+	      default:
+	        return callback.apply(context, args);
+	    }
+	  };
+
+	  // A helper used by `off` methods to the handler from the store
+	  function removeHandler(store, name, callback, context) {
+	    var event = store[name];
+	    if ((!callback || (callback === event.callback || callback === event.callback._callback)) && (!context || context === event.context)) {
+	      delete store[name];
+	      return true;
+	    }
+	  }
+
+	  function removeHandlers(store, name, callback, context) {
+	    store || (store = {});
+	    var names = name ? [name] : _.keys(store);
+	    var matched = false;
+
+	    for (var i = 0, length = names.length; i < length; i++) {
+	      name = names[i];
+
+	      // If there's no event by this name, log it and continue
+	      // with the loop
+	      if (!store[name]) {
+	        continue;
+	      }
+
+	      if (removeHandler(store, name, callback, context)) {
+	        matched = true;
+	      }
+	    }
+
+	    return matched;
+	  }
+
+	  /*
+	   * tune-in
+	   * -------
+	   * Get console logs of a channel's activity
+	   *
+	   */
+
+	  var _logs = {};
+
+	  // This is to produce an identical function in both tuneIn and tuneOut,
+	  // so that Backbone.Events unregisters it.
+	  function _partial(channelName) {
+	    return _logs[channelName] || (_logs[channelName] = _.partial(Radio.log, channelName));
+	  }
+
+	  _.extend(Radio, {
+
+	    // Log information about the channel and event
+	    log: function log(channelName, eventName) {
+	      var args = _.rest(arguments, 2);
+	      console.log("[" + channelName + "] \"" + eventName + "\"", args);
+	    },
+
+	    // Logs all events on this channel to the console. It sets an
+	    // internal value on the channel telling it we're listening,
+	    // then sets a listener on the Backbone.Events
+	    tuneIn: function tuneIn(channelName) {
+	      var channel = Radio.channel(channelName);
+	      channel._tunedIn = true;
+	      channel.on("all", _partial(channelName));
+	      return this;
+	    },
+
+	    // Stop logging all of the activities on this channel to the console
+	    tuneOut: function tuneOut(channelName) {
+	      var channel = Radio.channel(channelName);
+	      channel._tunedIn = false;
+	      channel.off("all", _partial(channelName));
+	      delete _logs[channelName];
+	      return this;
+	    }
+	  });
+
+	  /*
+	   * Backbone.Radio.Requests
+	   * -----------------------
+	   * A messaging system for requesting data.
+	   *
+	   */
+
+	  function makeCallback(callback) {
+	    return _.isFunction(callback) ? callback : function () {
+	      return callback;
+	    };
+	  }
+
+	  Radio.Requests = {
+
+	    // Make a request
+	    request: function request(name) {
+	      var args = _.rest(arguments);
+	      var results = Radio._eventsApi(this, "request", name, args);
+	      if (results) {
+	        return results;
+	      }
+	      var channelName = this.channelName;
+	      var requests = this._requests;
+
+	      // Check if we should log the request, and if so, do it
+	      if (channelName && this._tunedIn) {
+	        Radio.log.apply(this, [channelName, name].concat(args));
+	      }
+
+	      // If the request isn't handled, log it in DEBUG mode and exit
+	      if (requests && (requests[name] || requests["default"])) {
+	        var handler = requests[name] || requests["default"];
+	        args = requests[name] ? args : arguments;
+	        return Radio._callHandler(handler.callback, handler.context, args);
+	      } else {
+	        Radio.debugLog("An unhandled request was fired", name, channelName);
+	      }
+	    },
+
+	    // Set up a handler for a request
+	    reply: function reply(name, callback, context) {
+	      if (Radio._eventsApi(this, "reply", name, [callback, context])) {
+	        return this;
+	      }
+
+	      this._requests || (this._requests = {});
+
+	      if (this._requests[name]) {
+	        Radio.debugLog("A request was overwritten", name, this.channelName);
+	      }
+
+	      this._requests[name] = {
+	        callback: makeCallback(callback),
+	        context: context || this
+	      };
+
+	      return this;
+	    },
+
+	    // Set up a handler that can only be requested once
+	    replyOnce: function replyOnce(name, callback, context) {
+	      if (Radio._eventsApi(this, "replyOnce", name, [callback, context])) {
+	        return this;
+	      }
+
+	      var self = this;
+
+	      var once = _.once(function () {
+	        self.stopReplying(name);
+	        return makeCallback(callback).apply(this, arguments);
+	      });
+
+	      return this.reply(name, once, context);
+	    },
+
+	    // Remove handler(s)
+	    stopReplying: function stopReplying(name, callback, context) {
+	      if (Radio._eventsApi(this, "stopReplying", name)) {
+	        return this;
+	      }
+
+	      // Remove everything if there are no arguments passed
+	      if (!name && !callback && !context) {
+	        delete this._requests;
+	      } else if (!removeHandlers(this._requests, name, callback, context)) {
+	        Radio.debugLog("Attempted to remove the unregistered request", name, this.channelName);
+	      }
+
+	      return this;
+	    }
+	  };
+
+	  /*
+	   * Backbone.Radio.channel
+	   * ----------------------
+	   * Get a reference to a channel by name.
+	   *
+	   */
+
+	  Radio._channels = {};
+
+	  Radio.channel = function (channelName) {
+	    if (!channelName) {
+	      throw new Error("You must provide a name for the channel.");
+	    }
+
+	    if (Radio._channels[channelName]) {
+	      return Radio._channels[channelName];
+	    } else {
+	      return Radio._channels[channelName] = new Radio.Channel(channelName);
+	    }
+	  };
+
+	  /*
+	   * Backbone.Radio.Channel
+	   * ----------------------
+	   * A Channel is an object that extends from Backbone.Events,
+	   * and Radio.Requests.
+	   *
+	   */
+
+	  Radio.Channel = function (channelName) {
+	    this.channelName = channelName;
+	  };
+
+	  _.extend(Radio.Channel.prototype, Backbone.Events, Radio.Requests, {
+
+	    // Remove all handlers from the messaging systems of this channel
+	    reset: function reset() {
+	      this.off();
+	      this.stopListening();
+	      this.stopReplying();
+	      return this;
+	    }
+	  });
+
+	  /*
+	   * Top-level API
+	   * -------------
+	   * Supplies the 'top-level API' for working with Channels directly
+	   * from Backbone.Radio.
+	   *
+	   */
+
+	  var channel,
+	      args,
+	      systems = [Backbone.Events, Radio.Commands, Radio.Requests];
+
+	  _.each(systems, function (system) {
+	    _.each(system, function (method, methodName) {
+	      Radio[methodName] = function (channelName) {
+	        args = _.rest(arguments);
+	        channel = this.channel(channelName);
+	        return channel[methodName].apply(channel, args);
+	      };
+	    });
+	  });
+
+	  Radio.reset = function (channelName) {
+	    var channels = !channelName ? this._channels : [this._channels[channelName]];
+	    _.invoke(channels, "reset");
+	  };
+
+	  var backbone_radio = Radio;
+
+	  return backbone_radio;
+	});
+	//# sourceMappingURL=./backbone.radio.js.map
+
+
+/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28574,7 +28568,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" href=\"#\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
+	buf.push("<div id=\"p1\" data-role=\"page\"></div><div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" href=\"#\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -28849,7 +28843,7 @@
 
 	Backbone = __webpack_require__(6);
 
-	Radio = __webpack_require__(5);
+	Radio = __webpack_require__(11);
 
 	Marionette = __webpack_require__(8);
 
@@ -30904,7 +30898,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Home</span></div></div><br><div id=\"home-content\" class=\"col-sm-12\"><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-4\"><button id=\"home-exercise\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</button></div><div class=\"col-sm-4\"><button id=\"home-stat\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Stats</button></div><div class=\"col-sm-4\"><button id=\"home-schedule\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Schedule</button></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-4\"><button id=\"home-log\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</button></div><div class=\"col-sm-4\"><button id=\"home-multiplayer\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-group\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Multiplayer</button></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Home</span></div></div><br><div class=\"col-sm-12 home-content\"><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-4\"><button id=\"home-exercise\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</button></div><div class=\"col-sm-4\"><button id=\"home-stat\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Stats</button></div><div class=\"col-sm-4\"><button id=\"home-schedule\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Schedule</button></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div class=\"col-sm-4\"><button id=\"home-log\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</button></div><div class=\"col-sm-4\"><button id=\"home-multiplayer\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-group\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Multiplayer</button></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

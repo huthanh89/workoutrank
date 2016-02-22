@@ -10,6 +10,9 @@ path    = require 'path'
 # Gulp Plugins
 #-------------------------------------------------------------------------------
 
+minifyJS     = require 'gulp-minify'
+minifyCSS  = require 'gulp-minify-css'
+csslint    = require 'gulp-csslint'
 concat     = require 'gulp-concat'
 jshint     = require 'gulp-jshint'
 less       = require 'gulp-less'
@@ -35,25 +38,42 @@ PluginError  = _ref.PluginError
 ###############################################################################
 
 #-------------------------------------------------------------------------------
-# Lint coffee script
+# Javascript minify
 #-------------------------------------------------------------------------------
 
-gulp.task 'coffeelint', ->
-#  gulp.src('./clientside/src/*.coffee')
-  gulp.src('./clientside/**/*.coffee')
-  .pipe(coffeelint())
-  .pipe(coffeelint.reporter('coffeelint-stylish'))
+gulp.task 'minify-js', ->
+  gulp.src('./static/bundle.js')
+    .pipe(minifyJS())
+    .pipe(gulp.dest('static'))
   return
 
 #-------------------------------------------------------------------------------
-# Lint javascript
+# CSS minify
 #-------------------------------------------------------------------------------
 
-gulp.task 'lint', ->
-  gulp.src('./clientside/*.js')
-  .pipe(jshint())
-  .pipe(jshint.reporter('jshint-stylish'))
-  .pipe jshint.reporter('fail')
+gulp.task 'minify-css', ->
+  return gulp.src('./static/*.css')
+    .pipe(minifyCSS(compatibility: 'ie8'))
+    .pipe(gulp.dest('dist'))
+
+#-------------------------------------------------------------------------------
+# Coffee script Lint
+#-------------------------------------------------------------------------------
+
+gulp.task 'coffeelint', ->
+  gulp.src('./clientside/**/*.coffee')
+    .pipe(coffeelint())
+    .pipe(coffeelint.reporter('coffeelint-stylish'))
+  return
+
+#-------------------------------------------------------------------------------
+# CSS Lint
+#-------------------------------------------------------------------------------
+
+gulp.task 'csslint', ->
+  gulp.src('./clientside/styles/application.css')
+    .pipe(csslint())
+    .pipe(csslint.reporter());
   return
 
 #-------------------------------------------------------------------------------
@@ -245,26 +265,28 @@ gulp.task 'page:reload', ->
 # Chained tasks.
 #-------------------------------------------------------------------------------
 
-gulp.task 'all', [
-  'nodemon'
-  'lint'
-  'compile:client'
-  'fonts'
-  'watch'
+gulp.task 'minify', [
+  'minify-css'
+  'minify-js'
 ]
 
 gulp.task 'compile:client', [
     'scripts'
     'css'
-    'lint'
+    'csslint'
+    'coffeelint'
   ], ->
     livereload.reload()
+
+gulp.task 'production', [
+  'compile:client'
+  'minify'
+]
 
 # Default task
 
 gulp.task 'default', [
   'nodemon'
-  'coffeelint'
   'compile:client'
   'watch'
 ]
