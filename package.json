@@ -45,13 +45,11 @@
     "gulp-jshint": "*",
     "gulp-less": "*",
     "gulp-livereload": "*",
-    "gulp-minify": "*",
-    "gulp-minify-css": "^1.2.3",
     "gulp-nodemon": "*",
     "gulp-util": "*",
     "jade-loader": "*",
-    "jshint": "*",
-    "jshint-stylish": "*",
-    "pm2": "*"
+    "pm2": "*",
+    "gulp-minify": "*",
+    "gulp-cssnano": "*"
   }
 }

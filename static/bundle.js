@@ -61,9 +61,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(45);
+	__webpack_require__(49);
 
-	__webpack_require__(46);
+	__webpack_require__(50);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -28940,7 +28940,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-paper-plane\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },
@@ -28969,7 +28969,7 @@
 
 	Exercise = __webpack_require__(35);
 
-	Strength = __webpack_require__(39);
+	Strength = __webpack_require__(43);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -29048,6 +29048,16 @@
 	      })(this)
 	    });
 	  }
+
+	  Router.prototype.initialize = function() {
+	    return this.bind('all', this._trackPageview);
+	  };
+
+	  Router.prototype._trackPageview = function() {
+	    var url;
+	    url = Backbone.history.getFragment();
+	    return _gaq.push(['_trackPageview', "/" + url]);
+	  };
 
 	  Router.prototype.routes = {
 	    '': 'signup',
@@ -31014,11 +31024,19 @@
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	InputView = __webpack_require__(36);
+
+	TableView = __webpack_require__(39);
+
+	viewTemplate = __webpack_require__(42);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -31054,22 +31072,47 @@
 
 	})(Backbone.Collection);
 
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.regions = {
+	    input: '#exercise-input-view',
+	    table: '#exercise-table-view'
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('input', new InputView({
+	      model: this.model
+	    }));
+	    return this.showChildView('table', new TableView({
+	      collection: this.collection
+	    }));
+	  };
+
+	  return View;
+
+	})(Marionette.LayoutView);
+
 	exports.Model = Model;
 
 	exports.Collection = Collection;
 
-	exports.View = __webpack_require__(36);
+	exports.View = View;
 
 
 /***/ },
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, Backbone, Marionette, View, _, viewTemplate,
+	var Backbone, Marionette, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
-
-	$ = __webpack_require__(2);
 
 	_ = __webpack_require__(3);
 
@@ -31094,7 +31137,8 @@
 	  };
 
 	  View.prototype.bindings = {
-	    '#exercise-name': 'name'
+	    '#exercise-name': 'name',
+	    '#exercise-type': 'type'
 	  };
 
 	  View.prototype.events = {
@@ -31162,7 +31206,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Add new Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"exercise-name\" required class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-name\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-note\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Add new Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"exercise-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-name\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-note\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -32809,6 +32853,122 @@
 /* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var $, Backbone, ItemView, Marionette, View, _, itemTemplate, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	itemTemplate = __webpack_require__(40);
+
+	viewTemplate = __webpack_require__(41);
+
+	__webpack_require__(38);
+
+	__webpack_require__(24);
+
+	ItemView = (function(superClass) {
+	  extend(ItemView, superClass);
+
+	  function ItemView() {
+	    return ItemView.__super__.constructor.apply(this, arguments);
+	  }
+
+	  ItemView.prototype.tagName = 'tr';
+
+	  ItemView.prototype.template = itemTemplate;
+
+	  ItemView.prototype.bindings = {
+	    '.exercise-table-td-name': 'name',
+	    '.exercise-table-td-type': 'type'
+	  };
+
+	  ItemView.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return ItemView;
+
+	})(Marionette.CompositeView);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.childViewContainer = 'tbody';
+
+	  View.prototype.childView = ItemView;
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    name: '#exercise-name',
+	    type: '#exercise-type'
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  return View;
+
+	})(Marionette.CompositeView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(13);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td class=\"exercise-table-td-name\"></td><td class=\"exercise-table-td-type\"></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(13);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">My Exercises</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table\"><thead><tr><td>Name</td><td>Type</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(13);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-input-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Backbone, Collection, Model,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -32856,11 +33016,11 @@
 
 	exports.Collection = Collection;
 
-	exports.View = __webpack_require__(40);
+	exports.View = __webpack_require__(44);
 
 
 /***/ },
-/* 40 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Marionette, View, _, viewTemplate,
@@ -32875,13 +33035,13 @@
 
 	Marionette = __webpack_require__(8);
 
-	viewTemplate = __webpack_require__(41);
+	viewTemplate = __webpack_require__(45);
 
-	__webpack_require__(42);
+	__webpack_require__(46);
 
-	__webpack_require__(43);
+	__webpack_require__(47);
 
-	__webpack_require__(44);
+	__webpack_require__(48);
 
 	__webpack_require__(24);
 
@@ -32959,7 +33119,7 @@
 
 
 /***/ },
-/* 41 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(13);
@@ -32973,7 +33133,7 @@
 	}
 
 /***/ },
-/* 42 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -33672,7 +33832,7 @@
 
 
 /***/ },
-/* 43 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -35826,7 +35986,7 @@
 
 
 /***/ },
-/* 44 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -37013,7 +37173,7 @@
 
 
 /***/ },
-/* 45 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -37105,7 +37265,7 @@
 
 
 /***/ },
-/* 46 */
+/* 50 */
 /***/ function(module, exports) {
 
 	/*!

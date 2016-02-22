@@ -88,7 +88,14 @@ class Router extends Marionette.AppRouter
         @multiplayer()
         return
 
-# Routes used for backbone urls.
+  initialize: ->
+    @bind 'all', @_trackPageview
+
+  _trackPageview: ->
+    url = Backbone.history.getFragment()
+    _gaq.push(['_trackPageview', "/#{url}"])
+
+  # Routes used for backbone urls.
 
   routes:
     '':            'signup'

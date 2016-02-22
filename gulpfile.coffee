@@ -10,15 +10,22 @@ path    = require 'path'
 # Gulp Plugins
 #-------------------------------------------------------------------------------
 
-minifyJS     = require 'gulp-minify'
-minifyCSS  = require 'gulp-minify-css'
+# Minify
+
+minifyJS   = require 'gulp-minify'
+minifyCSS  = require 'gulp-cssnano'
+
+# Lint
+
+coffeelint = require 'gulp-coffeelint'
 csslint    = require 'gulp-csslint'
+
+# Builder
+
 concat     = require 'gulp-concat'
-jshint     = require 'gulp-jshint'
 less       = require 'gulp-less'
 livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
-coffeelint = require 'gulp-coffeelint'
 
 #-------------------------------------------------------------------------------
 # Gulp Utility Plugins
@@ -53,8 +60,8 @@ gulp.task 'minify-js', ->
 
 gulp.task 'minify-css', ->
   return gulp.src('./static/*.css')
-    .pipe(minifyCSS(compatibility: 'ie8'))
-    .pipe(gulp.dest('dist'))
+    .pipe(minifyCSS())
+    .pipe(gulp.dest('static'))
 
 #-------------------------------------------------------------------------------
 # Coffee script Lint

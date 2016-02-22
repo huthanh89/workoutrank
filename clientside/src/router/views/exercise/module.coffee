@@ -2,7 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone = require 'backbone'
+Backbone     = require 'backbone'
+Marionette   = require 'marionette'
+InputView    = require './input/view'
+TableView    = require './table/view'
+viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -24,11 +28,30 @@ class Collection extends Backbone.Collection
   model: Model
 
 #-------------------------------------------------------------------------------
+# View
+#-------------------------------------------------------------------------------
+
+class View extends Marionette.LayoutView
+
+  template: viewTemplate
+
+  regions:
+    input: '#exercise-input-view'
+    table: '#exercise-table-view'
+
+  onShow: ->
+
+    @showChildView 'input', new InputView
+      model: @model
+    @showChildView 'table', new TableView
+      collection: @collection
+
+#-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
 exports.Model      = Model
 exports.Collection = Collection
-exports.View       = require './input/view'
+exports.View       = View
 
 #-------------------------------------------------------------------------------
