@@ -21200,6 +21200,10 @@
 	    return Application.__super__.constructor.apply(this, arguments);
 	  }
 
+	  Application.prototype.navigate = function() {
+	    console.log('navigate');
+	  };
+
 	  Application.prototype.onStart = function() {
 	    var navChannel, rootChannel, rootView;
 	    rootView = new RootView();
@@ -21220,7 +21224,21 @@
 	    });
 	    new Router();
 	    Backbone.history.on('route', function(router, route, params) {
-	      console.log(router, route, params);
+	      var _gaq;
+	      _gaq = _gaq || [];
+	      _gaq.push(['_setAccount', 'UA-74126093-1']);
+	      _gaq.push(['_trackPageview']);
+	      (function() {
+	        var ga, s;
+	        ga = document.createElement('script');
+	        ga.type = 'text/javascript';
+	        ga.async = true;
+	        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	        s = document.getElementsByTagName('script')[0];
+	        return s.parentNode.insertBefore(ga, s);
+	      })();
+	      _gaq.push(['_trackPageview', "/" + route]);
+	      ga('send', 'pageview');
 	    });
 	    Backbone.history.start({
 	      pushState: true
@@ -29075,30 +29093,6 @@
 	      })(this)
 	    });
 	  }
-
-	  Router.prototype.initialize = function() {
-	    return this.bind('all', this._trackPageview);
-	  };
-
-	  Router.prototype._trackPageview = function() {
-	    var _gaq, url;
-	    url = Backbone.history.getFragment();
-	    console.log('url', url);
-	    _gaq = _gaq || [];
-	    _gaq.push(['_setAccount', 'UA-74126093-1']);
-	    _gaq.push(['_trackPageview']);
-	    (function() {
-	      var ga, s;
-	      console.log('here');
-	      ga = document.createElement('script');
-	      ga.type = 'text/javascript';
-	      ga.async = true;
-	      ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	      s = document.getElementsByTagName('script')[0];
-	      return s.parentNode.insertBefore(ga, s);
-	    })();
-	    _gaq.push(['_trackPageview', "/" + url]);
-	  };
 
 	  Router.prototype.routes = {
 	    '': 'signup',
