@@ -21159,7 +21159,7 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Backbone, Marionette, Nav, RootView, Router,
+	var Application, Backbone, Marionette, Nav, RootView, Router, trackPage,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -21170,6 +21170,10 @@
 	Nav = __webpack_require__(9);
 
 	Router = __webpack_require__(17);
+
+	trackPage = function() {
+	  console.log('tracking page');
+	};
 
 	RootView = (function(superClass) {
 	  extend(RootView, superClass);
@@ -21215,6 +21219,9 @@
 	      }
 	    });
 	    new Router();
+	    Backbone.history.on('route', function(router, route, params) {
+	      console.log(router, route, params);
+	    });
 	    Backbone.history.start({
 	      pushState: true
 	    });
@@ -28988,61 +28995,81 @@
 	      })(this),
 	      signup: (function(_this) {
 	        return function() {
-	          _this.navigate('signup');
+	          _this.navigate('signup', {
+	            trigger: true
+	          });
 	          _this.signup();
 	        };
 	      })(this),
 	      login: (function(_this) {
 	        return function() {
-	          _this.navigate('login');
+	          _this.navigate('login', {
+	            trigger: true
+	          });
 	          _this.login();
 	        };
 	      })(this),
 	      home: (function(_this) {
 	        return function() {
-	          _this.navigate('home');
+	          _this.navigate('home', {
+	            trigger: true
+	          });
 	          _this.home();
 	        };
 	      })(this),
 	      profile: (function(_this) {
 	        return function() {
-	          _this.navigate('profile');
+	          _this.navigate('profile', {
+	            trigger: true
+	          });
 	          _this.profile();
 	        };
 	      })(this),
 	      exercise: (function(_this) {
 	        return function() {
-	          _this.navigate('exercise');
+	          _this.navigate('exercise', {
+	            trigger: true
+	          });
 	          _this.exercise();
 	        };
 	      })(this),
 	      strength: (function(_this) {
 	        return function() {
-	          _this.navigate('strength');
+	          _this.navigate('strength', {
+	            trigger: true
+	          });
 	          _this.strength();
 	        };
 	      })(this),
 	      stat: (function(_this) {
 	        return function() {
-	          _this.navigate('stat');
+	          _this.navigate('stat', {
+	            trigger: true
+	          });
 	          _this.stat();
 	        };
 	      })(this),
 	      schedule: (function(_this) {
 	        return function() {
-	          _this.navigate('schedule');
+	          _this.navigate('schedule', {
+	            trigger: true
+	          });
 	          _this.schedule();
 	        };
 	      })(this),
 	      log: (function(_this) {
 	        return function() {
-	          _this.navigate('log');
+	          _this.navigate('log', {
+	            trigger: true
+	          });
 	          _this.log();
 	        };
 	      })(this),
 	      multiplayer: (function(_this) {
 	        return function() {
-	          _this.navigate('multiplayer');
+	          _this.navigate('multiplayer', {
+	            trigger: true
+	          });
 	          _this.multiplayer();
 	        };
 	      })(this)
@@ -29054,9 +29081,23 @@
 	  };
 
 	  Router.prototype._trackPageview = function() {
-	    var url;
+	    var _gaq, url;
 	    url = Backbone.history.getFragment();
-	    return _gaq.push(['_trackPageview', "/" + url]);
+	    console.log('url', url);
+	    _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-74126093-1']);
+	    _gaq.push(['_trackPageview']);
+	    (function() {
+	      var ga, s;
+	      console.log('here');
+	      ga = document.createElement('script');
+	      ga.type = 'text/javascript';
+	      ga.async = true;
+	      ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	      s = document.getElementsByTagName('script')[0];
+	      return s.parentNode.insertBefore(ga, s);
+	    })();
+	    _gaq.push(['_trackPageview', "/" + url]);
 	  };
 
 	  Router.prototype.routes = {

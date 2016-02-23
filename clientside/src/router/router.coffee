@@ -30,6 +30,7 @@ class Router extends Marionette.AppRouter
     # Replies for menu navigation.
     # Change the url path with @navigate('url path')
     # before being sent to route handler.
+    # When changing url, set trigger true to trigger onRoute()
 
     @rootChannel.reply
 
@@ -39,61 +40,86 @@ class Router extends Marionette.AppRouter
         return
 
       signup: =>
-        @navigate('signup')
+        @navigate('signup', trigger: true)
         @signup()
         return
 
       login: =>
-        @navigate('login')
+        @navigate('login', trigger: true)
         @login()
         return
 
       home: =>
-        @navigate('home')
+        @navigate('home', trigger: true)
         @home()
         return
 
       profile: =>
-        @navigate('profile')
+        @navigate('profile', trigger: true)
         @profile()
         return
 
       exercise: =>
-        @navigate('exercise')
+        @navigate('exercise', trigger: true)
         @exercise()
         return
 
       strength: =>
-        @navigate('strength')
+        @navigate('strength', trigger: true)
         @strength()
         return
 
       stat: =>
-        @navigate('stat')
+        @navigate('stat', trigger: true)
         @stat()
         return
 
       schedule: =>
-        @navigate('schedule')
+        @navigate('schedule', trigger: true)
         @schedule()
         return
 
       log: =>
-        @navigate('log')
+        @navigate('log', trigger: true)
         @log()
         return
 
       multiplayer: =>
-        @navigate('multiplayer')
+        @navigate('multiplayer', trigger: true)
         @multiplayer()
         return
 
   initialize: ->
     @bind 'all', @_trackPageview
 
-  _trackPageview: ->
+  _trackPageview:  ->
+
     url = Backbone.history.getFragment()
+
+    console.log 'url', url
+
+    _gaq = _gaq or []
+    _gaq.push [
+      '_setAccount'
+      'UA-74126093-1'
+    ]
+    _gaq.push [ '_trackPageview' ]
+
+    do ->
+      console.log 'here'
+      ga = document.createElement('script')
+      ga.type = 'text/javascript'
+      ga.async = true
+      ga.src = (
+        if 'https:' == document.location.protocol
+        then 'https://ssl'
+        else 'http://www'
+      ) + '.google-analytics.com/ga.js'
+      s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore ga, s
     _gaq.push(['_trackPageview', "/#{url}"])
+
+    return
 
   # Routes used for backbone urls.
 

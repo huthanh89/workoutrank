@@ -6,7 +6,6 @@ $           = require 'jquery'
 _           = require 'lodash'
 Application = require './application'
 
-
 #-------------------------------------------------------------------------------
 # Hacks and workaround.
 #
@@ -23,6 +22,11 @@ require 'bootstrap'
 # Console out if bootstrap is not working.
 unless $().modal
   console.log 'bootstrap is not working.'
+
+#-------------------------------------------------------------------------------
+# Google analytics
+#-------------------------------------------------------------------------------
+
 
 #-------------------------------------------------------------------------------
 # Starting point.
