@@ -60,9 +60,7 @@ class Application extends Marionette.Application
 
     Backbone.history.on 'route', (router, route, params) ->
 
-      #------------------------------------------------------------------------
       # Google analytics
-      #------------------------------------------------------------------------
 
       _gaq = _gaq or []
       _gaq.push [

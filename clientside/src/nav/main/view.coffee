@@ -30,6 +30,8 @@ class View extends Marionette.ItemView
     collapseBtn:  '#nav-collapse-btn'
     menu:         '#my-menu'
 
+    dropdown:     '#nav-main-dropdown'
+
   constructor: ->
     super
     @channel = Backbone.Radio.channel('root')
@@ -50,10 +52,6 @@ class View extends Marionette.ItemView
         add: true,
         content: "(c) 2015 WebApp. All rights reserved"
 
-    @ui.home.on 'click', =>
-      @channel.request('home')
-      return
-
     @ui.profile.on 'click', =>
       @channel.request('profile')
       return
@@ -70,6 +68,13 @@ class View extends Marionette.ItemView
 
   events:
 
+    # XXX Still have a bug on focus out.
+
+    'focusout ul': ->
+      console.log 'focusout'
+      @ui.dropdown.click()
+      return
+
     #Open menu.
 
     'click @ui.brand': (event)->
@@ -82,15 +87,11 @@ class View extends Marionette.ItemView
       @ui.collapseBtn.collapse('hide')
       #@ui.collapseBtn.collapse('hide') unless $(event.target)
       # .hasClass('dropdown-toggle')
-
       return
 
-  'click @ui.home' : ->
-
-    console.log 'here'
-
-#    Radio.command 'main', 'app:user:home'
-    return
+    'click @ui.home': ->
+      @channel.request('home')
+      return
 
 #-------------------------------------------------------------------------------
 # Exports

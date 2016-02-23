@@ -28125,11 +28125,311 @@
 
 	exports.Index = __webpack_require__(10);
 
-	exports.Main = __webpack_require__(15);
+	exports.Main = __webpack_require__(14);
 
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(8);
+
+	viewTemplate = __webpack_require__(11);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div id=\"p1\" data-role=\"page\"></div><div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" href=\"#\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Merge two attribute objects giving precedence
+	 * to values in object `b`. Classes are special-cased
+	 * allowing for arrays and merging/joining appropriately
+	 * resulting in a string.
+	 *
+	 * @param {Object} a
+	 * @param {Object} b
+	 * @return {Object} a
+	 * @api private
+	 */
+
+	exports.merge = function merge(a, b) {
+	  if (arguments.length === 1) {
+	    var attrs = a[0];
+	    for (var i = 1; i < a.length; i++) {
+	      attrs = merge(attrs, a[i]);
+	    }
+	    return attrs;
+	  }
+	  var ac = a['class'];
+	  var bc = b['class'];
+
+	  if (ac || bc) {
+	    ac = ac || [];
+	    bc = bc || [];
+	    if (!Array.isArray(ac)) ac = [ac];
+	    if (!Array.isArray(bc)) bc = [bc];
+	    a['class'] = ac.concat(bc).filter(nulls);
+	  }
+
+	  for (var key in b) {
+	    if (key != 'class') {
+	      a[key] = b[key];
+	    }
+	  }
+
+	  return a;
+	};
+
+	/**
+	 * Filter null `val`s.
+	 *
+	 * @param {*} val
+	 * @return {Boolean}
+	 * @api private
+	 */
+
+	function nulls(val) {
+	  return val != null && val !== '';
+	}
+
+	/**
+	 * join array as classes.
+	 *
+	 * @param {*} val
+	 * @return {String}
+	 */
+	exports.joinClasses = joinClasses;
+	function joinClasses(val) {
+	  return (Array.isArray(val) ? val.map(joinClasses) :
+	    (val && typeof val === 'object') ? Object.keys(val).filter(function (key) { return val[key]; }) :
+	    [val]).filter(nulls).join(' ');
+	}
+
+	/**
+	 * Render the given classes.
+	 *
+	 * @param {Array} classes
+	 * @param {Array.<Boolean>} escaped
+	 * @return {String}
+	 */
+	exports.cls = function cls(classes, escaped) {
+	  var buf = [];
+	  for (var i = 0; i < classes.length; i++) {
+	    if (escaped && escaped[i]) {
+	      buf.push(exports.escape(joinClasses([classes[i]])));
+	    } else {
+	      buf.push(joinClasses(classes[i]));
+	    }
+	  }
+	  var text = joinClasses(buf);
+	  if (text.length) {
+	    return ' class="' + text + '"';
+	  } else {
+	    return '';
+	  }
+	};
+
+
+	exports.style = function (val) {
+	  if (val && typeof val === 'object') {
+	    return Object.keys(val).map(function (style) {
+	      return style + ':' + val[style];
+	    }).join(';');
+	  } else {
+	    return val;
+	  }
+	};
+	/**
+	 * Render the given attribute.
+	 *
+	 * @param {String} key
+	 * @param {String} val
+	 * @param {Boolean} escaped
+	 * @param {Boolean} terse
+	 * @return {String}
+	 */
+	exports.attr = function attr(key, val, escaped, terse) {
+	  if (key === 'style') {
+	    val = exports.style(val);
+	  }
+	  if ('boolean' == typeof val || null == val) {
+	    if (val) {
+	      return ' ' + (terse ? key : key + '="' + key + '"');
+	    } else {
+	      return '';
+	    }
+	  } else if (0 == key.indexOf('data') && 'string' != typeof val) {
+	    if (JSON.stringify(val).indexOf('&') !== -1) {
+	      console.warn('Since Jade 2.0.0, ampersands (`&`) in data attributes ' +
+	                   'will be escaped to `&amp;`');
+	    };
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will eliminate the double quotes around dates in ' +
+	                   'ISO form after 2.0.0');
+	    }
+	    return ' ' + key + "='" + JSON.stringify(val).replace(/'/g, '&apos;') + "'";
+	  } else if (escaped) {
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+	    }
+	    return ' ' + key + '="' + exports.escape(val) + '"';
+	  } else {
+	    if (val && typeof val.toISOString === 'function') {
+	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+	    }
+	    return ' ' + key + '="' + val + '"';
+	  }
+	};
+
+	/**
+	 * Render the given attributes object.
+	 *
+	 * @param {Object} obj
+	 * @param {Object} escaped
+	 * @return {String}
+	 */
+	exports.attrs = function attrs(obj, terse){
+	  var buf = [];
+
+	  var keys = Object.keys(obj);
+
+	  if (keys.length) {
+	    for (var i = 0; i < keys.length; ++i) {
+	      var key = keys[i]
+	        , val = obj[key];
+
+	      if ('class' == key) {
+	        if (val = joinClasses(val)) {
+	          buf.push(' ' + key + '="' + val + '"');
+	        }
+	      } else {
+	        buf.push(exports.attr(key, val, false, terse));
+	      }
+	    }
+	  }
+
+	  return buf.join('');
+	};
+
+	/**
+	 * Escape the given string of `html`.
+	 *
+	 * @param {String} html
+	 * @return {String}
+	 * @api private
+	 */
+
+	var jade_encode_html_rules = {
+	  '&': '&amp;',
+	  '<': '&lt;',
+	  '>': '&gt;',
+	  '"': '&quot;'
+	};
+	var jade_match_html = /[&<>"]/g;
+
+	function jade_encode_char(c) {
+	  return jade_encode_html_rules[c] || c;
+	}
+
+	exports.escape = jade_escape;
+	function jade_escape(html){
+	  var result = String(html).replace(jade_match_html, jade_encode_char);
+	  if (result === '' + html) return html;
+	  else return result;
+	};
+
+	/**
+	 * Re-throw the given `err` in context to the
+	 * the jade in `filename` at the given `lineno`.
+	 *
+	 * @param {Error} err
+	 * @param {String} filename
+	 * @param {String} lineno
+	 * @api private
+	 */
+
+	exports.rethrow = function rethrow(err, filename, lineno, str){
+	  if (!(err instanceof Error)) throw err;
+	  if ((typeof window != 'undefined' || !filename) && !str) {
+	    err.message += ' on line ' + lineno;
+	    throw err;
+	  }
+	  try {
+	    str = str || __webpack_require__(13).readFileSync(filename, 'utf8')
+	  } catch (ex) {
+	    rethrow(err, null, lineno)
+	  }
+	  var context = 3
+	    , lines = str.split('\n')
+	    , start = Math.max(lineno - context, 0)
+	    , end = Math.min(lines.length, lineno + context);
+
+	  // Error context
+	  var context = lines.slice(start, end).map(function(line, i){
+	    var curr = i + start + 1;
+	    return (curr == lineno ? '  > ' : '    ')
+	      + curr
+	      + '| '
+	      + line;
+	  }).join('\n');
+
+	  // Alter exception message
+	  err.path = filename;
+	  err.message = (filename || 'Jade') + ':' + lineno
+	    + '\n' + context + '\n\n' + err.message;
+	  throw err;
+	};
+
+	exports.DebugItem = function DebugItem(lineno, filename) {
+	  this.lineno = lineno;
+	  this.filename = filename;
+	}
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	/* (ignored) */
+
+/***/ },
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
@@ -28142,11 +28442,11 @@
 
 	Backbone = __webpack_require__(6);
 
-	Radio = __webpack_require__(11);
+	Radio = __webpack_require__(15);
 
 	Marionette = __webpack_require__(8);
 
-	viewTemplate = __webpack_require__(12);
+	viewTemplate = __webpack_require__(16);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -28155,14 +28455,16 @@
 
 	  View.prototype.ui = {
 	    brand: '#navbar-brand',
-	    home: '#nav-user-home',
-	    profile: '#nav-user-profile',
-	    contacts: '#nav-user-contacts',
-	    movies: '#nav-user-movies',
-	    movie: '#nav-user-movie',
-	    chat: '#nav-user-chat',
+	    home: '#nav-home',
+	    profile: '#nav-profile',
+	    contacts: '#nav-contacts',
+	    exercise: '#nav-exercise',
+	    movie: '#nav-movie',
+	    chat: '#nav-chat',
 	    collapseItem: '.nav-collapse-item',
-	    collapseBtn: '#nav-user-collapse-btn'
+	    collapseBtn: '#nav-collapse-btn',
+	    menu: '#my-menu',
+	    dropdown: '#nav-main-dropdown'
 	  };
 
 	  function View() {
@@ -28171,7 +28473,7 @@
 	  }
 
 	  View.prototype.onShow = function() {
-	    $("#my-menu").mmenu({
+	    this.ui.menu.mmenu({
 	      offCanvas: {
 	        zposition: "front"
 	      },
@@ -28184,11 +28486,6 @@
 	        content: "(c) 2015 WebApp. All rights reserved"
 	      }
 	    });
-	    this.ui.home.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
 	    this.ui.profile.on('click', (function(_this) {
 	      return function() {
 	        _this.channel.request('profile');
@@ -28199,35 +28496,28 @@
 	        _this.channel.request('home');
 	      };
 	    })(this));
-	    this.ui.movies.on('click', (function(_this) {
+	    this.ui.exercise.on('click', (function(_this) {
 	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.movie.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.chat.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
+	        _this.channel.request('exercise');
 	      };
 	    })(this));
 	  };
 
 	  View.prototype.events = {
+	    'focusout ul': function() {
+	      console.log('focusout');
+	      this.ui.dropdown.click();
+	    },
 	    'click @ui.brand': function(event) {
 	      event.preventDefault();
 	      $("#my-menu").trigger("open.mm");
 	    },
 	    'click @ui.collapseItem': function(event) {
 	      this.ui.collapseBtn.collapse('hide');
+	    },
+	    'click @ui.home': function() {
+	      this.channel.request('home');
 	    }
-	  };
-
-	  View.prototype['click @ui.home'] = function() {
-	    console.log('here');
 	  };
 
 	  return View;
@@ -28238,7 +28528,7 @@
 
 
 /***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -28583,389 +28873,17 @@
 
 
 /***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(13);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div id=\"p1\" data-role=\"page\"></div><div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" href=\"#\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Merge two attribute objects giving precedence
-	 * to values in object `b`. Classes are special-cased
-	 * allowing for arrays and merging/joining appropriately
-	 * resulting in a string.
-	 *
-	 * @param {Object} a
-	 * @param {Object} b
-	 * @return {Object} a
-	 * @api private
-	 */
-
-	exports.merge = function merge(a, b) {
-	  if (arguments.length === 1) {
-	    var attrs = a[0];
-	    for (var i = 1; i < a.length; i++) {
-	      attrs = merge(attrs, a[i]);
-	    }
-	    return attrs;
-	  }
-	  var ac = a['class'];
-	  var bc = b['class'];
-
-	  if (ac || bc) {
-	    ac = ac || [];
-	    bc = bc || [];
-	    if (!Array.isArray(ac)) ac = [ac];
-	    if (!Array.isArray(bc)) bc = [bc];
-	    a['class'] = ac.concat(bc).filter(nulls);
-	  }
-
-	  for (var key in b) {
-	    if (key != 'class') {
-	      a[key] = b[key];
-	    }
-	  }
-
-	  return a;
-	};
-
-	/**
-	 * Filter null `val`s.
-	 *
-	 * @param {*} val
-	 * @return {Boolean}
-	 * @api private
-	 */
-
-	function nulls(val) {
-	  return val != null && val !== '';
-	}
-
-	/**
-	 * join array as classes.
-	 *
-	 * @param {*} val
-	 * @return {String}
-	 */
-	exports.joinClasses = joinClasses;
-	function joinClasses(val) {
-	  return (Array.isArray(val) ? val.map(joinClasses) :
-	    (val && typeof val === 'object') ? Object.keys(val).filter(function (key) { return val[key]; }) :
-	    [val]).filter(nulls).join(' ');
-	}
-
-	/**
-	 * Render the given classes.
-	 *
-	 * @param {Array} classes
-	 * @param {Array.<Boolean>} escaped
-	 * @return {String}
-	 */
-	exports.cls = function cls(classes, escaped) {
-	  var buf = [];
-	  for (var i = 0; i < classes.length; i++) {
-	    if (escaped && escaped[i]) {
-	      buf.push(exports.escape(joinClasses([classes[i]])));
-	    } else {
-	      buf.push(joinClasses(classes[i]));
-	    }
-	  }
-	  var text = joinClasses(buf);
-	  if (text.length) {
-	    return ' class="' + text + '"';
-	  } else {
-	    return '';
-	  }
-	};
-
-
-	exports.style = function (val) {
-	  if (val && typeof val === 'object') {
-	    return Object.keys(val).map(function (style) {
-	      return style + ':' + val[style];
-	    }).join(';');
-	  } else {
-	    return val;
-	  }
-	};
-	/**
-	 * Render the given attribute.
-	 *
-	 * @param {String} key
-	 * @param {String} val
-	 * @param {Boolean} escaped
-	 * @param {Boolean} terse
-	 * @return {String}
-	 */
-	exports.attr = function attr(key, val, escaped, terse) {
-	  if (key === 'style') {
-	    val = exports.style(val);
-	  }
-	  if ('boolean' == typeof val || null == val) {
-	    if (val) {
-	      return ' ' + (terse ? key : key + '="' + key + '"');
-	    } else {
-	      return '';
-	    }
-	  } else if (0 == key.indexOf('data') && 'string' != typeof val) {
-	    if (JSON.stringify(val).indexOf('&') !== -1) {
-	      console.warn('Since Jade 2.0.0, ampersands (`&`) in data attributes ' +
-	                   'will be escaped to `&amp;`');
-	    };
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will eliminate the double quotes around dates in ' +
-	                   'ISO form after 2.0.0');
-	    }
-	    return ' ' + key + "='" + JSON.stringify(val).replace(/'/g, '&apos;') + "'";
-	  } else if (escaped) {
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
-	    }
-	    return ' ' + key + '="' + exports.escape(val) + '"';
-	  } else {
-	    if (val && typeof val.toISOString === 'function') {
-	      console.warn('Jade will stringify dates in ISO form after 2.0.0');
-	    }
-	    return ' ' + key + '="' + val + '"';
-	  }
-	};
-
-	/**
-	 * Render the given attributes object.
-	 *
-	 * @param {Object} obj
-	 * @param {Object} escaped
-	 * @return {String}
-	 */
-	exports.attrs = function attrs(obj, terse){
-	  var buf = [];
-
-	  var keys = Object.keys(obj);
-
-	  if (keys.length) {
-	    for (var i = 0; i < keys.length; ++i) {
-	      var key = keys[i]
-	        , val = obj[key];
-
-	      if ('class' == key) {
-	        if (val = joinClasses(val)) {
-	          buf.push(' ' + key + '="' + val + '"');
-	        }
-	      } else {
-	        buf.push(exports.attr(key, val, false, terse));
-	      }
-	    }
-	  }
-
-	  return buf.join('');
-	};
-
-	/**
-	 * Escape the given string of `html`.
-	 *
-	 * @param {String} html
-	 * @return {String}
-	 * @api private
-	 */
-
-	var jade_encode_html_rules = {
-	  '&': '&amp;',
-	  '<': '&lt;',
-	  '>': '&gt;',
-	  '"': '&quot;'
-	};
-	var jade_match_html = /[&<>"]/g;
-
-	function jade_encode_char(c) {
-	  return jade_encode_html_rules[c] || c;
-	}
-
-	exports.escape = jade_escape;
-	function jade_escape(html){
-	  var result = String(html).replace(jade_match_html, jade_encode_char);
-	  if (result === '' + html) return html;
-	  else return result;
-	};
-
-	/**
-	 * Re-throw the given `err` in context to the
-	 * the jade in `filename` at the given `lineno`.
-	 *
-	 * @param {Error} err
-	 * @param {String} filename
-	 * @param {String} lineno
-	 * @api private
-	 */
-
-	exports.rethrow = function rethrow(err, filename, lineno, str){
-	  if (!(err instanceof Error)) throw err;
-	  if ((typeof window != 'undefined' || !filename) && !str) {
-	    err.message += ' on line ' + lineno;
-	    throw err;
-	  }
-	  try {
-	    str = str || __webpack_require__(14).readFileSync(filename, 'utf8')
-	  } catch (ex) {
-	    rethrow(err, null, lineno)
-	  }
-	  var context = 3
-	    , lines = str.split('\n')
-	    , start = Math.max(lineno - context, 0)
-	    , end = Math.min(lines.length, lineno + context);
-
-	  // Error context
-	  var context = lines.slice(start, end).map(function(line, i){
-	    var curr = i + start + 1;
-	    return (curr == lineno ? '  > ' : '    ')
-	      + curr
-	      + '| '
-	      + line;
-	  }).join('\n');
-
-	  // Alter exception message
-	  err.path = filename;
-	  err.message = (filename || 'Jade') + ':' + lineno
-	    + '\n' + context + '\n\n' + err.message;
-	  throw err;
-	};
-
-	exports.DebugItem = function DebugItem(lineno, filename) {
-	  this.lineno = lineno;
-	  this.filename = filename;
-	}
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	/* (ignored) */
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	$ = __webpack_require__(2);
-
-	Backbone = __webpack_require__(6);
-
-	Radio = __webpack_require__(11);
-
-	Marionette = __webpack_require__(8);
-
-	viewTemplate = __webpack_require__(16);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    brand: '#navbar-brand',
-	    home: '#nav-home',
-	    profile: '#nav-profile',
-	    contacts: '#nav-contacts',
-	    exercise: '#nav-exercise',
-	    movie: '#nav-movie',
-	    chat: '#nav-chat',
-	    collapseItem: '.nav-collapse-item',
-	    collapseBtn: '#nav-collapse-btn',
-	    menu: '#my-menu'
-	  };
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.channel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.onShow = function() {
-	    this.ui.menu.mmenu({
-	      offCanvas: {
-	        zposition: "front"
-	      },
-	      onClick: {
-	        close: false
-	      },
-	      header: true,
-	      footer: {
-	        add: true,
-	        content: "(c) 2015 WebApp. All rights reserved"
-	      }
-	    });
-	    this.ui.home.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.profile.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('profile');
-	      };
-	    })(this));
-	    this.ui.contacts.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.exercise.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('exercise');
-	      };
-	    })(this));
-	  };
-
-	  View.prototype.events = {
-	    'click @ui.brand': function(event) {
-	      event.preventDefault();
-	      $("#my-menu").trigger("open.mm");
-	    },
-	    'click @ui.collapseItem': function(event) {
-	      this.ui.collapseBtn.collapse('hide');
-	    }
-	  };
-
-	  View.prototype['click @ui.home'] = function() {
-	    console.log('here');
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" id=\"nav-main-dropdown\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" href=\"#\" class=\"navbar-brand\">App" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a href=\"#\" class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a href=\"#\" class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a href=\"#\" id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a href=\"#\" id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a href=\"#\" id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a href=\"#\" id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a href=\"#\" id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a href=\"#\"><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a href=\"#\" id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },
@@ -29269,7 +29187,7 @@
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -29399,7 +29317,7 @@
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -30826,7 +30744,7 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -30936,7 +30854,7 @@
 /* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -31045,7 +30963,7 @@
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -31234,7 +31152,7 @@
 /* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -32962,7 +32880,7 @@
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -32976,7 +32894,7 @@
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -32990,7 +32908,7 @@
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
@@ -33157,7 +33075,7 @@
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(13);
+	var jade = __webpack_require__(12);
 
 	module.exports = function template(locals) {
 	var buf = [];
