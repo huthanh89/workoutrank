@@ -13,7 +13,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-  url:  'api/exercise'
+  url:  '/api/exercise'
   defaults:
     name: ''
     type: 0
@@ -24,7 +24,7 @@ class Model extends Backbone.Model
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
-  url:  'api/exercise'
+  url:  '/api/exercise'
   model: Model
 
 #-------------------------------------------------------------------------------
@@ -35,9 +35,21 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
+  ui:
+    strength: '#exercise-strength'
+
   regions:
     input: '#exercise-input-view'
     table: '#exercise-table-view'
+
+  events:
+    'click #exercise-strength': ->
+      @rootChannel.request('exercise:type')
+      return
+
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
 

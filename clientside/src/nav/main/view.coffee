@@ -68,11 +68,8 @@ class View extends Marionette.ItemView
 
   events:
 
-    # XXX Still have a bug on focus out.
-
-    'focusout ul': ->
-      console.log 'focusout'
-      @ui.dropdown.click()
+    'focusout': ->
+      #@ui.dropdown.click()
       return
 
     #Open menu.

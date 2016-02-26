@@ -11,7 +11,6 @@ Login      = require './views/login/module'
 Home       = require './views/home/module'
 Profile    = require './views/profile/module'
 Exercise   = require './views/exercise/module'
-Strength   = require './views/strength/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -22,6 +21,8 @@ class Router extends Marionette.AppRouter
   constructor: ->
 
     super
+
+    console.log 'router constructor'
 
     @navChannel  = Backbone.Radio.channel('nav')
     @rootChannel = Backbone.Radio.channel('root')
@@ -34,75 +35,72 @@ class Router extends Marionette.AppRouter
 
     @rootChannel.reply
 
-      index: =>
+      'index': =>
         @navigate('')
         @signup()
         return
 
-      signup: =>
+      'signup': =>
         @navigate('signup', trigger: true)
         @signup()
         return
 
-      login: =>
+      'login': =>
         @navigate('login', trigger: true)
         @login()
         return
 
-      home: =>
+      'home': =>
         @navigate('home', trigger: true)
         @home()
         return
 
-      profile: =>
+      'profile': =>
         @navigate('profile', trigger: true)
         @profile()
         return
 
-      exercise: =>
+      'exercise': =>
         @navigate('exercise', trigger: true)
         @exercise()
         return
 
-      strength: =>
-        @navigate('strength', trigger: true)
-        @strength()
-        return
-
-      stat: =>
+      'stat': =>
         @navigate('stat', trigger: true)
         @stat()
         return
 
-      schedule: =>
+      'schedule': =>
         @navigate('schedule', trigger: true)
         @schedule()
         return
 
-      log: =>
+      'log': =>
         @navigate('log', trigger: true)
         @log()
         return
 
-      multiplayer: =>
+      'multiplayer': =>
         @navigate('multiplayer', trigger: true)
         @multiplayer()
         return
 
   # Routes used for backbone urls.
+  # Handle routes with APIs at the bottom.
 
   routes:
-    '':            'signup'
-    'signup':      'signup'
-    'login':       'login'
-    'home':        'home'
-    'profile':     'profile'
-    'exercise':    'exercise'
-    'strength':    'strength'
-    'stat':        'stat'
-    'schedule':    'schdeule'
-    'log':         'log'
-    'multiplayer': 'multiplayer'
+    '':                'signup'
+    '/':               'signup'
+    'signup':          'signup'
+    'login':           'login'
+    'home':            'home'
+    'profile':         'profile'
+    'exercise(/)':     'exercise'
+    'exercise/:type':  'exerciseType'
+    'stat':            'stat'
+    'schedule':        'schdeule'
+    'log':             'log'
+    'multiplayer':     'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -135,10 +133,8 @@ class Router extends Marionette.AppRouter
     return
 
   exercise: ->
-
     @navChannel.request('nav:main')
     collection = new Exercise.Collection()
-
     collection.fetch
       success: (collection) =>
         @rootView.content.show new Exercise.View
@@ -150,10 +146,12 @@ class Router extends Marionette.AppRouter
         return
     return
 
-  strength: ->
+  exerciseType: ->
+    console.log 'exerciseType'
     @navChannel.request('nav:main')
-    @rootView.content.show new Strength.View
-      model: new Strength.Model()
+    @rootView.content.show new Profile.View()
+    #@rootView.content.show new Strength.View
+    #  model: new Strength.Model()
     return
 
   stat: ->

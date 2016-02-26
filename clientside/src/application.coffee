@@ -8,11 +8,6 @@ Marionette = require 'marionette'
 Nav        = require './nav/module'
 Router     = require './router/router'
 
-
-trackPage = ()->
-  console.log 'tracking page'
-  return
-
 #-------------------------------------------------------------------------------
 # RootView
 #-------------------------------------------------------------------------------
@@ -28,10 +23,6 @@ class RootView extends Marionette.LayoutView
 #-------------------------------------------------------------------------------
 
 class Application extends Marionette.Application
-
-  navigate: ->
-    console.log 'navigate'
-    return
 
   onStart: ->
 
@@ -55,7 +46,10 @@ class Application extends Marionette.Application
 
     # All router must be initialized before backbone.history starts to work.
 
-    new Router()
+
+    new Router
+      mode: 'auto'
+      trailingSlash: 'ignore'
 
 
     Backbone.history.on 'route', (router, route, params) ->
@@ -88,7 +82,8 @@ class Application extends Marionette.Application
     # Start backbone history a main step to bookmarkable url's.
 
     Backbone.history.start
-      pushState: true
+      pushState:  true
+      hashChange: false
 
     return
 

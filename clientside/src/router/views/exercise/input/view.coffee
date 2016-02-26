@@ -31,6 +31,19 @@ class View extends Marionette.ItemView
     '#exercise-type': 'type'
 
   events:
+
+    'click #exercise-strength': ->
+      return
+
+    'click #exercise-endurance': ->
+      return
+
+    'click #exercise-flexibility': ->
+      return
+
+    'click #exercise-balance': ->
+      return
+
     'submit': (event) ->
       event.preventDefault()
       @model.save {},
