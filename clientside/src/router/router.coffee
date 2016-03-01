@@ -19,11 +19,7 @@ Exercise   = require './views/exercise/module'
 class Router extends Marionette.AppRouter
 
   constructor: ->
-
     super
-
-    console.log 'router constructor'
-
     @navChannel  = Backbone.Radio.channel('nav')
     @rootChannel = Backbone.Radio.channel('root')
     @rootView    = @rootChannel.request('rootview')
@@ -65,6 +61,11 @@ class Router extends Marionette.AppRouter
         @exercise()
         return
 
+      'exercise:detail': (type) =>
+        @navigate("exercise/#{type}", trigger: true)
+        @exerciseDetail(type)
+        return
+
       'stat': =>
         @navigate('stat', trigger: true)
         @stat()
@@ -96,7 +97,7 @@ class Router extends Marionette.AppRouter
     'home':            'home'
     'profile':         'profile'
     'exercise(/)':     'exercise'
-    'exercise/:type':  'exerciseType'
+    'exercise/:type':  'exerciseDetail'
     'stat':            'stat'
     'schedule':        'schdeule'
     'log':             'log'
@@ -137,7 +138,7 @@ class Router extends Marionette.AppRouter
     collection = new Exercise.Collection()
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Exercise.View
+        @rootView.content.show new Exercise.MasterView
           collection: collection
           model: new Exercise.Model()
         return
@@ -146,12 +147,13 @@ class Router extends Marionette.AppRouter
         return
     return
 
-  exerciseType: ->
-    console.log 'exerciseType'
+  exerciseDetail: (type) ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
-    #@rootView.content.show new Strength.View
-    #  model: new Strength.Model()
+
+    View = Exercise.Detail(type).View
+
+    @rootView.content.show new View
+      model: new Backbone.Model()
     return
 
   stat: ->

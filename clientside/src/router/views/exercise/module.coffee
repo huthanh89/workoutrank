@@ -2,11 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone     = require 'backbone'
-Marionette   = require 'marionette'
-InputView    = require './input/view'
-TableView    = require './table/view'
-viewTemplate = require './view.jade'
+Backbone = require 'backbone'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -28,42 +24,12 @@ class Collection extends Backbone.Collection
   model: Model
 
 #-------------------------------------------------------------------------------
-# View
-#-------------------------------------------------------------------------------
-
-class View extends Marionette.LayoutView
-
-  template: viewTemplate
-
-  ui:
-    strength: '#exercise-strength'
-
-  regions:
-    input: '#exercise-input-view'
-    table: '#exercise-table-view'
-
-  events:
-    'click #exercise-strength': ->
-      @rootChannel.request('exercise:type')
-      return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
-
-  onShow: ->
-
-    @showChildView 'input', new InputView
-      model: @model
-    @showChildView 'table', new TableView
-      collection: @collection
-
-#-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
 exports.Model      = Model
 exports.Collection = Collection
-exports.View       = View
+exports.MasterView = require './master/view'
+exports.Detail     = require './detail/module'
 
 #-------------------------------------------------------------------------------

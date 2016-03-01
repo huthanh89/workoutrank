@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 _            = require 'lodash'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
