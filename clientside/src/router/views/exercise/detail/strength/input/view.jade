@@ -11,37 +11,49 @@ br
 .row
     .col-sm-12
         form.form-horizontal
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-date') Date
-                .col-sm-10
-                    .input-group.date
-                        input.form-control.input-readonly#exercise-strength-date(type="text" readonly)
-                        .input-group-addon
-                            span.fa.fa-fw.fa-lg.fa-calendar
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-time') Time
-                .col-sm-10
-                    .input-group.bootstrap-timepicker.timepicker
-                        input.form-control.input-readonly#exercise-strength-time(readonly)
-                        .input-group-addon
-                            span.fa.fa-fw.fa-lg.fa-clock-o
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-name') Name
-                .col-sm-10
-                    input.form-control#exercise-strength-name
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-type') Type
-                .col-sm-10
-                    select.form-control#exercise-strength-type
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-note') Note
-                .col-sm-10
-                    input.form-control#exercise-strength-note
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-rep') Rep
-                .col-sm-10
-                    input.form-control#exercise-strength-rep(placeholder=0)
-            .form-group
-                label.col-sm-2.control-label(for='exercise-strength-set') Set
-                .col-sm-10
-                    input.form-control#exercise-strength-set(placeholder=0)
+            // Nav tabs
+            ul.nav.nav-tabs(role='tablist')
+                li.active(role='presentation')
+                    a(href='#exercise-strength-basic' aria-controls='basic', role='tab', data-toggle='tab') Basic
+                li(role='presentation')
+                    a(href='#exercise-strength-advance' aria-controls='advance', role='tab', data-toggle='tab') Advance
+
+            br
+
+            // Tab panes
+
+            .tab-content
+                #exercise-strength-basic.tab-pane.active(role='tabpanel')
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-name') Name
+                        .col-sm-10
+                            input.form-control#exercise-strength-name
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-type') Type
+                        .col-sm-10
+                            select.form-control#exercise-strength-type
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-rep') Rep
+                        .col-sm-10
+                            input.form-control#exercise-strength-rep(placeholder=0)
+                    #exercise-strength-set-view
+
+                #exercise-strength-advance.tab-pane(role='tabpanel')
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-date') Date
+                        .col-sm-10
+                            .input-group.date
+                                input.form-control.input-readonly#exercise-strength-date(type="text" readonly)
+                                .input-group-addon
+                                    span.fa.fa-fw.fa-lg.fa-calendar
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-time') Time
+                        .col-sm-10
+                            .input-group.bootstrap-timepicker.timepicker
+                                input.form-control.input-readonly#exercise-strength-time(readonly)
+                                .input-group-addon
+                                    span.fa.fa-fw.fa-lg.fa-clock-o
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-note') Note
+                        .col-sm-10
+                            input.form-control#exercise-strength-note

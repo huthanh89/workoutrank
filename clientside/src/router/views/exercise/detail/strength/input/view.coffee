@@ -5,6 +5,7 @@
 _            = require 'lodash'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+SetView      = require './set/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -20,9 +21,12 @@ require 'backbone.stickit'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.LayoutView
 
   template: viewTemplate
+
+  regions:
+    set: '#exercise-strength-set-view'
 
   ui:
     name: '#exercise-strength-name'
@@ -55,6 +59,10 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @setCollection = new Backbone.Collection([
+      {a:1, b:2}
+      {a:1, b:2}
+    ])
 
   onRender: ->
 
@@ -75,6 +83,11 @@ class View extends Marionette.ItemView
     .timepicker('setTime', '12:45 AM')
 
     @stickit()
+    return
+
+  onShow: ->
+    @showChildView 'set', new SetView
+      collection: @setCollection
     return
 
   onDestroy: ->
