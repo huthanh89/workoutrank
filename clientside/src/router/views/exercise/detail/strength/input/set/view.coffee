@@ -15,6 +15,19 @@ class ItemView extends Marionette.ItemView
 
   template: viewTemplate
 
+  ui:
+    set: '.exercise-strength-set'
+
+  bindings:
+    '.exercise-strength-set': 'set'
+
+  onRender: ->
+
+    @ui.set.TouchSpin()
+
+    @stickit()
+    return
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------

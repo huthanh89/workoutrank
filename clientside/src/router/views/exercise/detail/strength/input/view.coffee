@@ -67,7 +67,9 @@ class View extends Marionette.LayoutView
   onRender: ->
 
     @ui.set.TouchSpin()
-    @ui.rep.TouchSpin()
+    @ui.rep.TouchSpin
+      buttondown_class: 'btn btn-primary'
+      buttonup_class: 'btn btn-primary'
 
     @ui.date.datepicker
       todayBtn:      'linked'

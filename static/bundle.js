@@ -33651,7 +33651,10 @@
 
 	  View.prototype.onRender = function() {
 	    this.ui.set.TouchSpin();
-	    this.ui.rep.TouchSpin();
+	    this.ui.rep.TouchSpin({
+	      buttondown_class: 'btn btn-primary',
+	      buttonup_class: 'btn btn-primary'
+	    });
 	    this.ui.date.datepicker({
 	      todayBtn: 'linked',
 	      todayHighlight: true
@@ -33710,6 +33713,19 @@
 
 	  ItemView.prototype.template = viewTemplate;
 
+	  ItemView.prototype.ui = {
+	    set: '.exercise-strength-set'
+	  };
+
+	  ItemView.prototype.bindings = {
+	    '.exercise-strength-set': 'set'
+	  };
+
+	  ItemView.prototype.onRender = function() {
+	    this.ui.set.TouchSpin();
+	    this.stickit();
+	  };
+
 	  return ItemView;
 
 	})(Marionette.ItemView);
@@ -33743,7 +33759,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"form-group\"><label for=\"exercise-strength-set\" class=\"col-sm-2 control-label\">Set</label><div class=\"col-sm-10\"><input id=\"exercise-strength-set\" placeholder=\"0\" class=\"form-control\"></div></div>");;return buf.join("");
+	buf.push("<div class=\"form-group\"><label class=\"col-sm-2 control-label\">Set</label><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-set\"></div></div>");;return buf.join("");
 	}
 
 /***/ },
