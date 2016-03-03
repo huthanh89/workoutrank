@@ -16,12 +16,12 @@ class ItemView extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    set:    '.exercise-strength-set'
+    rep:    '.exercise-strength-rep'
     weight: '.exercise-strength-weight'
 
   bindings:
 
-    '.exercise-strength-set': 'set'
+    '.exercise-strength-rep': 'rep'
 
     '.exercise-strength-weight': 'weight'
 
@@ -31,7 +31,7 @@ class ItemView extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.set.TouchSpin()
+    @ui.rep.TouchSpin()
     @ui.weight.TouchSpin()
 
     @stickit()
@@ -39,7 +39,7 @@ class ItemView extends Marionette.ItemView
 
   onBeforeDestroy: ->
     console.log 'before'
-    @ui.set.TouchSpin('destroy')
+    @ui.rep.TouchSpin('destroy')
     @ui.weight.TouchSpin('destroy')
     return
 

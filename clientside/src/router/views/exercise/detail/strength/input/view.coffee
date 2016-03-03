@@ -31,7 +31,7 @@ class View extends Marionette.LayoutView
   ui:
     name: '#exercise-strength-name'
     type: '#exercise-strength-type'
-    rep:  '#exercise-strength-rep'
+    add:  '#exercise-strength-add'
     date: '#exercise-strength-date'
     time: '#exercise-strength-time'
 
@@ -41,8 +41,8 @@ class View extends Marionette.LayoutView
 
     '#exercise-strength-note': 'note'
 
-    '#exercise-strength-rep':
-      observe: 'rep'
+    '#exercise-strength-add':
+      observe: 'add'
       onSet: (value) ->
         if value > @setCollection.length
           @setCollection.add new Backbone.Model
@@ -84,7 +84,7 @@ class View extends Marionette.LayoutView
       { value: 2, label: 'shoulder' }
       { value: 3, label: 'back'     }
     ]
-    @ui.rep.TouchSpin
+    @ui.add.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       max:              100
@@ -112,7 +112,7 @@ class View extends Marionette.LayoutView
 
   onBeforeDestroy: ->
     @ui.date.datepicker('destroy')
-    @ui.rep.TouchSpin('destroy')
+    @ui.add.TouchSpin('destroy')
     return
 
 #-------------------------------------------------------------------------------
