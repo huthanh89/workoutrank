@@ -52,6 +52,10 @@ class View extends Marionette.LayoutView
         return
 
   events:
+    'click #exercise-strength-exercise': ->
+      @rootChannel.request('exercise')
+      return
+
     'click #exercise-strength-time': ->
       @ui.time.timepicker('showWidget')
       return

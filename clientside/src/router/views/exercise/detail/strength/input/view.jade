@@ -1,12 +1,16 @@
 .row
     .col-sm-12
-        span.lead Strength
+        button.btn.btn-default#exercise-strength-exercise
+            i.fa.fa-arrow-left
+            = ' '
+            i.fa.fa-heartbeat
+br
 .row
     .col-sm-12
-        button.btn.btn-success.pull-right
-            i.fa.fa-plus
+        span.lead
+            i.fa.fa-fw.fa-lg.fa-shield
             = ' '
-            | Add
+            | Strength
 br
 .row
     .col-sm-12
@@ -14,9 +18,15 @@ br
             // Nav tabs
             ul.nav.nav-tabs(role='tablist')
                 li.active(role='presentation')
-                    a(href='#exercise-strength-basic' aria-controls='basic', role='tab', data-toggle='tab') Basic
+                    a(href='#exercise-strength-basic' aria-controls='basic', role='tab', data-toggle='tab')
+                        i.fa.fa-fw.fa-lg.fa-pencil
+                        = ' '
+                        | Basic
                 li(role='presentation')
-                    a(href='#exercise-strength-advance' aria-controls='advance', role='tab', data-toggle='tab') Advance
+                    a(href='#exercise-strength-advance' aria-controls='advance', role='tab', data-toggle='tab')
+                        i.fa.fa-fw.fa-lg.fa-cogs
+                        = ' '
+                        | Advance
 
             br
 
@@ -63,3 +73,10 @@ br
                         label.col-sm-2.control-label(for='exercise-strength-note') Note
                         .col-sm-10
                             input.form-control#exercise-strength-note
+br
+.row
+    .col-sm-12
+        button.btn.btn-success.pull-right
+            i.fa.fa-plus
+            = ' '
+            | Add
