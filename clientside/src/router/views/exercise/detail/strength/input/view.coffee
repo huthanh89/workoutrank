@@ -31,7 +31,6 @@ class View extends Marionette.LayoutView
   ui:
     name: '#exercise-strength-name'
     type: '#exercise-strength-type'
-    set:  '#exercise-strength-set'
     rep:  '#exercise-strength-rep'
     date: '#exercise-strength-date'
     time: '#exercise-strength-time'
@@ -66,10 +65,19 @@ class View extends Marionette.LayoutView
 
   onRender: ->
 
-    @ui.set.TouchSpin()
+    @ui.type.multiselect
+      enableFiltering: true
+      buttonWidth:    '100%'
+      buttonClass:    'btn btn-info'
+    .multiselect 'dataprovider', [
+      { value: 0, label: 'arm'      }
+      { value: 1, label: 'leg'      }
+      { value: 2, label: 'shoulder' }
+      { value: 3, label: 'back'     }
+    ]
     @ui.rep.TouchSpin
       buttondown_class: 'btn btn-primary'
-      buttonup_class: 'btn btn-primary'
+      buttonup_class:   'btn btn-primary'
 
     @ui.date.datepicker
       todayBtn:      'linked'
@@ -94,7 +102,6 @@ class View extends Marionette.LayoutView
 
   onDestroy: ->
     @ui.date.datepicker('destroy')
-    @ui.set.TouchSpin('destroy')
     @ui.rep.TouchSpin('destroy')
     return
 

@@ -31694,8 +31694,9 @@
 
 	  View.prototype.onRender = function() {
 	    this.ui.type.multiselect({
+	      enableFiltering: true,
 	      buttonWidth: '100%',
-	      buttonClass: 'multiselect-button'
+	      buttonClass: 'btn btn-info'
 	    }).multiselect('dataprovider', [
 	      {
 	        value: 0,
@@ -33605,7 +33606,6 @@
 	  View.prototype.ui = {
 	    name: '#exercise-strength-name',
 	    type: '#exercise-strength-type',
-	    set: '#exercise-strength-set',
 	    rep: '#exercise-strength-rep',
 	    date: '#exercise-strength-date',
 	    time: '#exercise-strength-time'
@@ -33650,7 +33650,25 @@
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.ui.set.TouchSpin();
+	    this.ui.type.multiselect({
+	      enableFiltering: true,
+	      buttonWidth: '100%',
+	      buttonClass: 'btn btn-info'
+	    }).multiselect('dataprovider', [
+	      {
+	        value: 0,
+	        label: 'arm'
+	      }, {
+	        value: 1,
+	        label: 'leg'
+	      }, {
+	        value: 2,
+	        label: 'shoulder'
+	      }, {
+	        value: 3,
+	        label: 'back'
+	      }
+	    ]);
 	    this.ui.rep.TouchSpin({
 	      buttondown_class: 'btn btn-primary',
 	      buttonup_class: 'btn btn-primary'
@@ -33677,7 +33695,6 @@
 
 	  View.prototype.onDestroy = function() {
 	    this.ui.date.datepicker('destroy');
-	    this.ui.set.TouchSpin('destroy');
 	    this.ui.rep.TouchSpin('destroy');
 	  };
 

@@ -62,8 +62,9 @@ class View extends Marionette.ItemView
   onRender: ->
 
     @ui.type.multiselect
-      buttonWidth: '100%'
-      buttonClass: 'multiselect-button'
+      enableFiltering: true
+      buttonWidth:    '100%'
+      buttonClass:    'btn btn-info'
     .multiselect 'dataprovider', [
       { value: 0, label: 'strength'    }
       { value: 1, label: 'cardio'      }
