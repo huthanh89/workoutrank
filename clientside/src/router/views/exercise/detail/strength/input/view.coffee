@@ -110,7 +110,7 @@ class View extends Marionette.LayoutView
       collection: @setCollection
     return
 
-  onDestroy: ->
+  onBeforeDestroy: ->
     @ui.date.datepicker('destroy')
     @ui.rep.TouchSpin('destroy')
     return

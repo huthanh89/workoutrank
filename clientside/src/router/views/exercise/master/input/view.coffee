@@ -76,7 +76,7 @@ class View extends Marionette.ItemView
 
     return
 
-  onDestroy: ->
+  onBeforeDestroy: ->
     @ui.type.multiselect('destroy')
     return
 

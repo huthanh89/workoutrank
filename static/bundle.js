@@ -31715,7 +31715,7 @@
 	    this.stickit();
 	  };
 
-	  View.prototype.onDestroy = function() {
+	  View.prototype.onBeforeDestroy = function() {
 	    this.ui.type.multiselect('destroy');
 	  };
 
@@ -33698,7 +33698,7 @@
 	    }));
 	  };
 
-	  View.prototype.onDestroy = function() {
+	  View.prototype.onBeforeDestroy = function() {
 	    this.ui.date.datepicker('destroy');
 	    this.ui.rep.TouchSpin('destroy');
 	  };
@@ -33757,6 +33757,12 @@
 	    this.stickit();
 	  };
 
+	  ItemView.prototype.onBeforeDestroy = function() {
+	    console.log('before');
+	    this.ui.set.TouchSpin('destroy');
+	    this.ui.weight.TouchSpin('destroy');
+	  };
+
 	  return ItemView;
 
 	})(Marionette.ItemView);
@@ -33804,7 +33810,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Strength</span></div></div><div class=\"row\"><div class=\"col-sm-12\"><button class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\">Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\">Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-rep\" class=\"col-sm-2 control-label\">Rep</label><div class=\"col-sm-10\"><input id=\"exercise-strength-rep\" placeholder=\"0\" class=\"form-control\"></div></div><div id=\"exercise-strength-set-view\"></div></div><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Strength</span></div></div><div class=\"row\"><div class=\"col-sm-12\"><button class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\">Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\">Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-rep\" class=\"col-sm-2 control-label\">Rep</label><div class=\"col-sm-10\"><input id=\"exercise-strength-rep\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },

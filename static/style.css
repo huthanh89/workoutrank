@@ -11421,6 +11421,10 @@ html.mm-opened.mm-black .mm-page {
 Content
 -----------------------------------------------------------------------------*/
 
+body{
+    background-color: whitesmoke;
+}
+
 /*
 Content padding, to pad body from fixed navbar.
 */
@@ -11430,8 +11434,9 @@ Content padding, to pad body from fixed navbar.
 }
 
 .content{
-    padding:    50px 75px 0;
-    min-height: 250px;
+    border:           double 3px lightgrey;
+    min-height:       250px;
+    background-color: white;
 }
 
 /*
@@ -11440,19 +11445,22 @@ Change margin if viewport gets smaller.
 
 @media (min-width: 1200px) {
     .content{
-        padding: 50px 200px 0;
+        margin:  50px 150px 0;
+        padding: 30px 200px 30px;
     }
 }
 
 @media (min-device-width: 800px) and (max-width: 1200px){
     .content{
-        padding: 50px 120px 0;
+        margin:  50px 50px 0;
+        padding: 30px 120px 30px;
     }
 }
 
 @media (max-width: 767px) {
     .content{
-        padding: 50px 15px 0;
+        margin:  50px 10px 0;
+        padding: 30px 15px 30px;
     }
 }
 /*-----------------------------------------------------------------------------
@@ -11461,7 +11469,7 @@ Footer
 
 .footer{
     text-align: center;
-    margin-top: 150px;
+    margin-top: 20px;
     padding:    0 0 0;
 }
 
@@ -11535,6 +11543,8 @@ Home page
     margin:     10px;
     font-size:  18px;
 }
+
+
 
 /*-----------------------------------------------------------------------------
                               End of Document

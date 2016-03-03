@@ -23,6 +23,9 @@ br
             // Tab panes
 
             .tab-content
+
+                // Basic
+
                 #exercise-strength-basic.tab-pane.active(role='tabpanel')
                     .form-group
                         label.col-sm-2.control-label(for='exercise-strength-name') Name
@@ -32,11 +35,14 @@ br
                         label.col-sm-2.control-label(for='exercise-strength-type') Type
                         .col-sm-10
                             select.form-control#exercise-strength-type
+                    #exercise-strength-set-view
+                    hr
                     .form-group
                         label.col-sm-2.control-label(for='exercise-strength-rep') Rep
                         .col-sm-10
                             input.form-control#exercise-strength-rep(placeholder=0)
-                    #exercise-strength-set-view
+
+                // Advance
 
                 #exercise-strength-advance.tab-pane(role='tabpanel')
                     .form-group
