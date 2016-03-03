@@ -1,28 +1,38 @@
 .row
-    .col-sm-3
-        button.btn.btn-default#exercise-strength
+    .col-xs-3
+        button.btn.btn-default.exercise-nav-btn#exercise-strength
             i.fa.fa-fw.fa-lg.fa-shield
-            = ' '
-            | Strength
-    .col-sm-3
-        button.btn.btn-default#exercise-endurance
+            span.hidden-sm.hidden-xs
+                = ' '
+                | Strength
+    .col-xs-3
+        button.btn.btn-default.exercise-nav-btn#exercise-endurance
             i.fa.fa-fw.fa-lg.fa-bicycle
-            = ' '
-            | Endurance
-    .col-sm-3
-        button.btn.btn-default#exercise-flexibility
+            span.hidden-sm.hidden-xs
+                = ' '
+                | Endurance
+    .col-xs-3
+        button.btn.btn-default.exercise-nav-btn#exercise-flexibility
             i.fa.fa-fw.fa-lg.fa-heart
-            = ' '
-            | Flexibility
-    .col-sm-3
-        button.btn.btn-default#exercise-balance
+            span.hidden-sm.hidden-xs
+                = ' '
+                | Flexibility
+    .col-xs-3
+        button.btn.btn-default.exercise-nav-btn#exercise-balance
             i.fa.fa-fw.fa-lg.fa-balance-scale
-            = ' '
-            | Balance
+            span.hidden-sm.hidden-xs
+                = ' '
+                | Balance
 br
 .row
     .col-sm-12
         span.lead
+            i.fa.fa-fw.fa-lg.fa-heartbeat
+            = ' '
+            | Exercise
+//.row
+    .col-sm-12
+        h3
             i.fa.fa-fw.fa-lg.fa-heartbeat
             = ' '
             | Exercise

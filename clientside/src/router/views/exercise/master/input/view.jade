@@ -1,10 +1,9 @@
-.row
-    .col-sm-12
-        span.lead Add new Exercise
 br
 .row
     .col-sm-12
         form.form-horizontal
+            .form-group
+                label.col-sm-12 Add new Exercise
             .form-group
                 label.col-sm-2.control-label(for='exercise-name') Name
                 .col-sm-10
@@ -19,7 +18,7 @@ br
                     input.form-control#exercise-note
             .form-group
                 .col-sm-12
-                    button.btn.btn-primary.pull-right
+                    button.btn.btn-success.pull-right
                         i.fa.fa-plus
                         = ' '
                         | Add
