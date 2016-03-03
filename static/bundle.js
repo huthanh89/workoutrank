@@ -33613,7 +33613,19 @@
 
 	  View.prototype.bindings = {
 	    '#exercise-strength-name': 'name',
-	    '#exercise-strength-note': 'note'
+	    '#exercise-strength-note': 'note',
+	    '#exercise-strength-rep': {
+	      observe: 'rep',
+	      onSet: function(value) {
+	        if (value > this.setCollection.length) {
+	          this.setCollection.add(new Backbone.Model({
+	            index: value
+	          }));
+	        } else {
+	          this.setCollection.remove(this.setCollection.last());
+	        }
+	      }
+	    }
 	  };
 
 	  View.prototype.events = {
@@ -33638,15 +33650,7 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.setCollection = new Backbone.Collection([
-	      {
-	        a: 1,
-	        b: 2
-	      }, {
-	        a: 1,
-	        b: 2
-	      }
-	    ]);
+	    this.setCollection = new Backbone.Collection();
 	  }
 
 	  View.prototype.onRender = function() {
@@ -33670,8 +33674,9 @@
 	      }
 	    ]);
 	    this.ui.rep.TouchSpin({
-	      buttondown_class: 'btn btn-primary',
-	      buttonup_class: 'btn btn-primary'
+	      buttondown_class: 'btn btn-info',
+	      buttonup_class: 'btn btn-info',
+	      max: 100
 	    });
 	    this.ui.date.datepicker({
 	      todayBtn: 'linked',
@@ -33731,15 +33736,24 @@
 	  ItemView.prototype.template = viewTemplate;
 
 	  ItemView.prototype.ui = {
-	    set: '.exercise-strength-set'
+	    set: '.exercise-strength-set',
+	    weight: '.exercise-strength-weight'
 	  };
 
 	  ItemView.prototype.bindings = {
-	    '.exercise-strength-set': 'set'
+	    '.exercise-strength-set': 'set',
+	    '.exercise-strength-weight': 'weight',
+	    '.exercise-strength-set-label': {
+	      observe: 'index',
+	      onGet: function(value) {
+	        return "Set #" + value;
+	      }
+	    }
 	  };
 
 	  ItemView.prototype.onRender = function() {
 	    this.ui.set.TouchSpin();
+	    this.ui.weight.TouchSpin();
 	    this.stickit();
 	  };
 
@@ -33776,7 +33790,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"form-group\"><label class=\"col-sm-2 control-label\">Set</label><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-set\"></div></div>");;return buf.join("");
+	buf.push("<hr><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label class=\"exercise-strength-set-label\">Set</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-set\"></div></div><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label>Weight</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-weight\"></div></div>");;return buf.join("");
 	}
 
 /***/ },

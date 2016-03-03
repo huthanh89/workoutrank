@@ -36,8 +36,20 @@ class View extends Marionette.LayoutView
     time: '#exercise-strength-time'
 
   bindings:
+
     '#exercise-strength-name': 'name'
+
     '#exercise-strength-note': 'note'
+
+    '#exercise-strength-rep':
+      observe: 'rep'
+      onSet: (value) ->
+        if value > @setCollection.length
+          @setCollection.add new Backbone.Model
+            index: value
+        else
+          @setCollection.remove(@setCollection.last())
+        return
 
   events:
     'click #exercise-strength-time': ->
@@ -58,10 +70,7 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @setCollection = new Backbone.Collection([
-      {a:1, b:2}
-      {a:1, b:2}
-    ])
+    @setCollection = new Backbone.Collection()
 
   onRender: ->
 
@@ -76,8 +85,9 @@ class View extends Marionette.LayoutView
       { value: 3, label: 'back'     }
     ]
     @ui.rep.TouchSpin
-      buttondown_class: 'btn btn-primary'
-      buttonup_class:   'btn btn-primary'
+      buttondown_class: 'btn btn-info'
+      buttonup_class:   'btn btn-info'
+      max:              100
 
     @ui.date.datepicker
       todayBtn:      'linked'
