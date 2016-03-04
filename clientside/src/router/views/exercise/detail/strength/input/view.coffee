@@ -16,6 +16,7 @@ require 'touchspin'
 require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
+require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
 # Set Model
@@ -46,6 +47,7 @@ class View extends Marionette.LayoutView
     addset: '#exercise-strength-addset'
     date:   '#exercise-strength-date'
     time:   '#exercise-strength-time'
+    form:   '#exercise-strength-form'
 
   bindings:
 
@@ -66,6 +68,26 @@ class View extends Marionette.LayoutView
 
   events:
 
+    'invalid.bs.validator': ->
+      console.log 'NOT VALID'
+      return
+
+    # Form is valid.
+
+    'valid.bs.validator': ->
+      console.log 'isvalid'
+      ###
+      @model.save {},
+        success: =>
+          @rootChannel.request('home')
+          return
+        error: ->
+          console.log 'fail'
+          return
+
+###
+      return
+
     'click #exercise-strength-exercise': ->
       @rootChannel.request('exercise')
       return
@@ -75,19 +97,10 @@ class View extends Marionette.LayoutView
       return
 
     'click @ui.submit': ->
-      @model.set 'sets', @setCollection.toJSON()
-      @model.save()
-      return
 
-    'submit': (event) ->
-      event.preventDefault()
-      @model.save {},
-        success: =>
-          @rootChannel.request('home')
-          return
-        error: ->
-          console.log 'fail'
-          return
+      @ui.form.validator('validate')
+      @model.set 'sets', @setCollection.toJSON()
+      @ui.form.validator('validate')
       return
 
   constructor: ->
@@ -131,11 +144,19 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
+    @ui.form.validator
+      feedback: {
+        success: 'glyphicon-ok',
+        error: 'glyphicon-remove'
+      }
+
     @showChildView 'set', new SetView
       collection: @setCollection
     return
 
   onBeforeDestroy: ->
+    @ui.form.validator('destroy')
+
     @ui.date.datepicker('destroy')
     @ui.addset.TouchSpin('destroy')
     return

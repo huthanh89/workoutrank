@@ -1,6 +1,6 @@
 .row
     .col-sm-12
-        form.form-horizontal
+        form.form-horizontal#exercise-strength-form
             // Nav tabs
             ul.nav.nav-tabs(role='tablist')
                 li.active(role='presentation')
@@ -30,7 +30,8 @@
                     .form-group
                         label.col-sm-2.control-label(for='exercise-strength-name') Name
                         .col-sm-10
-                            input.form-control#exercise-strength-name
+                            input.form-control#exercise-strength-name(required)
+                            .help-block.with-errors
                     #exercise-strength-set-view
                     hr
                     .form-group

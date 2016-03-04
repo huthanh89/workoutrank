@@ -115,6 +115,9 @@ gulp.task 'scripts', (callback) ->
         test: /jquery/
         loader: "imports?jQuery=jquery"
       ,
+        test: /bootstrap/
+        loader: "imports?jQuery=jquery"
+      ,
         test: /timeentry.js/
         loader: "imports?JQPlugin=JQPlugin"
       ,
@@ -145,6 +148,7 @@ gulp.task 'scripts', (callback) ->
         async:                 'scripts/async.js'
 
         bootstrap:             'scripts/bootstrap.js'
+        'bootstrap.validator': 'scripts/bootstrap.validator.js'
         jquery:                'scripts/jquery.js'
         mmenu:                 'scripts/jquery.mmenu.min.all.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
