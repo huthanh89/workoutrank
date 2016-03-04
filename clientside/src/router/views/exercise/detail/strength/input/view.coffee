@@ -77,7 +77,7 @@ class View extends Marionette.LayoutView
 
       console.log 'MODEL', @model.attributes
 
-      @model.set 'set', @setCollection.toJSON()
+      @model.set 'sets', @setCollection.toJSON()
       @model.save()
 
       return

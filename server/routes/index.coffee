@@ -13,6 +13,7 @@ signup   = require './signup/module'
 login    = require './login/module'
 profile  = require './profile/module'
 exercise = require './exercise/module'
+strength = require './strength/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -41,14 +42,16 @@ router.get '/multiplayer',    index
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get  '/api/profile',  profile.get
+router.get  '/api/profile', profile.get
 
 router.get  '/api/exercise', exercise.get
 router.post '/api/exercise', exercise.post
 
-router.post '/api/signup',   signup.post
+router.post '/api/exercise/:type', strength.post
 
-router.post '/api/login',    login.post
+router.post '/api/signup', signup.post
+
+router.post '/api/login', login.post
 
 #-------------------------------------------------------------------------------
 # Exports

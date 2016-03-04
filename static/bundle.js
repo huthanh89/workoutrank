@@ -33546,14 +33546,14 @@
 
 	  Model.prototype.idAttribute = '_id';
 
-	  Model.prototype.url = 'api/exercise/strength';
+	  Model.prototype.url = '/api/exercise/strength';
 
 	  Model.prototype.defaults = {
 	    date: new Date(),
 	    name: '',
 	    type: 0,
 	    note: '',
-	    set: [],
+	    sets: [],
 	    count: 1
 	  };
 
@@ -33568,7 +33568,7 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = 'api/strength';
+	  Collection.prototype.url = '/api/strength';
 
 	  Collection.prototype.model = Model;
 
@@ -33671,7 +33671,7 @@
 	    },
 	    'click @ui.submit': function() {
 	      console.log('MODEL', this.model.attributes);
-	      this.model.set('set', this.setCollection.toJSON());
+	      this.model.set('sets', this.setCollection.toJSON());
 	      this.model.save();
 	    },
 	    'submit': function(event) {

@@ -33,6 +33,7 @@ db.on('open', function callback () {
 
 require('./models/user')(mongoose);
 require('./models/exercise')(mongoose);
+require('./models/strength')(mongoose);
 
 //--------------------------------------------------------------
 // Express

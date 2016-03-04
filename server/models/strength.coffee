@@ -2,40 +2,36 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone = require 'backbone'
+mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Model
+# Schema
 #-------------------------------------------------------------------------------
 
-class Model extends Backbone.Model
-
-  idAttribute: '_id'
-
-  url:  '/api/exercise/strength'
-
-  defaults:
-    date: new Date()
-    name:  ''
-    type:  0
-    note:  ''
-    sets:  []
-    count: 1
+StrengthSchema = new mongoose.Schema
+  date:
+    type: Date
+  name:
+    type: String
+  type:
+    type: Number
+  note:
+    type: String
+  sets:
+    type: Array
+,
+  collection: 'strength'
 
 #-------------------------------------------------------------------------------
-# Collection
+# Model Registration
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.Collection
-  url:  '/api/strength'
-  model: Model
+model = mongoose.model('strength', StrengthSchema)
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Model      = Model
-exports.Collection = Collection
-exports.View       = require './input/view'
+module.exports = model
 
 #-------------------------------------------------------------------------------
