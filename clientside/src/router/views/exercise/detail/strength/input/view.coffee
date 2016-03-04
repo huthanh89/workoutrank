@@ -18,6 +18,17 @@ require 'timepicker'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Set Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  defaults:
+    index:  0
+    weight: 0
+    rep:    0
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -32,7 +43,7 @@ class View extends Marionette.LayoutView
     name:   '#exercise-strength-name'
     type:   '#exercise-strength-type'
     submit: '#exercise-strength-submit'
-    set:    '#exercise-strength-set'
+    addset: '#exercise-strength-addset'
     date:   '#exercise-strength-date'
     time:   '#exercise-strength-time'
 
@@ -42,12 +53,13 @@ class View extends Marionette.LayoutView
 
     '#exercise-strength-note': 'note'
 
-    '#exercise-strength-set':
-      observe: 'set'
+    '#exercise-strength-addset':
+      observe: 'count'
       onSet: (value) ->
         if value > @setCollection.length
-          @setCollection.add new Backbone.Model
+          @setCollection.add new Model
             index: value
+            rep:   0
         else
           @setCollection.remove(@setCollection.last())
         return
@@ -62,10 +74,10 @@ class View extends Marionette.LayoutView
       return
 
     'click @ui.submit': ->
-      console.log 'add'
 
-      console.log @model.attributes
+      console.log 'MODEL', @model.attributes
 
+      @model.set 'set', @setCollection.toJSON()
       @model.save()
 
       return
@@ -84,7 +96,7 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @setCollection = new Backbone.Collection()
+    @setCollection = new Backbone.Collection(new Model())
 
   onRender: ->
 
@@ -99,9 +111,10 @@ class View extends Marionette.LayoutView
       { value: 3, label: 'back'     }
     ]
 
-    @ui.set.TouchSpin
+    @ui.addset.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
+      min:              1
       max:              100
 
     @ui.date.datepicker
@@ -127,7 +140,7 @@ class View extends Marionette.LayoutView
 
   onBeforeDestroy: ->
     @ui.date.datepicker('destroy')
-    @ui.set.TouchSpin('destroy')
+    @ui.addset.TouchSpin('destroy')
     return
 
 #-------------------------------------------------------------------------------

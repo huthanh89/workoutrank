@@ -10,6 +10,8 @@ Backbone = require 'backbone'
 
 class Model extends Backbone.Model
 
+  idAttribute: '_id'
+
   url:  'api/exercise/strength'
 
   defaults:
@@ -17,8 +19,8 @@ class Model extends Backbone.Model
     name: ''
     type: 0
     note: ''
-    set:  0
-    rep:  0
+    set:  []
+    count: 1
 
 #-------------------------------------------------------------------------------
 # Collection
