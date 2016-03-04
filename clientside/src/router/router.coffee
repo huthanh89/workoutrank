@@ -150,11 +150,22 @@ class Router extends Marionette.AppRouter
   exerciseDetail: (type) ->
     @navChannel.request('nav:main')
 
-    View  = Exercise.Detail(type).View
-    Model = Exercise.Detail(type).Model
+    View       = Exercise.Detail(type).View
+    Model      = Exercise.Detail(type).Model
+    Collection = Exercise.Detail(type).Collection
 
-    @rootView.content.show new View
-      model: new Model()
+    collection = new Collection()
+
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new View
+          collection: collection
+          model:      new Model()
+        return
+      error: ->
+        console.log 'error'
+        return
+
     return
 
   stat: ->

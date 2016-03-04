@@ -28,7 +28,6 @@ class ItemView extends Marionette.CompositeView
 
   bindings:
     '.exercise-table-td-name': 'name'
-    '.exercise-table-td-type': 'type'
 
   onRender: ->
     @stickit()

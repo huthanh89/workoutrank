@@ -31,7 +31,7 @@ class Model extends Backbone.Model
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
-  url:  '/api/strength'
+  url:  '/api/exercise/strength'
   model: Model
 
 #-------------------------------------------------------------------------------
@@ -46,10 +46,13 @@ class View extends Marionette.LayoutView
     table: '#exercise-strength-table-view'
 
   onShow: ->
+    console.log @collection
+
     @showChildView 'input', new InputView
       model: @model
 
-    @showChildView 'table', new TableView()
+    @showChildView 'table', new TableView
+      collection: @collection
 
     return
 

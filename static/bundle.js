@@ -29508,13 +29508,25 @@
 	  };
 
 	  Router.prototype.exerciseDetail = function(type) {
-	    var Model, View;
+	    var Collection, Model, View, collection;
 	    this.navChannel.request('nav:main');
 	    View = Exercise.Detail(type).View;
 	    Model = Exercise.Detail(type).Model;
-	    this.rootView.content.show(new View({
-	      model: new Model()
-	    }));
+	    Collection = Exercise.Detail(type).Collection;
+	    collection = new Collection();
+	    collection.fetch({
+	      success: (function(_this) {
+	        return function(collection) {
+	          _this.rootView.content.show(new View({
+	            collection: collection,
+	            model: new Model()
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
 	  };
 
 	  Router.prototype.stat = function() {
@@ -33576,7 +33588,7 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = '/api/strength';
+	  Collection.prototype.url = '/api/exercise/strength';
 
 	  Collection.prototype.model = Model;
 
@@ -33599,10 +33611,13 @@
 	  };
 
 	  View.prototype.onShow = function() {
+	    console.log(this.collection);
 	    this.showChildView('input', new InputView({
 	      model: this.model
 	    }));
-	    this.showChildView('table', new TableView());
+	    this.showChildView('table', new TableView({
+	      collection: this.collection
+	    }));
 	  };
 
 	  return View;
@@ -37963,8 +37978,7 @@
 	  ItemView.prototype.template = itemTemplate;
 
 	  ItemView.prototype.bindings = {
-	    '.exercise-table-td-name': 'name',
-	    '.exercise-table-td-type': 'type'
+	    '.exercise-table-td-name': 'name'
 	  };
 
 	  ItemView.prototype.onRender = function() {
@@ -38012,7 +38026,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"exercise-table-td-name\"></td><td class=\"exercise-table-td-type\"></td>");;return buf.join("");
+	buf.push("<td class=\"exercise-table-td-name\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -38026,7 +38040,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b class=\"text-primary\">Type Table</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table\"><thead><tr><td>Name</td><td>Type</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b class=\"text-primary\">Type Table</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table\"><thead><tr><td>Name</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

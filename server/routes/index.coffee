@@ -47,6 +47,7 @@ router.get  '/api/profile', profile.get
 router.get  '/api/exercise', exercise.get
 router.post '/api/exercise', exercise.post
 
+router.get  '/api/exercise/:type', strength.get
 router.post '/api/exercise/:type', strength.post
 
 router.post '/api/signup', signup.post
