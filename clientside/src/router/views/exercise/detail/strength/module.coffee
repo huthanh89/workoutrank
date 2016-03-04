@@ -9,7 +9,9 @@ Backbone = require 'backbone'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-  url:  'api/strength'
+
+  url:  'api/exercise/strength'
+
   defaults:
     date: new Date()
     name: ''

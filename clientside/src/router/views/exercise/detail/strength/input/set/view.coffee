@@ -38,9 +38,8 @@ class ItemView extends Marionette.ItemView
     return
 
   onBeforeDestroy: ->
-    console.log 'before'
-    @ui.rep.TouchSpin('destroy')
-    @ui.weight.TouchSpin('destroy')
+    @ui.rep.TouchSpin    'destroy'
+    @ui.weight.TouchSpin 'destroy'
     return
 
 #-------------------------------------------------------------------------------

@@ -150,10 +150,11 @@ class Router extends Marionette.AppRouter
   exerciseDetail: (type) ->
     @navChannel.request('nav:main')
 
-    View = Exercise.Detail(type).View
+    View  = Exercise.Detail(type).View
+    Model = Exercise.Detail(type).Model
 
     @rootView.content.show new View
-      model: new Backbone.Model()
+      model: new Model()
     return
 
   stat: ->

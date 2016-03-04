@@ -24,6 +24,7 @@ class View extends Marionette.LayoutView
     table: '#exercise-table-view'
 
   events:
+
     'click #exercise-strength': ->
       @rootChannel.request('exercise:detail', 'strength')
       return
