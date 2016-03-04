@@ -61,9 +61,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(53);
+	__webpack_require__(57);
 
-	__webpack_require__(54);
+	__webpack_require__(58);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -33531,11 +33531,19 @@
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	InputView = __webpack_require__(46);
+
+	TableView = __webpack_require__(53);
+
+	viewTemplate = __webpack_require__(56);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -33576,11 +33584,36 @@
 
 	})(Backbone.Collection);
 
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.regions = {
+	    input: '#exercise-strength-input-view',
+	    table: '#exercise-strength-table-view'
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('input', new InputView({
+	      model: this.model
+	    }));
+	    this.showChildView('table', new TableView());
+	  };
+
+	  return View;
+
+	})(Marionette.LayoutView);
+
 	exports.Model = Model;
 
 	exports.Collection = Collection;
 
-	exports.View = __webpack_require__(46);
+	exports.View = View;
 
 
 /***/ },
@@ -33670,7 +33703,6 @@
 	      this.ui.time.timepicker('showWidget');
 	    },
 	    'click @ui.submit': function() {
-	      console.log('MODEL', this.model.attributes);
 	      this.model.set('sets', this.setCollection.toJSON());
 	      this.model.save();
 	    },
@@ -33703,23 +33735,23 @@
 	    }).multiselect('dataprovider', [
 	      {
 	        value: 0,
-	        label: 'arm'
+	        label: 'Arm'
 	      }, {
 	        value: 1,
-	        label: 'leg'
+	        label: 'Leg'
 	      }, {
 	        value: 2,
-	        label: 'shoulder'
+	        label: 'Shoulder'
 	      }, {
 	        value: 3,
-	        label: 'back'
+	        label: 'Back'
 	      }
 	    ]);
 	    this.ui.addset.TouchSpin({
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
 	      min: 1,
-	      max: 100
+	      max: 20
 	    });
 	    this.ui.date.datepicker({
 	      todayBtn: 'linked',
@@ -33838,7 +33870,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<hr><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label class=\"exercise-strength-set-label\">Reps</label></div></div><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label>Weight</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-weight\"></div></div><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label>Reps</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-rep\"></div></div>");;return buf.join("");
+	buf.push("<hr><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label class=\"exercise-strength-set-label text-info\">Set #</label></div></div><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label>Weight</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-weight\"></div></div><div class=\"form-group\"><div class=\"col-sm-2 control-label\"><label>Reps</label></div><div class=\"col-sm-10\"><input placeholder=\"0\" class=\"form-control exercise-strength-rep\"></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -33852,7 +33884,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-exercise\" class=\"btn btn-default\"><i class=\"fa fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-set\" class=\"col-sm-2 control-label\">Add Set</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" class=\"form-control\"></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-addset\" class=\"col-sm-2 control-label\">Add Set</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -37899,6 +37931,122 @@
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var $, Backbone, ItemView, Marionette, View, _, itemTemplate, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	itemTemplate = __webpack_require__(54);
+
+	viewTemplate = __webpack_require__(55);
+
+	__webpack_require__(39);
+
+	__webpack_require__(24);
+
+	ItemView = (function(superClass) {
+	  extend(ItemView, superClass);
+
+	  function ItemView() {
+	    return ItemView.__super__.constructor.apply(this, arguments);
+	  }
+
+	  ItemView.prototype.tagName = 'tr';
+
+	  ItemView.prototype.template = itemTemplate;
+
+	  ItemView.prototype.bindings = {
+	    '.exercise-table-td-name': 'name',
+	    '.exercise-table-td-type': 'type'
+	  };
+
+	  ItemView.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return ItemView;
+
+	})(Marionette.CompositeView);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.childViewContainer = 'tbody';
+
+	  View.prototype.childView = ItemView;
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    name: '#exercise-name',
+	    type: '#exercise-type'
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  return View;
+
+	})(Marionette.CompositeView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td class=\"exercise-table-td-name\"></td><td class=\"exercise-table-td-type\"></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b class=\"text-primary\">Type Table</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table\"><thead><tr><td>Name</td><td>Type</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(12);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-exercise\" class=\"btn btn-default\"><i class=\"fa fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span class=\"text-primary\"><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div id=\"exercise-strength-table-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/*** IMPORTS FROM imports-loader ***/
 	var jQuery = __webpack_require__(2);
 
@@ -37988,7 +38136,7 @@
 
 
 /***/ },
-/* 54 */
+/* 58 */
 /***/ function(module, exports) {
 
 	/*!

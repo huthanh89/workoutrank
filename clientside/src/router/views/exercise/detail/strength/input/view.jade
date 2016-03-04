@@ -1,19 +1,5 @@
 .row
     .col-sm-12
-        button.btn.btn-default#exercise-strength-exercise
-            i.fa.fa-arrow-left
-            = ' '
-            i.fa.fa-heartbeat
-br
-.row
-    .col-sm-12
-        span.lead
-            i.fa.fa-fw.fa-lg.fa-shield
-            = ' '
-            | Strength
-br
-.row
-    .col-sm-12
         form.form-horizontal
             // Nav tabs
             ul.nav.nav-tabs(role='tablist')
@@ -38,17 +24,17 @@ br
 
                 #exercise-strength-basic.tab-pane.active(role='tabpanel')
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-name') Name
-                        .col-sm-10
-                            input.form-control#exercise-strength-name
-                    .form-group
                         label.col-sm-2.control-label(for='exercise-strength-type') Type
                         .col-sm-10
                             select.form-control#exercise-strength-type
+                    .form-group
+                        label.col-sm-2.control-label(for='exercise-strength-name') Name
+                        .col-sm-10
+                            input.form-control#exercise-strength-name
                     #exercise-strength-set-view
                     hr
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-set') Add Set
+                        label.col-sm-2.control-label(for='exercise-strength-addset') Add Set
                         .col-sm-10
                             input.form-control#exercise-strength-addset(placeholder=0)
 
@@ -73,7 +59,6 @@ br
                         label.col-sm-2.control-label(for='exercise-strength-note') Note
                         .col-sm-10
                             input.form-control#exercise-strength-note
-br
 .row
     .col-sm-12
         button.btn.btn-success.pull-right#exercise-strength-submit

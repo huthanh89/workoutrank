@@ -65,6 +65,7 @@ class View extends Marionette.LayoutView
         return
 
   events:
+
     'click #exercise-strength-exercise': ->
       @rootChannel.request('exercise')
       return
@@ -74,12 +75,8 @@ class View extends Marionette.LayoutView
       return
 
     'click @ui.submit': ->
-
-      console.log 'MODEL', @model.attributes
-
       @model.set 'sets', @setCollection.toJSON()
       @model.save()
-
       return
 
     'submit': (event) ->
@@ -105,17 +102,17 @@ class View extends Marionette.LayoutView
       buttonWidth:    '100%'
       buttonClass:    'btn btn-info'
     .multiselect 'dataprovider', [
-      { value: 0, label: 'arm'      }
-      { value: 1, label: 'leg'      }
-      { value: 2, label: 'shoulder' }
-      { value: 3, label: 'back'     }
+      { value: 0, label: 'Arm'      }
+      { value: 1, label: 'Leg'      }
+      { value: 2, label: 'Shoulder' }
+      { value: 3, label: 'Back'     }
     ]
 
     @ui.addset.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1
-      max:              100
+      max:              20
 
     @ui.date.datepicker
       todayBtn:      'linked'
