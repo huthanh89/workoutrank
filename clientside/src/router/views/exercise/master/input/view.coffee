@@ -37,8 +37,9 @@ class View extends Marionette.ItemView
   events:
     'submit': (event) ->
       event.preventDefault()
-      @collection.create @model.attributes,
+      @collection.fullCollection.create @model.attributes,
         wait: true
+        at: 0
       return
 
   constructor: (options) ->

@@ -82,11 +82,9 @@ class View extends Marionette.CompositeView
       return
 
     'sync update': ->
-      @collection.getLastPage()
+      @collection.getFirstPage()
       @setPage()
       return
-
-
 
     all: (all) ->
       console.log all
@@ -112,7 +110,7 @@ class View extends Marionette.CompositeView
       return
 
   onRender: ->
-    @collection.getLastPage()
+    @collection.getFirstPage()
     @setPage()
     return
 

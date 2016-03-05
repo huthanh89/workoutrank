@@ -23,7 +23,7 @@ module.get = (req, res, next) ->
       Exercise
       .find()
       .sort
-        date: 1
+        date: -1
       .exec (err, documents) ->
         console.log 'ERROR', err if err
         callback null, documents

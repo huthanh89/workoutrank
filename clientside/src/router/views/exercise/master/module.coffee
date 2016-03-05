@@ -42,6 +42,8 @@ class Collection extends Backbone.PageableCollection
     currentPage: 1
     pageSize:    3
 
+  comparator: (item) -> return -item.get('date')
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------

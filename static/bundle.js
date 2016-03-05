@@ -31613,6 +31613,10 @@
 	    pageSize: 3
 	  };
 
+	  Collection.prototype.comparator = function(item) {
+	    return -item.get('date');
+	  };
+
 	  return Collection;
 
 	})(Backbone.PageableCollection);
@@ -31720,8 +31724,9 @@
 	  View.prototype.events = {
 	    'submit': function(event) {
 	      event.preventDefault();
-	      this.collection.create(this.model.attributes, {
-	        wait: true
+	      this.collection.fullCollection.create(this.model.attributes, {
+	        wait: true,
+	        at: 0
 	      });
 	    }
 	  };
@@ -33536,7 +33541,7 @@
 	      this.setPage();
 	    },
 	    'sync update': function() {
-	      this.collection.getLastPage();
+	      this.collection.getFirstPage();
 	      this.setPage();
 	    },
 	    all: function(all) {
@@ -33564,7 +33569,7 @@
 	  };
 
 	  View.prototype.onRender = function() {
-	    this.collection.getLastPage();
+	    this.collection.getFirstPage();
 	    this.setPage();
 	  };
 
