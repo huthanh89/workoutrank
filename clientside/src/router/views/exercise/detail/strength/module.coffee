@@ -45,9 +45,16 @@ class View extends Marionette.LayoutView
     input: '#exercise-strength-input-view'
     table: '#exercise-strength-table-view'
 
-  onShow: ->
-    console.log @collection
+  events:
+    'click #exercise-strength-back': ->
+      @rootChannel.request('exercise')
+      return
 
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
+
+  onShow: ->
     @showChildView 'input', new InputView
       model: @model
 

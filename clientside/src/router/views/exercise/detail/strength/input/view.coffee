@@ -27,7 +27,7 @@ class Model extends Backbone.Model
   defaults:
     index:  0
     weight: 0
-    rep:    0
+    rep:    1
 
 #-------------------------------------------------------------------------------
 # View
@@ -61,7 +61,6 @@ class View extends Marionette.LayoutView
         if value > @setCollection.length
           @setCollection.add new Model
             index: value
-            rep:   0
         else
           @setCollection.remove(@setCollection.last())
         return

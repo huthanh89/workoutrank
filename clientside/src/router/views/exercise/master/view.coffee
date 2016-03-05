@@ -25,8 +25,8 @@ class View extends Marionette.LayoutView
 
   events:
 
-    'click #exercise-strength': ->
-      @rootChannel.request('exercise:detail', 'strength')
+    'click #exercise-back-home': ->
+      @rootChannel.request('home')
       return
 
   constructor: ->

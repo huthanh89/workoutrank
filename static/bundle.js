@@ -31631,8 +31631,8 @@
 	  };
 
 	  View.prototype.events = {
-	    'click #exercise-strength': function() {
-	      this.rootChannel.request('exercise:detail', 'strength');
+	    'click #exercise-back-home': function() {
+	      this.rootChannel.request('home');
 	    }
 	  };
 
@@ -33508,7 +33508,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">My Exercises</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table\"><thead><tr><td>Name</td><td>Type</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">My Exercises</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-striped table-hover\"><thead><tr><td>Name</td><td>Last</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -33522,7 +33522,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-3\"><button id=\"exercise-strength\" class=\"btn btn-default exercise-nav-btn\"><i class=\"fa fa-fw fa-lg fa-shield\"></i><span class=\"hidden-sm hidden-xs\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></button></div><div class=\"col-xs-3\"><button id=\"exercise-endurance\" class=\"btn btn-default exercise-nav-btn\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i><span class=\"hidden-sm hidden-xs\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Endurance</span></button></div><div class=\"col-xs-3\"><button id=\"exercise-flexibility\" class=\"btn btn-default exercise-nav-btn\"><i class=\"fa fa-fw fa-lg fa-heart\"></i><span class=\"hidden-sm hidden-xs\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Flexibility</span></button></div><div class=\"col-xs-3\"><button id=\"exercise-balance\" class=\"btn btn-default exercise-nav-btn\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i><span class=\"hidden-sm hidden-xs\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Balance</span></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-input-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"exercise-input-view\"></div></div><div class=\"col-sm-6\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -33603,10 +33603,6 @@
 	View = (function(superClass) {
 	  extend(View, superClass);
 
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.regions = {
@@ -33614,8 +33610,18 @@
 	    table: '#exercise-strength-table-view'
 	  };
 
+	  View.prototype.events = {
+	    'click #exercise-strength-back': function() {
+	      this.rootChannel.request('exercise');
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
 	  View.prototype.onShow = function() {
-	    console.log(this.collection);
 	    this.showChildView('input', new InputView({
 	      model: this.model
 	    }));
@@ -33673,7 +33679,7 @@
 	  Model.prototype.defaults = {
 	    index: 0,
 	    weight: 0,
-	    rep: 0
+	    rep: 1
 	  };
 
 	  return Model;
@@ -33707,8 +33713,7 @@
 	      onSet: function(value) {
 	        if (value > this.setCollection.length) {
 	          this.setCollection.add(new Model({
-	            index: value,
-	            rep: 0
+	            index: value
 	          }));
 	        } else {
 	          this.setCollection.remove(this.setCollection.last());
@@ -38434,7 +38439,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-exercise\" class=\"btn btn-default\"><i class=\"fa fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span class=\"text-primary\"><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div id=\"exercise-strength-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span class=\"text-primary\"><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div id=\"exercise-strength-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
