@@ -34,13 +34,8 @@ class View extends Marionette.ItemView
   events:
     'submit': (event) ->
       event.preventDefault()
-      @model.save {},
-        success: =>
-          @collection.add(@model)
-          return
-        error: ->
-          console.log 'fail'
-          return
+      @collection.create @model.attributes,
+        wait: true
       return
 
   modelEvents:
@@ -73,7 +68,6 @@ class View extends Marionette.ItemView
 
   onBeforeDestroy: ->
     @ui.type.multiselect('destroy')
-    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

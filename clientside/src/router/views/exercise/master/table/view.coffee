@@ -30,12 +30,11 @@ class ItemView extends Marionette.CompositeView
 
     '.exercise-table-td-name': 'name'
 
-    ###
     '.exercise-table-td-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('dddd MM/DD/YY')
-###
-    '.exercise-table-td-date': 'type'
+      onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm:ss')
+
+    '.exercise-table-td-type': 'type'
 
   events:
 
@@ -78,10 +77,13 @@ class View extends Marionette.CompositeView
     lastPage:    '#exercise-table-lastpage'
 
   collectionEvents:
-    'sync reset': ->
-      state = @collection.state
-      @ui.currentPage.text state.currentPage
-      @ui.lastPage.text state.lastPage
+    'reset': ->
+      @setPage()
+      return
+
+    'update': ->
+      @collection.getLastPage()
+      @setPage()
       return
 
   events:
@@ -105,8 +107,14 @@ class View extends Marionette.CompositeView
       return
 
   onRender: ->
-    console.log @collection
-    console.log @collection.state
+    @collection.getLastPage()
+    @setPage()
+    return
+
+  setPage: ->
+    state = @collection.state
+    $(@ui.currentPage).text state.currentPage
+    $(@ui.lastPage).text state.lastPage
     return
 
 #-------------------------------------------------------------------------------

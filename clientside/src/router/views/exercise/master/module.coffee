@@ -3,11 +3,16 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
-Paginator    = require 'backbone.paginator'
 Marionette   = require 'marionette'
 InputView    = require './input/view'
 TableView    = require './table/view'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Plugins
+#-------------------------------------------------------------------------------
+
+require 'backbone.paginator'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -59,7 +64,8 @@ class View extends Marionette.LayoutView
 
   collectionEvents:
     'sync': ->
-      @inputView()
+      @showInputView()
+      @showTableView()
       return
 
   constructor: ->
@@ -72,12 +78,28 @@ class View extends Marionette.LayoutView
       @type = type
       return
 
-  onShow: ->
+    @fullCollection = @collection.fullCollection
+
+  # Show table view, filtered by type.
+
+  showTableView: ->
     @showChildView 'table', new TableView
       collection: @collection
+    ###
+    console.log @type
+
+    models = @fullCollection.filter (model) =>
+      return model.get('type') is @type
+
+    @showChildView 'table', new TableView
+      collection: new Collection models
+
+###
     return
 
-  inputView: ->
+  # Show input view
+
+  showInputView: ->
 
     model = new Model
       type: @type

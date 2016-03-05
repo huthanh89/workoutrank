@@ -20,7 +20,10 @@ module.get = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-      Exercise.find()
+      Exercise
+      .find()
+      .sort
+        date: 1
       .exec (err, documents) ->
         console.log 'ERROR', err if err
         callback null, documents
