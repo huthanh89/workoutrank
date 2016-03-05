@@ -2,10 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+Data         = require '../data/module'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -13,7 +14,6 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'multiselect'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
@@ -27,13 +27,21 @@ class ItemView extends Marionette.CompositeView
   template: itemTemplate
 
   bindings:
+
     '.exercise-table-td-name': 'name'
-    '.exercise-table-td-type': 'type'
+
+    ###
+    '.exercise-table-td-date':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('dddd MM/DD/YY')
+###
+    '.exercise-table-td-date': 'type'
 
   events:
     click: ->
-      console.log 'click'
-      @rootChannel.request 'exercise:detail', @model.get('type')
+      type = @model.get('type')
+      label = _.find(Data.Types, value: type).label
+      @rootChannel.request 'exercise:detail', label.toLowerCase(), @model.get('name')
       return
 
   constructor: ->

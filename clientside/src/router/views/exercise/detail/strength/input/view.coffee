@@ -143,9 +143,9 @@ class View extends Marionette.LayoutView
 
   onBeforeDestroy: ->
     @ui.form.validator('destroy')
-
     @ui.date.datepicker('destroy')
     @ui.addset.TouchSpin('destroy')
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------
