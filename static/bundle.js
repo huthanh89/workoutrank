@@ -31643,11 +31643,7 @@
 
 	  View.prototype.modelEvents = {
 	    'change:type': function(model, value) {
-	      var models;
-	      models = this.fullCollection.filter(function(model) {
-	        return model.get('type') === value;
-	      });
-	      this.collection.fullCollection.reset(models);
+	      this.filterCollection(value);
 	    }
 	  };
 
@@ -31659,6 +31655,7 @@
 	  }
 
 	  View.prototype.onShow = function() {
+	    this.filterCollection(this.model.get('type'));
 	    this.showChildView('input', new InputView({
 	      collection: this.collection,
 	      model: this.model
@@ -31666,6 +31663,20 @@
 	    this.showChildView('table', new TableView({
 	      collection: this.collection
 	    }));
+	  };
+
+	  View.prototype.filterCollection = function(type) {
+	    this.fullCollection.fetch({
+	      success: (function(_this) {
+	        return function() {
+	          var models;
+	          models = _this.fullCollection.filter(function(model) {
+	            return model.get('type') === type;
+	          });
+	          return _this.collection.fullCollection.reset(models);
+	        };
+	      })(this)
+	    });
 	  };
 
 	  return View;
@@ -31726,7 +31737,12 @@
 	      event.preventDefault();
 	      this.collection.fullCollection.create(this.model.attributes, {
 	        wait: true,
-	        at: 0
+	        at: 0,
+	        success: (function(_this) {
+	          return function() {
+	            _this.ui.name.val('');
+	          };
+	        })(this)
 	      });
 	    }
 	  };
@@ -33543,9 +33559,6 @@
 	    'sync update': function() {
 	      this.collection.getFirstPage();
 	      this.setPage();
-	    },
-	    all: function(all) {
-	      return console.log(all);
 	    }
 	  };
 

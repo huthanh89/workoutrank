@@ -77,6 +77,7 @@ class View extends Marionette.CompositeView
     lastPage:    '#exercise-table-lastpage'
 
   collectionEvents:
+
     'reset': ->
       @setPage()
       return
@@ -85,9 +86,6 @@ class View extends Marionette.CompositeView
       @collection.getFirstPage()
       @setPage()
       return
-
-    all: (all) ->
-      console.log all
 
   events:
 

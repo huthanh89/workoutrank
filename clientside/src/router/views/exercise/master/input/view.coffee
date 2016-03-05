@@ -40,6 +40,9 @@ class View extends Marionette.ItemView
       @collection.fullCollection.create @model.attributes,
         wait: true
         at: 0
+        success: =>
+          @ui.name.val('')
+          return
       return
 
   constructor: (options) ->

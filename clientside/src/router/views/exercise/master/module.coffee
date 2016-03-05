@@ -66,8 +66,7 @@ class View extends Marionette.LayoutView
 
   modelEvents:
     'change:type': (model, value) ->
-      models = @fullCollection.filter (model) -> model.get('type') is value
-      @collection.fullCollection.reset models
+      @filterCollection(value)
       return
 
   constructor: ->
@@ -78,6 +77,10 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
+    # Filter collection before showing table view.
+
+    @filterCollection(@model.get('type'))
+
     @showChildView 'input', new InputView
       collection: @collection
       model:      @model
@@ -85,6 +88,15 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new TableView
       collection: @collection
 
+    return
+
+  # Fetch the latest collection then filter the collection by type.
+
+  filterCollection: (type) ->
+    @fullCollection.fetch
+      success: =>
+        models = @fullCollection.filter (model) -> model.get('type') is type
+        @collection.fullCollection.reset models
     return
 
 #-------------------------------------------------------------------------------
