@@ -9,6 +9,26 @@ TableView    = require './table/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+  url:  '/api/exercise'
+  defaults:
+    name: ''
+    type: 0
+    note: ''
+    date: new Date()
+
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.Collection
+  url:  '/api/exercise'
+  model: Model
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -32,17 +52,28 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @channel =     Backbone.Radio.channel('view')
+    @channel.reply 'hey', -> 'bobsdf'
 
   onShow: ->
+
     @showChildView 'input', new InputView
-      model: @model
+      collection: @collection
+      model:       new Model()
+
     @showChildView 'table', new TableView
       collection: @collection
+
+  onBeforeDestroy: ->
+    @channel.reset()
+    return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+module.exports.Model      = Model
+module.exports.Collection = Collection
+module.exports.View       = View
 
 #-------------------------------------------------------------------------------

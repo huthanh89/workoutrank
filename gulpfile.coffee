@@ -143,6 +143,7 @@ gulp.task 'scripts', (callback) ->
         'backbone.paginator':  'scripts/backbone.paginator.js'
         'backbone.stickit':    'scripts/backbone.stickit.js'
         'backbone.validation': 'scripts/backbone.validation.js'
+        'backbone.radio':      'scripts/backbone.radio.js'
         'socket.io':           'scripts/socket.io.js'
         marionette:            'scripts/backbone.marionette.js'
         async:                 'scripts/async.js'

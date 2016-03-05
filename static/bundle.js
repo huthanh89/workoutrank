@@ -29451,7 +29451,7 @@
 	    'login': 'login',
 	    'home': 'home',
 	    'profile': 'profile',
-	    'exercise(/)': 'exercise',
+	    'exercise/': 'exercise',
 	    'exercise/:type': 'exerciseDetail',
 	    'stat': 'stat',
 	    'schedule': 'schdeule',
@@ -29491,13 +29491,12 @@
 	  Router.prototype.exercise = function() {
 	    var collection;
 	    this.navChannel.request('nav:main');
-	    collection = new Exercise.Collection();
+	    collection = new Exercise.Master.Collection();
 	    collection.fetch({
 	      success: (function(_this) {
 	        return function(collection) {
-	          _this.rootView.content.show(new Exercise.MasterView({
-	            collection: collection,
-	            model: new Exercise.Model()
+	          _this.rootView.content.show(new Exercise.Master.View({
+	            collection: collection
 	          }));
 	        };
 	      })(this),
@@ -31433,7 +31432,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Home</span></div></div><br><div id=\"accordion\" class=\"panel-group\"><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse1\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-exercise\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse1\" class=\"panel-collapse collapse\"><div class=\"panel-body\"><div class=\"list-group\"><a id=\"home-exercise-strength\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</a><a id=\"home-exercise-endurance\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Endurance</a><a id=\"home-exercise-flexibility\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Flexibility</a><a id=\"home-exercise-balance\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Balance</a></div></div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse2\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Status</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse2\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse3\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Schedule</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse3\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse4\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse4\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse5\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-multiplayer\"><i class=\"fa fa-fw fa-lg fa-group\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Multiplayer</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse5\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Home</span></div></div><br><div id=\"accordion\" class=\"panel-group\"><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-exercise\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse1\" class=\"panel-collapse collapse\"><div class=\"panel-body\"><div class=\"list-group\"><a id=\"home-exercise-strength\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</a><a id=\"home-exercise-endurance\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Endurance</a><a id=\"home-exercise-flexibility\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-heart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Flexibility</a><a id=\"home-exercise-balance\" class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Balance</a></div></div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse2\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Status</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse2\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse3\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Schedule</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse3\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse4\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse4\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div><div class=\"panel panel-default\"><div data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse5\" class=\"panel-heading\"><h4 class=\"panel-title\"><a id=\"home-multiplayer\"><i class=\"fa fa-fw fa-lg fa-group\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Multiplayer</a><div class=\"pull-right\"><i class=\"fa fa-fw fa-caret-down\"></i></div></h4></div><div id=\"collapse5\" class=\"panel-collapse collapse\"><div class=\"panel-body\">Under Construction...</div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -31549,11 +31548,28 @@
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	module.exports.Master = __webpack_require__(36);
+
+	module.exports.Detail = __webpack_require__(44);
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	InputView = __webpack_require__(37);
+
+	TableView = __webpack_require__(40);
+
+	viewTemplate = __webpack_require__(43);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -31567,7 +31583,8 @@
 	  Model.prototype.defaults = {
 	    name: '',
 	    type: 0,
-	    note: ''
+	    note: '',
+	    date: new Date()
 	  };
 
 	  return Model;
@@ -31588,33 +31605,6 @@
 	  return Collection;
 
 	})(Backbone.Collection);
-
-	exports.Model = Model;
-
-	exports.Collection = Collection;
-
-	exports.MasterView = __webpack_require__(36);
-
-	exports.Detail = __webpack_require__(44);
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, InputView, Marionette, TableView, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(6);
-
-	Marionette = __webpack_require__(8);
-
-	InputView = __webpack_require__(37);
-
-	TableView = __webpack_require__(40);
-
-	viewTemplate = __webpack_require__(43);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -31639,22 +31629,35 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.channel = Backbone.Radio.channel('view');
+	    this.channel.reply('hey', function() {
+	      return 'bobsdf';
+	    });
 	  }
 
 	  View.prototype.onShow = function() {
 	    this.showChildView('input', new InputView({
-	      model: this.model
+	      collection: this.collection,
+	      model: new Model()
 	    }));
 	    return this.showChildView('table', new TableView({
 	      collection: this.collection
 	    }));
 	  };
 
+	  View.prototype.onBeforeDestroy = function() {
+	    this.channel.reset();
+	  };
+
 	  return View;
 
 	})(Marionette.LayoutView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
 
 
 /***/ },
@@ -31693,16 +31696,13 @@
 	  };
 
 	  View.prototype.events = {
-	    'click #exercise-strength': function() {},
-	    'click #exercise-endurance': function() {},
-	    'click #exercise-flexibility': function() {},
-	    'click #exercise-balance': function() {},
 	    'submit': function(event) {
 	      event.preventDefault();
 	      this.model.save({}, {
 	        success: (function(_this) {
 	          return function() {
-	            _this.rootChannel.request('home');
+	            _this.collection.add(_this.model);
+	            _this.render();
 	          };
 	        })(this),
 	        error: function() {
@@ -31725,16 +31725,16 @@
 	    }).multiselect('dataprovider', [
 	      {
 	        value: 0,
-	        label: 'strength'
+	        label: 'Strength'
 	      }, {
 	        value: 1,
-	        label: 'cardio'
+	        label: 'Cardio'
 	      }, {
 	        value: 2,
-	        label: 'flexibility'
+	        label: 'Flexibility'
 	      }, {
 	        value: 3,
-	        label: 'balance'
+	        label: 'Balance'
 	      }
 	    ]);
 	    this.stickit();
@@ -31762,7 +31762,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label class=\"col-sm-12\">Add new Exercise</label></div><div class=\"form-group\"><label for=\"exercise-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-name\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-note\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div></form></div></div>");;return buf.join("");
+	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label class=\"col-sm-12\">Add new Exercise</label></div><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-name\" required class=\"form-control\"></div></div><!--.form-grouplabel.col-sm-2.control-label(for='exercise-note') Note\n.col-sm-10\n    input.form-control#exercise-note--><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -33508,7 +33508,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">My Exercises</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-striped table-hover\"><thead><tr><td>Name</td><td>Last</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-striped table-hover\"><thead><tr><td><b>Name</b></td><td><b>Last</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

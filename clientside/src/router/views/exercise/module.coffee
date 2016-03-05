@@ -1,35 +1,8 @@
 #-------------------------------------------------------------------------------
-# Imports
-#-------------------------------------------------------------------------------
-
-Backbone = require 'backbone'
-
-#-------------------------------------------------------------------------------
-# Model
-#-------------------------------------------------------------------------------
-
-class Model extends Backbone.Model
-  url:  '/api/exercise'
-  defaults:
-    name: ''
-    type: 0
-    note: ''
-
-#-------------------------------------------------------------------------------
-# Collection
-#-------------------------------------------------------------------------------
-
-class Collection extends Backbone.Collection
-  url:  '/api/exercise'
-  model: Model
-
-#-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Model      = Model
-exports.Collection = Collection
-exports.MasterView = require './master/view'
-exports.Detail     = require './detail/module'
+module.exports.Master = require './master/module'
+module.exports.Detail = require './detail/module'
 
 #-------------------------------------------------------------------------------

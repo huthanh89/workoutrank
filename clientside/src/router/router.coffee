@@ -96,7 +96,7 @@ class Router extends Marionette.AppRouter
     'login':           'login'
     'home':            'home'
     'profile':         'profile'
-    'exercise(/)':     'exercise'
+    'exercise/':     'exercise'
     'exercise/:type':  'exerciseDetail'
     'stat':            'stat'
     'schedule':        'schdeule'
@@ -135,12 +135,11 @@ class Router extends Marionette.AppRouter
 
   exercise: ->
     @navChannel.request('nav:main')
-    collection = new Exercise.Collection()
+    collection = new Exercise.Master.Collection()
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Exercise.MasterView
+        @rootView.content.show new Exercise.Master.View
           collection: collection
-          model: new Exercise.Model()
         return
       error: ->
         console.log 'error'
@@ -149,7 +148,6 @@ class Router extends Marionette.AppRouter
 
   exerciseDetail: (type) ->
     @navChannel.request('nav:main')
-
     View       = Exercise.Detail(type).View
     Model      = Exercise.Detail(type).Model
     Collection = Exercise.Detail(type).Collection

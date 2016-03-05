@@ -31,24 +31,13 @@ class View extends Marionette.ItemView
     '#exercise-type': 'type'
 
   events:
-
-    'click #exercise-strength': ->
-      return
-
-    'click #exercise-endurance': ->
-      return
-
-    'click #exercise-flexibility': ->
-      return
-
-    'click #exercise-balance': ->
-      return
-
     'submit': (event) ->
       event.preventDefault()
       @model.save {},
         success: =>
-          @rootChannel.request('home')
+          #@rootChannel.request('home')
+          @collection.add(@model)
+          @render()
           return
         error: ->
           console.log 'fail'
@@ -66,10 +55,10 @@ class View extends Marionette.ItemView
       buttonWidth:    '100%'
       buttonClass:    'btn btn-info'
     .multiselect 'dataprovider', [
-      { value: 0, label: 'strength'    }
-      { value: 1, label: 'cardio'      }
-      { value: 2, label: 'flexibility' }
-      { value: 3, label: 'balance'     }
+      { value: 0, label: 'Strength'    }
+      { value: 1, label: 'Cardio'      }
+      { value: 2, label: 'Flexibility' }
+      { value: 3, label: 'Balance'     }
     ]
 
     @stickit()
