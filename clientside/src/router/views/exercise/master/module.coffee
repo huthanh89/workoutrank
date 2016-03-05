@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
+Paginator    = require 'backbone.paginator'
 Marionette   = require 'marionette'
 InputView    = require './input/view'
 TableView    = require './table/view'
@@ -24,9 +25,17 @@ class Model extends Backbone.Model
 # Collection
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.Collection
+class Collection extends Backbone.PageableCollection
+
   url:  '/api/exercise'
+
   model: Model
+
+  mode: 'client'
+
+  state:
+    currentPage: 1
+    pageSize:    10
 
 #-------------------------------------------------------------------------------
 # View

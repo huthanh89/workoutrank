@@ -38,6 +38,7 @@ class ItemView extends Marionette.CompositeView
     '.exercise-table-td-date': 'type'
 
   events:
+
     click: ->
       type = @model.get('type')
       label = _.find(Data.Types, value: type).label
@@ -50,6 +51,10 @@ class ItemView extends Marionette.CompositeView
 
   onRender: ->
     @stickit()
+    return
+
+  onBeforeDestroy: ->
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------
@@ -65,8 +70,44 @@ class View extends Marionette.CompositeView
   template: viewTemplate
 
   ui:
-    name: '#exercise-name'
-    type: '#exercise-type'
+    first:       '#exercise-table-first'
+    prev:        '#exercise-table-prev'
+    next:        '#exercise-table-next'
+    last:        '#exercise-table-last'
+    currentPage: '#exercise-table-currentpage'
+    lastPage:    '#exercise-table-lastpage'
+
+  collectionEvents:
+    'sync reset': ->
+      state = @collection.state
+      @ui.currentPage.text state.currentPage
+      @ui.lastPage.text state.lastPage
+      return
+
+  events:
+
+    'click @ui.first': ->
+      @collection.getFirstPage()
+      return
+
+    'click @ui.prev': ->
+      if @collection.hasPreviousPage()
+        @collection.getPreviousPage()
+      return
+
+    'click @ui.next': ->
+      if @collection.hasNextPage()
+        @collection.getNextPage()
+      return
+
+    'click @ui.last': ->
+      @collection.getLastPage()
+      return
+
+  onRender: ->
+    console.log @collection
+    console.log @collection.state
+    return
 
 #-------------------------------------------------------------------------------
 # Exports
