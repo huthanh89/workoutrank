@@ -81,10 +81,15 @@ class View extends Marionette.CompositeView
       @setPage()
       return
 
-    'update': ->
+    'sync update': ->
       @collection.getLastPage()
       @setPage()
       return
+
+
+
+    all: (all) ->
+      console.log all
 
   events:
 

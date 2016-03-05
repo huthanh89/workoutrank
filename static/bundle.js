@@ -29489,14 +29489,16 @@
 	  };
 
 	  Router.prototype.exercise = function() {
-	    var collection;
+	    var collection, model;
 	    this.navChannel.request('nav:main');
 	    collection = new Exercise.Master.Collection();
+	    model = new Exercise.Master.Model();
 	    collection.fetch({
 	      success: (function(_this) {
 	        return function(collection) {
 	          _this.rootView.content.show(new Exercise.Master.View({
-	            collection: collection
+	            collection: collection,
+	            model: model
 	          }));
 	        };
 	      })(this),
@@ -31608,7 +31610,7 @@
 
 	  Collection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 10
+	    pageSize: 3
 	  };
 
 	  return Collection;
@@ -31635,10 +31637,13 @@
 	    }
 	  };
 
-	  View.prototype.collectionEvents = {
-	    'sync': function() {
-	      this.showInputView();
-	      this.showTableView();
+	  View.prototype.modelEvents = {
+	    'change:type': function(model, value) {
+	      var models;
+	      models = this.fullCollection.filter(function(model) {
+	        return model.get('type') === value;
+	      });
+	      this.collection.fullCollection.reset(models);
 	    }
 	  };
 
@@ -31646,46 +31651,17 @@
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	    this.channel = Backbone.Radio.channel('channel');
-	    this.type = 0;
-	    this.channel.reply('type', (function(_this) {
-	      return function(type) {
-	        _this.type = type;
-	      };
-	    })(this));
-	    this.fullCollection = this.collection.fullCollection;
+	    this.fullCollection = this.collection.fullCollection.clone();
 	  }
 
-	  View.prototype.showTableView = function() {
+	  View.prototype.onShow = function() {
+	    this.showChildView('input', new InputView({
+	      collection: this.collection,
+	      model: this.model
+	    }));
 	    this.showChildView('table', new TableView({
 	      collection: this.collection
 	    }));
-
-	    /*
-	    console.log @type
-	    
-	    models = @fullCollection.filter (model) =>
-	      return model.get('type') is @type
-	    
-	    @showChildView 'table', new TableView
-	      collection: new Collection models
-	     */
-	  };
-
-	  View.prototype.showInputView = function() {
-	    var model;
-	    model = new Model({
-	      type: this.type
-	    });
-	    this.input.show(new InputView({
-	      collection: this.collection,
-	      model: model,
-	      channel: this.channel,
-	      type: this.type
-	    }));
-	  };
-
-	  View.prototype.onBeforeDestroy = function() {
-	    this.channel.reset();
 	  };
 
 	  return View;
@@ -31733,7 +31709,12 @@
 
 	  View.prototype.bindings = {
 	    '#exercise-name': 'name',
-	    '#exercise-type': 'type'
+	    '#exercise-type': {
+	      observe: 'type',
+	      onSet: function(value) {
+	        return parseInt(value);
+	      }
+	    }
 	  };
 
 	  View.prototype.events = {
@@ -31742,12 +31723,6 @@
 	      this.collection.create(this.model.attributes, {
 	        wait: true
 	      });
-	    }
-	  };
-
-	  View.prototype.modelEvents = {
-	    'change:type': function(model, value) {
-	      this.channel.request('type', value);
 	    }
 	  };
 
@@ -33560,9 +33535,12 @@
 	    'reset': function() {
 	      this.setPage();
 	    },
-	    'update': function() {
+	    'sync update': function() {
 	      this.collection.getLastPage();
 	      this.setPage();
+	    },
+	    all: function(all) {
+	      return console.log(all);
 	    }
 	  };
 

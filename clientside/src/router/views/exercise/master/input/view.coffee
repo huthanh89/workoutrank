@@ -29,18 +29,16 @@ class View extends Marionette.ItemView
 
   bindings:
     '#exercise-name': 'name'
-    '#exercise-type': 'type'
+
+    '#exercise-type':
+      observe: 'type'
+      onSet: (value) -> parseInt(value)
 
   events:
     'submit': (event) ->
       event.preventDefault()
       @collection.create @model.attributes,
         wait: true
-      return
-
-  modelEvents:
-    'change:type': (model, value) ->
-      @channel.request 'type', value
       return
 
   constructor: (options) ->
@@ -59,7 +57,6 @@ class View extends Marionette.ItemView
     .multiselect 'select',       @model.get('type')
 
     @stickit()
-
     return
 
   onShow: ->

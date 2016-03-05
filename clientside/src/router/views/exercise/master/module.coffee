@@ -40,7 +40,7 @@ class Collection extends Backbone.PageableCollection
 
   state:
     currentPage: 1
-    pageSize:    10
+    pageSize:    3
 
 #-------------------------------------------------------------------------------
 # View
@@ -62,57 +62,27 @@ class View extends Marionette.LayoutView
       @rootChannel.request('home')
       return
 
-  collectionEvents:
-    'sync': ->
-      @showInputView()
-      @showTableView()
+  modelEvents:
+    'change:type': (model, value) ->
+      models = @fullCollection.filter (model) -> model.get('type') is value
+      @collection.fullCollection.reset models
       return
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
-    @channel     = Backbone.Radio.channel('channel')
-    @type        = 0
+    @rootChannel    = Backbone.Radio.channel('root')
+    @channel        = Backbone.Radio.channel('channel')
+    @fullCollection = @collection.fullCollection.clone()
 
-    @channel.reply 'type', (type) =>
-      @type = type
-      return
+  onShow: ->
 
-    @fullCollection = @collection.fullCollection
+    @showChildView 'input', new InputView
+      collection: @collection
+      model:      @model
 
-  # Show table view, filtered by type.
-
-  showTableView: ->
     @showChildView 'table', new TableView
       collection: @collection
-    ###
-    console.log @type
 
-    models = @fullCollection.filter (model) =>
-      return model.get('type') is @type
-
-    @showChildView 'table', new TableView
-      collection: new Collection models
-
-###
-    return
-
-  # Show input view
-
-  showInputView: ->
-
-    model = new Model
-      type: @type
-
-    @input.show new InputView
-      collection: @collection
-      model:      model
-      channel:    @channel
-      type:       @type
-    return
-
-  onBeforeDestroy: ->
-    @channel.reset()
     return
 
 #-------------------------------------------------------------------------------
