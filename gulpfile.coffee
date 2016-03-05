@@ -207,15 +207,6 @@ gulp.task 'css', ->
 
   ]).pipe(concat('style.css')).pipe gulp.dest('./static/')
 
-  ###
-  // Move dependency maps for bootstrap to public folder.
-  gulp.src([
-              "./src/bootstrap/css/bootstrap-theme.css.map",
-              "./src/bootstrap/css/bootstrap.css.map"
-          ])
-      .pipe(gulp.dest('./static/stylesheets/'));
-  ###
-
   return
 
 #-------------------------------------------------------------------------------
