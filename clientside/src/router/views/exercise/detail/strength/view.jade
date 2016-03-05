@@ -1,9 +1,14 @@
 .row
-    .col-sm-12
+    .col-xs-12
         button.btn.btn-default#exercise-strength-back
-            i.fa.fa-arrow-left
+            i.fa.fa-lg.fa-arrow-left
             = ' '
-            i.fa.fa-heartbeat
+            i.fa.fa-lg.fa-heartbeat
+        .pull-right
+            button.btn.btn-default#exercise-strength-graph
+                i.fa.fa-lg.fa-area-chart
+                = ' '
+                i.fa.fa-lg.fa-arrow-right
 br
 .row
     .col-sm-12
@@ -16,11 +21,18 @@ br
     .col-sm-6
         .row
             .col-sm-12
-                span.text-primary
+                span
                     b Add a new exercise
         br
         .row
             .col-sm-12
                 #exercise-strength-input-view
     .col-sm-6
-        #exercise-strength-table-view
+        .row
+            .col-sm-12
+                span
+                    b Table of past sets
+        br
+        .row
+            .col-sm-12
+                #exercise-strength-table-view

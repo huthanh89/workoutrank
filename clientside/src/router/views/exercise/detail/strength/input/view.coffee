@@ -25,7 +25,7 @@ require 'bootstrap.validator'
 class Model extends Backbone.Model
 
   defaults:
-    index:  0
+    index:  1
     weight: 0
     rep:    1
 
@@ -67,26 +67,6 @@ class View extends Marionette.LayoutView
 
   events:
 
-    'invalid.bs.validator': ->
-      console.log 'NOT VALID'
-      return
-
-    # Form is valid.
-
-    'valid.bs.validator': ->
-      console.log 'isvalid'
-      ###
-      @model.save {},
-        success: =>
-          @rootChannel.request('home')
-          return
-        error: ->
-          console.log 'fail'
-          return
-
-###
-      return
-
     'click #exercise-strength-exercise': ->
       @rootChannel.request('exercise')
       return
@@ -100,6 +80,14 @@ class View extends Marionette.LayoutView
       @ui.form.validator('validate')
       @model.set 'sets', @setCollection.toJSON()
       @ui.form.validator('validate')
+
+      @model.save {},
+        success: =>
+          return
+        error: ->
+          console.log 'fail'
+          return
+
       return
 
   constructor: ->
@@ -146,7 +134,7 @@ class View extends Marionette.LayoutView
     @ui.form.validator
       feedback: {
         success: 'glyphicon-ok',
-        error: 'glyphicon-remove'
+        error:   'glyphicon-remove'
       }
 
     @showChildView 'set', new SetView
