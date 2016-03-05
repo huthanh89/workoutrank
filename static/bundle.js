@@ -33478,10 +33478,6 @@
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
 
-	  function ItemView() {
-	    return ItemView.__super__.constructor.apply(this, arguments);
-	  }
-
 	  ItemView.prototype.tagName = 'tr';
 
 	  ItemView.prototype.template = itemTemplate;
@@ -33490,6 +33486,18 @@
 	    '.exercise-table-td-name': 'name',
 	    '.exercise-table-td-type': 'type'
 	  };
+
+	  ItemView.prototype.events = {
+	    click: function() {
+	      console.log('click');
+	      this.rootChannel.request('exercise:detail', this.model.get('type'));
+	    }
+	  };
+
+	  function ItemView() {
+	    ItemView.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
 
 	  ItemView.prototype.onRender = function() {
 	    this.stickit();
@@ -33502,6 +33510,10 @@
 	View = (function(superClass) {
 	  extend(View, superClass);
 
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
 	  View.prototype.childViewContainer = 'tbody';
 
 	  View.prototype.childView = ItemView;
@@ -33512,11 +33524,6 @@
 	    name: '#exercise-name',
 	    type: '#exercise-type'
 	  };
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
 
 	  return View;
 
@@ -33536,7 +33543,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"exercise-table-td-name\"></td><td class=\"exercise-table-td-type\"></td>");;return buf.join("");
+	buf.push("<td class=\"exercise-table-td-name\"></td><td class=\"exercise-table-td-typex\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -33550,7 +33557,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-striped table-hover\"><thead><tr><td><b>Name</b></td><td><b>Last</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Name</b></td><td><b>Last</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

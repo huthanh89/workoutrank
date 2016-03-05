@@ -30,6 +30,16 @@ class ItemView extends Marionette.CompositeView
     '.exercise-table-td-name': 'name'
     '.exercise-table-td-type': 'type'
 
+  events:
+    click: ->
+      console.log 'click'
+      @rootChannel.request 'exercise:detail', @model.get('type')
+      return
+
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
+
   onRender: ->
     @stickit()
     return
@@ -49,10 +59,6 @@ class View extends Marionette.CompositeView
   ui:
     name: '#exercise-name'
     type: '#exercise-type'
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Exports
