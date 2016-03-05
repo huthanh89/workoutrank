@@ -44,25 +44,41 @@ class View extends Marionette.LayoutView
     table: '#exercise-table-view'
 
   events:
-
     'click #exercise-back-home': ->
       @rootChannel.request('home')
+      return
+
+  collectionEvents:
+    'sync': ->
+      @inputView()
       return
 
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @channel =     Backbone.Radio.channel('view')
-    @channel.reply 'hey', -> 'bobsdf'
+    @channel     = Backbone.Radio.channel('channel')
+    @type        = 0
+
+    @channel.reply 'type', (type) =>
+      @type = type
+      return
 
   onShow: ->
-
-    @showChildView 'input', new InputView
-      collection: @collection
-      model:       new Model()
-
     @showChildView 'table', new TableView
       collection: @collection
+    return
+
+  inputView: ->
+
+    model = new Model
+      type: @type
+
+    @input.show new InputView
+      collection: @collection
+      model:      model
+      channel:    @channel
+      type:       @type
+    return
 
   onBeforeDestroy: ->
     @channel.reset()

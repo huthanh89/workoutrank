@@ -5,6 +5,7 @@
 _            = require 'lodash'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+Data         = require '../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -35,17 +36,21 @@ class View extends Marionette.ItemView
       event.preventDefault()
       @model.save {},
         success: =>
-          #@rootChannel.request('home')
           @collection.add(@model)
-          @render()
           return
         error: ->
           console.log 'fail'
           return
       return
 
-  constructor: ->
+  modelEvents:
+    'change:type': (model, value) ->
+      @channel.request 'type', value
+      return
+
+  constructor: (options) ->
     super
+    @mergeOptions options, 'channel'
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
@@ -54,19 +59,21 @@ class View extends Marionette.ItemView
       enableFiltering: true
       buttonWidth:    '100%'
       buttonClass:    'btn btn-info'
-    .multiselect 'dataprovider', [
-      { value: 0, label: 'Strength'    }
-      { value: 1, label: 'Cardio'      }
-      { value: 2, label: 'Flexibility' }
-      { value: 3, label: 'Balance'     }
-    ]
+    .multiselect 'dataprovider', Data.Types
+    .multiselect 'deselect',     0
+    .multiselect 'select',       @model.get('type')
 
     @stickit()
 
     return
 
+  onShow: ->
+    @ui.name.focus()
+    return
+
   onBeforeDestroy: ->
     @ui.type.multiselect('destroy')
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------
