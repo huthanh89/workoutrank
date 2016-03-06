@@ -24,17 +24,38 @@ class View extends Marionette.LayoutView
       @rootChannel.request('exercise')
       return
 
+  modelEvents:
+    'change:type': (model, value) ->
+      @filterCollection(value)
+      return
+
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
+    @rootChannel    = Backbone.Radio.channel('root')
+    @fullCollection = @collection.fullCollection.clone()
 
   onShow: ->
+
+    # Filter collection before showing table view.
+
+    @filterCollection(@model.get('type'))
+
     @showChildView 'input', new InputView
-      model: @model
+      collection: @collection
+      model:      @model
 
     @showChildView 'table', new TableView
       collection: @collection
 
+    return
+
+  # Fetch the latest collection then filter the collection by type.
+
+  filterCollection: (type) ->
+    @fullCollection.fetch
+      success: =>
+        models = @fullCollection.filter (model) -> model.get('type') is type
+        @collection.fullCollection.reset models
     return
 
 #-------------------------------------------------------------------------------

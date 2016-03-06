@@ -7,14 +7,11 @@ Marionette = require 'marionette'
 #-------------------------------------------------------------------------------
 # Behavior
 #   Controls table pagination
+#   Requires the following in the view;
+#     ui:
+#       prev, next, last, currentPage, lastPage
+#     collection: PageableCollection
 #-------------------------------------------------------------------------------
-
-###
-  Requires the following in the view;
-    ui:
-      prev, next, last, currentPage, lastPage
-    collection: PageableCollection
-###
 
 class Behavior extends Marionette.Behavior
 

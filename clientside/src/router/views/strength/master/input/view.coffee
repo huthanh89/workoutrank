@@ -19,17 +19,6 @@ require 'backbone.stickit'
 require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
-# Set Model
-#-------------------------------------------------------------------------------
-
-class Model extends Backbone.Model
-
-  defaults:
-    index:  1
-    weight: 0
-    rep:    1
-
-#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -54,6 +43,10 @@ class View extends Marionette.LayoutView
     '#exercise-strength-name': 'name'
     '#exercise-strength-note': 'note'
 
+    '#exercise-strength-type':
+      observe: 'type'
+      onSet: (value) -> parseInt(value)
+
   events:
 
     'click #exercise-strength-exercise': ->
@@ -67,14 +60,12 @@ class View extends Marionette.LayoutView
     'click @ui.submit': ->
 
       @ui.form.validator('validate')
-      @model.set 'sets', @setCollection.toJSON()
-      @ui.form.validator('validate')
 
-      @model.save {},
+      @collection.fullCollection.create @model.attributes,
+        wait: true
+        at:   0
         success: =>
-          return
-        error: ->
-          console.log 'fail'
+          @ui.name.val('')
           return
 
       return
@@ -82,7 +73,6 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @setCollection = new Backbone.Collection(new Model())
 
   onRender: ->
 
@@ -115,17 +105,13 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
-    @ui.form.validator
-      feedback: {
-        success: 'glyphicon-ok',
-        error:   'glyphicon-remove'
-      }
+    @ui.name.focus()
+    return
 
   onBeforeDestroy: ->
     @ui.form.validator('destroy')
     @ui.date.datepicker('destroy')
     @ui.addset.TouchSpin('destroy')
-    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

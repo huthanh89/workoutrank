@@ -38447,7 +38447,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label class=\"col-sm-12\">Go to Exercise</label></div><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"exercise-go\" class=\"btn btn-success pull-right\">Go" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-right\"></i></button></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"exercise-go\" class=\"btn btn-success pull-right\">Go" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-right\"></i></button></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -41678,7 +41678,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"exercise-input-view\"></div></div><div class=\"col-sm-6\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Go to exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43121,18 +43121,41 @@
 	    }
 	  };
 
+	  View.prototype.modelEvents = {
+	    'change:type': function(model, value) {
+	      this.filterCollection(value);
+	    }
+	  };
+
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.fullCollection = this.collection.fullCollection.clone();
 	  }
 
 	  View.prototype.onShow = function() {
+	    this.filterCollection(this.model.get('type'));
 	    this.showChildView('input', new InputView({
+	      collection: this.collection,
 	      model: this.model
 	    }));
 	    this.showChildView('table', new TableView({
 	      collection: this.collection
 	    }));
+	  };
+
+	  View.prototype.filterCollection = function(type) {
+	    this.fullCollection.fetch({
+	      success: (function(_this) {
+	        return function() {
+	          var models;
+	          models = _this.fullCollection.filter(function(model) {
+	            return model.get('type') === type;
+	          });
+	          return _this.collection.fullCollection.reset(models);
+	        };
+	      })(this)
+	    });
 	  };
 
 	  return View;
@@ -43146,7 +43169,7 @@
 /* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Data, Marionette, Model, View, _, viewTemplate,
+	var Backbone, Data, Marionette, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -43170,23 +43193,6 @@
 
 	__webpack_require__(46);
 
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.defaults = {
-	    index: 1,
-	    weight: 0,
-	    rep: 1
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
 	View = (function(superClass) {
 	  extend(View, superClass);
 
@@ -43208,7 +43214,13 @@
 
 	  View.prototype.bindings = {
 	    '#exercise-strength-name': 'name',
-	    '#exercise-strength-note': 'note'
+	    '#exercise-strength-note': 'note',
+	    '#exercise-strength-type': {
+	      observe: 'type',
+	      onSet: function(value) {
+	        return parseInt(value);
+	      }
+	    }
 	  };
 
 	  View.prototype.events = {
@@ -43220,15 +43232,14 @@
 	    },
 	    'click @ui.submit': function() {
 	      this.ui.form.validator('validate');
-	      this.model.set('sets', this.setCollection.toJSON());
-	      this.ui.form.validator('validate');
-	      this.model.save({}, {
+	      this.collection.fullCollection.create(this.model.attributes, {
+	        wait: true,
+	        at: 0,
 	        success: (function(_this) {
-	          return function() {};
-	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
+	          return function() {
+	            _this.ui.name.val('');
+	          };
+	        })(this)
 	      });
 	    }
 	  };
@@ -43236,7 +43247,6 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.setCollection = new Backbone.Collection(new Model());
 	  }
 
 	  View.prototype.onRender = function() {
@@ -43267,19 +43277,13 @@
 	  };
 
 	  View.prototype.onShow = function() {
-	    return this.ui.form.validator({
-	      feedback: {
-	        success: 'glyphicon-ok',
-	        error: 'glyphicon-remove'
-	      }
-	    });
+	    this.ui.name.focus();
 	  };
 
 	  View.prototype.onBeforeDestroy = function() {
 	    this.ui.form.validator('destroy');
 	    this.ui.date.datepicker('destroy');
 	    this.ui.addset.TouchSpin('destroy');
-	    this.unstickit();
 	  };
 
 	  return View;
@@ -43390,7 +43394,7 @@
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, Backbone, ItemView, Marionette, Pageable, View, _, itemTemplate, viewTemplate,
+	var $, Backbone, Data, ItemView, Marionette, Pageable, View, _, itemTemplate, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -43404,6 +43408,8 @@
 
 	Pageable = __webpack_require__(68);
 
+	Data = __webpack_require__(65);
+
 	itemTemplate = __webpack_require__(69);
 
 	viewTemplate = __webpack_require__(70);
@@ -43415,25 +43421,48 @@
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
 
-	  function ItemView() {
-	    return ItemView.__super__.constructor.apply(this, arguments);
-	  }
-
 	  ItemView.prototype.tagName = 'tr';
 
 	  ItemView.prototype.template = itemTemplate;
 
 	  ItemView.prototype.bindings = {
-	    '.exercise-table-td-name': 'name'
+	    '.exercise-table-td-name': 'name',
+	    '.exercise-table-td-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('dddd MM/DD/YY hh:mm:ss');
+	      }
+	    },
+	    '.exercise-table-td-type': 'type'
 	  };
+
+	  ItemView.prototype.events = {
+	    click: function() {
+	      var label, type;
+	      type = this.model.get('type');
+	      label = _.find(Data.Types, {
+	        value: type
+	      }).label;
+	      this.rootChannel.request('strength:detail', label.toLowerCase(), this.model.get('name'));
+	    }
+	  };
+
+	  function ItemView() {
+	    ItemView.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
 
 	  ItemView.prototype.onRender = function() {
 	    this.stickit();
 	  };
 
+	  ItemView.prototype.onBeforeDestroy = function() {
+	    this.unstickit();
+	  };
+
 	  return ItemView;
 
-	})(Marionette.CompositeView);
+	})(Marionette.ItemView);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -43464,7 +43493,6 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    console.log('table');
 	  }
 
 	  return View;
@@ -43483,14 +43511,6 @@
 	  hasProp = {}.hasOwnProperty;
 
 	Marionette = __webpack_require__(8);
-
-
-	/*
-	  Requires the following in the view;
-	    ui:
-	      prev, next, last, currentPage, lastPage
-	    collection: PageableCollection
-	 */
 
 	Behavior = (function(superClass) {
 	  extend(Behavior, superClass);
@@ -43595,7 +43615,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Table of past sets</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of strength exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
