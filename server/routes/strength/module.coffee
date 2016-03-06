@@ -42,11 +42,11 @@ module.post = (req, res) ->
     (callback) ->
 
       Strength.create
-        date: req.body.date
-        name: req.body.name
-        type: req.body.type
-        note: req.body.note
-        sets: req.body.sets
+        date:   req.body.date
+        name:   req.body.name
+        muscle: req.body.muscle
+        note:   req.body.note
+        sets:   req.body.sets
       , (err, result) ->
         return callback err if err
         return callback null, result

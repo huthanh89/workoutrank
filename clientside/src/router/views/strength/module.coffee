@@ -22,11 +22,11 @@ class Model extends Backbone.Model
 
   defaults:
     date: new Date()
-    name:  ''
-    type:  0
-    note:  ''
-    sets:  []
-    count: 1
+    name:   ''
+    muscle: 0
+    note:   ''
+    sets:   []
+    count:  1
 
 #-------------------------------------------------------------------------------
 # Collection

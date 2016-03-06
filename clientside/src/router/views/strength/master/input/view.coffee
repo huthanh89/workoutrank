@@ -31,7 +31,7 @@ class View extends Marionette.LayoutView
 
   ui:
     name:   '#exercise-strength-name'
-    type:   '#exercise-strength-type'
+    muscle:   '#exercise-strength-muscle'
     submit: '#exercise-strength-submit'
     addset: '#exercise-strength-addset'
     date:   '#exercise-strength-date'
@@ -43,8 +43,8 @@ class View extends Marionette.LayoutView
     '#exercise-strength-name': 'name'
     '#exercise-strength-note': 'note'
 
-    '#exercise-strength-type':
-      observe: 'type'
+    '#exercise-strength-muscle':
+      observe: 'muscle'
       onSet: (value) -> parseInt(value)
 
   events:
@@ -76,7 +76,7 @@ class View extends Marionette.LayoutView
 
   onRender: ->
 
-    @ui.type.multiselect
+    @ui.muscle.multiselect
       enableFiltering: true
       maxHeight:       200
       buttonWidth:    '100%'

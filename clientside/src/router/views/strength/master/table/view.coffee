@@ -2,8 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Pageable     = require 'src/behavior/pageable/module'
@@ -36,13 +36,13 @@ class ItemView extends Marionette.ItemView
       observe: 'date'
       onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm:ss')
 
-    '.exercise-table-td-type': 'type'
+    '.exercise-table-td-muscle': 'muscle'
 
   events:
 
     click: ->
-      type = @model.get('type')
-      label = _.find(Data.Types, value: type).label
+      muscle = @model.get('muscle')
+      label = _.find(Data.Muscles, value: muscle).label
       @rootChannel.request 'strength:detail', label.toLowerCase(), @model.get('name')
       return
 
@@ -76,7 +76,7 @@ class View extends Marionette.CompositeView
 
   ui:
     name:        '#exercise-name'
-    type:        '#exercise-type'
+    muscle:      '#exercise-muscle'
     first:       '#exercise-table-first'
     prev:        '#exercise-table-prev'
     next:        '#exercise-table-next'

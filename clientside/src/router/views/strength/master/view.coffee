@@ -25,7 +25,7 @@ class View extends Marionette.LayoutView
       return
 
   modelEvents:
-    'change:type': (model, value) ->
+    'change:muscle': (model, value) ->
       @filterCollection(value)
       return
 
@@ -38,7 +38,7 @@ class View extends Marionette.LayoutView
 
     # Filter collection before showing table view.
 
-    @filterCollection(@model.get('type'))
+    @filterCollection(@model.get('muscle'))
 
     @showChildView 'input', new InputView
       collection: @collection
@@ -49,12 +49,12 @@ class View extends Marionette.LayoutView
 
     return
 
-  # Fetch the latest collection then filter the collection by type.
+  # Fetch the latest collection then filter the collection by muscle.
 
-  filterCollection: (type) ->
+  filterCollection: (muscle) ->
     @fullCollection.fetch
       success: =>
-        models = @fullCollection.filter (model) -> model.get('type') is type
+        models = @fullCollection.filter (model) -> model.get('muscle') is muscle
         @collection.fullCollection.reset models
     return
 

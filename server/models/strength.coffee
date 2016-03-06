@@ -13,7 +13,7 @@ StrengthSchema = new mongoose.Schema
     type: Date
   name:
     type: String
-  type:
+  muscle:
     type: Number
   note:
     type: String

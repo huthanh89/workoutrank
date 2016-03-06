@@ -24,9 +24,9 @@
 
                 #exercise-strength-basic.tab-pane.active(role='tabpanel')
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-type') Type
+                        label.col-sm-2.control-label(for='exercise-strength-muscle') muscle
                         .col-sm-10
-                            select.form-control#exercise-strength-type
+                            select.form-control#exercise-strength-muscle
                     .form-group
                         label.col-sm-2.control-label(for='exercise-strength-name') Name
                         .col-sm-10
@@ -40,7 +40,7 @@
                         label.col-sm-2.control-label(for='exercise-strength-date') Date
                         .col-sm-10
                             .input-group.date
-                                input.form-control.input-readonly#exercise-strength-date(type="text" readonly)
+                                input.form-control.input-readonly#exercise-strength-date(muscle="text" readonly)
                                 .input-group-addon
                                     span.fa.fa-fw.fa-lg.fa-calendar
                     .form-group
