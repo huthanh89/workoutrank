@@ -31610,7 +31610,7 @@
 
 	  Collection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 3
+	    pageSize: 10
 	  };
 
 	  Collection.prototype.comparator = function(item) {
