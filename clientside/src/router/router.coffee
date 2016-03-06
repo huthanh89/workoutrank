@@ -11,6 +11,7 @@ Login      = require './views/login/module'
 Home       = require './views/home/module'
 Profile    = require './views/profile/module'
 Exercise   = require './views/exercise/module'
+Strength   = require './views/strength/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -62,8 +63,12 @@ class Router extends Marionette.AppRouter
         return
 
       'exercise:detail': (type) =>
-        @navigate("exercise/#{type}", trigger: true)
-        @exerciseDetail(type)
+        @rootChannel.request "#{type}"
+        return
+
+      'strength': =>
+        @navigate('strength', trigger: true)
+        @strength()
         return
 
       'stat': =>
@@ -90,18 +95,18 @@ class Router extends Marionette.AppRouter
   # Handle routes with APIs at the bottom.
 
   routes:
-    '':                'signup'
-    '/':               'signup'
-    'signup':          'signup'
-    'login':           'login'
-    'home':            'home'
-    'profile':         'profile'
-    'exercise/':     'exercise'
-    'exercise/:type':  'exerciseDetail'
-    'stat':            'stat'
-    'schedule':        'schdeule'
-    'log':             'log'
-    'multiplayer':     'multiplayer'
+    '':                  'signup'
+    '/':                 'signup'
+    'signup':            'signup'
+    'login':             'login'
+    'home':              'home'
+    'profile':           'profile'
+    'exercise/':         'exercise'
+    'strength':          'strength'
+    'stat':              'stat'
+    'schedule':          'schdeule'
+    'log':               'log'
+    'multiplayer':       'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -131,6 +136,23 @@ class Router extends Marionette.AppRouter
   profile: ->
     @navChannel.request('nav:main')
     @rootView.content.show new Profile.View()
+    return
+
+  strength: ->
+    @navChannel.request('nav:main')
+    collection = new Strength.Collection()
+    model      = new Strength.Model()
+    view       = Strength.MasterView
+
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new view
+          collection: collection
+          model: model
+        return
+      error: ->
+        console.log 'error'
+        return
     return
 
   exercise: ->

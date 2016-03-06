@@ -143,7 +143,7 @@ Exercise
     min-width: 45px;
 }
 
-#exercise-table-view tbody td{
+.exercise-table-view tbody td{
     cursor: pointer;
 }
 

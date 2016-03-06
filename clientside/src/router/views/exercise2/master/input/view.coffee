@@ -24,19 +24,25 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
+    name: '#exercise-name'
     type: '#exercise-type'
-    go:   '#exercise-go'
 
   bindings:
+    '#exercise-name': 'name'
+
     '#exercise-type':
       observe: 'type'
       onSet: (value) -> parseInt(value)
 
   events:
-    'click @ui.go': (event) ->
+    'submit': (event) ->
       event.preventDefault()
-      label = _.find(Data.Types, value: @model.get('type')).label
-      @rootChannel.request 'exercise:detail', label.toLowerCase()
+      @collection.fullCollection.create @model.attributes,
+        wait: true
+        at: 0
+        success: =>
+          @ui.name.val('')
+          return
       return
 
   constructor: (options) ->
@@ -55,6 +61,10 @@ class View extends Marionette.ItemView
     .multiselect 'select',       @model.get('type')
 
     @stickit()
+    return
+
+  onShow: ->
+    @ui.name.focus()
     return
 
   onBeforeDestroy: ->

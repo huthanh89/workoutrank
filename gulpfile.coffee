@@ -186,8 +186,6 @@ gulp.task 'css', ->
 
   gulp.src([
 
-
-
     './clientside/styles/bootstrap/css/bootstrap.css'
     './clientside/styles/bootstrap/css/bootstrap-theme.css'
 
