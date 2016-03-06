@@ -138,15 +138,14 @@ Home page
 Exercise
 -----------------------------------------------------------------------------*/
 
-.exercise-nav-btn{
-    width:     100%;
-    min-width: 45px;
-}
-
 .exercise-table-view tbody td{
     cursor: pointer;
 }
 
+.exercise-select{
+    min-width:  25px;
+    text-align: center;
+}
 /*-----------------------------------------------------------------------------
                               End of Document
 -----------------------------------------------------------------------------*/
