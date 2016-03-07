@@ -57,11 +57,11 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    input: '#exercise-strength-input-view'
-    table: '#exercise-strength-table-view'
+    input: '#strength-input-view'
+    table: '#strength-table-view'
 
   events:
-    'click #exercise-strength-back': ->
+    'click #strength-back': ->
       @rootChannel.request('strength')
       return
 

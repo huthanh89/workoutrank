@@ -27,7 +27,7 @@ class ItemView extends Marionette.CompositeView
   template: itemTemplate
 
   bindings:
-    '.exercise-table-td-name': 'name'
+    '.strength-table-td-name': 'name'
 
   onRender: ->
     @stickit()
@@ -46,8 +46,8 @@ class View extends Marionette.CompositeView
   template: viewTemplate
 
   ui:
-    name: '#exercise-name'
-    type: '#exercise-type'
+    name: '#strength-name'
+    type: '#strength-type'
 
   constructor: ->
     super

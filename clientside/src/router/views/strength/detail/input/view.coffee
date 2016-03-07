@@ -27,24 +27,24 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    set: '#exercise-strength-set-view'
+    set: '#strength-set-view'
 
   ui:
-    name:   '#exercise-strength-name'
-    type:   '#exercise-strength-type'
-    submit: '#exercise-strength-submit'
-    addset: '#exercise-strength-addset'
-    date:   '#exercise-strength-date'
-    time:   '#exercise-strength-time'
-    form:   '#exercise-strength-form'
+    name:   '#strength-name'
+    type:   '#strength-type'
+    submit: '#strength-submit'
+    addset: '#strength-addset'
+    date:   '#strength-date'
+    time:   '#strength-time'
+    form:   '#strength-form'
 
   bindings:
 
-    '#exercise-strength-name': 'name'
+    '#strength-name': 'name'
 
-    '#exercise-strength-note': 'note'
+    '#strength-note': 'note'
 
-    '#exercise-strength-addset':
+    '#strength-addset':
       observe: 'count'
       onSet: (value) ->
         if value > @setCollection.length
@@ -56,11 +56,11 @@ class View extends Marionette.LayoutView
 
   events:
 
-    'click #exercise-strength-exercise': ->
+    'click #strength-exercise': ->
       @rootChannel.request('exercise')
       return
 
-    'click #exercise-strength-time': ->
+    'click #strength-time': ->
       @ui.time.timepicker('showWidget')
       return
 

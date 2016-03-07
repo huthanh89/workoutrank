@@ -16,16 +16,16 @@ class ItemView extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    rep:    '.exercise-strength-rep'
-    weight: '.exercise-strength-weight'
+    rep:    '.strength-rep'
+    weight: '.strength-weight'
 
   bindings:
 
-    '.exercise-strength-rep': 'rep'
+    '.strength-rep': 'rep'
 
-    '.exercise-strength-weight': 'weight'
+    '.strength-weight': 'weight'
 
-    '.exercise-strength-set-label':
+    '.strength-set-label':
       observe: 'index'
       onGet: (value) -> "Set ##{value}"
 

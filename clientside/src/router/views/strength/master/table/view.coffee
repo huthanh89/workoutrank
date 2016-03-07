@@ -30,13 +30,13 @@ class ItemView extends Marionette.ItemView
 
   bindings:
 
-    '.exercise-table-td-name': 'name'
+    '.strength-table-td-name': 'name'
 
-    '.exercise-table-td-date':
+    '.strength-table-td-date':
       observe: 'date'
       onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm')
 
-    '.exercise-table-td-muscle': 'muscle'
+    '.strength-table-td-muscle': 'muscle'
 
   events:
 
@@ -73,14 +73,14 @@ class View extends Marionette.CompositeView
       behaviorClass: Pageable
 
   ui:
-    name:        '#exercise-name'
-    muscle:      '#exercise-muscle'
-    first:       '#exercise-table-first'
-    prev:        '#exercise-table-prev'
-    next:        '#exercise-table-next'
-    last:        '#exercise-table-last'
-    currentPage: '#exercise-table-currentpage'
-    lastPage:    '#exercise-table-lastpage'
+    name:        '#strength-name'
+    muscle:      '#strength-muscle'
+    first:       '#strength-table-first'
+    prev:        '#strength-table-prev'
+    next:        '#strength-table-next'
+    last:        '#strength-table-last'
+    currentPage: '#strength-table-currentpage'
+    lastPage:    '#strength-table-lastpage'
 
   constructor: ->
     super

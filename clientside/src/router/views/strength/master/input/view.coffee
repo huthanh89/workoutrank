@@ -28,30 +28,30 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    name:   '#exercise-strength-name'
-    muscle: '#exercise-strength-muscle'
-    submit: '#exercise-strength-submit'
-    addset: '#exercise-strength-addset'
-    date:   '#exercise-strength-date'
-    time:   '#exercise-strength-time'
-    form:   '#exercise-strength-form'
+    name:   '#strength-name'
+    muscle: '#strength-muscle'
+    submit: '#strength-submit'
+    addset: '#strength-addset'
+    date:   '#strength-date'
+    time:   '#strength-time'
+    form:   '#strength-form'
 
   bindings:
 
-    '#exercise-strength-name': 'name'
-    '#exercise-strength-note': 'note'
+    '#strength-name': 'name'
+    '#strength-note': 'note'
 
-    '#exercise-strength-muscle':
+    '#strength-muscle':
       observe: 'muscle'
       onSet: (value) -> parseInt(value)
 
   events:
 
-    'click #exercise-strength-exercise': ->
+    'click #strength-exercise': ->
       @rootChannel.request('exercise')
       return
 
-    'click #exercise-strength-time': ->
+    'click #strength-time': ->
       @ui.time.timepicker('showWidget')
       return
 

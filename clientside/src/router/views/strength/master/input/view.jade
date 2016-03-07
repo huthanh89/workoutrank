@@ -5,16 +5,16 @@
 br
 .row
     .col-sm-12
-        form.form-horizontal#exercise-strength-form
+        form.form-horizontal#strength-form
             // Nav tabs
             ul.nav.nav-tabs(role='tablist')
                 li.active(role='presentation')
-                    a(href='#exercise-strength-basic' aria-controls='basic', role='tab', data-toggle='tab')
+                    a(href='#strength-basic' aria-controls='basic', role='tab', data-toggle='tab')
                         i.fa.fa-fw.fa-lg.fa-pencil
                         = ' '
                         | Basic
                 li(role='presentation')
-                    a(href='#exercise-strength-advance' aria-controls='advance', role='tab', data-toggle='tab')
+                    a(href='#strength-advance' aria-controls='advance', role='tab', data-toggle='tab')
                         i.fa.fa-fw.fa-lg.fa-cogs
                         = ' '
                         | Advance
@@ -27,41 +27,41 @@ br
 
                 // Basic
 
-                #exercise-strength-basic.tab-pane.active(role='tabpanel')
+                #strength-basic.tab-pane.active(role='tabpanel')
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-muscle') Muscle
+                        label.col-sm-2.control-label(for='strength-muscle') Muscle
                         .col-sm-10
-                            select.form-control#exercise-strength-muscle
+                            select.form-control#strength-muscle
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-name') Name
+                        label.col-sm-2.control-label(for='strength-name') Name
                         .col-sm-10
-                            input.form-control#exercise-strength-name(required)
+                            input.form-control#strength-name(required)
                             .help-block.with-errors
 
                 // Advance
 
-                #exercise-strength-advance.tab-pane(role='tabpanel')
+                #strength-advance.tab-pane(role='tabpanel')
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-date') Date
+                        label.col-sm-2.control-label(for='strength-date') Date
                         .col-sm-10
                             .input-group.date
-                                input.form-control.input-readonly#exercise-strength-date(muscle="text" readonly)
+                                input.form-control.input-readonly#strength-date(muscle="text" readonly)
                                 .input-group-addon
                                     span.fa.fa-fw.fa-lg.fa-calendar
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-time') Time
+                        label.col-sm-2.control-label(for='strength-time') Time
                         .col-sm-10
                             .input-group.bootstrap-timepicker.timepicker
-                                input.form-control.input-readonly#exercise-strength-time(readonly)
+                                input.form-control.input-readonly#strength-time(readonly)
                                 .input-group-addon
                                     span.fa.fa-fw.fa-lg.fa-clock-o
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-note') Note
+                        label.col-sm-2.control-label(for='strength-note') Note
                         .col-sm-10
-                            input.form-control#exercise-strength-note
+                            input.form-control#strength-note
 .row
     .col-sm-12
-        button.btn.btn-success.pull-right#exercise-strength-submit
+        button.btn.btn-success.pull-right#strength-submit
             i.fa.fa-lg.fa-plus-circle
             = ' '
             | Add Workout

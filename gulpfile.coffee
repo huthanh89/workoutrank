@@ -79,7 +79,9 @@ gulp.task 'coffeelint', ->
 
 gulp.task 'csslint', ->
   gulp.src('./clientside/styles/application.css')
-    .pipe(csslint())
+    .pipe(csslint(
+      ids: false
+    ))
     .pipe(csslint.reporter());
   return
 
