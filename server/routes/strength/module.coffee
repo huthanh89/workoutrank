@@ -12,10 +12,10 @@ mongoose = require 'mongoose'
 Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
-# GET
+# List
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.list = (req, res, next) ->
 
   async.waterfall [
 
@@ -32,6 +32,31 @@ module.get = (req, res, next) ->
     return res.json documents
 
 #-------------------------------------------------------------------------------
+# Get
+#-------------------------------------------------------------------------------
+
+module.get = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      console.log req.params
+
+      Strength.findOne
+        _id: req.params.sid
+      .exec (err, document) ->
+        console.log 'ERROR', err if err
+        callback null, document
+      return
+
+  ], (err, document) ->
+
+    console.log 'ERROR', err if err
+
+    return res.json document
+
+#-------------------------------------------------------------------------------
 # Post
 #-------------------------------------------------------------------------------
 
@@ -42,11 +67,11 @@ module.post = (req, res) ->
     (callback) ->
 
       Strength.create
-        date:   req.body.date
-        name:   req.body.name
-        muscle: req.body.muscle
-        note:   req.body.note
-        sets:   req.body.sets
+        date:    req.body.date
+        name:    req.body.name
+        muscle:  req.body.muscle
+        note:    req.body.note
+        session: req.body.session
       , (err, result) ->
         return callback err if err
         return callback null, result

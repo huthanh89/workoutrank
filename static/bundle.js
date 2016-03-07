@@ -29467,8 +29467,8 @@
 	    'home': 'home',
 	    'profile': 'profile',
 	    'exercise': 'exercise',
-	    'strength(/)': 'strength',
-	    'strength/:sid(/)': 'strengthDetail',
+	    'strength/': 'strength',
+	    'strength/:sid/': 'strengthDetail',
 	    'stat': 'stat',
 	    'schedule': 'schdeule',
 	    'log': 'log',
@@ -43100,14 +43100,14 @@
 
 	  Model.prototype.idAttribute = '_id';
 
-	  Model.prototype.url = '/api/exercise/strength';
+	  Model.prototype.url = '/api/strength';
 
 	  Model.prototype.defaults = {
 	    date: new Date(),
 	    name: '',
 	    muscle: 0,
 	    note: '',
-	    sets: [],
+	    session: [],
 	    count: 1
 	  };
 
@@ -43122,7 +43122,7 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = '/api/exercise/strength';
+	  Collection.prototype.url = '/api/strength';
 
 	  Collection.prototype.model = Model;
 
@@ -43270,8 +43270,6 @@
 	    },
 	    'click @ui.submit': function() {
 	      this.ui.form.validator('validate');
-	      console.log(this.model.attributes);
-	      console.log(this.model.isValid());
 	      this.collection.fullCollection.create(this.model.attributes, {
 	        wait: true,
 	        at: 0,
@@ -43654,21 +43652,17 @@
 	Model = (function(superClass) {
 	  extend(Model, superClass);
 
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
 	  Model.prototype.idAttribute = '_id';
 
-	  Model.prototype.url = '/api/exercise/strength';
+	  function Model(options) {
+	    Model.__super__.constructor.apply(this, arguments);
+	    this.url = "/api/strength/" + options.id;
+	  }
 
 	  Model.prototype.defaults = {
-	    date: new Date(),
-	    name: '',
-	    muscle: 0,
-	    note: '',
-	    sets: [],
-	    count: 1
+	    index: 1,
+	    weight: 0,
+	    rep: 1
 	  };
 
 	  return Model;
@@ -43682,7 +43676,7 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = '/api/exercise/strength';
+	  Collection.prototype.url = '/api/strength';
 
 	  Collection.prototype.model = Model;
 
@@ -43713,7 +43707,7 @@
 
 	  View.prototype.events = {
 	    'click #exercise-strength-back': function() {
-	      this.rootChannel.request('exercise');
+	      this.rootChannel.request('strength');
 	    }
 	  };
 
@@ -43727,7 +43721,8 @@
 	      model: this.model
 	    }));
 	    this.showChildView('table', new TableView({
-	      collection: new Backbone.Collection()
+	      collection: new Backbone.Collection(),
+	      model: this.model
 	    }));
 	  };
 
@@ -43746,7 +43741,7 @@
 /* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Marionette, Model, SetView, View, _, viewTemplate,
+	var Backbone, Marionette, SetView, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -43769,23 +43764,6 @@
 	__webpack_require__(24);
 
 	__webpack_require__(46);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.defaults = {
-	    index: 1,
-	    weight: 0,
-	    rep: 1
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -43848,7 +43826,6 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.setCollection = new Backbone.Collection(new Model());
 	  }
 
 	  View.prototype.onRender = function() {
@@ -44016,7 +43993,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-addset\" class=\"col-sm-2 control-label\">Sets</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new workout session</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" readonly class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-addset\" class=\"col-sm-2 control-label\">Sets</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add Session</button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -44131,7 +44108,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Session</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

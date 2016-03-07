@@ -17,7 +17,7 @@ StrengthSchema = new mongoose.Schema
     type: Number
   note:
     type: String
-  sets:
+  session:
     type: Array
 ,
   collection: 'strength'

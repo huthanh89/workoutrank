@@ -22,15 +22,15 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  url:  '/api/exercise/strength'
+  url:  '/api/strength'
 
   defaults:
     date: new Date()
-    name:   ''
-    muscle: 0
-    note:   ''
-    sets:   []
-    count:  1
+    name:    ''
+    muscle:  0
+    note:    ''
+    session: []
+    count:   1
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -38,7 +38,7 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.PageableCollection
 
-  url:  '/api/exercise/strength'
+  url:  '/api/strength'
 
   model: Model
 

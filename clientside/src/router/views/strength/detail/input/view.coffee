@@ -19,17 +19,6 @@ require 'backbone.stickit'
 require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
-# Set Model
-#-------------------------------------------------------------------------------
-
-class Model extends Backbone.Model
-
-  defaults:
-    index:  1
-    weight: 0
-    rep:    1
-
-#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -93,7 +82,7 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @setCollection = new Backbone.Collection(new Model())
+    #@setCollection = new Backbone.Collection(new Model())
 
   onRender: ->
 

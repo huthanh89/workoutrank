@@ -59,9 +59,6 @@ class View extends Marionette.LayoutView
 
       @ui.form.validator('validate')
 
-      console.log @model.attributes
-      console.log @model.isValid()
-
       @collection.fullCollection.create @model.attributes,
         wait: true
         at:   0

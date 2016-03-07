@@ -98,6 +98,8 @@ class Router extends Marionette.AppRouter
 
   # Routes used for backbone urls.
   # Handle routes with APIs at the bottom.
+  # Do not append "(/)" this will cause the view to load twice.
+  # Appending "/" will suffice.
 
   routes:
     '':                 'signup'
@@ -107,8 +109,8 @@ class Router extends Marionette.AppRouter
     'home':             'home'
     'profile':          'profile'
     'exercise':         'exercise'
-    'strength(/)':      'strength'
-    'strength/:sid(/)': 'strengthDetail'
+    'strength/':      'strength'
+    'strength/:sid/': 'strengthDetail'
     'stat':             'stat'
     'schedule':         'schdeule'
     'log':              'log'
@@ -147,6 +149,7 @@ class Router extends Marionette.AppRouter
   strength: ->
 
     @navChannel.request('nav:main')
+
     Collection = Strength.Master.Collection
     Model      = Strength.Master.Model
     View       = Strength.Master.View

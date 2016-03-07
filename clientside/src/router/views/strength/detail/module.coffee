@@ -22,15 +22,14 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  url:  '/api/exercise/strength'
+  constructor: (options) ->
+    super
+    @url = "/api/strength/#{options.id}"
 
   defaults:
-    date: new Date()
-    name:   ''
-    muscle: 0
-    note:   ''
-    sets:   []
-    count:  1
+    index:  1
+    weight: 0
+    rep:    1
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -38,7 +37,7 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.PageableCollection
 
-  url:  '/api/exercise/strength'
+  url:  '/api/strength'
 
   model: Model
 
@@ -63,7 +62,7 @@ class View extends Marionette.LayoutView
 
   events:
     'click #exercise-strength-back': ->
-      @rootChannel.request('exercise')
+      @rootChannel.request('strength')
       return
 
   constructor: ->
@@ -77,6 +76,7 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new TableView
       #collection: @collection
       collection: new Backbone.Collection()
+      model: @model
 
     return
 
