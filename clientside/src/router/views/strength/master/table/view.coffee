@@ -7,7 +7,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Pageable     = require 'src/behavior/pageable/module'
-Data         = require '../../data/module'
+Data         = require '../data/module'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 

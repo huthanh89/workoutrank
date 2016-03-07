@@ -1,5 +1,10 @@
 .row
     .col-sm-12
+        span
+            b Add a new exercise
+br
+.row
+    .col-sm-12
         form.form-horizontal#exercise-strength-form
             // Nav tabs
             ul.nav.nav-tabs(role='tablist')
@@ -24,7 +29,7 @@
 
                 #exercise-strength-basic.tab-pane.active(role='tabpanel')
                     .form-group
-                        label.col-sm-2.control-label(for='exercise-strength-muscle') muscle
+                        label.col-sm-2.control-label(for='exercise-strength-muscle') Muscle
                         .col-sm-10
                             select.form-control#exercise-strength-muscle
                     .form-group
@@ -57,6 +62,6 @@
 .row
     .col-sm-12
         button.btn.btn-success.pull-right#exercise-strength-submit
-            i.fa.fa-plus
+            i.fa.fa-lg.fa-plus-circle
             = ' '
-            | Add
+            | Add Workout

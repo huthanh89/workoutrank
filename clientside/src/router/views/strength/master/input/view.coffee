@@ -6,7 +6,7 @@ _            = require 'lodash'
 Backbone     = require 'backbone'
 Validation   = require 'backbone.validation'
 Marionette   = require 'marionette'
-Data         = require '../../data/module'
+Data         = require '../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ class View extends Marionette.LayoutView
 
   ui:
     name:   '#exercise-strength-name'
-    muscle:   '#exercise-strength-muscle'
+    muscle: '#exercise-strength-muscle'
     submit: '#exercise-strength-submit'
     addset: '#exercise-strength-addset'
     date:   '#exercise-strength-date'

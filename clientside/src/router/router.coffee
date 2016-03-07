@@ -72,7 +72,6 @@ class Router extends Marionette.AppRouter
         return
 
       'strength:detail': (exerciseID) =>
-        console.log '--->here'
         @navigate("strength/#{exerciseID}", trigger: true)
         @strengthDetail(exerciseID)
         return
@@ -108,7 +107,7 @@ class Router extends Marionette.AppRouter
     'home':             'home'
     'profile':          'profile'
     'exercise':         'exercise'
-    'strength(/)':         'strength'
+    'strength(/)':      'strength'
     'strength/:sid(/)': 'strengthDetail'
     'stat':             'stat'
     'schedule':         'schdeule'
@@ -147,18 +146,18 @@ class Router extends Marionette.AppRouter
 
   strength: ->
 
-    console.log 'strength'
-
     @navChannel.request('nav:main')
-    collection = new Strength.Collection()
-    model      = new Strength.Model()
-    view       = Strength.MasterView
+    Collection = Strength.Master.Collection
+    Model      = Strength.Master.Model
+    View       = Strength.Master.View
+
+    collection = new Collection()
 
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new view
+        @rootView.content.show new View
           collection: collection
-          model: model
+          model: new Model()
         return
       error: ->
         console.log 'error'
@@ -167,18 +166,17 @@ class Router extends Marionette.AppRouter
 
   strengthDetail: (sid) ->
 
-    console.log 'detail'
-
     @navChannel.request('nav:main')
 
-    view = Strength.DetailView
-    model = new Strength.Model
+    View  = Strength.Detail.View
+    Model = Strength.Detail.Model
+
+    model = new Model
       id: sid
 
     model.fetch
       success: (model) =>
-        console.log model, @
-        @rootView.content.show new view
+        @rootView.content.show new View
           model: model
         return
       error: ->

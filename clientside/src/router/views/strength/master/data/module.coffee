@@ -2,13 +2,6 @@
 # Data
 #-------------------------------------------------------------------------------
 
-Exercises = [
-  { value: 0, label: 'strength'    , icon: 'fa-shield'        }
-  { value: 1, label: 'cardio'      , icon: 'fa-bicycle'       }
-  { value: 2, label: 'flexibility' , icon: 'fa-heart'         }
-  { value: 3, label: 'balance'     , icon: 'fa-balance-scale' }
-]
-
 # Muscle group
 
 Muscles = [
@@ -34,7 +27,6 @@ Muscles = [
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Exercises = Exercises
 exports.Muscles   = Muscles
 
 #-------------------------------------------------------------------------------

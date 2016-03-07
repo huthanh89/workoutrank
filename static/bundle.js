@@ -85,8 +85,7 @@
 	ga('create', 'UA-74126093-1', 'auto');
 
 	$(function() {
-	  console.log('APP!!');
-	  return Application.start();
+	  Application.start();
 	});
 
 
@@ -29419,7 +29418,6 @@
 	      })(this),
 	      'strength:detail': (function(_this) {
 	        return function(exerciseID) {
-	          console.log('--->here');
 	          _this.navigate("strength/" + exerciseID, {
 	            trigger: true
 	          });
@@ -29507,18 +29505,18 @@
 	  };
 
 	  Router.prototype.strength = function() {
-	    var collection, model, view;
-	    console.log('strength');
+	    var Collection, Model, View, collection;
 	    this.navChannel.request('nav:main');
-	    collection = new Strength.Collection();
-	    model = new Strength.Model();
-	    view = Strength.MasterView;
+	    Collection = Strength.Master.Collection;
+	    Model = Strength.Master.Model;
+	    View = Strength.Master.View;
+	    collection = new Collection();
 	    collection.fetch({
 	      success: (function(_this) {
 	        return function(collection) {
-	          _this.rootView.content.show(new view({
+	          _this.rootView.content.show(new View({
 	            collection: collection,
-	            model: model
+	            model: new Model()
 	          }));
 	        };
 	      })(this),
@@ -29529,18 +29527,17 @@
 	  };
 
 	  Router.prototype.strengthDetail = function(sid) {
-	    var model, view;
-	    console.log('detail');
+	    var Model, View, model;
 	    this.navChannel.request('nav:main');
-	    view = Strength.DetailView;
-	    model = new Strength.Model({
+	    View = Strength.Detail.View;
+	    Model = Strength.Detail.Model;
+	    model = new Model({
 	      id: sid
 	    });
 	    model.fetch({
 	      success: (function(_this) {
 	        return function(model) {
-	          console.log(model, _this);
-	          _this.rootView.content.show(new view({
+	          _this.rootView.content.show(new View({
 	            model: model
 	          }));
 	        };
@@ -43069,11 +43066,28 @@
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	module.exports.Master = __webpack_require__(63);
+
+	module.exports.Detail = __webpack_require__(72);
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	Backbone = __webpack_require__(6);
+
+	Marionette = __webpack_require__(8);
+
+	InputView = __webpack_require__(64);
+
+	TableView = __webpack_require__(67);
+
+	viewTemplate = __webpack_require__(71);
 
 	__webpack_require__(61);
 
@@ -43126,33 +43140,6 @@
 	  return Collection;
 
 	})(Backbone.PageableCollection);
-
-	module.exports.Model = Model;
-
-	module.exports.Collection = Collection;
-
-	module.exports.MasterView = __webpack_require__(63);
-
-	module.exports.DetailView = __webpack_require__(72);
-
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, InputView, Marionette, TableView, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(6);
-
-	Marionette = __webpack_require__(8);
-
-	InputView = __webpack_require__(64);
-
-	TableView = __webpack_require__(67);
-
-	viewTemplate = __webpack_require__(71);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -43211,7 +43198,11 @@
 
 	})(Marionette.LayoutView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
 
 
 /***/ },
@@ -43346,27 +43337,7 @@
 /* 65 */
 /***/ function(module, exports) {
 
-	var Exercises, Muscles;
-
-	Exercises = [
-	  {
-	    value: 0,
-	    label: 'strength',
-	    icon: 'fa-shield'
-	  }, {
-	    value: 1,
-	    label: 'cardio',
-	    icon: 'fa-bicycle'
-	  }, {
-	    value: 2,
-	    label: 'flexibility',
-	    icon: 'fa-heart'
-	  }, {
-	    value: 3,
-	    label: 'balance',
-	    icon: 'fa-balance-scale'
-	  }
-	];
+	var Muscles;
 
 	Muscles = [
 	  {
@@ -43420,8 +43391,6 @@
 	  }
 	];
 
-	exports.Exercises = Exercises;
-
 	exports.Muscles = Muscles;
 
 
@@ -43436,7 +43405,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-muscle\" class=\"col-sm-2 control-label\">muscle</label><div class=\"col-sm-10\"><select id=\"exercise-strength-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-muscle\" class=\"col-sm-2 control-label\">Muscle</label><div class=\"col-sm-10\"><select id=\"exercise-strength-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-lg fa-plus-circle\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add Workout</button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43645,7 +43614,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Muscle</b></td><td><b>Name</b></td><td><b>Date</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>List of strength exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Muscle</b></td><td><b>Name</b></td><td><b>Date</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43659,14 +43628,14 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of strength exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, InputView, Marionette, TableView, View, viewTemplate,
+	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -43679,6 +43648,58 @@
 	TableView = __webpack_require__(77);
 
 	viewTemplate = __webpack_require__(80);
+
+	__webpack_require__(61);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.idAttribute = '_id';
+
+	  Model.prototype.url = '/api/exercise/strength';
+
+	  Model.prototype.defaults = {
+	    date: new Date(),
+	    name: '',
+	    muscle: 0,
+	    note: '',
+	    sets: [],
+	    count: 1
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = '/api/exercise/strength';
+
+	  Collection.prototype.model = Model;
+
+	  Collection.prototype.mode = 'client';
+
+	  Collection.prototype.state = {
+	    currentPage: 1,
+	    pageSize: 10
+	  };
+
+	  Collection.prototype.comparator = function(item) {
+	    return -item.get('date');
+	  };
+
+	  return Collection;
+
+	})(Backbone.PageableCollection);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -43705,13 +43726,20 @@
 	    this.showChildView('input', new InputView({
 	      model: this.model
 	    }));
+	    this.showChildView('table', new TableView({
+	      collection: new Backbone.Collection()
+	    }));
 	  };
 
 	  return View;
 
 	})(Marionette.LayoutView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
 
 
 /***/ },
@@ -43988,7 +44016,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-addset\" class=\"col-sm-2 control-label\">Sets</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form id=\"exercise-strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#exercise-strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#exercise-strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"exercise-strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"exercise-strength-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-strength-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"exercise-strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"exercise-strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div id=\"exercise-strength-set-view\"></div><hr><div class=\"form-group\"><label for=\"exercise-strength-addset\" class=\"col-sm-2 control-label\">Sets</label><div class=\"col-sm-10\"><input id=\"exercise-strength-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"exercise-strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"exercise-strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"exercise-strength-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"exercise-strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"exercise-strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"exercise-strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add</button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -44089,7 +44117,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Name</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Table of past sets</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Name</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -44103,7 +44131,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Table of past sets</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
