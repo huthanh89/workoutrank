@@ -76,10 +76,8 @@ console.log(path.join(__dirname, 'static'));
 
 app.use(express.static(path.join(__dirname, '../static')));
 
-//app.use('/static', express.static(__dirname + '/public'));
-//app.use('/strength', express.static(path.join(__dirname, '/../static')));
-app.use('/strength/:sid/', express.static(path.join(__dirname, '../static')));
-//app.use('/strength/:sid/', express.static(path.join(__dirname, '../static')));
+app.use('/strength', express.static(path.join(__dirname, '../static')));
+app.use('/strength/:sid', express.static(path.join(__dirname, '../static')));
 
 app.use(session({
     secret: 'keyboard cat',

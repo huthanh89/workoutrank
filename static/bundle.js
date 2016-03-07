@@ -29469,8 +29469,7 @@
 	    'home': 'home',
 	    'profile': 'profile',
 	    'exercise': 'exercise',
-	    'strength': 'strength',
-	    'strength/:sid/': 'strengthDetail',
+	    'strength(/)': 'strength',
 	    'strength/:sid(/)': 'strengthDetail',
 	    'stat': 'stat',
 	    'schedule': 'schdeule',
@@ -38285,9 +38284,6 @@
 	      collection: this.collection,
 	      model: this.model
 	    }));
-	    this.showChildView('table', new TableView({
-	      collection: this.collection
-	    }));
 	  };
 
 	  View.prototype.filterCollection = function(type) {
@@ -38500,7 +38496,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"exercise-type\" class=\"col-sm-2 control-label\">Type</label><div class=\"col-sm-10\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"exercise-go\" class=\"btn btn-success pull-right\">Go" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-right\"></i></button></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Go to exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><div class=\"col-sm-12\"><select id=\"exercise-type\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"exercise-go\" class=\"btn btn-success pull-right\">Go" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-right\"></i></button></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -41717,7 +41713,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Name</b></td><td><b>Date</b></td><td><b>Type</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>List of exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Name</b></td><td><b>Date</b></td><td><b>Type</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -41731,7 +41727,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Go to exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"exercise-input-view\"></div></div><div class=\"col-sm-6\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43663,7 +43659,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"exercise-strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of strength exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"exercise-strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>Add a new exercise</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><span><b>List of strength exercises</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"exercise-strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43706,14 +43702,9 @@
 	  }
 
 	  View.prototype.onShow = function() {
-
-	    /*
-	    @showChildView 'input', new InputView
-	      model: @model
-	    
-	    @showChildView 'table', new TableView
-	      collection: @collection
-	     */
+	    this.showChildView('input', new InputView({
+	      model: this.model
+	    }));
 	  };
 
 	  return View;

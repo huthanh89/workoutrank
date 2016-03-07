@@ -85,8 +85,9 @@ class View extends Marionette.LayoutView
       collection: @collection
       model:      @model
 
-    @showChildView 'table', new TableView
-      collection: @collection
+
+    #@showChildView 'table', new TableView
+    #  collection: @collection
 
     return
 
