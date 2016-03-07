@@ -71,6 +71,12 @@ class Router extends Marionette.AppRouter
         @strength()
         return
 
+      'strength:detail': (exerciseID) =>
+        console.log '--->here'
+        @navigate("strength/#{exerciseID}", trigger: true)
+        @strengthDetail(exerciseID)
+        return
+
       'stat': =>
         @navigate('stat', trigger: true)
         @stat()
@@ -95,18 +101,20 @@ class Router extends Marionette.AppRouter
   # Handle routes with APIs at the bottom.
 
   routes:
-    '':                  'signup'
-    '/':                 'signup'
-    'signup':            'signup'
-    'login':             'login'
-    'home':              'home'
-    'profile':           'profile'
-    'exercise/':         'exercise'
-    'strength':          'strength'
-    'stat':              'stat'
-    'schedule':          'schdeule'
-    'log':               'log'
-    'multiplayer':       'multiplayer'
+    '':                 'signup'
+    '/':                'signup'
+    'signup':           'signup'
+    'login':            'login'
+    'home':             'home'
+    'profile':          'profile'
+    'exercise':         'exercise'
+    'strength':         'strength'
+    'strength/:sid/':   'strengthDetail'
+    'strength/:sid(/)': 'strengthDetail'
+    'stat':             'stat'
+    'schedule':         'schdeule'
+    'log':              'log'
+    'multiplayer':      'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -139,6 +147,9 @@ class Router extends Marionette.AppRouter
     return
 
   strength: ->
+
+    console.log 'strength'
+
     @navChannel.request('nav:main')
     collection = new Strength.Collection()
     model      = new Strength.Model()
@@ -148,6 +159,27 @@ class Router extends Marionette.AppRouter
       success: (collection) =>
         @rootView.content.show new view
           collection: collection
+          model: model
+        return
+      error: ->
+        console.log 'error'
+        return
+    return
+
+  strengthDetail: (sid) ->
+
+    console.log 'detail'
+
+    @navChannel.request('nav:main')
+
+    view = Strength.DetailView
+    model = new Strength.Model
+      id: sid
+
+    model.fetch
+      success: (model) =>
+        console.log model, @
+        @rootView.content.show new view
           model: model
         return
       error: ->

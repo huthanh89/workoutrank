@@ -68,10 +68,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Location of static files starting from the root.
+// Location of static files starting from the root or app.js.
 
-app.use(express.static(path.join(__dirname, '/../static')));
-app.use('/exercise', express.static(path.join(__dirname, '/../static')));
+console.log(path.join(__dirname, '/../static'));
+console.log(path.join(__dirname, '../static'));
+console.log(path.join(__dirname, 'static'));
+
+app.use(express.static(path.join(__dirname, '../static')));
+
+//app.use('/static', express.static(__dirname + '/public'));
+//app.use('/strength', express.static(path.join(__dirname, '/../static')));
+app.use('/strength/:sid/', express.static(path.join(__dirname, '../static')));
+//app.use('/strength/:sid/', express.static(path.join(__dirname, '../static')));
 
 app.use(session({
     secret: 'keyboard cat',

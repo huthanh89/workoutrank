@@ -85,6 +85,7 @@
 	ga('create', 'UA-74126093-1', 'auto');
 
 	$(function() {
+	  console.log('APP!!');
 	  return Application.start();
 	});
 
@@ -29416,6 +29417,15 @@
 	          _this.strength();
 	        };
 	      })(this),
+	      'strength:detail': (function(_this) {
+	        return function(exerciseID) {
+	          console.log('--->here');
+	          _this.navigate("strength/" + exerciseID, {
+	            trigger: true
+	          });
+	          _this.strengthDetail(exerciseID);
+	        };
+	      })(this),
 	      'stat': (function(_this) {
 	        return function() {
 	          _this.navigate('stat', {
@@ -29458,8 +29468,10 @@
 	    'login': 'login',
 	    'home': 'home',
 	    'profile': 'profile',
-	    'exercise/': 'exercise',
+	    'exercise': 'exercise',
 	    'strength': 'strength',
+	    'strength/:sid/': 'strengthDetail',
+	    'strength/:sid(/)': 'strengthDetail',
 	    'stat': 'stat',
 	    'schedule': 'schdeule',
 	    'log': 'log',
@@ -29497,6 +29509,7 @@
 
 	  Router.prototype.strength = function() {
 	    var collection, model, view;
+	    console.log('strength');
 	    this.navChannel.request('nav:main');
 	    collection = new Strength.Collection();
 	    model = new Strength.Model();
@@ -29506,6 +29519,29 @@
 	        return function(collection) {
 	          _this.rootView.content.show(new view({
 	            collection: collection,
+	            model: model
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	  };
+
+	  Router.prototype.strengthDetail = function(sid) {
+	    var model, view;
+	    console.log('detail');
+	    this.navChannel.request('nav:main');
+	    view = Strength.DetailView;
+	    model = new Strength.Model({
+	      id: sid
+	    });
+	    model.fetch({
+	      success: (function(_this) {
+	        return function(model) {
+	          console.log(model, _this);
+	          _this.rootView.content.show(new view({
 	            model: model
 	          }));
 	        };
@@ -43186,13 +43222,15 @@
 /* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Data, Marionette, View, _, viewTemplate,
+	var Backbone, Data, Marionette, Validation, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	_ = __webpack_require__(3);
 
 	Backbone = __webpack_require__(6);
+
+	Validation = __webpack_require__(25);
 
 	Marionette = __webpack_require__(8);
 
@@ -43214,10 +43252,6 @@
 	  extend(View, superClass);
 
 	  View.prototype.template = viewTemplate;
-
-	  View.prototype.regions = {
-	    set: '#exercise-strength-set-view'
-	  };
 
 	  View.prototype.ui = {
 	    name: '#exercise-strength-name',
@@ -43249,6 +43283,8 @@
 	    },
 	    'click @ui.submit': function() {
 	      this.ui.form.validator('validate');
+	      console.log(this.model.attributes);
+	      console.log(this.model.isValid());
 	      this.collection.fullCollection.create(this.model.attributes, {
 	        wait: true,
 	        at: 0,
@@ -43447,7 +43483,7 @@
 	    '.exercise-table-td-date': {
 	      observe: 'date',
 	      onGet: function(value) {
-	        return moment(value).format('dddd MM/DD/YY hh:mm:ss');
+	        return moment(value).format('dddd MM/DD/YY hh:mm');
 	      }
 	    },
 	    '.exercise-table-td-muscle': 'muscle'
@@ -43455,12 +43491,7 @@
 
 	  ItemView.prototype.events = {
 	    click: function() {
-	      var label, muscle;
-	      muscle = this.model.get('muscle');
-	      label = _.find(Data.Muscles, {
-	        value: muscle
-	      }).label;
-	      this.rootChannel.request('strength:detail', label.toLowerCase(), this.model.get('name'));
+	      this.rootChannel.request('strength:detail', this.model.id);
 	    }
 	  };
 
@@ -43618,7 +43649,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Muscle</b></td><td><b>Name</b></td><td><b>Name</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"exercise-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"exercise-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"exercise-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"exercise-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"exercise-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Muscle</b></td><td><b>Name</b></td><td><b>Date</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -43675,12 +43706,14 @@
 	  }
 
 	  View.prototype.onShow = function() {
-	    this.showChildView('input', new InputView({
-	      model: this.model
-	    }));
-	    this.showChildView('table', new TableView({
-	      collection: this.collection
-	    }));
+
+	    /*
+	    @showChildView 'input', new InputView
+	      model: @model
+	    
+	    @showChildView 'table', new TableView
+	      collection: @collection
+	     */
 	  };
 
 	  return View;

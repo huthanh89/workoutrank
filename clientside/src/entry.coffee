@@ -49,6 +49,8 @@ ga 'create', 'UA-74126093-1', 'auto'
 
 $ ->
 
+  console.log 'APP!!'
+
   # When setting up everything for application is done, call start.
   Application.start()
 

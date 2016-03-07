@@ -34,16 +34,14 @@ class ItemView extends Marionette.ItemView
 
     '.exercise-table-td-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm:ss')
+      onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm')
 
     '.exercise-table-td-muscle': 'muscle'
 
   events:
 
     click: ->
-      muscle = @model.get('muscle')
-      label = _.find(Data.Muscles, value: muscle).label
-      @rootChannel.request 'strength:detail', label.toLowerCase(), @model.get('name')
+      @rootChannel.request 'strength:detail', @model.id
       return
 
   constructor: ->

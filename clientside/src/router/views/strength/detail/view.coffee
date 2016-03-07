@@ -29,11 +29,13 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
+    ###
     @showChildView 'input', new InputView
       model: @model
 
     @showChildView 'table', new TableView
       collection: @collection
+###
 
     return
 

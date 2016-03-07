@@ -34,6 +34,7 @@ router.get '/exercise/:type', index
 router.get '/cardio',         index
 router.get '/stat',           index
 router.get '/strength',       index
+router.get '/strength/:sid',  index
 router.get '/schedule',       index
 router.get '/log',            index
 router.get '/multiplayer',    index

@@ -4,6 +4,7 @@
 
 _            = require 'lodash'
 Backbone     = require 'backbone'
+Validation   = require 'backbone.validation'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
@@ -25,9 +26,6 @@ require 'bootstrap.validator'
 class View extends Marionette.LayoutView
 
   template: viewTemplate
-
-  regions:
-    set: '#exercise-strength-set-view'
 
   ui:
     name:   '#exercise-strength-name'
@@ -60,6 +58,9 @@ class View extends Marionette.LayoutView
     'click @ui.submit': ->
 
       @ui.form.validator('validate')
+
+      console.log @model.attributes
+      console.log @model.isValid()
 
       @collection.fullCollection.create @model.attributes,
         wait: true
@@ -98,7 +99,7 @@ class View extends Marionette.LayoutView
 
     @ui.time
     .timepicker
-        template: 'dropdown'
+      template: 'dropdown'
     .timepicker('setTime', '12:45 AM')
 
     @stickit()
