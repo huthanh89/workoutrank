@@ -43546,7 +43546,8 @@
 	    'sync update': function() {
 	      this.view.collection.getFirstPage();
 	      this.setPage();
-	    }
+	    },
+	    all: function(all) {}
 	  };
 
 	  Behavior.prototype.events = {
@@ -43576,8 +43577,8 @@
 	  Behavior.prototype.setPage = function() {
 	    var state;
 	    state = this.view.collection.state;
-	    $(this.ui.currentPage).text(state.currentPage);
-	    $(this.ui.lastPage).text(state.lastPage);
+	    $(this.view.ui.currentPage).text(state.currentPage);
+	    $(this.view.ui.lastPage).text(state.lastPage);
 	  };
 
 	  return Behavior;

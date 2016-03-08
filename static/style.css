@@ -11575,6 +11575,10 @@ Exercise
     min-width: 70px;
 }
 
+#strength-table-view tbody tr{
+    cursor: pointer;
+}
+
 #strength-graph{
     min-width: 70px;
 }

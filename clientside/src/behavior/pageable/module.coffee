@@ -34,6 +34,10 @@ class Behavior extends Marionette.Behavior
       @setPage()
       return
 
+    all: (all) ->
+      #console.log all
+      return
+
   events:
 
     'click @ui.first': ->
@@ -61,8 +65,10 @@ class Behavior extends Marionette.Behavior
 
   setPage: ->
     state = @view.collection.state
-    $(@ui.currentPage).text state.currentPage
-    $(@ui.lastPage).text state.lastPage
+
+    $(@view.ui.currentPage).text state.currentPage
+    $(@view.ui.lastPage).text state.lastPage
+
     return
 
 #-------------------------------------------------------------------------------
