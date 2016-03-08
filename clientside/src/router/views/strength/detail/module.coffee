@@ -73,11 +73,12 @@ class View extends Marionette.LayoutView
     @showChildView 'input', new InputView
       model: @model
 
+    ###
     @showChildView 'table', new TableView
       #collection: @collection
       collection: new Backbone.Collection()
       model: @model
-
+###
     return
 
 #-------------------------------------------------------------------------------

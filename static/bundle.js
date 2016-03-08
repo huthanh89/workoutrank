@@ -29527,9 +29527,10 @@
 	  };
 
 	  Router.prototype.strengthDetail = function(sid) {
-	    var Model, View, model;
+	    var Collection, Model, View, model;
 	    this.navChannel.request('nav:main');
 	    View = Strength.Detail.View;
+	    Collection = Strength.Detail.Collection;
 	    Model = Strength.Detail.Model;
 	    model = new Model({
 	      id: sid
@@ -29538,7 +29539,7 @@
 	      success: (function(_this) {
 	        return function(model) {
 	          _this.rootView.content.show(new View({
-	            model: model
+	            collection: new Collection(model.get('session'))
 	          }));
 	        };
 	      })(this),
@@ -43241,6 +43242,7 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
+	    back: '#strength-exercise',
 	    name: '#strength-name',
 	    muscle: '#strength-muscle',
 	    submit: '#strength-submit',
@@ -43262,10 +43264,10 @@
 	  };
 
 	  View.prototype.events = {
-	    'click #strength-exercise': function() {
+	    'click @ui.back': function() {
 	      this.rootChannel.request('exercise');
 	    },
-	    'click #strength-time': function() {
+	    'click @ui.time': function() {
 	      this.ui.time.timepicker('showWidget');
 	    },
 	    'click @ui.submit': function() {
@@ -43721,10 +43723,13 @@
 	    this.showChildView('input', new InputView({
 	      model: this.model
 	    }));
-	    this.showChildView('table', new TableView({
-	      collection: new Backbone.Collection(),
-	      model: this.model
-	    }));
+
+	    /*
+	    @showChildView 'table', new TableView
+	      #collection: @collection
+	      collection: new Backbone.Collection()
+	      model: @model
+	     */
 	  };
 
 	  return View;

@@ -171,8 +171,9 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View  = Strength.Detail.View
-    Model = Strength.Detail.Model
+    View       = Strength.Detail.View
+    Collection = Strength.Detail.Collection
+    Model      = Strength.Detail.Model
 
     model = new Model
       id: sid
@@ -180,7 +181,7 @@ class Router extends Marionette.AppRouter
     model.fetch
       success: (model) =>
         @rootView.content.show new View
-          model: model
+          collection: new Collection model.get('session')
         return
       error: ->
         console.log 'error'

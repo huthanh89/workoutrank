@@ -28,6 +28,7 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
+    back:   '#strength-exercise'
     name:   '#strength-name'
     muscle: '#strength-muscle'
     submit: '#strength-submit'
@@ -47,11 +48,11 @@ class View extends Marionette.LayoutView
 
   events:
 
-    'click #strength-exercise': ->
+    'click @ui.back': ->
       @rootChannel.request('exercise')
       return
 
-    'click #strength-time': ->
+    'click @ui.time': ->
       @ui.time.timepicker('showWidget')
       return
 
