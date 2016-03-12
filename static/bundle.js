@@ -29464,7 +29464,7 @@
 	    '/': 'signup',
 	    'signup': 'signup',
 	    'login': 'login',
-	    'home': 'home',
+	    'home': 'strength',
 	    'profile': 'profile',
 	    'exercise': 'exercise',
 	    'strength/': 'strength',
@@ -29527,10 +29527,9 @@
 	  };
 
 	  Router.prototype.strengthDetail = function(sid) {
-	    var Collection, Model, View, model;
+	    var Model, View, model;
 	    this.navChannel.request('nav:main');
 	    View = Strength.Detail.View;
-	    Collection = Strength.Detail.Collection;
 	    Model = Strength.Detail.Model;
 	    model = new Model({
 	      id: sid
@@ -29539,7 +29538,7 @@
 	      success: (function(_this) {
 	        return function(model) {
 	          _this.rootView.content.show(new View({
-	            collection: new Collection(model.get('session'))
+	            model: model
 	          }));
 	        };
 	      })(this),
@@ -43663,9 +43662,7 @@
 	  }
 
 	  Model.prototype.defaults = {
-	    index: 1,
-	    weight: 0,
-	    rep: 1
+	    count: 1
 	  };
 
 	  return Model;
@@ -43714,14 +43711,23 @@
 	    }
 	  };
 
+	  View.prototype.bindings = {
+	    '#strength-header': 'name'
+	  };
+
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	  }
 
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
 	  View.prototype.onShow = function() {
 	    this.showChildView('input', new InputView({
-	      model: this.model
+	      model: this.model,
+	      collection: this.collection
 	    }));
 
 	    /*
@@ -43747,7 +43753,7 @@
 /* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Marionette, SetView, View, _, viewTemplate,
+	var Backbone, Marionette, Model, SetView, View, _, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -43770,6 +43776,25 @@
 	__webpack_require__(24);
 
 	__webpack_require__(46);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.idAttribute = '_id';
+
+	  Model.prototype.defaults = {
+	    index: 1,
+	    weight: 0,
+	    rep: 1
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -43796,12 +43821,12 @@
 	    '#strength-addset': {
 	      observe: 'count',
 	      onSet: function(value) {
-	        if (value > this.setCollection.length) {
-	          this.setCollection.add(new Model({
+	        if (value > this.sessionCollection.length) {
+	          this.sessionCollection.add(new Model({
 	            index: value
 	          }));
 	        } else {
-	          this.setCollection.remove(this.setCollection.last());
+	          this.sessionCollection.remove(this.sessionCollection.last());
 	        }
 	      }
 	    }
@@ -43816,7 +43841,7 @@
 	    },
 	    'click @ui.submit': function() {
 	      this.ui.form.validator('validate');
-	      this.model.set('sets', this.setCollection.toJSON());
+	      this.model.set('session', this.sessionCollection.toJSON());
 	      this.ui.form.validator('validate');
 	      this.model.save({}, {
 	        success: (function(_this) {
@@ -43830,30 +43855,17 @@
 	  };
 
 	  function View() {
+	    var model;
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    console.log(this.model.attributes);
+	    model = new Model({}, {
+	      id: this.model.id
+	    });
+	    this.sessionCollection = new Backbone.Collection(model);
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.ui.type.multiselect({
-	      enableFiltering: true,
-	      buttonWidth: '100%',
-	      buttonClass: 'btn btn-info'
-	    }).multiselect('dataprovider', [
-	      {
-	        value: 0,
-	        label: 'Arm'
-	      }, {
-	        value: 1,
-	        label: 'Leg'
-	      }, {
-	        value: 2,
-	        label: 'Shoulder'
-	      }, {
-	        value: 3,
-	        label: 'Back'
-	      }
-	    ]);
 	    this.ui.addset.TouchSpin({
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
@@ -43875,14 +43887,8 @@
 	  };
 
 	  View.prototype.onShow = function() {
-	    this.ui.form.validator({
-	      feedback: {
-	        success: 'glyphicon-ok',
-	        error: 'glyphicon-remove'
-	      }
-	    });
 	    this.showChildView('set', new SetView({
-	      collection: this.setCollection
+	      collection: this.sessionCollection
 	    }));
 	  };
 
@@ -44114,7 +44120,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button><div class=\"pull-right\"><button id=\"strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Session</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button><div class=\"pull-right\"><button id=\"strength-graph\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-right\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

@@ -102,19 +102,19 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':                 'signup'
-    '/':                'signup'
-    'signup':           'signup'
-    'login':            'login'
-    'home':             'home'
-    'profile':          'profile'
-    'exercise':         'exercise'
+    '':               'signup'
+    '/':              'signup'
+    'signup':         'signup'
+    'login':          'login'
+    'home':           'strength'
+    'profile':        'profile'
+    'exercise':       'exercise'
     'strength/':      'strength'
     'strength/:sid/': 'strengthDetail'
-    'stat':             'stat'
-    'schedule':         'schdeule'
-    'log':              'log'
-    'multiplayer':      'multiplayer'
+    'stat':           'stat'
+    'schedule':       'schdeule'
+    'log':            'log'
+    'multiplayer':    'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -171,9 +171,8 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View       = Strength.Detail.View
-    Collection = Strength.Detail.Collection
-    Model      = Strength.Detail.Model
+    View  = Strength.Detail.View
+    Model = Strength.Detail.Model
 
     model = new Model
       id: sid
@@ -181,7 +180,7 @@ class Router extends Marionette.AppRouter
     model.fetch
       success: (model) =>
         @rootView.content.show new View
-          collection: new Collection model.get('session')
+          model: model
         return
       error: ->
         console.log 'error'

@@ -27,9 +27,7 @@ class Model extends Backbone.Model
     @url = "/api/strength/#{options.id}"
 
   defaults:
-    index:  1
-    weight: 0
-    rep:    1
+    count:  1
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -65,13 +63,23 @@ class View extends Marionette.LayoutView
       @rootChannel.request('strength')
       return
 
+  bindings:
+    '#strength-header': 'name'
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
+  onRender: ->
+    @stickit()
+    return
+
   onShow: ->
+
     @showChildView 'input', new InputView
-      model: @model
+      model:      @model
+      collection: @collection
+
 
     ###
     @showChildView 'table', new TableView

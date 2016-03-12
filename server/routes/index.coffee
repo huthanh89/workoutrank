@@ -43,6 +43,10 @@ router.get '/multiplayer',    index
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
+router.post '/api/signup', signup.post
+
+router.post '/api/login', login.post
+
 router.get  '/api/profile', profile.get
 
 router.get  '/api/exercise', exercise.get
@@ -51,12 +55,8 @@ router.post '/api/exercise', exercise.post
 router.get  '/api/strength', strength.list
 router.post '/api/strength', strength.post
 
-router.get  '/api/strength/:sid', strength.get
-#router.post '/api/strength/:sid', strength.put
-
-router.post '/api/signup', signup.post
-
-router.post '/api/login', login.post
+router.get '/api/strength/:sid', strength.get
+router.put '/api/strength/:sid', strength.put
 
 #-------------------------------------------------------------------------------
 # Exports

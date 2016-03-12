@@ -19,6 +19,20 @@ require 'backbone.stickit'
 require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
+# Model
+#   contain data for each set in the session
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  idAttribute: '_id'
+
+  defaults:
+    index:  1
+    weight: 0
+    rep:    1
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -47,11 +61,11 @@ class View extends Marionette.LayoutView
     '#strength-addset':
       observe: 'count'
       onSet: (value) ->
-        if value > @setCollection.length
-          @setCollection.add new Model
+        if value > @sessionCollection.length
+          @sessionCollection.add new Model
             index: value
         else
-          @setCollection.remove(@setCollection.last())
+          @sessionCollection.remove(@sessionCollection.last())
         return
 
   events:
@@ -67,7 +81,7 @@ class View extends Marionette.LayoutView
     'click @ui.submit': ->
 
       @ui.form.validator('validate')
-      @model.set 'sets', @setCollection.toJSON()
+      @model.set 'session', @sessionCollection.toJSON()
       @ui.form.validator('validate')
 
       @model.save {},
@@ -82,20 +96,15 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    #@setCollection = new Backbone.Collection(new Model())
+
+    console.log @model.attributes
+
+    model = new Model {},
+      id: @model.id
+
+    @sessionCollection = new Backbone.Collection(model)
 
   onRender: ->
-
-    @ui.type.multiselect
-      enableFiltering: true
-      buttonWidth:    '100%'
-      buttonClass:    'btn btn-info'
-    .multiselect 'dataprovider', [
-      { value: 0, label: 'Arm'      }
-      { value: 1, label: 'Leg'      }
-      { value: 2, label: 'Shoulder' }
-      { value: 3, label: 'Back'     }
-    ]
 
     @ui.addset.TouchSpin
       buttondown_class: 'btn btn-info'
@@ -120,14 +129,8 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
-    @ui.form.validator
-      feedback: {
-        success: 'glyphicon-ok',
-        error:   'glyphicon-remove'
-      }
-
     @showChildView 'set', new SetView
-      collection: @setCollection
+      collection: @sessionCollection
     return
 
   onBeforeDestroy: ->

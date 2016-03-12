@@ -41,8 +41,6 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      console.log req.params
-
       Strength.findOne
         _id: req.params.sid
       .exec (err, document) ->
@@ -87,6 +85,42 @@ module.post = (req, res) ->
     return
 
   return
+
+#-------------------------------------------------------------------------------
+# Put
+#-------------------------------------------------------------------------------
+
+module.put = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      Strength.findById req.params.sid, (err, strength) ->
+        console.log 'ERROR', err if err
+        return callback null, strength
+
+      return
+
+    (strength, callback) ->
+
+      strength.date    = req.body.date
+      strength.muscle  = req.body.muscle
+      strength.name    = req.body.name
+      strength.note    = req.body.note
+      strength.session = req.body.session
+
+      strength.save (err, strength) ->
+        console.log 'ERROR', err if err
+        return callback null, strength
+
+      return
+
+  ], (err, document) ->
+
+    console.log 'ERROR', err if err
+
+    return res.json document
 
 #-------------------------------------------------------------------------------
 # Exports
