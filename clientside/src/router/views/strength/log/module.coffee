@@ -4,8 +4,7 @@
 
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-InputView    = require './input/view'
-TableView    = require './table/view'
+GraphView    = require './graph/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -16,23 +15,32 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  url:  '/api/exercise/strength'
+  constructor: (attributes, options) ->
+    super
+    @url = "/api/strength/#{options.id}/log"
 
-  defaults:
-    date: new Date()
-    name:  ''
-    type:  0
-    note:  ''
-    sets:  []
-    count: 1
+  parse: (response) -> response
 
 #-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
-  url:  '/api/exercise/strength'
+
   model: Model
+
+  constructor: (attributes, options) ->
+    super
+    @url = "/api/strength/#{options.id}/log"
+
+  comparator: (item) -> return -item.get('date')
+
+  parse: (response) -> _.map response, (session) ->
+    return {
+      name: session.name
+      x:    session.date
+      y:    99
+    }
 
 #-------------------------------------------------------------------------------
 # View
@@ -42,33 +50,32 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    input: '#exercise-strength-input-view'
-    table: '#exercise-strength-table-view'
+    graph: '#strength-graph-view'
 
   events:
-    'click #exercise-strength-back': ->
-      @rootChannel.request('exercise')
+    'click #strength-back': ->
+      @rootChannel.request 'strength'
       return
 
-  constructor: ->
+    'click #strength-log': ->
+      @rootChannel.request 'strength:log', @strengthID
+      return
+
+  constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
-    @showChildView 'input', new InputView
-      model: @model
-
-    @showChildView 'table', new TableView
+    @showChildView 'graph', new GraphView
       collection: @collection
-
     return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Model      = Model
-exports.Collection = Collection
-exports.View       = View
+module.exports.Model      = Model
+module.exports.Collection = Collection
+module.exports.View       = View
 
 #-------------------------------------------------------------------------------

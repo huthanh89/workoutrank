@@ -60,7 +60,7 @@ class View extends Marionette.LayoutView
 
       @ui.form.validator('validate')
 
-      @collection.fullCollection.create @model.attributes,
+      @collection.create @model.attributes,
         wait: true
         at:   0
         success: =>
@@ -81,6 +81,7 @@ class View extends Marionette.LayoutView
       buttonWidth:    '100%'
       buttonClass:    'btn btn-info'
     .multiselect 'dataprovider', Data.Muscles
+
     @ui.addset.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'

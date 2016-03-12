@@ -22,12 +22,18 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  constructor: (options) ->
+  constructor: (attributes, options) ->
     super
-    @url = "/api/strength/#{options.id}"
+    if options?.id
+      @url = "/api/strength/#{options.id}"
+    else
+      @url = '/api/strength'
 
   defaults:
-    count:  1
+    count:   1
+    session: []
+
+  parse: (response) -> response
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -60,15 +66,27 @@ class View extends Marionette.LayoutView
 
   events:
     'click #strength-back': ->
-      @rootChannel.request('strength')
+      @rootChannel.request 'strength'
+      return
+
+    'click #strength-log': ->
+      @rootChannel.request 'strength:log', @strengthID
       return
 
   bindings:
     '#strength-header': 'name'
 
-  constructor: ->
+  constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'strengthID'
+
+    attributes = _.chain @model.attributes
+      .extend exercise: @model.get('_id')
+      .omit '_id'
+      .value()
+
+    @model = new Model attributes
 
   onRender: ->
     @stickit()
@@ -79,7 +97,6 @@ class View extends Marionette.LayoutView
     @showChildView 'input', new InputView
       model:      @model
       collection: @collection
-
 
     ###
     @showChildView 'table', new TableView

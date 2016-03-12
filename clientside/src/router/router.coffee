@@ -76,6 +76,11 @@ class Router extends Marionette.AppRouter
         @strengthDetail(exerciseID)
         return
 
+      'strength:log': (exerciseID) =>
+        @navigate("strength/#{exerciseID}/log", trigger: true)
+        @strengthDetail(exerciseID)
+        return
+
       'stat': =>
         @navigate('stat', trigger: true)
         @stat()
@@ -102,19 +107,20 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':               'signup'
-    '/':              'signup'
-    'signup':         'signup'
-    'login':          'login'
-    'home':           'strength'
-    'profile':        'profile'
-    'exercise':       'exercise'
-    'strength/':      'strength'
-    'strength/:sid/': 'strengthDetail'
-    'stat':           'stat'
-    'schedule':       'schdeule'
-    'log':            'log'
-    'multiplayer':    'multiplayer'
+    '':                  'signup'
+    '/':                 'signup'
+    'signup':            'signup'
+    'login':             'login'
+    'home':              'strength'
+    'profile':           'profile'
+    'exercise':          'exercise'
+    'strength/':         'strength'
+    'strength/:sid/':    'strengthDetail'
+    'strength/:sid/log': 'strengthLog'
+    'stat':              'stat'
+    'schedule':          'schdeule'
+    'log':               'log'
+    'multiplayer':       'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -160,27 +166,52 @@ class Router extends Marionette.AppRouter
       success: (collection) =>
         @rootView.content.show new View
           collection: collection
-          model: new Model()
+          model:      new Model()
         return
       error: ->
         console.log 'error'
         return
     return
 
-  strengthDetail: (sid) ->
+  strengthDetail: (strengthID) ->
 
     @navChannel.request('nav:main')
 
     View  = Strength.Detail.View
     Model = Strength.Detail.Model
 
-    model = new Model
-      id: sid
+    model = new Model {},
+      id: strengthID
 
     model.fetch
       success: (model) =>
         @rootView.content.show new View
-          model: model
+          model:      model
+          strengthID: strengthID
+        return
+      error: ->
+        console.log 'error'
+        return
+
+    return
+
+  strengthLog: (strengthID) ->
+
+
+    console.log 'strengthID', strengthID
+
+    @navChannel.request('nav:main')
+
+    View  = Strength.Log.View
+    Collection = Strength.Log.Collection
+
+    collection = new Collection [],
+      id: strengthID
+
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new View
+          collection: collection
         return
       error: ->
         console.log 'error'
@@ -201,26 +232,6 @@ class Router extends Marionette.AppRouter
       error: ->
         console.log 'error'
         return
-    return
-
-  exerciseDetail: (type) ->
-    @navChannel.request('nav:main')
-    View       = Exercise.Detail(type).View
-    Model      = Exercise.Detail(type).Model
-    Collection = Exercise.Detail(type).Collection
-
-    collection = new Collection()
-
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new View
-          collection: collection
-          model:      new Model()
-        return
-      error: ->
-        console.log 'error'
-        return
-
     return
 
   stat: ->

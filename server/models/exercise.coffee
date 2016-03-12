@@ -9,14 +9,18 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 ExerciseSchema = new mongoose.Schema
-  date:
-    type: Date
-  name:
-    type: String
-  type:
-    type: Number
-  note:
-    type: String
+  strength: [
+    date:
+      type: Date
+    name:
+      type: String
+    muscle:
+      type: Number
+    note:
+      type: String
+  ]
+  user:
+    type: mongoose.Schema.ObjectId
 ,
   collection: 'exercise'
 

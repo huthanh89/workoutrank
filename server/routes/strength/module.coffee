@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_        = require 'lodash'
 async    = require 'async'
 mongoose = require 'mongoose'
 
@@ -9,23 +10,31 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
+Exercise = mongoose.model('exercise')
 Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
-# List
+# Log Get
+#
 #-------------------------------------------------------------------------------
 
-module.list = (req, res, next) ->
+module.logGet = (req, res, next) ->
 
   async.waterfall [
 
     (callback) ->
-      Strength.find()
-      .exec (err, documents) ->
+
+      Strength.find
+        exercise: req.params.sid
+      .exec (err, exercises) ->
         console.log 'ERROR', err if err
-        callback null, documents
+        return callback null, exercises
+
       return
+
   ], (err, documents) ->
+
+    console.log documents
 
     console.log 'ERROR', err if err
 
@@ -33,6 +42,7 @@ module.list = (req, res, next) ->
 
 #-------------------------------------------------------------------------------
 # Get
+#
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->
@@ -41,21 +51,29 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      Strength.findOne
-        _id: req.params.sid
-      .exec (err, document) ->
+      Exercise.find()
+      .exec (err, exercises) ->
         console.log 'ERROR', err if err
-        callback null, document
+        return callback null, exercises[0].strength
+
       return
 
-  ], (err, document) ->
+    (strengths, callback) ->
+
+      strength = _.find strengths, (strength) ->
+        return strength._id.toString() is req.params.sid
+
+      return callback null, strength
+
+  ], (err, documents) ->
 
     console.log 'ERROR', err if err
 
-    return res.json document
+    return res.json documents
 
 #-------------------------------------------------------------------------------
 # Post
+#   Create a new strength log.
 #-------------------------------------------------------------------------------
 
 module.post = (req, res) ->
@@ -65,11 +83,12 @@ module.post = (req, res) ->
     (callback) ->
 
       Strength.create
-        date:    req.body.date
-        name:    req.body.name
-        muscle:  req.body.muscle
-        note:    req.body.note
-        session: req.body.session
+        date:     req.body.date
+        name:     req.body.name
+        muscle:   req.body.muscle
+        exercise: req.body.exercise
+        note:     req.body.note
+        session:  req.body.session
       , (err, result) ->
         return callback err if err
         return callback null, result
@@ -88,6 +107,7 @@ module.post = (req, res) ->
 
 #-------------------------------------------------------------------------------
 # Put
+#   Edit a new strength log.
 #-------------------------------------------------------------------------------
 
 module.put = (req, res, next) ->

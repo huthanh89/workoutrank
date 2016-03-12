@@ -32,6 +32,7 @@
     "socket.io": "*",
     "request": "*",
     "moment": "*",
+    "lodash": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

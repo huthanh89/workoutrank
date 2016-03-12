@@ -15,14 +15,6 @@ Marionette = require 'marionette'
 
 class Behavior extends Marionette.Behavior
 
-  ui:
-    first:       '#exercise-table-first'
-    prev:        '#exercise-table-prev'
-    next:        '#exercise-table-next'
-    last:        '#exercise-table-last'
-    currentPage: '#exercise-table-currentpage'
-    lastPage:    '#exercise-table-lastpage'
-
   collectionEvents:
 
     'reset': ->
@@ -32,10 +24,6 @@ class Behavior extends Marionette.Behavior
     'sync update': ->
       @view.collection.getFirstPage()
       @setPage()
-      return
-
-    all: (all) ->
-      #console.log all
       return
 
   events:
@@ -50,6 +38,7 @@ class Behavior extends Marionette.Behavior
       return
 
     'click @ui.next': ->
+
       if @view.collection.hasNextPage()
         @view.collection.getNextPage()
       return
@@ -59,6 +48,7 @@ class Behavior extends Marionette.Behavior
       return
 
   onRender: ->
+
     @view.collection.getFirstPage()
     @setPage()
     return

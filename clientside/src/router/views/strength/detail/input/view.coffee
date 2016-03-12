@@ -20,7 +20,7 @@ require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
 # Model
-#   contain data for each set in the session
+#   contain data for each set in a session
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
@@ -85,8 +85,6 @@ class View extends Marionette.LayoutView
       @ui.form.validator('validate')
 
       @model.save {},
-        success: =>
-          return
         error: ->
           console.log 'fail'
           return
@@ -96,8 +94,6 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-
-    console.log @model.attributes
 
     model = new Model {},
       id: @model.id

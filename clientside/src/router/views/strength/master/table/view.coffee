@@ -7,7 +7,6 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Pageable     = require 'src/behavior/pageable/module'
-Data         = require '../data/module'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -68,10 +67,6 @@ class View extends Marionette.CompositeView
 
   template: viewTemplate
 
-  behaviors:
-    Pageable:
-      behaviorClass: Pageable
-
   ui:
     name:        '#strength-name'
     muscle:      '#strength-muscle'
@@ -81,6 +76,10 @@ class View extends Marionette.CompositeView
     last:        '#strength-table-last'
     currentPage: '#strength-table-currentpage'
     lastPage:    '#strength-table-lastpage'
+
+  behaviors:
+    Pageable:
+      behaviorClass: Pageable
 
   constructor: ->
     super

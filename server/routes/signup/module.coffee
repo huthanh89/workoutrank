@@ -10,7 +10,8 @@ mongoose = require('mongoose')
 # Models
 #-------------------------------------------------------------------------------
 
-User = mongoose.model('user')
+User     = mongoose.model('user')
+Exercise = mongoose.model('exercise')
 
 #-------------------------------------------------------------------------------
 # Get
@@ -57,9 +58,19 @@ exports.post = (req, res) ->
         lastname:  req.body.lastname
         email:     req.body.email
         password:  req.body.password
-      , (err, result) ->
+      , (err, user) ->
         return callback err if err
-        return callback null, result
+        return callback null, user
+
+    (user, callback) ->
+
+      Exercise.create
+        strength: []
+      , (err, exercise) ->
+        return callback err if err
+        return callback null, user
+
+      return callback null, user
 
   ], (err, result) ->
 

@@ -149,6 +149,7 @@ gulp.task 'scripts', (callback) ->
         'socket.io':           'scripts/socket.io.js'
         marionette:            'scripts/backbone.marionette.js'
         async:                 'scripts/async.js'
+        highcharts:            'scripts/highcharts.js'
 
         bootstrap:             'scripts/bootstrap.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'

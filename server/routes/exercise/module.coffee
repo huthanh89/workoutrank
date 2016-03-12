@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_        = require 'lodash'
 async    = require 'async'
 mongoose = require 'mongoose'
 
@@ -12,7 +13,8 @@ mongoose = require 'mongoose'
 Exercise = mongoose.model('exercise')
 
 #-------------------------------------------------------------------------------
-# GET
+# Get
+#   Return exercise model, which matches uid
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->
@@ -20,14 +22,13 @@ module.get = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-      Exercise
-      .find()
-      .sort
-        date: -1
+
+      Exercise.find()
       .exec (err, documents) ->
         console.log 'ERROR', err if err
         callback null, documents
       return
+
   ], (err, documents) ->
 
     console.log 'ERROR', err if err
@@ -44,12 +45,22 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      Exercise.create
-        date: new Date()
-        name: req.body.name
-        type: req.body.type
-        note: req.body.note
-      , (err, result) ->
+      Exercise.find()
+      .exec (err, exercise) ->
+        console.log 'ERROR', err if err
+        callback null, exercise[0]
+      return
+
+    (exercise, callback) ->
+
+      exercise.strength.push {
+            date:   new Date()
+            name:   req.body.name
+            note:   req.body.note
+            muscle: req.body.muscle
+          }
+
+      exercise.save (err, result) ->
         return callback err if err
         return callback null, result
 

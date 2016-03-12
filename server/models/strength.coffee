@@ -19,6 +19,8 @@ StrengthSchema = new mongoose.Schema
     type: String
   session:
     type: Array
+  exercise:
+    type: mongoose.Schema.ObjectId
 ,
   collection: 'strength'
 

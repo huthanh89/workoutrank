@@ -22,23 +22,33 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  url:  '/api/strength'
-
   defaults:
     date: new Date()
     name:    ''
     muscle:  0
     note:    ''
-    session: []
-    count:   1
 
 #-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.PageableCollection
+class Collection extends Backbone.Collection
 
-  url:  '/api/strength'
+  url:  '/api/exercise'
+
+  model: Model
+
+  comparator: (item) -> return -item.get('date')
+
+  parse: (response) -> response[0].strength
+
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class PageableCollection extends Backbone.PageableCollection
+
+  url:  '/api/exercise'
 
   model: Model
 
@@ -49,6 +59,8 @@ class Collection extends Backbone.PageableCollection
     pageSize:    10
 
   comparator: (item) -> return -item.get('date')
+
+  parseRecords: (response) -> response[0].strength
 
 #-------------------------------------------------------------------------------
 # View
@@ -66,6 +78,11 @@ class View extends Marionette.LayoutView
       @rootChannel.request('exercise')
       return
 
+  collectionEvents:
+    sync: ->
+      @filterCollection(@model.get('muscle'))
+      return
+
   modelEvents:
     'change:muscle': (model, value) ->
       @filterCollection(value)
@@ -73,8 +90,8 @@ class View extends Marionette.LayoutView
 
   constructor: ->
     super
-    @rootChannel    = Backbone.Radio.channel('root')
-    @fullCollection = @collection.fullCollection.clone()
+    @rootChannel = Backbone.Radio.channel('root')
+    @pageableCollection = new PageableCollection @collection.models
 
   onShow: ->
 
@@ -87,17 +104,15 @@ class View extends Marionette.LayoutView
       model:      @model
 
     @showChildView 'table', new TableView
-      collection: @collection
+      collection: @pageableCollection
 
     return
 
   # Fetch the latest collection then filter the collection by muscle.
 
   filterCollection: (muscle) ->
-    @fullCollection.fetch
-      success: =>
-        models = @fullCollection.filter (model) -> model.get('muscle') is muscle
-        @collection.fullCollection.reset models
+    models = @collection.filter (model) -> model.get('muscle') is muscle
+    @pageableCollection.fullCollection.reset models
     return
 
 #-------------------------------------------------------------------------------

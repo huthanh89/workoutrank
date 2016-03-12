@@ -2,7 +2,6 @@
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Detail = require './detail/module'
 module.exports.Master = require './master/module'
 
 #-------------------------------------------------------------------------------
