@@ -6,6 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 GraphView    = require './graph/view'
+TableView    = require './table/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -48,10 +49,12 @@ class Model extends Backbone.Model
 #-------------------------------------------------------------------------------
 
 class View extends Marionette.LayoutView
+
   template: viewTemplate
 
   regions:
-    graph: '#strength-graph-view'
+    graph: '#strength-log-graph-view'
+    table: '#strength-log-table-view'
 
   events:
     'click #strength-log-back': ->
@@ -68,9 +71,14 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
+
     @showChildView 'graph', new GraphView
       collection: new Backbone.Collection @model.get('log')
       title: @model.get('name')
+
+    @showChildView 'table', new TableView
+      model: @model
+
     return
 
 #-------------------------------------------------------------------------------
