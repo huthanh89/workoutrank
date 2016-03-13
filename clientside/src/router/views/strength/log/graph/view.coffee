@@ -41,17 +41,30 @@ class View extends Marionette.ItemView
         type:     'areaspline'
         renderTo: @ui.chart[0]
 
-      title :
-        text : 'Exercise Sessions'
+      title:
+        text: 'Exercise Sessions'
 
-      rangeSelector : {
-        selected : 1
-      },
+      plotOptions:
+        areaspline:
+          fillOpacity: 0.3
+          lineWidth:   3
+
+      xAxis:
+        lineWidth: 2
+
+      yAxis: [
+        lineWidth: 2
+        opposite:  false
+      ]
 
       series: seriesData(@collection.models)
 
       legend:
-        enabled: true
+        enabled:     true
+        borderWidth: 2
+
+      credits:
+        enabled: false
 
     return
 

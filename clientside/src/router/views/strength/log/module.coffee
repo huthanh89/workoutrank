@@ -28,18 +28,16 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  model: Model
-
   constructor: (attributes, options) ->
     super
     @url = "/api/strength/#{options.id}/log"
 
-  comparator: (item) -> return -item.get('date')
-
   parse: (response) ->
 
+    console.log response
+
     series = {}
-    for record in response
+    for record in response.session
       _.each record.session, (session, index) ->
         series[session.index] = [] if series[session.index] is undefined
         series[session.index].push

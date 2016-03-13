@@ -15,7 +15,7 @@ Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
 # Log Get
-#
+#   Get a list all logs of a certain exercise.
 #-------------------------------------------------------------------------------
 
 module.logGet = (req, res, next) ->
@@ -24,26 +24,51 @@ module.logGet = (req, res, next) ->
 
     (callback) ->
 
-      Strength.find
-        exercise: req.params.sid
-      .sort 'date'
+      Exercise.find()
+      .lean()
       .exec (err, exercises) ->
         console.log 'ERROR', err if err
-        return callback null, exercises
+        return callback null, exercises[0].strength
 
       return
 
-  ], (err, documents) ->
+    (strengths, callback) ->
 
-    console.log documents
+      # Find a certain exercise.
+
+      strength = _.find strengths, (strength) ->
+        return strength._id.toString() is req.params.sid
+
+      return callback null, strength
+
+    (strength, callback) ->
+
+      # Get logs
+
+      Strength.find
+        exercise: req.params.sid
+      .sort 'date'
+      .lean()
+      .exec (err, exercises) ->
+        console.log 'ERROR', err if err
+        return callback null, strength, exercises
+
+      return
+
+  ], (err, strength, exercises) ->
 
     console.log 'ERROR', err if err
 
-    return res.json documents
+    result = _.chain {}
+      .extend strength
+      .extend session: exercises
+      .value()
+
+    return res.json result
 
 #-------------------------------------------------------------------------------
 # Get
-#
+#   Get one exercise with given strengthID
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->

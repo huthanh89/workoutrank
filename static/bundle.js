@@ -68093,22 +68093,18 @@
 	Collection = (function(superClass) {
 	  extend(Collection, superClass);
 
-	  Collection.prototype.model = Model;
-
 	  function Collection(attributes, options) {
 	    Collection.__super__.constructor.apply(this, arguments);
 	    this.url = "/api/strength/" + options.id + "/log";
 	  }
 
-	  Collection.prototype.comparator = function(item) {
-	    return -item.get('date');
-	  };
-
 	  Collection.prototype.parse = function(response) {
-	    var i, key, len, record, result, serie, series;
+	    var i, key, len, record, ref, result, serie, series;
+	    console.log(response);
 	    series = {};
-	    for (i = 0, len = response.length; i < len; i++) {
-	      record = response[i];
+	    ref = response.session;
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      record = ref[i];
 	      _.each(record.session, function(session, index) {
 	        if (series[session.index] === void 0) {
 	          series[session.index] = [];
@@ -68224,12 +68220,28 @@
 	      title: {
 	        text: 'Exercise Sessions'
 	      },
-	      rangeSelector: {
-	        selected: 1
+	      plotOptions: {
+	        areaspline: {
+	          fillOpacity: 0.3,
+	          lineWidth: 3
+	        }
 	      },
+	      xAxis: {
+	        lineWidth: 2
+	      },
+	      yAxis: [
+	        {
+	          lineWidth: 2,
+	          opposite: false
+	        }
+	      ],
 	      series: seriesData(this.collection.models),
 	      legend: {
-	        enabled: true
+	        enabled: true,
+	        borderWidth: 2
+	      },
+	      credits: {
+	        enabled: false
 	      }
 	    });
 	  };
