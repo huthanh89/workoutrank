@@ -53952,18 +53952,18 @@
 	  };
 
 	  Router.prototype.strengthLog = function(strengthID) {
-	    var Collection, View, collection;
+	    var Model, View, model;
 	    this.navChannel.request('nav:main');
 	    View = Strength.Log.View;
-	    Collection = Strength.Log.Collection;
-	    collection = new Collection([], {
+	    Model = Strength.Log.Model;
+	    model = new Model({}, {
 	      id: strengthID
 	    });
-	    collection.fetch({
+	    model.fetch({
 	      success: (function(_this) {
-	        return function(collection) {
+	        return function(model) {
 	          _this.rootView.content.show(new View({
-	            collection: collection,
+	            model: model,
 	            strengthID: strengthID
 	          }));
 	        };
@@ -68058,7 +68058,7 @@
 /* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, GraphView, Marionette, Model, View, moment, viewTemplate,
+	var Backbone, GraphView, Marionette, Model, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -68075,34 +68075,15 @@
 	Model = (function(superClass) {
 	  extend(Model, superClass);
 
-	  Model.prototype.idAttribute = '_id';
-
 	  function Model(attributes, options) {
 	    Model.__super__.constructor.apply(this, arguments);
 	    this.url = "/api/strength/" + options.id + "/log";
 	  }
 
 	  Model.prototype.parse = function(response) {
-	    return response;
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection(attributes, options) {
-	    Collection.__super__.constructor.apply(this, arguments);
-	    this.url = "/api/strength/" + options.id + "/log";
-	  }
-
-	  Collection.prototype.parse = function(response) {
 	    var i, key, len, record, ref, result, serie, series;
-	    console.log(response);
 	    series = {};
-	    ref = response.session;
+	    ref = response.log;
 	    for (i = 0, len = ref.length; i < len; i++) {
 	      record = ref[i];
 	      _.each(record.session, function(session, index) {
@@ -68120,16 +68101,17 @@
 	      serie = series[key];
 	      result.push({
 	        index: key,
-	        name: "SET:" + key,
+	        name: "SET" + key,
 	        data: serie || []
 	      });
 	    }
-	    return result;
+	    response.log = result;
+	    return response;
 	  };
 
-	  return Collection;
+	  return Model;
 
-	})(Backbone.Collection);
+	})(Backbone.Model);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -68152,9 +68134,14 @@
 	    this.mergeOptions(options, 'strengthID');
 	  }
 
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
 	  View.prototype.onShow = function() {
 	    this.showChildView('graph', new GraphView({
-	      collection: this.collection
+	      collection: new Backbone.Collection(this.model.get('log')),
+	      title: this.model.get('name')
 	    }));
 	  };
 
@@ -68163,8 +68150,6 @@
 	})(Marionette.LayoutView);
 
 	module.exports.Model = Model;
-
-	module.exports.Collection = Collection;
 
 	module.exports.View = View;
 
@@ -68206,9 +68191,10 @@
 	    chart: '#strength-graph-ui'
 	  };
 
-	  function View() {
+	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.mergeOptions(options, 'title');
 	  }
 
 	  View.prototype.onShow = function() {
@@ -68218,7 +68204,10 @@
 	        renderTo: this.ui.chart[0]
 	      },
 	      title: {
-	        text: 'Exercise Sessions'
+	        text: this.title.toUpperCase(),
+	        style: {
+	          fontWeight: 'bold'
+	        }
 	      },
 	      plotOptions: {
 	        areaspline: {
@@ -68227,12 +68216,26 @@
 	        }
 	      },
 	      xAxis: {
-	        lineWidth: 2
+	        lineWidth: 2,
+	        title: {
+	          text: 'Time',
+	          style: {
+	            fontWeight: 600,
+	            fontSize: '12px'
+	          }
+	        }
 	      },
 	      yAxis: [
 	        {
 	          lineWidth: 2,
-	          opposite: false
+	          opposite: false,
+	          title: {
+	            text: 'Weight',
+	            style: {
+	              fontWeight: 600,
+	              fontSize: '12px'
+	            }
+	          }
 	        }
 	      ],
 	      series: seriesData(this.collection.models),
@@ -68278,7 +68281,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-graph-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-graph-table\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

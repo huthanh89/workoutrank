@@ -29,9 +29,10 @@ class View extends Marionette.ItemView
   ui:
     chart: '#strength-graph-ui'
 
-  constructor: ->
+  constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'title'
 
   onShow: ->
 
@@ -42,7 +43,9 @@ class View extends Marionette.ItemView
         renderTo: @ui.chart[0]
 
       title:
-        text: 'Exercise Sessions'
+        text: @title.toUpperCase()
+        style:
+          fontWeight: 'bold'
 
       plotOptions:
         areaspline:
@@ -51,10 +54,20 @@ class View extends Marionette.ItemView
 
       xAxis:
         lineWidth: 2
+        title:
+          text: 'Time'
+          style:
+            fontWeight: 600
+            fontSize:  '12px'
 
       yAxis: [
         lineWidth: 2
         opposite:  false
+        title:
+          text: 'Weight'
+          style:
+            fontWeight: 600
+            fontSize:  '12px'
       ]
 
       series: seriesData(@collection.models)

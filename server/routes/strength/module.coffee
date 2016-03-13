@@ -61,7 +61,7 @@ module.logGet = (req, res, next) ->
 
     result = _.chain {}
       .extend strength
-      .extend session: exercises
+      .extend log: exercises
       .value()
 
     return res.json result

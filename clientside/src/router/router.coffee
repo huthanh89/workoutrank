@@ -200,15 +200,15 @@ class Router extends Marionette.AppRouter
     @navChannel.request('nav:main')
 
     View  = Strength.Log.View
-    Collection = Strength.Log.Collection
+    Model = Strength.Log.Model
 
-    collection = new Collection [],
+    model = new Model {},
       id: strengthID
 
-    collection.fetch
-      success: (collection) =>
+    model.fetch
+      success: (model) =>
         @rootView.content.show new View
-          collection: collection
+          model:      model
           strengthID: strengthID
         return
       error: ->

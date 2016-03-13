@@ -14,30 +14,15 @@ viewTemplate = require './view.jade'
 
 class Model extends Backbone.Model
 
-  idAttribute: '_id'
-
-  constructor: (attributes, options) ->
-    super
-    @url = "/api/strength/#{options.id}/log"
-
-  parse: (response) -> response
-
-#-------------------------------------------------------------------------------
-# Collection
-#-------------------------------------------------------------------------------
-
-class Collection extends Backbone.Collection
-
   constructor: (attributes, options) ->
     super
     @url = "/api/strength/#{options.id}/log"
 
   parse: (response) ->
 
-    console.log response
-
     series = {}
-    for record in response.session
+
+    for record in response.log
       _.each record.session, (session, index) ->
         series[session.index] = [] if series[session.index] is undefined
         series[session.index].push
@@ -46,14 +31,17 @@ class Collection extends Backbone.Collection
         return
 
     result = []
+
     for key, serie of series
       result.push {
         index: key
-        name: "SET:#{key}"
+        name: "SET#{key}"
         data: serie or []
       }
 
-    return result
+    response.log = result
+
+    return response
 
 #-------------------------------------------------------------------------------
 # View
@@ -75,17 +63,21 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'strengthID'
 
+  onRender: ->
+    @stickit()
+    return
+
   onShow: ->
     @showChildView 'graph', new GraphView
-      collection: @collection
+      collection: new Backbone.Collection @model.get('log')
+      title: @model.get('name')
     return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Model      = Model
-module.exports.Collection = Collection
-module.exports.View       = View
+module.exports.Model = Model
+module.exports.View  = View
 
 #-------------------------------------------------------------------------------
