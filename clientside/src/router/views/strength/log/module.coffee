@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 GraphView    = require './graph/view'
@@ -35,12 +36,28 @@ class Collection extends Backbone.Collection
 
   comparator: (item) -> return -item.get('date')
 
-  parse: (response) -> _.map response, (session) ->
-    return {
-      name: session.name
-      x:    session.date
-      y:    99
-    }
+  parse: (response) ->
+
+    series = []
+    for record in response
+      _.each record.session, (session, index) ->
+        series[session.index] = [] if series[session.index] is undefined
+        series[session.index].push
+          name: record.name
+          x:    moment(session.date).valueOf()
+          y:    session.weight
+        return
+
+    result = []
+    for serie, index in series
+      result.push {
+        name: "Set #{index}"
+        data: serie
+      }
+
+    console.log 'RESULT', result
+
+    return result
 
 #-------------------------------------------------------------------------------
 # View
