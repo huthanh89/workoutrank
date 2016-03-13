@@ -78,7 +78,7 @@ class Router extends Marionette.AppRouter
 
       'strength:log': (exerciseID) =>
         @navigate("strength/#{exerciseID}/log", trigger: true)
-        @strengthDetail(exerciseID)
+        @strengthLog(exerciseID)
         return
 
       'stat': =>
@@ -197,9 +197,6 @@ class Router extends Marionette.AppRouter
 
   strengthLog: (strengthID) ->
 
-
-    console.log 'strengthID', strengthID
-
     @navChannel.request('nav:main')
 
     View  = Strength.Log.View
@@ -212,6 +209,7 @@ class Router extends Marionette.AppRouter
       success: (collection) =>
         @rootView.content.show new View
           collection: collection
+          strengthID: strengthID
         return
       error: ->
         console.log 'error'

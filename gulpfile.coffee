@@ -150,6 +150,7 @@ gulp.task 'scripts', (callback) ->
         marionette:            'scripts/backbone.marionette.js'
         async:                 'scripts/async.js'
         highcharts:            'scripts/highcharts.js'
+        highstock:             'scripts/highstock.js'
 
         bootstrap:             'scripts/bootstrap.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
@@ -159,7 +160,6 @@ gulp.task 'scripts', (callback) ->
         multiselect:           'scripts/jquery.bootstrap-multiselect.js'
         datepicker:            'scripts/jquery.bootstrap-datepicker.js'
         JQPlugin:              'scripts/jquery.plugin.js'
-        timeentry:             'scripts/jquery.timeentry.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
 
       extensions: [

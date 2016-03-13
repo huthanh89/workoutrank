@@ -21,9 +21,13 @@ class ItemView extends Marionette.ItemView
 
   bindings:
 
-    '.strength-rep': 'rep'
+    '.strength-rep':
+      observe: 'rep'
+      onSet: (value) -> parseInt(value)
 
-    '.strength-weight': 'weight'
+    '.strength-weight':
+      observe: 'weight'
+      onSet: (value) -> parseInt(value)
 
     '.strength-set-label':
       observe: 'index'

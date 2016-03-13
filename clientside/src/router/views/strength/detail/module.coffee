@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 InputView    = require './input/view'
@@ -51,8 +52,6 @@ class Collection extends Backbone.PageableCollection
     currentPage: 1
     pageSize:    10
 
-  comparator: (item) -> return -item.get('date')
-
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -82,7 +81,9 @@ class View extends Marionette.LayoutView
     @mergeOptions options, 'strengthID'
 
     attributes = _.chain @model.attributes
-      .extend exercise: @model.get('_id')
+      .extend
+        date:     new Date()
+        exercise: @model.get('_id')
       .omit '_id'
       .value()
 

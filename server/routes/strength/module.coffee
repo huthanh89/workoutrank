@@ -26,6 +26,7 @@ module.logGet = (req, res, next) ->
 
       Strength.find
         exercise: req.params.sid
+      .sort 'date'
       .exec (err, exercises) ->
         console.log 'ERROR', err if err
         return callback null, exercises

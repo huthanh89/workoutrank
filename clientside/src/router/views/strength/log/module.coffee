@@ -38,24 +38,22 @@ class Collection extends Backbone.Collection
 
   parse: (response) ->
 
-    series = []
+    series = {}
     for record in response
       _.each record.session, (session, index) ->
         series[session.index] = [] if series[session.index] is undefined
         series[session.index].push
-          name: record.name
-          x:    moment(session.date).valueOf()
-          y:    session.weight
+          x: moment(record.date).valueOf()
+          y: session.weight
         return
 
     result = []
-    for serie, index in series
+    for key, serie of series
       result.push {
-        name: "Set #{index}"
-        data: serie
+        index: key
+        name: "SET:#{key}"
+        data: serie or []
       }
-
-    console.log 'RESULT', result
 
     return result
 
@@ -70,17 +68,14 @@ class View extends Marionette.LayoutView
     graph: '#strength-graph-view'
 
   events:
-    'click #strength-back': ->
-      @rootChannel.request 'strength'
-      return
-
-    'click #strength-log': ->
-      @rootChannel.request 'strength:log', @strengthID
+    'click #strength-log-back': ->
+      @rootChannel.request 'strength:detail', @strengthID
       return
 
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'strengthID'
 
   onShow: ->
     @showChildView 'graph', new GraphView

@@ -4,7 +4,18 @@
 
 $           = require 'jquery'
 _           = require 'lodash'
+Highstock   = require 'highstock'
 Application = require './application'
+
+#-------------------------------------------------------------------------------
+# Set Highstock option for through out our project to change the date
+# to GMT +0
+#-------------------------------------------------------------------------------
+
+Highstock.setOptions
+  global: {
+    useUTC: false
+  }
 
 #-------------------------------------------------------------------------------
 # Hacks and workaround.

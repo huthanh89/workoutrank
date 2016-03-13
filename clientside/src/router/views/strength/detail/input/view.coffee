@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 SetView      = require './set/view'
@@ -63,7 +64,7 @@ class View extends Marionette.LayoutView
       onSet: (value) ->
         if value > @sessionCollection.length
           @sessionCollection.add new Model
-            index: value
+            index: parseInt(value)
         else
           @sessionCollection.remove(@sessionCollection.last())
         return
@@ -79,6 +80,12 @@ class View extends Marionette.LayoutView
       return
 
     'click @ui.submit': ->
+
+      date = moment(new Date(@ui.date.val())).format('YYYY-MM-DD')
+      time = @ui.time.val()
+
+      @model.set
+        date: moment(new Date("#{date} #{time}")).format()
 
       @ui.form.validator('validate')
       @model.set 'session', @sessionCollection.toJSON()
@@ -118,8 +125,8 @@ class View extends Marionette.LayoutView
 
     @ui.time
     .timepicker
-        template: 'dropdown'
-    .timepicker('setTime', '12:45 AM')
+      template:   'dropdown'
+    .timepicker('setTime', moment().format('HH:mm:ss'))
 
     @stickit()
     return

@@ -5,21 +5,18 @@
 $            = require 'jquery'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Highcharts   = require 'highcharts'
+Highstock    = require 'highstock'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
 # Series Data
 #-------------------------------------------------------------------------------
 
-series = (models) ->
-
-  console.log models
-
-  return {
-    name: 'bob'
-    data:  [7.0, 6.9, 9.5]
-  }
+seriesData = (models) ->
+  series = []
+  for model in models
+    series.push model.attributes
+  return series
 
 #-------------------------------------------------------------------------------
 # View
@@ -38,15 +35,23 @@ class View extends Marionette.ItemView
 
   onShow: ->
 
-    chart = new Highcharts.Chart
+    @chart = new Highstock.StockChart
 
       chart:
-        type:     'column'
+        type:     'areaspline'
         renderTo: @ui.chart[0]
 
-      series: [
-        series(@collection.models)
-      ]
+      title :
+        text : 'Exercise Sessions'
+
+      rangeSelector : {
+        selected : 1
+      },
+
+      series: seriesData(@collection.models)
+
+      legend:
+        enabled: true
 
     return
 
