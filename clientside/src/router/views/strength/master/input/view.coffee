@@ -6,7 +6,7 @@ _            = require 'lodash'
 Backbone     = require 'backbone'
 Validation   = require 'backbone.validation'
 Marionette   = require 'marionette'
-Data         = require '../data/module'
+Data         = require '../../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------

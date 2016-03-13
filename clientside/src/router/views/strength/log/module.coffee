@@ -74,7 +74,7 @@ class View extends Marionette.LayoutView
 
     @showChildView 'graph', new GraphView
       collection: new Backbone.Collection @model.get('log')
-      title: @model.get('name')
+      model: @model
 
     @showChildView 'table', new TableView
       model: @model

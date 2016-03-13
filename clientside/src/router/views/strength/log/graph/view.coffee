@@ -15,7 +15,7 @@ viewTemplate = require './view.jade'
 seriesData = (models) ->
   series = []
   for model in models
-    series.push model.attributes
+    series.push model
   return series
 
 #-------------------------------------------------------------------------------
@@ -32,9 +32,8 @@ class View extends Marionette.ItemView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @mergeOptions options, 'title'
 
-  onShow: ->
+  onRender: ->
 
     @chart = new Highstock.StockChart
 
@@ -43,7 +42,7 @@ class View extends Marionette.ItemView
         renderTo: @ui.chart[0]
 
       title:
-        text: @title.toUpperCase()
+        text: @model.get('name').toUpperCase()
         style:
           fontWeight: 'bold'
 
@@ -70,7 +69,7 @@ class View extends Marionette.ItemView
             fontSize:  '12px'
       ]
 
-      series: seriesData(@collection.models)
+      series: seriesData(@model.get('log'))
 
       legend:
         enabled:     true
@@ -78,6 +77,13 @@ class View extends Marionette.ItemView
 
       credits:
         enabled: false
+
+    return
+
+  onShow: ->
+
+    @model.set 'max', @chart.yAxis[0].dataMax
+    @model.set 'min', @chart.yAxis[0].dataMin
 
     return
 

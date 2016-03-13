@@ -68144,7 +68144,7 @@
 	  View.prototype.onShow = function() {
 	    this.showChildView('graph', new GraphView({
 	      collection: new Backbone.Collection(this.model.get('log')),
-	      title: this.model.get('name')
+	      model: this.model
 	    }));
 	    this.showChildView('table', new TableView({
 	      model: this.model
@@ -68183,7 +68183,7 @@
 	  series = [];
 	  for (i = 0, len = models.length; i < len; i++) {
 	    model = models[i];
-	    series.push(model.attributes);
+	    series.push(model);
 	  }
 	  return series;
 	};
@@ -68200,17 +68200,16 @@
 	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.mergeOptions(options, 'title');
 	  }
 
-	  View.prototype.onShow = function() {
+	  View.prototype.onRender = function() {
 	    this.chart = new Highstock.StockChart({
 	      chart: {
 	        type: 'areaspline',
 	        renderTo: this.ui.chart[0]
 	      },
 	      title: {
-	        text: this.title.toUpperCase(),
+	        text: this.model.get('name').toUpperCase(),
 	        style: {
 	          fontWeight: 'bold'
 	        }
@@ -68244,7 +68243,7 @@
 	          }
 	        }
 	      ],
-	      series: seriesData(this.collection.models),
+	      series: seriesData(this.model.get('log')),
 	      legend: {
 	        enabled: true,
 	        borderWidth: 2
@@ -68253,6 +68252,11 @@
 	        enabled: false
 	      }
 	    });
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.model.set('max', this.chart.yAxis[0].dataMax);
+	    this.model.set('min', this.chart.yAxis[0].dataMin);
 	  };
 
 	  return View;
@@ -68280,15 +68284,17 @@
 /* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Marionette, View, _, viewTemplate,
+	var Backbone, Data, Marionette, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	_ = __webpack_require__(3);
+	moment = __webpack_require__(43);
 
 	Backbone = __webpack_require__(7);
 
 	Marionette = __webpack_require__(9);
+
+	Data = __webpack_require__(51);
 
 	viewTemplate = __webpack_require__(75);
 
@@ -68299,20 +68305,43 @@
 
 	  View.prototype.bindings = {
 	    '#strength-log-table-name': 'name',
-	    '#strength-log-table-max': 'max',
-	    '#strength-log-table-min': 'min',
+	    '#strength-log-table-max': {
+	      observe: 'max',
+	      onGet: function(value) {
+	        return value + ' lb';
+	      }
+	    },
+	    '#strength-log-table-min': {
+	      observe: 'min',
+	      onGet: function(value) {
+	        return value + ' lb';
+	      }
+	    },
 	    '#strength-log-table-avg': 'avg',
-	    '#strength-log-table-target': 'exercise',
-	    '#strength-log-table-date': 'date'
+	    '#strength-log-table-target': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    },
+	    '#strength-log-table-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('YYYY-MM-DD');
+	      }
+	    }
 	  };
 
-	  function View() {
+	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.mergeOptions(options, 'title');
 	  }
 
-	  View.prototype.render = function() {
-	    console.log('rendersss');
+	  View.prototype.onRender = function() {
+	    this.stickit();
 	  };
 
 	  return View;
@@ -68333,7 +68362,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"strength-log-table-name\">Benching</td></tr><tr><td>Max</td><td id=\"strength-log-table-max\">100</td></tr><tr><td>Min</td><td id=\"strength-log-table-min\">0</td></tr><tr><td>Avg</td><td id=\"strength-log-table-avg\">50</td></tr><tr><td>Target</td><td id=\"strength-log-table-target\"></td></tr><tr><td>Started</td><td id=\"strength-log-table-date\"></td></tr></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"strength-log-table-name\"></td></tr><tr><td>Max</td><td id=\"strength-log-table-max\"></td></tr><tr><td>Min</td><td id=\"strength-log-table-min\"></td></tr><tr><td>Target</td><td id=\"strength-log-table-target\"></td></tr><tr><td>Started</td><td id=\"strength-log-table-date\"></td></tr></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -68347,7 +68376,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><span>asdf</span></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
