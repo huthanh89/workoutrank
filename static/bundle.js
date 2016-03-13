@@ -68194,7 +68194,7 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    chart: '#strength-graph-ui'
+	    chart: '#strength-log-graph-ui'
 	  };
 
 	  function View(options) {
@@ -68218,6 +68218,15 @@
 	        areaspline: {
 	          fillOpacity: 0.3,
 	          lineWidth: 3
+	        },
+	        series: {
+	          marker: {
+	            radius: 2,
+	            fillColor: 'black',
+	            lineColor: 'black',
+	            lineWidth: 4,
+	            enabled: true
+	          }
 	        }
 	      },
 	      xAxis: {
@@ -68257,6 +68266,7 @@
 	  View.prototype.onShow = function() {
 	    this.model.set('max', this.chart.yAxis[0].dataMax);
 	    this.model.set('min', this.chart.yAxis[0].dataMin);
+	    this.chart.reflow();
 	  };
 
 	  return View;
@@ -68277,7 +68287,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-graph-ui\"></div></div></div>");;return buf.join("");
+	buf.push("<div id=\"strength-log-graph-ui\"></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -68376,7 +68386,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield\"></i></button></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graph</span></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

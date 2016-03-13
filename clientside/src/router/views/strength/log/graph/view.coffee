@@ -27,7 +27,7 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    chart: '#strength-graph-ui'
+    chart: '#strength-log-graph-ui'
 
   constructor: (options) ->
     super
@@ -50,6 +50,14 @@ class View extends Marionette.ItemView
         areaspline:
           fillOpacity: 0.3
           lineWidth:   3
+
+        series:
+          marker:
+            radius: 2
+            fillColor: 'black'
+            lineColor: 'black'
+            lineWidth: 4
+            enabled: true
 
       xAxis:
         lineWidth: 2
@@ -84,6 +92,10 @@ class View extends Marionette.ItemView
 
     @model.set 'max', @chart.yAxis[0].dataMax
     @model.set 'min', @chart.yAxis[0].dataMin
+
+    # Chart does not stretch the full container unless reflow is called.
+
+    @chart.reflow()
 
     return
 
