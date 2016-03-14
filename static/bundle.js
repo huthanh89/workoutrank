@@ -68222,9 +68222,6 @@
 	        series: {
 	          marker: {
 	            radius: 2,
-	            fillColor: 'black',
-	            lineColor: 'black',
-	            lineWidth: 4,
 	            enabled: true
 	          }
 	        }

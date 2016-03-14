@@ -33,6 +33,8 @@
     "request": "*",
     "moment": "*",
     "lodash": "*",
+    "rand-token": "*",
+    "connect-mongo": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

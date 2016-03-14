@@ -53,10 +53,7 @@ class View extends Marionette.ItemView
 
         series:
           marker:
-            radius: 2
-            fillColor: 'black'
-            lineColor: 'black'
-            lineWidth: 4
+            radius:  2
             enabled: true
 
       xAxis:
