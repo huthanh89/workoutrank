@@ -40,7 +40,8 @@ exports.post = (req, res) ->
 
       req.session.user = user
 
-      # NOT SURE WHAT TO DO WITH THIS COOKIE
+      # WIP Setting up a remember me.
+      
       # Create a remember me cookie containing
       # a random generated token.
 

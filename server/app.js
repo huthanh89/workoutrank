@@ -11,6 +11,7 @@ var bodyParser   = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 var passport     = require('passport');
+MongoStore       = require('connect-mongo')(session);
 
 require('coffee-script/register');
 
@@ -79,17 +80,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
-// Create cookie session.
+// Initialize session.
 
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: {}
+    cookie: {},
+
+    // Sessions are erased when server is restarted. So we
+    // want to save the session in mongodb to reference it again.
+
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection
+    })
 }));
-app.use(function(req, res, next) {
-    next();
-});
 
 // Location of static files starting from the root or app.js.
 
