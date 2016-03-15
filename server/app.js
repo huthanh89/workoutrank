@@ -122,15 +122,9 @@ app.use(function(req, res, next) {
 
 var port = 5000;
 
-
-//var io = require('socket.io').listen(server);
-//exports.io = io;
-
 server.listen(port, function(){
     console.log('Express server listening on port %d in %s mode', port, app.get('env'));
 });
-
-//require('./socket');
 
 //--------------------------------------------------------------
 // Exports
