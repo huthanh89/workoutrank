@@ -103,6 +103,7 @@ app.use('/strength', express.static(path.join(__dirname, '../static')));
 app.use('/strength/:sid', express.static(path.join(__dirname, '../static')));
 
 // Define all routers.
+// Can only require routes after express was initialized.
 
 var routers = require('./routers/module');
 

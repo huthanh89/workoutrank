@@ -40,7 +40,7 @@ class Collection extends Backbone.Collection
 
   comparator: (item) -> return -item.get('date')
 
-  parse: (response) -> response[0].strength
+  parse: (response) -> response.strength
 
 #-------------------------------------------------------------------------------
 # Collection

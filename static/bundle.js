@@ -62614,7 +62614,7 @@
 	  };
 
 	  Collection.prototype.parse = function(response) {
-	    return response[0].strength;
+	    return response.strength;
 	  };
 
 	  return Collection;
