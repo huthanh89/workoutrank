@@ -111,7 +111,7 @@ class Router extends Marionette.AppRouter
     '/':                 'signup'
     'signup':            'signup'
     'login':             'login'
-    'home':              'strength'
+    'home':              'home'
     'profile':           'profile'
     'exercise':          'exercise'
     'strength/':         'strength'

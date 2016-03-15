@@ -24,7 +24,8 @@ exports.post = (req, res) ->
     (callback) ->
 
       User.findOne
-        email: 'admin'
+        email:    req.body.email
+        password: req.body.password
       .exec (err, user) ->
         return callback err if err
         return callback null, user
@@ -33,30 +34,39 @@ exports.post = (req, res) ->
 
     (user, callback) ->
 
-      console.log '-------------------'
+      if user isnt null
 
-      # If login was successful then
-      # Save user data to their session.
+        # If login was successful then
+        # Save user data to their session.
 
-      req.session.user = user
+        req.session.user = user
 
-      # WIP Setting up a remember me.
-      
-      # Create a remember me cookie containing
-      # a random generated token.
+        # WIP Setting up a remember me.
 
-      #res.cookie 'remember_me', randtoken.uid(16)
+        # Create a remember me cookie containing
+        # a random generated token.
 
-      return callback null, user
+        #res.cookie 'remember_me', randtoken.uid(16)
 
+        return callback null, user
 
-  ], (err, result) ->
+      else
+
+        req.session = null
+        return callback null
+
+  ], (err, user) ->
 
     console.log 'error', err if err
 
-    res
-    .status 201
-    .json result
+    if user
+      res
+      .status 201
+      .json user
+
+    else
+      res.send 'Not Authenticated'
+      res.end()
 
   return
 

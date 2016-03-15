@@ -19,13 +19,15 @@ strength = require './strength/module'
 # Router Level Middleware
 #-------------------------------------------------------------------------------
 
-
+###
 router.use  (req, res, next) ->
   console.log '-------------------'
 
   console.log 'Sesssion:', req.session
   console.log 'Cookies:',  req.cookies
   next()
+
+###
 
 #-------------------------------------------------------------------------------
 # Path Routes.

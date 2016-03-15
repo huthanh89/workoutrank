@@ -65,6 +65,7 @@ exports.post = (req, res) ->
     (user, callback) ->
 
       Exercise.create
+        user:     user._id
         strength: []
       , (err, exercise) ->
         return callback err if err
