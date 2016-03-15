@@ -9,8 +9,6 @@ router  = express.Router()
 # Import Routes
 #-------------------------------------------------------------------------------
 
-signup   = require './signup/module'
-login    = require './login/module'
 profile  = require './profile/module'
 exercise = require './exercise/module'
 strength = require './strength/module'
@@ -19,15 +17,14 @@ strength = require './strength/module'
 # Router Level Middleware
 #-------------------------------------------------------------------------------
 
-###
+# If user does not have a session, then redirect them to the login page.
+
 router.use  (req, res, next) ->
-  console.log '-------------------'
-
-  console.log 'Sesssion:', req.session
-  console.log 'Cookies:',  req.cookies
-  next()
-
-###
+  if req.session.user
+    next()
+  else
+    res.redirect('/login')
+  return
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -38,9 +35,6 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/',                  index
-router.get '/signup',            index
-router.get '/login',             index
 router.get '/home',              index
 router.get '/profile',           index
 router.get '/exercise',          index
@@ -57,10 +51,6 @@ router.get '/multiplayer',       index
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
-
-router.post '/api/signup', signup.post
-
-router.post '/api/login', login.post
 
 router.get  '/api/profile', profile.get
 

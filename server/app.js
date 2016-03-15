@@ -102,11 +102,12 @@ app.use(express.static(path.join(__dirname, '../static')));
 app.use('/strength', express.static(path.join(__dirname, '../static')));
 app.use('/strength/:sid', express.static(path.join(__dirname, '../static')));
 
-// Define all our routes.
+// Define all routers.
 
-var routes = require('./routes/index');
+var routers = require('./routers/module');
 
-app.use('/', routes);
+app.use('/', routers.indexRouter);
+app.use('/', routers.mainRouter);
 
 // catch 404 and forward to error handler
 

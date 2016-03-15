@@ -23,7 +23,8 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      Exercise.find()
+      Exercise.findOne
+        user: req.session.user._id
       .exec (err, documents) ->
         console.log 'ERROR', err if err
         callback null, documents
@@ -45,10 +46,14 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      Exercise.find()
+      console.log req.session
+
+      Exercise.findOne
+        user: req.session.user._id
       .exec (err, exercise) ->
+        console.log 'exercise,,,', exercise
         console.log 'ERROR', err if err
-        callback null, exercise[0]
+        callback null, exercise
       return
 
     (exercise, callback) ->
