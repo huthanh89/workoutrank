@@ -3,10 +3,12 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+GA         = require './ga'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Nav        = require './nav/module'
 Router     = require './router/router'
+
 
 #-------------------------------------------------------------------------------
 # RootView
@@ -25,6 +27,12 @@ class RootView extends Marionette.LayoutView
 class Application extends Marionette.Application
 
   onStart: ->
+
+    # Start Google analytics
+
+    googleAnalytics = new GA()
+
+    # Start channels.
 
     rootView = new RootView()
 
@@ -46,36 +54,15 @@ class Application extends Marionette.Application
 
     # All router must be initialized before backbone.history starts to work.
 
-
     new Router
       mode: 'auto'
       trailingSlash: 'ignore'
 
-
     Backbone.history.on 'route', (router, route, params) ->
 
-      # Google analytics
+      # Send route url to google analytics.
 
-      _gaq = _gaq or []
-      _gaq.push [
-        '_setAccount'
-        'UA-74126093-1'
-      ]
-      _gaq.push [ '_trackPageview' ]
-
-      do ->
-        ga = document.createElement('script')
-        ga.type = 'text/javascript'
-        ga.async = true
-        ga.src = (
-          if 'https:' == document.location.protocol
-          then 'https://ssl'
-          else 'http://www'
-        ) + '.google-analytics.com/ga.js'
-        s = document.getElementsByTagName('script')[0]
-        s.parentNode.insertBefore ga, s
-      _gaq.push(['_trackPageview', "/#{route}"])
-      ga('send', 'pageview')
+      googleAnalytics.send(route)
 
       return
 
