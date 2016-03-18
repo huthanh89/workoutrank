@@ -1,81 +1,34 @@
 .row
-    .col-sm-12
-        span.lead Home
+    .col-xs-12
+        span.lead
+            i.fa.fa-fw.fa-lg.fa-home
+            = ' '
+            | FIRSTNAME
+
 br
-#accordion.panel-group
-    .panel.panel-default
-        .panel-heading(data-toggle='collapse', data-parent='#accordion')
-            h4.panel-title
-                a#home-exercise
-                    i.fa.fa-fw.fa-lg.fa-heartbeat
-                    = ' '
-                    | Exercise
-                .pull-right
-                    i.fa.fa-fw.fa-caret-down
-        #collapse1.panel-collapse.collapse
-            .panel-body
-                .list-group
-                    a.list-group-item#home-exercise-strength
-                        i.fa.fa-fw.fa-lg.fa-shield
-                        = ' '
-                        | Strength
-                    a.list-group-item#home-exercise-endurance
-                        i.fa.fa-fw.fa-lg.fa-bicycle
-                        = ' '
-                        |Endurance
-                    a.list-group-item#home-exercise-flexibility
-                        i.fa.fa-fw.fa-lg.fa-heart
-                        = ' '
-                        |Flexibility
-                    a.list-group-item#home-exercise-balance
-                        i.fa.fa-fw.fa-lg.fa-balance-scale
-                        = ' '
-                        |Balance
-    .panel.panel-default
-        .panel-heading(data-toggle='collapse', data-parent='#accordion', href='#collapse2')
-            h4.panel-title
-                a#home-stat
-                    i.fa.fa-fw.fa-lg.fa-line-chart
-                    = ' '
-                    | Status
-                .pull-right
-                    i.fa.fa-fw.fa-caret-down
-        #collapse2.panel-collapse.collapse
-            .panel-body
-                | Under Construction...
-    .panel.panel-default
-        .panel-heading(data-toggle='collapse', data-parent='#accordion', href='#collapse3')
-            h4.panel-title
-                a#home-schedule
-                    i.fa.fa-fw.fa-lg.fa-calendar
-                    = ' '
-                    | Schedule
-                .pull-right
-                    i.fa.fa-fw.fa-caret-down
-        #collapse3.panel-collapse.collapse
-            .panel-body
-                | Under Construction...
-    .panel.panel-default
-        .panel-heading(data-toggle='collapse', data-parent='#accordion', href='#collapse4')
-            h4.panel-title
-                a#home-log
-                    i.fa.fa-fw.fa-lg.fa-area-chart
-                    = ' '
-                    | Logs
-                .pull-right
-                    i.fa.fa-fw.fa-caret-down
-        #collapse4.panel-collapse.collapse
-            .panel-body
-                | Under Construction...
-    .panel.panel-default
-        .panel-heading(data-toggle='collapse', data-parent='#accordion', href='#collapse5')
-            h4.panel-title
-                a#home-multiplayer
-                    i.fa.fa-fw.fa-lg.fa-group
-                    = ' '
-                    | Multiplayer
-                .pull-right
-                    i.fa.fa-fw.fa-caret-down
-        #collapse5.panel-collapse.collapse
-            .panel-body
-                | Under Construction...
+.row
+    .col-xs-12
+        table.table.table-hover
+            thead
+                tr
+                    td.col-xs-1
+                    td
+            tbody
+                tr#home-stat
+                    td
+                        i.fa.fa-fw.fa-lg.fa-line-chart
+                    td
+                        a
+                            b View Personal Status
+                tr#home-exercise
+                    td
+                        i.fa.fa-fw.fa-lg.fa-heartbeat
+                    td
+                        a
+                            b Add New Workout
+                tr#home-logs
+                    td
+                        i.fa.fa-fw.fa-lg.fa-area-chart
+                    td
+                        a
+                            b View Workout Logs
