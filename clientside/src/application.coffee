@@ -9,6 +9,18 @@ Marionette = require 'marionette'
 Nav        = require './nav/module'
 Router     = require './router/router'
 
+#-------------------------------------------------------------------------------
+# User
+#-------------------------------------------------------------------------------
+
+class User extends Backbone.Model
+
+  url: '/api/user'
+
+  defaults:
+    firstname: ''
+    lastname:  ''
+    email:     ''
 
 #-------------------------------------------------------------------------------
 # RootView
@@ -32,12 +44,22 @@ class Application extends Marionette.Application
 
     googleAnalytics = new GA()
 
+    # Fetch user record.
+
+    user = new User()
+
+    user.fetch()
+
     # Start channels.
 
     rootView = new RootView()
 
+    userChannel = Backbone.Radio.channel('user')
     rootChannel = Backbone.Radio.channel('root')
     navChannel  = Backbone.Radio.channel('nav')
+
+    userChannel.reply
+      'user': -> user
 
     rootChannel.reply
       'rootview': -> rootView
@@ -49,14 +71,17 @@ class Application extends Marionette.Application
         return
 
       'nav:main': ->
-        rootView.showChildView 'header', new Nav.Main()
+        rootView.showChildView 'header', new Nav.Main
+          model: user
         return
 
     # All router must be initialized before backbone.history starts to work.
 
     new Router
-      mode: 'auto'
+      mode:          'auto'
       trailingSlash: 'ignore'
+
+    # Event is triggered the user navigate through out a page.
 
     Backbone.history.on 'route', (router, route, params) ->
 

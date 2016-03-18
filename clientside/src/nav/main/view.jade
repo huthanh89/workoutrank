@@ -8,15 +8,31 @@
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                a#navbar-brand.navbar-brand WR
-                    = ' '
-                    i.fa.fa-lg.fa-navicon
-                    = ' '
-                    i.fa.fa-lg.fa-angle-double-right
+                a.navbar-brand
+                    i.fa.fa-2x.fa-navicon#navbar-brand
+
             // Collect the nav links, forms, and other content for toggling
+
             #nav-collapse-btn.collapse.navbar-collapse
-                .col-sm-6.col-xs-12.pull-right
+                .col-xs-11.pull-right
                     ul.nav.navbar-nav.navbar-right
+                        li
+                            a#nav-username USERNAME
+                        li.divider-vertical.hidden-xs
+                        li(data-toggle="collapse", data-target=".nav-collapse")#nav-strength
+                            a.nav-collapse-item
+                                i.nav-icon.fa.fa-fw.fa-2x.fa-shield
+                                span.hidden-sm.hidden-md.hidden-lg
+                                    = ' '
+                                    | Exercise
+                        li.divider-vertical.hidden-xs
+                        li(data-toggle="collapse", data-target=".nav-collapse")#nav-log
+                            a.nav-collapse-item
+                                i.nav-icon.fa.fa-fw.fa-2x.fa-area-chart
+                                span.hidden-sm.hidden-md.hidden-lg
+                                    = ' '
+                                    | Log
+                        li.divider-vertical.hidden-xs
                         li(data-toggle="collapse", data-target=".nav-collapse")#nav-home
                             a.nav-collapse-item
                                 i.nav-icon.fa.fa-fw.fa-2x.fa-home
@@ -26,9 +42,7 @@
                         li.divider-vertical.hidden-xs
                         li.dropdown
                             a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
-                                i.fa.fa-cogs.fa-lg
-                                = ' '
-                                i.fa.fa-caret-down
+                                i.fa.fa-2x.fa-caret-down
                             ul.dropdown-menu(role="menu")
                                 li
                                     a.nav-collapse-item
@@ -56,14 +70,18 @@
                                         i.fa.fa-fw.fa-lg.fa-sign-out
                                         = ' '
                                         | Sign Out
+
+
+
+
 nav#my-menu.mm-light
     ul
-        li#nav-side-home
+        li#side-nav-side-home
             a
                 i.fa.fa-fw.fa-lg.fa-home
                 | &nbsp Home
         li
-            a#nav-exercise
+            a#side-nav-exercise
                 i.fa.fa-fw.fa-heartbeat
                 | &nbsp Exercises
                 ul
@@ -84,19 +102,19 @@ nav#my-menu.mm-light
                             i.fa.fa-fw.fa-lg.fa-balance-scale
                             | &nbsp Balance
         li
-            a#nav-schedule
+            a#side-nav-schedule
                 i.fa.fa-fw.fa-lg.fa-calendar
                 | &nbsp Schedule
         li
-            a#nav-stat
+            a#side-nav-stat
                 i.fa.fa-fw.fa-lg.fa-line-chart
                 | &nbsp Stats
         li
-            a#nav-log
+            a#side-nav-log
                 i.fa.fa-fw.fa-lg.fa-area-chart
                 | &nbsp Logs
         li
-            a#nav-contacts
+            a#side-nav-contacts
                 i.fa.fa-fw.fa-lg.fa-group
                 | &nbsp Multiplayers
             ul
@@ -109,6 +127,6 @@ nav#my-menu.mm-light
                         i.fa.fa-fw.fa-lg.fa-trophy
                         | &nbsp Ranking
                 li
-                    a#nav-chat
+                    a#side-nav-chat
                         i.fa.fa-fw.fa-lg.fa-comments-o
                         | &nbsp Chat

@@ -109,6 +109,7 @@ var routers = require('./routers/module');
 
 app.use('/', routers.indexRouter);
 app.use('/', routers.mainRouter);
+app.use('/', routers.userRouter);
 
 // catch 404 and forward to error handler
 

@@ -45567,7 +45567,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Backbone, GA, Marionette, Nav, RootView, Router,
+	var Application, Backbone, GA, Marionette, Nav, RootView, Router, User,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -45579,7 +45579,26 @@
 
 	Nav = __webpack_require__(11);
 
-	Router = __webpack_require__(19);
+	Router = __webpack_require__(20);
+
+	User = (function(superClass) {
+	  extend(User, superClass);
+
+	  function User() {
+	    return User.__super__.constructor.apply(this, arguments);
+	  }
+
+	  User.prototype.url = '/api/user';
+
+	  User.prototype.defaults = {
+	    firstname: '',
+	    lastname: '',
+	    email: ''
+	  };
+
+	  return User;
+
+	})(Backbone.Model);
 
 	RootView = (function(superClass) {
 	  extend(RootView, superClass);
@@ -45607,11 +45626,19 @@
 	  }
 
 	  Application.prototype.onStart = function() {
-	    var googleAnalytics, navChannel, rootChannel, rootView;
+	    var googleAnalytics, navChannel, rootChannel, rootView, user, userChannel;
 	    googleAnalytics = new GA();
+	    user = new User();
+	    user.fetch();
 	    rootView = new RootView();
+	    userChannel = Backbone.Radio.channel('user');
 	    rootChannel = Backbone.Radio.channel('root');
 	    navChannel = Backbone.Radio.channel('nav');
+	    userChannel.reply({
+	      'user': function() {
+	        return user;
+	      }
+	    });
 	    rootChannel.reply({
 	      'rootview': function() {
 	        return rootView;
@@ -45622,7 +45649,9 @@
 	        rootView.showChildView('header', new Nav.Index());
 	      },
 	      'nav:main': function() {
-	        rootView.showChildView('header', new Nav.Main());
+	        rootView.showChildView('header', new Nav.Main({
+	          model: user
+	        }));
 	      }
 	    });
 	    new Router({
@@ -45656,7 +45685,6 @@
 
 	  GoogleAnalytic.prototype.send = function(route) {
 	    var _gaq;
-	    console.log('start');
 	    _gaq = _gaq || [];
 	    _gaq.push(['_setAccount', 'UA-74126093-1']);
 	    _gaq.push(['_trackPageview']);
@@ -53302,6 +53330,8 @@
 
 	viewTemplate = __webpack_require__(18);
 
+	__webpack_require__(19);
+
 	View = (function(superClass) {
 	  extend(View, superClass);
 
@@ -53321,10 +53351,36 @@
 	    dropdown: '#nav-main-dropdown'
 	  };
 
+	  View.prototype.bindings = {
+	    '#nav-username': {
+	      observe: 'firstname',
+	      onGet: function(value) {
+	        return value.toString().toUpperCase();
+	      }
+	    }
+	  };
+
+	  View.prototype.events = {
+	    'click @ui.brand': function(event) {
+	      event.preventDefault();
+	      $("#my-menu").trigger("open.mm");
+	    },
+	    'click @ui.collapseItem': function(event) {
+	      this.ui.collapseBtn.collapse('hide');
+	    },
+	    'click @ui.home': function() {
+	      this.channel.request('home');
+	    }
+	  };
+
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.channel = Backbone.Radio.channel('root');
 	  }
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
 
 	  View.prototype.onShow = function() {
 	    this.ui.menu.mmenu({
@@ -53355,20 +53411,6 @@
 	        _this.channel.request('exercise');
 	      };
 	    })(this));
-	  };
-
-	  View.prototype.events = {
-	    'focusout': function() {},
-	    'click @ui.brand': function(event) {
-	      event.preventDefault();
-	      $("#my-menu").trigger("open.mm");
-	    },
-	    'click @ui.collapseItem': function(event) {
-	      this.ui.collapseBtn.collapse('hide');
-	    },
-	    'click @ui.home': function() {
-	      this.channel.request('home');
-	    }
 	  };
 
 	  return View;
@@ -53734,538 +53776,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-fixed-top navbar-default\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" id=\"nav-main-dropdown\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a id=\"navbar-brand\" class=\"navbar-brand\">WR" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-angle-double-right\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-sm-6 col-xs-12 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-cogs fa-lg\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"nav-side-home\"><a><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a id=\"nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a id=\"nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a id=\"nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a id=\"nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a id=\"nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a id=\"nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-fixed-top navbar-default\"><div class=\"container-fluid\"><!-- Brand and toggle get grouped for better mobile display--><div class=\"navbar-header\"><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-btn\" id=\"nav-main-dropdown\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button><a class=\"navbar-brand\"><i id=\"navbar-brand\" class=\"fa fa-2x fa-navicon\"></i></a></div><!-- Collect the nav links, forms, and other content for toggling--><div id=\"nav-collapse-btn\" class=\"collapse navbar-collapse\"><div class=\"col-xs-11 pull-right\"><ul class=\"nav navbar-nav navbar-right\"><li><a id=\"nav-username\">USERNAME</a></li><li class=\"divider-vertical hidden-xs\"></li><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-strength\"><a class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-log\"><a class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li data-toggle=\"collapse\" data-target=\".nav-collapse\" id=\"nav-home\"><a class=\"nav-collapse-item\"><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i><span class=\"hidden-sm hidden-md hidden-lg\">" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></a></li><li class=\"divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><i class=\"fa fa-2x fa-caret-down\"></i></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a class=\"nav-collapse-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div></div></div></nav></div><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"side-nav-side-home\"><a><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a id=\"side-nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a id=\"side-nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a id=\"side-nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a id=\"side-nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a id=\"side-nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a id=\"side-nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Exercise, Home, Index, Login, Marionette, Profile, Router, Signup, Strength, _,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	Index = __webpack_require__(20);
-
-	Signup = __webpack_require__(23);
-
-	Login = __webpack_require__(28);
-
-	Home = __webpack_require__(31);
-
-	Profile = __webpack_require__(34);
-
-	Exercise = __webpack_require__(37);
-
-	Strength = __webpack_require__(49);
-
-	Router = (function(superClass) {
-	  extend(Router, superClass);
-
-	  function Router() {
-	    Router.__super__.constructor.apply(this, arguments);
-	    this.navChannel = Backbone.Radio.channel('nav');
-	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.rootView = this.rootChannel.request('rootview');
-	    this.rootChannel.reply({
-	      'index': (function(_this) {
-	        return function() {
-	          _this.navigate('');
-	          _this.signup();
-	        };
-	      })(this),
-	      'signup': (function(_this) {
-	        return function() {
-	          _this.navigate('signup', {
-	            trigger: true
-	          });
-	          _this.signup();
-	        };
-	      })(this),
-	      'login': (function(_this) {
-	        return function() {
-	          _this.navigate('login', {
-	            trigger: true
-	          });
-	          _this.login();
-	        };
-	      })(this),
-	      'home': (function(_this) {
-	        return function() {
-	          _this.navigate('home', {
-	            trigger: true
-	          });
-	          _this.home();
-	        };
-	      })(this),
-	      'profile': (function(_this) {
-	        return function() {
-	          _this.navigate('profile', {
-	            trigger: true
-	          });
-	          _this.profile();
-	        };
-	      })(this),
-	      'exercise': (function(_this) {
-	        return function() {
-	          _this.navigate('exercise', {
-	            trigger: true
-	          });
-	          _this.exercise();
-	        };
-	      })(this),
-	      'exercise:detail': (function(_this) {
-	        return function(type) {
-	          _this.rootChannel.request("" + type);
-	        };
-	      })(this),
-	      'strength': (function(_this) {
-	        return function() {
-	          _this.navigate('strength', {
-	            trigger: true
-	          });
-	          _this.strength();
-	        };
-	      })(this),
-	      'strength:detail': (function(_this) {
-	        return function(exerciseID) {
-	          _this.navigate("strength/" + exerciseID, {
-	            trigger: true
-	          });
-	          _this.strengthDetail(exerciseID);
-	        };
-	      })(this),
-	      'strength:log': (function(_this) {
-	        return function(exerciseID) {
-	          _this.navigate("strength/" + exerciseID + "/log", {
-	            trigger: true
-	          });
-	          _this.strengthLog(exerciseID);
-	        };
-	      })(this),
-	      'stat': (function(_this) {
-	        return function() {
-	          _this.navigate('stat', {
-	            trigger: true
-	          });
-	          _this.stat();
-	        };
-	      })(this),
-	      'schedule': (function(_this) {
-	        return function() {
-	          _this.navigate('schedule', {
-	            trigger: true
-	          });
-	          _this.schedule();
-	        };
-	      })(this),
-	      'log': (function(_this) {
-	        return function() {
-	          _this.navigate('log', {
-	            trigger: true
-	          });
-	          _this.log();
-	        };
-	      })(this),
-	      'multiplayer': (function(_this) {
-	        return function() {
-	          _this.navigate('multiplayer', {
-	            trigger: true
-	          });
-	          _this.multiplayer();
-	        };
-	      })(this)
-	    });
-	  }
-
-	  Router.prototype.routes = {
-	    '': 'signup',
-	    '/': 'signup',
-	    'signup': 'signup',
-	    'login': 'login',
-	    'home': 'home',
-	    'profile': 'profile',
-	    'exercise': 'exercise',
-	    'strength/': 'strength',
-	    'strength/:sid/': 'strengthDetail',
-	    'strength/:sid/log': 'strengthLog',
-	    'stat': 'stat',
-	    'schedule': 'schdeule',
-	    'log': 'log',
-	    'multiplayer': 'multiplayer'
-	  };
-
-	  Router.prototype.index = function() {
-	    this.navChannel.request('nav:index');
-	    console.log('no index page, redirect to signup');
-	  };
-
-	  Router.prototype.signup = function() {
-	    this.navChannel.request('nav:index');
-	    this.rootView.content.show(new Signup.View({
-	      model: new Signup.Model()
-	    }));
-	  };
-
-	  Router.prototype.login = function() {
-	    this.navChannel.request('nav:index');
-	    this.rootView.content.show(new Login.View({
-	      model: new Login.Model()
-	    }));
-	  };
-
-	  Router.prototype.home = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Home.View());
-	  };
-
-	  Router.prototype.profile = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Profile.View());
-	  };
-
-	  Router.prototype.strength = function() {
-	    var Collection, Model, View, collection;
-	    this.navChannel.request('nav:main');
-	    Collection = Strength.Master.Collection;
-	    Model = Strength.Master.Model;
-	    View = Strength.Master.View;
-	    collection = new Collection();
-	    collection.fetch({
-	      success: (function(_this) {
-	        return function(collection) {
-	          _this.rootView.content.show(new View({
-	            collection: collection,
-	            model: new Model()
-	          }));
-	        };
-	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
-	    });
-	  };
-
-	  Router.prototype.strengthDetail = function(strengthID) {
-	    var Model, View, model;
-	    this.navChannel.request('nav:main');
-	    View = Strength.Detail.View;
-	    Model = Strength.Detail.Model;
-	    model = new Model({}, {
-	      id: strengthID
-	    });
-	    model.fetch({
-	      success: (function(_this) {
-	        return function(model) {
-	          _this.rootView.content.show(new View({
-	            model: model,
-	            strengthID: strengthID
-	          }));
-	        };
-	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
-	    });
-	  };
-
-	  Router.prototype.strengthLog = function(strengthID) {
-	    var Model, View, model;
-	    this.navChannel.request('nav:main');
-	    View = Strength.Log.View;
-	    Model = Strength.Log.Model;
-	    model = new Model({}, {
-	      id: strengthID
-	    });
-	    model.fetch({
-	      success: (function(_this) {
-	        return function(model) {
-	          _this.rootView.content.show(new View({
-	            model: model,
-	            strengthID: strengthID
-	          }));
-	        };
-	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
-	    });
-	  };
-
-	  Router.prototype.exercise = function() {
-	    var collection, model;
-	    this.navChannel.request('nav:main');
-	    collection = new Exercise.Master.Collection();
-	    model = new Exercise.Master.Model();
-	    collection.fetch({
-	      success: (function(_this) {
-	        return function(collection) {
-	          _this.rootView.content.show(new Exercise.Master.View({
-	            collection: collection,
-	            model: model
-	          }));
-	        };
-	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
-	    });
-	  };
-
-	  Router.prototype.stat = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Profile.View());
-	  };
-
-	  Router.prototype.schedule = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Profile.View());
-	  };
-
-	  Router.prototype.log = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Profile.View());
-	  };
-
-	  Router.prototype.multiplayer = function() {
-	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Profile.View());
-	  };
-
-	  return Router;
-
-	})(Marionette.AppRouter);
-
-	module.exports = Router;
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Collection, Model,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.defaults = {
-	    name: ''
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = 'api/user';
-
-	  Collection.prototype.model = Model;
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
-	exports.Model = Model;
-
-	exports.Collection = Collection;
-
-	exports.View = __webpack_require__(21);
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(22);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = viewTemplate;
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Model,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.url = 'api/signup';
-
-	  Model.prototype.defaults = {
-	    firstname: '',
-	    lastname: '',
-	    email: '',
-	    password: ''
-	  };
-
-	  Model.prototype.validation = {
-	    firstname: {
-	      required: true
-	    }
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	exports.Model = Model;
-
-	exports.View = __webpack_require__(24);
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(25);
-
-	__webpack_require__(26);
-
-	__webpack_require__(27);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    login: '#index-tab-login',
-	    submit: '#index-signup-submit'
-	  };
-
-	  View.prototype.bindings = {
-	    '#index-signup-firstname': 'firstname',
-	    '#index-signup-lastname': 'lastname',
-	    '#index-signup-email': 'email',
-	    '#index-signup-password': 'password'
-	  };
-
-	  View.prototype.events = {
-	    'click @ui.login': function() {
-	      this.rootChannel.request('login');
-	    },
-	    'submit': function(event) {
-	      event.preventDefault();
-	      this.model.save({}, {
-	        success: (function(_this) {
-	          return function() {
-	            _this.rootChannel.request('home');
-	          };
-	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
-	      });
-	    }
-	  };
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.initialize = function() {
-	    Backbone.Validation.bind(this, this.model);
-	    this.model.validate();
-	  };
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -54965,6 +54480,533 @@
 	}));
 
 
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Exercise, Home, Index, Login, Marionette, Profile, Router, Signup, Strength, _,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Index = __webpack_require__(21);
+
+	Signup = __webpack_require__(24);
+
+	Login = __webpack_require__(28);
+
+	Home = __webpack_require__(31);
+
+	Profile = __webpack_require__(34);
+
+	Exercise = __webpack_require__(37);
+
+	Strength = __webpack_require__(49);
+
+	Router = (function(superClass) {
+	  extend(Router, superClass);
+
+	  function Router() {
+	    Router.__super__.constructor.apply(this, arguments);
+	    this.navChannel = Backbone.Radio.channel('nav');
+	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.rootView = this.rootChannel.request('rootview');
+	    this.rootChannel.reply({
+	      'index': (function(_this) {
+	        return function() {
+	          _this.navigate('');
+	          _this.signup();
+	        };
+	      })(this),
+	      'signup': (function(_this) {
+	        return function() {
+	          _this.navigate('signup', {
+	            trigger: true
+	          });
+	          _this.signup();
+	        };
+	      })(this),
+	      'login': (function(_this) {
+	        return function() {
+	          _this.navigate('login', {
+	            trigger: true
+	          });
+	          _this.login();
+	        };
+	      })(this),
+	      'home': (function(_this) {
+	        return function() {
+	          _this.navigate('home', {
+	            trigger: true
+	          });
+	          _this.home();
+	        };
+	      })(this),
+	      'profile': (function(_this) {
+	        return function() {
+	          _this.navigate('profile', {
+	            trigger: true
+	          });
+	          _this.profile();
+	        };
+	      })(this),
+	      'exercise': (function(_this) {
+	        return function() {
+	          _this.navigate('exercise', {
+	            trigger: true
+	          });
+	          _this.exercise();
+	        };
+	      })(this),
+	      'exercise:detail': (function(_this) {
+	        return function(type) {
+	          _this.rootChannel.request("" + type);
+	        };
+	      })(this),
+	      'strength': (function(_this) {
+	        return function() {
+	          _this.navigate('strength', {
+	            trigger: true
+	          });
+	          _this.strength();
+	        };
+	      })(this),
+	      'strength:detail': (function(_this) {
+	        return function(exerciseID) {
+	          _this.navigate("strength/" + exerciseID, {
+	            trigger: true
+	          });
+	          _this.strengthDetail(exerciseID);
+	        };
+	      })(this),
+	      'strength:log': (function(_this) {
+	        return function(exerciseID) {
+	          _this.navigate("strength/" + exerciseID + "/log", {
+	            trigger: true
+	          });
+	          _this.strengthLog(exerciseID);
+	        };
+	      })(this),
+	      'stat': (function(_this) {
+	        return function() {
+	          _this.navigate('stat', {
+	            trigger: true
+	          });
+	          _this.stat();
+	        };
+	      })(this),
+	      'schedule': (function(_this) {
+	        return function() {
+	          _this.navigate('schedule', {
+	            trigger: true
+	          });
+	          _this.schedule();
+	        };
+	      })(this),
+	      'log': (function(_this) {
+	        return function() {
+	          _this.navigate('log', {
+	            trigger: true
+	          });
+	          _this.log();
+	        };
+	      })(this),
+	      'multiplayer': (function(_this) {
+	        return function() {
+	          _this.navigate('multiplayer', {
+	            trigger: true
+	          });
+	          _this.multiplayer();
+	        };
+	      })(this)
+	    });
+	  }
+
+	  Router.prototype.routes = {
+	    '': 'signup',
+	    '/': 'signup',
+	    'signup': 'signup',
+	    'login': 'login',
+	    'home': 'home',
+	    'profile': 'profile',
+	    'exercise': 'exercise',
+	    'strength/': 'strength',
+	    'strength/:sid/': 'strengthDetail',
+	    'strength/:sid/log': 'strengthLog',
+	    'stat': 'stat',
+	    'schedule': 'schdeule',
+	    'log': 'log',
+	    'multiplayer': 'multiplayer'
+	  };
+
+	  Router.prototype.index = function() {
+	    this.navChannel.request('nav:index');
+	    console.log('no index page, redirect to signup');
+	  };
+
+	  Router.prototype.signup = function() {
+	    this.navChannel.request('nav:index');
+	    this.rootView.content.show(new Signup.View({
+	      model: new Signup.Model()
+	    }));
+	  };
+
+	  Router.prototype.login = function() {
+	    this.navChannel.request('nav:index');
+	    this.rootView.content.show(new Login.View({
+	      model: new Login.Model()
+	    }));
+	  };
+
+	  Router.prototype.home = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Home.View());
+	  };
+
+	  Router.prototype.profile = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  Router.prototype.strength = function() {
+	    var Collection, Model, View, collection;
+	    this.navChannel.request('nav:main');
+	    Collection = Strength.Master.Collection;
+	    Model = Strength.Master.Model;
+	    View = Strength.Master.View;
+	    collection = new Collection();
+	    collection.fetch({
+	      success: (function(_this) {
+	        return function(collection) {
+	          _this.rootView.content.show(new View({
+	            collection: collection,
+	            model: new Model()
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	  };
+
+	  Router.prototype.strengthDetail = function(strengthID) {
+	    var Model, View, model;
+	    this.navChannel.request('nav:main');
+	    View = Strength.Detail.View;
+	    Model = Strength.Detail.Model;
+	    model = new Model({}, {
+	      id: strengthID
+	    });
+	    model.fetch({
+	      success: (function(_this) {
+	        return function(model) {
+	          _this.rootView.content.show(new View({
+	            model: model,
+	            strengthID: strengthID
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	  };
+
+	  Router.prototype.strengthLog = function(strengthID) {
+	    var Model, View, model;
+	    this.navChannel.request('nav:main');
+	    View = Strength.Log.View;
+	    Model = Strength.Log.Model;
+	    model = new Model({}, {
+	      id: strengthID
+	    });
+	    model.fetch({
+	      success: (function(_this) {
+	        return function(model) {
+	          _this.rootView.content.show(new View({
+	            model: model,
+	            strengthID: strengthID
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	  };
+
+	  Router.prototype.exercise = function() {
+	    var collection, model;
+	    this.navChannel.request('nav:main');
+	    collection = new Exercise.Master.Collection();
+	    model = new Exercise.Master.Model();
+	    collection.fetch({
+	      success: (function(_this) {
+	        return function(collection) {
+	          _this.rootView.content.show(new Exercise.Master.View({
+	            collection: collection,
+	            model: model
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
+	  };
+
+	  Router.prototype.stat = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  Router.prototype.schedule = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  Router.prototype.log = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  Router.prototype.multiplayer = function() {
+	    this.navChannel.request('nav:main');
+	    this.rootView.content.show(new Profile.View());
+	  };
+
+	  return Router;
+
+	})(Marionette.AppRouter);
+
+	module.exports = Router;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.defaults = {
+	    name: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = 'api/user';
+
+	  Collection.prototype.model = Model;
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	exports.Model = Model;
+
+	exports.Collection = Collection;
+
+	exports.View = __webpack_require__(22);
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(23);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = 'api/signup';
+
+	  Model.prototype.defaults = {
+	    firstname: '',
+	    lastname: '',
+	    email: '',
+	    password: ''
+	  };
+
+	  Model.prototype.validation = {
+	    firstname: {
+	      required: true
+	    }
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	exports.Model = Model;
+
+	exports.View = __webpack_require__(25);
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(26);
+
+	__webpack_require__(19);
+
+	__webpack_require__(27);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    login: '#index-tab-login',
+	    submit: '#index-signup-submit'
+	  };
+
+	  View.prototype.bindings = {
+	    '#index-signup-firstname': 'firstname',
+	    '#index-signup-lastname': 'lastname',
+	    '#index-signup-email': 'email',
+	    '#index-signup-password': 'password'
+	  };
+
+	  View.prototype.events = {
+	    'click @ui.login': function() {
+	      this.rootChannel.request('login');
+	    },
+	    'submit': function(event) {
+	      event.preventDefault();
+	      this.model.save({}, {
+	        success: (function(_this) {
+	          return function() {
+	            _this.rootChannel.request('home');
+	          };
+	        })(this),
+	        error: function() {
+	          console.log('fail');
+	        }
+	      });
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.initialize = function() {
+	    Backbone.Validation.bind(this, this.model);
+	    this.model.validate();
+	  };
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	}
 
 /***/ },
 /* 27 */
@@ -55732,7 +55774,7 @@
 
 	viewTemplate = __webpack_require__(30);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	__webpack_require__(27);
 
@@ -56193,7 +56235,7 @@
 
 	__webpack_require__(42);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -58027,7 +58069,7 @@
 
 	viewTemplate = __webpack_require__(46);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
@@ -62765,7 +62807,7 @@
 
 	__webpack_require__(56);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	__webpack_require__(57);
 
@@ -67367,7 +67409,7 @@
 
 	__webpack_require__(42);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
@@ -67716,7 +67758,7 @@
 
 	__webpack_require__(56);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	__webpack_require__(57);
 
@@ -67985,7 +68027,7 @@
 
 	__webpack_require__(42);
 
-	__webpack_require__(26);
+	__webpack_require__(19);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);

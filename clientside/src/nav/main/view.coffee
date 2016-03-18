@@ -10,6 +10,12 @@ Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Plugins
+#-------------------------------------------------------------------------------
+
+require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -32,9 +38,38 @@ class View extends Marionette.ItemView
 
     dropdown:     '#nav-main-dropdown'
 
+  bindings:
+    '#nav-username':
+      observe: 'firstname'
+      onGet: (value) -> value.toString().toUpperCase()
+
+  events:
+
+    #Open menu.
+
+    'click @ui.brand': (event)->
+      # Prevent change where a change is added to url.
+      event.preventDefault()
+      $("#my-menu").trigger("open.mm")
+      return
+
+    'click @ui.collapseItem': (event) ->
+      @ui.collapseBtn.collapse('hide')
+      #@ui.collapseBtn.collapse('hide') unless $(event.target)
+      # .hasClass('dropdown-toggle')
+      return
+
+    'click @ui.home': ->
+      @channel.request('home')
+      return
+
   constructor: ->
     super
     @channel = Backbone.Radio.channel('root')
+
+  onRender: ->
+    @stickit()
+    return
 
   # Elements are not ready until onShow.
 
@@ -65,30 +100,6 @@ class View extends Marionette.ItemView
       return
 
     return
-
-  events:
-
-    'focusout': ->
-      #@ui.dropdown.click()
-      return
-
-    #Open menu.
-
-    'click @ui.brand': (event)->
-      # Prevent change where a change is added to url.
-      event.preventDefault()
-      $("#my-menu").trigger("open.mm")
-      return
-
-    'click @ui.collapseItem': (event) ->
-      @ui.collapseBtn.collapse('hide')
-      #@ui.collapseBtn.collapse('hide') unless $(event.target)
-      # .hasClass('dropdown-toggle')
-      return
-
-    'click @ui.home': ->
-      @channel.request('home')
-      return
 
 #-------------------------------------------------------------------------------
 # Exports
