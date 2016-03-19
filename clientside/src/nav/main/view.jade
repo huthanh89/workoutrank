@@ -1,78 +1,110 @@
 .col-xs-12
     nav.navbar.navbar-fixed-top.navbar-default
         .container-fluid
-            // Brand and toggle get grouped for better mobile display
             .navbar-header
-                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-collapse-btn")#nav-main-dropdown
+
+                // Left side icons.
+
+                a.navbar-brand
+                    i.fa.fa-lg.fa-navicon#navbar-brand
+
+                // Right side icons.
+
+                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-collapse-menu")
                     span.sr-only Toggle navigation
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                a.navbar-brand
-                    i.fa.fa-2x.fa-navicon#navbar-brand
 
-            // Collect the nav links, forms, and other content for toggling
-
-            #nav-collapse-btn.collapse.navbar-collapse
-                .col-xs-11.pull-right
-                    ul.nav.navbar-nav.navbar-right
-                        li
-                            a#nav-username USERNAME
-                        li.divider-vertical.hidden-xs
-                        li(data-toggle="collapse", data-target=".nav-collapse")#nav-strength
-                            a.nav-collapse-item
-                                i.nav-icon.fa.fa-fw.fa-2x.fa-shield
-                                span.hidden-sm.hidden-md.hidden-lg
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right
+                    li.nav-divider-vertical.hidden-xs
+                    li.nav-home(data-toggle="collapse", data-target=".nav-collapse")
+                        a.nav-collapse-item
+                            i.nav-collapse-item.nav-icon.fa.fa-fw.fa-2x.fa-home
+                    li.nav-divider-vertical.hidden-xs
+                    li.nav-strength(data-toggle="collapse", data-target=".nav-collapse")
+                        a.nav-collapse-item
+                            i.nav-icon.fa.fa-fw.fa-2x.fa-shield
+                    li.nav-divider-vertical.hidden-xs
+                    li.nav-log(data-toggle="collapse", data-target=".nav-collapse")
+                        a.nav-collapse-item
+                            i.nav-icon.fa.fa-fw.fa-2x.fa-area-chart
+                    li.nav-divider-vertical.hidden-xs
+                    li.hidden-xs
+                        a
+                            b#nav-username USERNAME
+                    li.nav-divider-vertical.hidden-xs
+                    li.dropdown
+                        a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
+                            i.hidden-xs.fa.fa-lg.fa-caret-down
+                        ul.dropdown-menu(role="menu")
+                            li
+                                a
+                                    i.fa.fa-fw.fa-lg.fa-user
                                     = ' '
-                                    | Exercise
-                        li.divider-vertical.hidden-xs
-                        li(data-toggle="collapse", data-target=".nav-collapse")#nav-log
-                            a.nav-collapse-item
-                                i.nav-icon.fa.fa-fw.fa-2x.fa-area-chart
-                                span.hidden-sm.hidden-md.hidden-lg
+                                    | My Profile
+                            li
+                                a
+                                    i.fa.fa-fw.fa-lg.fa-cog
                                     = ' '
-                                    | Log
-                        li.divider-vertical.hidden-xs
-                        li(data-toggle="collapse", data-target=".nav-collapse")#nav-home
-                            a.nav-collapse-item
-                                i.nav-icon.fa.fa-fw.fa-2x.fa-home
-                                span.hidden-sm.hidden-md.hidden-lg
+                                    | Settings
+                            li.divider
+                            li
+                                a
+                                    i.fa.fa-fw.fa-lg.fa-question
                                     = ' '
-                                    | Home
-                        li.divider-vertical.hidden-xs
-                        li.dropdown
-                            a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
-                                i.fa.fa-2x.fa-caret-down
-                            ul.dropdown-menu(role="menu")
-                                li
-                                    a.nav-collapse-item
-                                        i.fa.fa-fw.fa-lg.fa-user
-                                        = ' '
-                                        | My Profile
-                                li
-                                    a.nav-collapse-item
-                                        i.fa.fa-fw.fa-lg.fa-cog
-                                        = ' '
-                                        | Settings
-                                li
-                                    a.nav-collapse-item
-                                        i.fa.fa-fw.fa-lg.fa-question
-                                        = ' '
-                                        | Help
-                                li
-                                    a.nav-collapse-item
-                                        i.fa.fa-fw.fa-lg.fa-ambulance
-                                        = ' '
-                                        | Report a Problem
-                                li.divider
-                                li
-                                    a.nav-collapse-item
-                                        i.fa.fa-fw.fa-lg.fa-sign-out
-                                        = ' '
-                                        | Sign Out
+                                    | Help
+                            li
+                                a
+                                    i.fa.fa-fw.fa-lg.fa-ambulance
+                                    = ' '
+                                    | Report a Problem
+                            li.divider
+                            li
+                                a
+                                    i.fa.fa-fw.fa-lg.fa-sign-out
+                                    = ' '
+                                    | Sign Out
 
 
 
+            #nav-collapse-menu.collapse.navbar-collapse
+                ul.visible-xs.list-group
+                    li.list-group-item.nav-home
+                        i.nav-icon.fa.fa-fw.fa-lg.fa-home
+                        span
+                            = ' '
+                            | Home
+                    li.list-group-item.nav-stat
+                        i.nav-icon.fa.fa-fw.fa-lg.fa-line-chart
+                        span
+                            = ' '
+                            | Personal Record
+                    li.list-group-item.nav-strength
+                        i.nav-icon.fa.fa-fw.fa-lg.fa-shield
+                        span
+                            = ' '
+                            | Strength Workout
+                    li.list-group-item.nav-log
+                        i.nav-icon.fa.fa-fw.fa-lg.fa-area-chart
+                        span
+                            = ' '
+                            | Strength Log
+                    li.list-group-item
+                        i.fa.fa-fw.fa-lg.fa-user
+                        = ' '
+                        | My Profile
+                    li.list-group-item
+                        i.fa.fa-fw.fa-lg.fa-cog
+                        = ' '
+                        | Settings
+                    li.list-group-item
+                        i.fa.fa-fw.fa-lg.fa-sign-out
+                        = ' '
+                        | Sign Out
+
+// Sliding left menu
 
 nav#my-menu.mm-light
     ul

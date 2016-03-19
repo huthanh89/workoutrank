@@ -24,19 +24,13 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    brand:        '#navbar-brand'
-    home:         '#nav-home'
-    profile:      '#nav-profile'
-    contacts:     '#nav-contacts'
-    exercise:     '#nav-exercise'
-
-    movie:        '#nav-movie'
-    chat:         '#nav-chat'
-    collapseItem: '.nav-collapse-item'
-    collapseBtn:  '#nav-collapse-btn'
-    menu:         '#my-menu'
-
-    dropdown:     '#nav-main-dropdown'
+    brand:    '#navbar-brand'
+    home:     '.nav-home'
+    profile:  '.nav-profile'
+    contacts: '.nav-contacts'
+    exercise: '.nav-exercise'
+    strength: '.nav-strength'
+    menu:     '#my-menu'
 
   bindings:
     '#nav-username':
@@ -53,14 +47,12 @@ class View extends Marionette.ItemView
       $("#my-menu").trigger("open.mm")
       return
 
-    'click @ui.collapseItem': (event) ->
-      @ui.collapseBtn.collapse('hide')
-      #@ui.collapseBtn.collapse('hide') unless $(event.target)
-      # .hasClass('dropdown-toggle')
+    'click @ui.home': ->
+      @channel.request 'home'
       return
 
-    'click @ui.home': ->
-      @channel.request('home')
+    'click @ui.strength': ->
+      @channel.request 'strength'
       return
 
   constructor: ->
