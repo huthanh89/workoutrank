@@ -25,11 +25,15 @@ class View extends Marionette.ItemView
 
   ui:
     brand:    '#navbar-brand'
+
     home:     '.nav-home'
+    strength: '.nav-strength'
+    log:      '.nav-log'
+    stat:     '.nav-stat'
+
     profile:  '.nav-profile'
     contacts: '.nav-contacts'
     exercise: '.nav-exercise'
-    strength: '.nav-strength'
     menu:     '#my-menu'
 
   bindings:
@@ -60,6 +64,23 @@ class View extends Marionette.ItemView
     @channel = Backbone.Radio.channel('root')
 
   onRender: ->
+
+    @ui.home.tooltip
+      title:     'Home'
+      placement: 'bottom'
+
+    @ui.strength.tooltip
+      title:     'Workout'
+      placement: 'bottom'
+
+    @ui.log.tooltip
+      title:     'Logs'
+      placement: 'bottom'
+
+    @ui.stat.tooltip
+      title:     'Stats'
+      placement: 'bottom'
+
     @stickit()
     return
 
