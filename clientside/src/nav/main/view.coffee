@@ -26,15 +26,20 @@ class View extends Marionette.ItemView
   ui:
     brand:    '#navbar-brand'
 
-    home:     '.nav-home'
-    strength: '.nav-strength'
-    log:      '.nav-log'
-    stat:     '.nav-stat'
+    home:        '.nav-home'
+    strength:    '.nav-strength'
+    log:         '.nav-log'
+    stat:        '.nav-stat'
 
-    profile:  '.nav-profile'
-    contacts: '.nav-contacts'
-    exercise: '.nav-exercise'
-    menu:     '#my-menu'
+    homeTip:     '.nav-home-tip'
+    strengthTip: '.nav-strength-tip'
+    logTip:      '.nav-log-tip'
+    statTip:     '.nav-stat-tip'
+
+    profile:     '.nav-profile'
+    contacts:    '.nav-contacts'
+    exercise:    '.nav-exercise'
+    menu:        '#my-menu'
 
   bindings:
     '#nav-username':
@@ -65,19 +70,19 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.home.tooltip
+    @ui.homeTip.tooltip
       title:     'Home'
       placement: 'bottom'
 
-    @ui.strength.tooltip
+    @ui.strengthTip.tooltip
       title:     'Workout'
       placement: 'bottom'
 
-    @ui.log.tooltip
+    @ui.logTip.tooltip
       title:     'Logs'
       placement: 'bottom'
 
-    @ui.stat.tooltip
+    @ui.statTip.tooltip
       title:     'Stats'
       placement: 'bottom'
 
