@@ -245,7 +245,9 @@ gulp.task 'watch', ->
   livereload.listen start: true
 
   # Watch for change and re compile.
-  gulp.watch './clientside/**', [ 'compile:client']
+  #gulp.watch './clientside/**', [ 'compile:client']
+  gulp.watch './clientside/styles/**', [ 'compile:css']
+  gulp.watch './clientside/src/**', [ 'compile:client']
 
   # When compiling if finish, reload browser's page.
 
@@ -273,6 +275,12 @@ gulp.task 'minify', [
   'minify-css'
   'minify-js'
 ]
+
+gulp.task 'compile:css', [
+  'css'
+  'csslint'
+], ->
+  livereload.reload()
 
 gulp.task 'compile:client', [
     'scripts'

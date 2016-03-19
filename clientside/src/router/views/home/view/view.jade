@@ -1,12 +1,12 @@
 .row
     .col-xs-12
-        span.lead
+        span.lead.page-header
             i.fa.fa-fw.fa-lg.fa-home
             = ' '
-            | FIRSTNAME
+            | Home
 br
 .row
-    .col-xs-12
+    .col-lg-6.col-xs-12
 
         ul.list-group#home-list
             li.list-group-item#home-stat
@@ -20,10 +20,12 @@ br
                 span
                     b
                         = ' '
-                        | Add New Workout
+                        | Exercises
+                span.badge.badge-color 99
             li.list-group-item#home-logs
                 i.nav-icon.fa.fa-fw.fa-lg.fa-area-chart
                 span
                     b
                         = ' '
-                        | View Workout Logs
+                        | Workout Logs
+                span.badge.badge-color 99

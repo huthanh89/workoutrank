@@ -182,6 +182,15 @@ Loader Icon
     z-index:   1000;
 }
 
+.page-header{
+    font-weight:    600;
+    letter-spacing: 3px;
+}
+
+.badge-color{
+    background-color: dodgerblue;
+}
+
 /*-----------------------------------------------------------------------------
                               End of Document
 -----------------------------------------------------------------------------*/
