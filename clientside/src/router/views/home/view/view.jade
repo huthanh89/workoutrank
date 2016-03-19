@@ -7,27 +7,23 @@
 br
 .row
     .col-xs-12
-        table.table.table-hover
-            thead
-                tr
-                    td.col-xs-1
-                    td
-            tbody
-                tr#home-stat
-                    td
-                        i.fa.fa-fw.fa-lg.fa-line-chart
-                    td
-                        a
-                            b View Personal Status
-                tr#home-exercise
-                    td
-                        i.fa.fa-fw.fa-lg.fa-heartbeat
-                    td
-                        a
-                            b Add New Workout
-                tr#home-logs
-                    td
-                        i.fa.fa-fw.fa-lg.fa-area-chart
-                    td
-                        a
-                            b View Workout Logs
+
+        ul.list-group#home-list
+            li.list-group-item#home-stat
+                i.nav-icon.fa.fa-fw.fa-lg.fa-line-chart
+                span
+                    b
+                        = ' '
+                        | View Stats
+            li.list-group-item#home-exercise
+                i.nav-icon.fa.fa-fw.fa-lg.fa-heartbeat
+                span
+                    b
+                        = ' '
+                        | Add New Workout
+            li.list-group-item#home-logs
+                i.nav-icon.fa.fa-fw.fa-lg.fa-area-chart
+                span
+                    b
+                        = ' '
+                        | View Workout Logs
