@@ -53348,8 +53348,10 @@
 	    logTip: '.nav-log-tip',
 	    statTip: '.nav-stat-tip',
 	    profile: '.nav-profile',
-	    contacts: '.nav-contacts',
-	    exercise: '.nav-exercise',
+	    setting: '.nav-setting',
+	    help: '.nav-help',
+	    report: '.nav-report',
+	    signout: '.nav-signout',
 	    menu: '#my-menu'
 	  };
 
@@ -53372,6 +53374,21 @@
 	    },
 	    'click @ui.strength': function() {
 	      this.channel.request('strength');
+	    },
+	    'click @ui.profile': function() {
+	      this.channel.request('profile');
+	    },
+	    'click @ui.setting': function() {
+	      this.channel.request('setting');
+	    },
+	    'click @ui.help': function() {
+	      this.channel.request('help');
+	    },
+	    'click @ui.report': function() {
+	      this.channel.request('report');
+	    },
+	    'click @ui.signout': function() {
+	      this.channel.request('signout');
 	    }
 	  };
 
@@ -53417,16 +53434,6 @@
 	    this.ui.profile.on('click', (function(_this) {
 	      return function() {
 	        _this.channel.request('profile');
-	      };
-	    })(this));
-	    this.ui.contacts.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('home');
-	      };
-	    })(this));
-	    this.ui.exercise.on('click', (function(_this) {
-	      return function() {
-	        _this.channel.request('exercise');
 	      };
 	    })(this));
 	  };
@@ -53794,7 +53801,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-fixed-top navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><!-- Left side icons.--><a class=\"navbar-brand\"><i id=\"navbar-brand\" class=\"fa fa-lg fa-navicon\"></i></a><!-- Right side icons.--><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-home nav-home-tip hidden-xs\"><a><i class=\"nav-collapse-item nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-strength nav-strength-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-log nav-log-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-stat nav-stat-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li><a><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-stat\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Personal Record</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div><!-- Sliding left menu--><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"side-nav-side-home\"><a><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a id=\"side-nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a id=\"side-nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a id=\"side-nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a id=\"side-nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a id=\"side-nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a id=\"side-nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-fixed-top navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><!-- Left side icons.--><a class=\"navbar-brand\"><i id=\"navbar-brand\" class=\"fa fa-lg fa-navicon\"></i></a><!-- Right side icons.--><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-home nav-home-tip hidden-xs\"><a><i class=\"nav-collapse-item nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-strength nav-strength-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-log nav-log-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-stat nav-stat-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li class=\"nav-profile\"><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li class=\"nav-setting\"><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li class=\"nav-help\"><a><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li class=\"nav-report\"><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li class=\"nav-signout\"><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-stat\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Personal Record</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div><!-- Sliding left menu--><nav id=\"my-menu\" class=\"mm-light\"><ul><li id=\"side-nav-side-home\"><a><i class=\"fa fa-fw fa-lg fa-home\"></i>&nbsp Home</a></li><li><a id=\"side-nav-exercise\"><i class=\"fa fa-fw fa-heartbeat\"></i>&nbsp Exercises<ul><li><a><i class=\"fa fa-fw fa-lg fa-shield\"></i>&nbsp Strength</a></li><li><a><i class=\"fa fa-fw fa-lg fa-bicycle\"></i>&nbsp Endurance</a></li><li><a><i class=\"fa fa-fw fa-lg fa-heart\"></i>&nbsp Flexibility</a></li><li><a><i class=\"fa fa-fw fa-lg fa-balance-scale\"></i>&nbsp Balance</a></li></ul></a></li><li><a id=\"side-nav-schedule\"><i class=\"fa fa-fw fa-lg fa-calendar\"></i>&nbsp Schedule</a></li><li><a id=\"side-nav-stat\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>&nbsp Stats</a></li><li><a id=\"side-nav-log\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>&nbsp Logs</a></li><li><a id=\"side-nav-contacts\"><i class=\"fa fa-fw fa-lg fa-group\"></i>&nbsp Multiplayers</a><ul><li><a><i class=\"fa fa-fw fa-lg fa-th-list\"></i>&nbsp Friends</a></li><li><a><i class=\"fa fa-fw fa-lg fa-trophy\"></i>&nbsp Ranking</a></li><li><a id=\"side-nav-chat\"><i class=\"fa fa-fw fa-lg fa-comments-o\"></i>&nbsp Chat</a></li></ul></li></ul></nav>");;return buf.join("");
 	}
 
 /***/ },

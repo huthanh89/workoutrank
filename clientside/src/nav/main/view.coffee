@@ -24,8 +24,8 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    brand:    '#navbar-brand'
 
+    brand:       '#navbar-brand'
     home:        '.nav-home'
     strength:    '.nav-strength'
     log:         '.nav-log'
@@ -37,8 +37,11 @@ class View extends Marionette.ItemView
     statTip:     '.nav-stat-tip'
 
     profile:     '.nav-profile'
-    contacts:    '.nav-contacts'
-    exercise:    '.nav-exercise'
+    setting:     '.nav-setting'
+    help:        '.nav-help'
+    report:      '.nav-report'
+    signout:     '.nav-signout'
+
     menu:        '#my-menu'
 
   bindings:
@@ -62,6 +65,26 @@ class View extends Marionette.ItemView
 
     'click @ui.strength': ->
       @channel.request 'strength'
+      return
+
+    'click @ui.profile': ->
+      @channel.request 'profile'
+      return
+
+    'click @ui.setting': ->
+      @channel.request 'setting'
+      return
+
+    'click @ui.help': ->
+      @channel.request 'help'
+      return
+
+    'click @ui.report': ->
+      @channel.request 'report'
+      return
+
+    'click @ui.signout': ->
+      @channel.request 'signout'
       return
 
   constructor: ->
@@ -107,14 +130,6 @@ class View extends Marionette.ItemView
 
     @ui.profile.on 'click', =>
       @channel.request('profile')
-      return
-
-    @ui.contacts.on 'click', =>
-      @channel.request('home')
-      return
-
-    @ui.exercise.on 'click', =>
-      @channel.request('exercise')
       return
 
     return
