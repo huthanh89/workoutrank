@@ -125,6 +125,10 @@ gulp.task 'scripts', (callback) ->
       ,
         test: /backbone./
         loader: "imports?Backbone=backbone"
+      ,
+        test: /backbone.modal-bundled/
+        loader: "imports?marionette=marionette"
+
       ]
 
     # Absolute path is used and not relative path.
@@ -143,6 +147,7 @@ gulp.task 'scripts', (callback) ->
         moment:                'scripts/moment.js'
         backbone:              'scripts/backbone.js'
         'backbone.paginator':  'scripts/backbone.paginator.js'
+        'backbone.modal':      'scripts/backbone.modal-bundled.js'
         'backbone.stickit':    'scripts/backbone.stickit.js'
         'backbone.validation': 'scripts/backbone.validation.js'
         'backbone.radio':      'scripts/backbone.radio.js'
@@ -161,6 +166,7 @@ gulp.task 'scripts', (callback) ->
         datepicker:            'scripts/jquery.bootstrap-datepicker.js'
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
+        'bootstrap.paginate': 'scripts/bootstrap.paginate.js'
 
       extensions: [
         ''
@@ -203,6 +209,9 @@ gulp.task 'css', ->
     './clientside/styles/css/bootstrap-datepicker.css'
     './clientside/styles/css/jquery.timeentry.css'
     './clientside/styles/css/timepicker.css'
+
+    './clientside/styles/css/backbone.modal.css'
+    './clientside/styles/css/backbone.modal.theme.css'
 
     './clientside/styles/application.css'
 

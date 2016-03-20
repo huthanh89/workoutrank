@@ -7,6 +7,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Pageable     = require 'src/behavior/pageable/module'
+Data         = require '../../data/module'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -35,10 +36,11 @@ class ItemView extends Marionette.ItemView
       observe: 'date'
       onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm')
 
-    '.strength-table-td-muscle': 'muscle'
+    '.strength-table-td-muscle':
+      observe: 'muscle'
+      onGet: (value) -> _.find(Data.Muscles, value: value).label
 
   events:
-
     click: ->
       @rootChannel.request 'strength:detail', @model.id
       return

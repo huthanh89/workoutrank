@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(78);
+	__webpack_require__(81);
 
-	__webpack_require__(79);
+	__webpack_require__(82);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -62644,16 +62644,16 @@
 
 	module.exports.Master = __webpack_require__(50);
 
-	module.exports.Detail = __webpack_require__(63);
+	module.exports.Detail = __webpack_require__(66);
 
-	module.exports.Log = __webpack_require__(72);
+	module.exports.Log = __webpack_require__(75);
 
 
 /***/ },
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, InputView, Marionette, Model, PageableCollection, TableView, View, viewTemplate,
+	var Backbone, Collection, Marionette, ModalView, Model, PageableCollection, PaginateView, TableView, Test, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -62661,13 +62661,17 @@
 
 	Marionette = __webpack_require__(10);
 
-	InputView = __webpack_require__(51);
+	ModalView = __webpack_require__(51);
 
 	TableView = __webpack_require__(58);
 
-	viewTemplate = __webpack_require__(62);
+	PaginateView = __webpack_require__(62);
+
+	viewTemplate = __webpack_require__(65);
 
 	__webpack_require__(48);
+
+	__webpack_require__(64);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -62727,7 +62731,7 @@
 
 	  PageableCollection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 10
+	    pageSize: 2
 	  };
 
 	  PageableCollection.prototype.comparator = function(item) {
@@ -62742,25 +62746,39 @@
 
 	})(Backbone.PageableCollection);
 
+	Test = (function(superClass) {
+	  extend(Test, superClass);
+
+	  function Test() {
+	    return Test.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Test.prototype.template = _.template('hello world');
+
+	  return Test;
+
+	})(Marionette.ItemView);
+
 	View = (function(superClass) {
 	  extend(View, superClass);
 
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.regions = {
-	    input: '#strength-input-view',
-	    table: '#strength-table-view'
+	    modal: '#strength-modal-view',
+	    table: '#strength-table-view',
+	    page: '#strength-paginate-view'
 	  };
 
 	  View.prototype.events = {
 	    'click #strength-back': function() {
 	      this.rootChannel.request('exercise');
-	    }
-	  };
-
-	  View.prototype.collectionEvents = {
-	    sync: function() {
-	      this.filterCollection(this.model.get('muscle'));
+	    },
+	    'click #strength-add': function() {
+	      this.showChildView('modal', new ModalView({
+	        collection: this.collection,
+	        model: this.model
+	      }));
 	    }
 	  };
 
@@ -62770,19 +62788,30 @@
 	    }
 	  };
 
+	  View.prototype.collectionEvents = {
+	    sync: function() {
+	      this.filterCollection(this.model.get('muscle'));
+	    }
+	  };
+
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	    this.pageableCollection = new PageableCollection(this.collection.models);
+	    this.channel = Backbone.Radio.channel('channel');
+	    this.channel.reply({
+	      'hey': function() {
+	        console.log('hey');
+	      }
+	    });
 	  }
 
 	  View.prototype.onShow = function() {
 	    this.filterCollection(this.model.get('muscle'));
-	    this.showChildView('input', new InputView({
-	      collection: this.collection,
-	      model: this.model
-	    }));
 	    this.showChildView('table', new TableView({
+	      collection: this.pageableCollection
+	    }));
+	    this.showChildView('page', new PaginateView({
 	      collection: this.pageableCollection
 	    }));
 	  };
@@ -62810,15 +62839,9 @@
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Data, Marionette, Validation, View, _, viewTemplate,
+	var Data, Marionette, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	Backbone = __webpack_require__(8);
-
-	Validation = __webpack_require__(27);
 
 	Marionette = __webpack_require__(10);
 
@@ -62842,20 +62865,20 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    back: '#strength-exercise',
-	    name: '#strength-name',
-	    muscle: '#strength-muscle',
-	    submit: '#strength-submit',
-	    addset: '#strength-addset',
-	    date: '#strength-date',
-	    time: '#strength-time',
-	    form: '#strength-form'
+	    dialog: '.modal',
+	    name: '#strength-modal-name',
+	    muscle: '#strength-modal-muscle',
+	    addset: '#strength-modal-addset',
+	    date: '#strength-modal-date',
+	    time: '#strength-modal-time',
+	    form: '#strength-modal-form',
+	    submit: '#strength-modal-submit'
 	  };
 
 	  View.prototype.bindings = {
-	    '#strength-name': 'name',
-	    '#strength-note': 'note',
-	    '#strength-muscle': {
+	    '#strength-modal-name': 'name',
+	    '#strength-modal-note': 'note',
+	    '#strength-modal-muscle': {
 	      observe: 'muscle',
 	      onSet: function(value) {
 	        return parseInt(value);
@@ -62864,8 +62887,8 @@
 	  };
 
 	  View.prototype.events = {
-	    'click @ui.back': function() {
-	      this.rootChannel.request('exercise');
+	    'shown.bs.modal': function() {
+	      this.ui.name.focus();
 	    },
 	    'click @ui.time': function() {
 	      this.ui.time.timepicker('showWidget');
@@ -62877,7 +62900,7 @@
 	        at: 0,
 	        success: (function(_this) {
 	          return function() {
-	            _this.ui.name.val('');
+	            _this.ui.dialog.modal('hide');
 	          };
 	        })(this)
 	      });
@@ -62914,10 +62937,7 @@
 	      template: 'dropdown'
 	    }).timepicker('setTime', '12:45 AM');
 	    this.stickit();
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.ui.name.focus();
+	    this.ui.dialog.modal();
 	  };
 
 	  View.prototype.onBeforeDestroy = function() {
@@ -63005,7 +63025,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>CREATE A NEW WORKOUT</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form id=\"strength-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"strength-muscle\" class=\"col-sm-2 control-label\">Muscle</label><div class=\"col-sm-10\"><select id=\"strength-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"strength-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"strength-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"strength-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"strength-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"strength-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"strength-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-time\" readonly class=\"form-control input-readonly\"><div class=\"input-group-addon\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"strength-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"strength-note\" class=\"form-control\"></div></div></div></div></form></div></div><div class=\"row\"><div class=\"col-sm-12\"><button id=\"strength-submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-lg fa-plus-circle\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Add Workout</button></div></div>");;return buf.join("");
+	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-md\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Create a new workout</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Advance</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><label for=\"strength-modal-muscle\" class=\"col-sm-2 control-label\">Muscle</label><div class=\"col-sm-10\"><select id=\"strength-modal-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><label for=\"strength-modal-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"strength-modal-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><label for=\"strength-modal-date\" class=\"col-sm-2 control-label\">Date</label><div class=\"col-sm-10\"><div class=\"input-group date\"><input id=\"strength-modal-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><label for=\"strength-modal-time\" class=\"col-sm-2 control-label\">Time</label><div class=\"col-sm-10\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-time-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><label for=\"strength-modal-note\" class=\"col-sm-2 control-label\">Note</label><div class=\"col-sm-10\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -67414,7 +67434,7 @@
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, ItemView, Marionette, Pageable, View, _, itemTemplate, moment, viewTemplate,
+	var Backbone, Data, ItemView, Marionette, Pageable, View, _, itemTemplate, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -67427,6 +67447,8 @@
 	Marionette = __webpack_require__(10);
 
 	Pageable = __webpack_require__(59);
+
+	Data = __webpack_require__(52);
 
 	itemTemplate = __webpack_require__(60);
 
@@ -67451,7 +67473,14 @@
 	        return moment(value).format('dddd MM/DD/YY hh:mm');
 	      }
 	    },
-	    '.strength-table-td-muscle': 'muscle'
+	    '.strength-table-td-muscle': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    }
 	  };
 
 	  ItemView.prototype.events = {
@@ -67591,7 +67620,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-muscle\"></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td>");;return buf.join("");
+	buf.push("<td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -67605,11 +67634,92 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>CHOOSE A WORKOUT</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-8\"><div class=\"btn-group\"><button id=\"strength-table-first\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i><i class=\"fa fa-chevron-left\"></i></button><button id=\"strength-table-prev\" class=\"btn btn-default\"><i class=\"fa fa-chevron-left\"></i></button><button id=\"strength-table-next\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i></button><button id=\"strength-table-last\" class=\"btn btn-default\"><i class=\"fa fa-chevron-right\"></i><i class=\"fa fa-chevron-right\"></i></button></div></div><div class=\"col-sm-4\"><div class=\"pull-right\"><span><b id=\"strength-table-currentpage\"></b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b>/</b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</span><span><b id=\"strength-table-lastpage\"></b></span></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td><b>Muscle</b></td><td><b>Name</b></td><td><b>Date</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Click on a workout</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover table-striped\"><thead><tr><td><b>Name</b></td><td><b>Started</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(63);
+
+	__webpack_require__(64);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    list: '#strength-paginate-list'
+	  };
+
+	  View.prototype.events = {
+	    'click li': function(event) {
+	      var id, page, target;
+	      target = $(event.currentTarget);
+	      if (target.hasClass('disabled')) {
+	        return;
+	      }
+	      id = target.attr('id');
+	      if (id === 'prev') {
+	        if (this.collection.hasPreviousPage()) {
+	          this.collection.getPreviousPage();
+	        }
+	      } else if (id === 'next') {
+	        if (this.collection.hasNextPage()) {
+	          this.collection.getNextPage();
+	        }
+	      } else {
+	        page = parseInt(target.attr('id'));
+	        this.collection.getPage(page);
+	      }
+	      this.createList();
+	    }
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.createList();
+	  };
+
+	  View.prototype.createList = function() {
+	    var currentPage, firstPage, i, lastPage, page, ref, ref1, state;
+	    this.ui.list.empty();
+	    state = this.collection.state;
+	    currentPage = state.currentPage;
+	    firstPage = state.firstPage;
+	    lastPage = state.lastPage;
+	    this.ui.list.append('<li id="prev" class="pagination-prev"><a>Prev</a></li>');
+	    for (page = i = ref = firstPage, ref1 = lastPage; ref <= ref1 ? i <= ref1 : i >= ref1; page = ref <= ref1 ? ++i : --i) {
+	      if (page === currentPage) {
+	        this.ui.list.append('<li class="active" id=' + page + ("><a>" + page + "</a></li>"));
+	      } else {
+	        this.ui.list.append('<li id=' + page + ("><a>" + page + "</a></li>"));
+	      }
+	    }
+	    this.ui.list.append('<li  id="next" class="pagination-next"><a>Next</a></li>');
+	    this.ui.list.rPage();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67619,11 +67729,220 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-input-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-lg-offset-2 col-lg-10 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10\"><ul id=\"strength-paginate-list\" class=\"pagination\"></ul></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 63 */
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var jQuery = __webpack_require__(2);
+
+	/*
+	 * A plugin for making Bootstrap's pagination more responsive
+	 * https://github.com/auxiliary/rpage
+	 */
+
+	(function ($){
+	    jQuery.fn.rPage = function () {
+	        var $this = $(this);
+	        for(var i = 0, max = $this.length; i < max; i++)
+	        {
+	        	new rPage($($this[i]));
+	        }
+
+	        function rPage($container)
+	        {
+	        	this.label = function()
+	        	{
+	        		var active_index = this.els.filter(".active").index();
+	        		var rp = this;
+	        		this.els.each(function(){
+	        			if (rp.isNextOrPrevLink($(this)) == false)
+	        			{
+	        				$(this).addClass("page-away-" + (Math.abs(active_index - $(this).index())).toString());
+	        			}
+	        			else
+	        			{
+	        				if ($(this).index() > active_index)
+	        				{
+	        					$(this).addClass("right-etc");
+	        				}
+	        				else
+	        				{
+	        					$(this).addClass("left-etc");
+	        				}
+	        			}
+	        		});
+	        	}
+
+	        	this.makeResponsive = function()
+	    	    {
+	    	    	this.reset();
+	    	    	var width = this.calculateWidth();
+
+	    	    	while (width > this.els.parent().parent().outerWidth() - 10)
+	    	    	{
+	    	    		var did_remove = this.removeOne();
+	    	    		if (did_remove == false)
+	    	    		{
+	    	    			break;
+	    	    		}
+	    	    		width = this.calculateWidth();
+	    	    	}
+	    	    }
+
+	        	this.isNextOrPrevLink = function(element)
+	        	{
+	                return (
+	                    element.hasClass('pagination-prev')
+	                    || element.hasClass('pagination-next')
+	                    || element.text() == "»"
+	                    || element.text() == "«"
+	                );
+	        	}
+
+	        	this.isRemovable = function(element)
+	        	{
+	        		if (this.isNextOrPrevLink(element))
+	        		{
+	        			return false;
+	        		}
+	        		var index = this.els.filter(element).index();
+	        		if (index == 1 || this.isNextOrPrevLink($container.find("li").eq(index + 1)))
+	        		{
+	        			return false;
+	        		}
+	        		if (element.text() == "...")
+	        		{
+	        			return false;
+	        		}
+	        		return true;
+	        	}
+
+	    	    this.removeOne = function()
+	    	    {
+	    	    	var active_index = this.els.filter(".active").index();
+	    	    	var farthest_index = $container.find("li").length - 1;
+	    	    	var next = active_index + 1;
+	    	    	var prev = active_index - 1;
+
+	    	    	for (var i = farthest_index - 1; i > 0; i--)
+	    	    	{
+	    	    		var candidates = this.els.filter(".page-away-" + i.toString());
+	    	    		var candidate = candidates.filter(function(){
+	    	    			return this.style["display"] != "none";
+	    	    		});
+	    	    		if (candidate.length > 0)
+	    	    		{
+	    	    			for (var j = 0; j < candidate.length; j++)
+	    	    			{
+	    	    				var candid_candidate = candidate.eq(j);
+	    	    				if (this.isRemovable(candid_candidate))
+	    		    			{
+	    			    			candid_candidate.css("display", "none");
+	    			    			if (this.needsEtcSign(active_index, farthest_index - 1))
+	    			    			{
+	    			    				this.els.eq(farthest_index - 2).before("<li class='disabled removable'><span>...</span></li>");
+	    			    			}
+	    			    			if (this.needsEtcSign(1, active_index))
+	    			    			{
+	    			    				this.els.eq(1).after("<li class='disabled removable'><span>...</span></li>");
+	    			    			}
+	    			    			return true;
+	    		    			}
+	    	    			}
+	    	    		}
+	    	    	}
+	    	    	return false;
+	    	    }
+
+	    	    this.needsEtcSign = function(el1_index, el2_index)
+	    	    {
+	    	    	if (el2_index - el1_index <= 1)
+	    	    	{
+	    	    		return false;
+	    	    	}
+	    	    	else
+	    	    	{
+	    	    		var hasEtcSign = false;
+	    	    		var hasHiddenElement = false;
+	    	    		for (var i = el1_index + 1; i < el2_index; i++)
+	    	    		{
+	    	    			var el = $container.find("li").eq(i);
+	    	    			if (el.css("display") == "none")
+	    	    			{
+	    	    				hasHiddenElement = true;
+	    	    			}
+	    	    			if (el.text() == "...")
+	    	    			{
+	    	    				hasEtcSign = true;
+	    	    			}
+	    	    		}
+	    	    		if (hasHiddenElement == true && hasEtcSign == false)
+	    	    		{
+	    	    			return true;
+	    	    		}
+	    	    	}
+	    	    	return false;
+	    	    }
+
+	    	    this.reset = function()
+	    	    {
+	    	    	for (var i = 0; i < this.els.length; i++)
+	    	    	{
+	    	    		this.els.eq(i).css("display", "inline");
+	    	    	}
+	    	    	$container.find("li").filter(".removable").remove();
+	    	    }
+
+	    	    this.calculateWidth = function()
+	    	    {
+	    	    	var width = 0;
+	    	    	for (var i = 0; i < $container.find("li").length; i++)
+	    	    	{
+	    	    		width += $container.find("li").eq(i).children("a").eq(0).outerWidth();
+	    	    		width += $container.find("li").eq(i).children("span").eq(0).outerWidth();
+	    	    	}
+	    	    	return width;
+	    	    }
+
+	    	    this.els = $container.find("li");
+	    	    this.label();
+	    	    this.makeResponsive();
+
+	    	    var resize_timer;
+
+	            $(window).resize(
+	            	$.proxy(function()
+	            	{
+	            		clearTimeout(resize_timer);
+	            		resize_timer = setTimeout($.proxy(function(){this.makeResponsive()}, this), 100);
+	            	}, this)
+	            );
+	        }
+	    };
+	}(jQuery));
+
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-heartbeat\"></i></button><div class=\"pull-right\"><button id=\"strength-add\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-paginate-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, InputView, Marionette, Model, TableView, View, moment, viewTemplate,
@@ -67636,11 +67955,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	InputView = __webpack_require__(64);
+	InputView = __webpack_require__(67);
 
-	TableView = __webpack_require__(68);
+	TableView = __webpack_require__(71);
 
-	viewTemplate = __webpack_require__(71);
+	viewTemplate = __webpack_require__(74);
 
 	__webpack_require__(48);
 
@@ -67758,7 +68077,7 @@
 
 
 /***/ },
-/* 64 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, SetView, View, _, moment, viewTemplate,
@@ -67773,9 +68092,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	SetView = __webpack_require__(65);
+	SetView = __webpack_require__(68);
 
-	viewTemplate = __webpack_require__(67);
+	viewTemplate = __webpack_require__(70);
 
 	__webpack_require__(54);
 
@@ -67919,7 +68238,7 @@
 
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, ItemView, Marionette, View, _, viewTemplate,
@@ -67932,7 +68251,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(66);
+	viewTemplate = __webpack_require__(69);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
@@ -68003,7 +68322,7 @@
 
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68017,7 +68336,7 @@
 	}
 
 /***/ },
-/* 67 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68031,7 +68350,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, ItemView, Marionette, View, _, itemTemplate, viewTemplate,
@@ -68046,9 +68365,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	itemTemplate = __webpack_require__(69);
+	itemTemplate = __webpack_require__(72);
 
-	viewTemplate = __webpack_require__(70);
+	viewTemplate = __webpack_require__(73);
 
 	__webpack_require__(42);
 
@@ -68104,7 +68423,7 @@
 
 
 /***/ },
-/* 69 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68118,7 +68437,7 @@
 	}
 
 /***/ },
-/* 70 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68132,7 +68451,7 @@
 	}
 
 /***/ },
-/* 71 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68146,7 +68465,7 @@
 	}
 
 /***/ },
-/* 72 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
@@ -68159,11 +68478,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(73);
+	GraphView = __webpack_require__(76);
 
-	TableView = __webpack_require__(75);
+	TableView = __webpack_require__(78);
 
-	viewTemplate = __webpack_require__(77);
+	viewTemplate = __webpack_require__(80);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -68252,7 +68571,7 @@
 
 
 /***/ },
-/* 73 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
@@ -68267,7 +68586,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(74);
+	viewTemplate = __webpack_require__(77);
 
 	seriesData = function(models) {
 	  var i, len, model, series;
@@ -68365,7 +68684,7 @@
 
 
 /***/ },
-/* 74 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68379,7 +68698,7 @@
 	}
 
 /***/ },
-/* 75 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, moment, viewTemplate,
@@ -68394,7 +68713,7 @@
 
 	Data = __webpack_require__(52);
 
-	viewTemplate = __webpack_require__(76);
+	viewTemplate = __webpack_require__(79);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -68450,7 +68769,7 @@
 
 
 /***/ },
-/* 76 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68464,7 +68783,7 @@
 	}
 
 /***/ },
-/* 77 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68478,7 +68797,7 @@
 	}
 
 /***/ },
-/* 78 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -68570,7 +68889,7 @@
 
 
 /***/ },
-/* 79 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

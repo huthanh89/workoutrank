@@ -2,9 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
-Backbone     = require 'backbone'
-Validation   = require 'backbone.validation'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
@@ -28,28 +25,29 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    back:   '#strength-exercise'
-    name:   '#strength-name'
-    muscle: '#strength-muscle'
-    submit: '#strength-submit'
-    addset: '#strength-addset'
-    date:   '#strength-date'
-    time:   '#strength-time'
-    form:   '#strength-form'
+    dialog: '.modal'
+    name:   '#strength-modal-name'
+    muscle: '#strength-modal-muscle'
+    addset: '#strength-modal-addset'
+    date:   '#strength-modal-date'
+    time:   '#strength-modal-time'
+    form:   '#strength-modal-form'
+    submit: '#strength-modal-submit'
 
   bindings:
 
-    '#strength-name': 'name'
-    '#strength-note': 'note'
+    '#strength-modal-name': 'name'
 
-    '#strength-muscle':
+    '#strength-modal-note': 'note'
+
+    '#strength-modal-muscle':
       observe: 'muscle'
       onSet: (value) -> parseInt(value)
 
   events:
 
-    'click @ui.back': ->
-      @rootChannel.request('exercise')
+    'shown.bs.modal': ->
+      @ui.name.focus()
       return
 
     'click @ui.time': ->
@@ -64,7 +62,7 @@ class View extends Marionette.LayoutView
         wait: true
         at:   0
         success: =>
-          @ui.name.val('')
+          @ui.dialog.modal('hide')
           return
 
       return
@@ -98,14 +96,14 @@ class View extends Marionette.LayoutView
 
     @ui.time
     .timepicker
-      template: 'dropdown'
+        template: 'dropdown'
     .timepicker('setTime', '12:45 AM')
 
     @stickit()
-    return
 
-  onShow: ->
-    @ui.name.focus()
+    # Show dialog
+    @ui.dialog.modal()
+
     return
 
   onBeforeDestroy: ->
@@ -113,6 +111,7 @@ class View extends Marionette.LayoutView
     @ui.date.datepicker('destroy')
     @ui.addset.TouchSpin('destroy')
     return
+
 
 #-------------------------------------------------------------------------------
 # Exports

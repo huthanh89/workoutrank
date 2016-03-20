@@ -4,8 +4,9 @@
 
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-InputView    = require './input/view'
+ModalView    = require './modal/view'
 TableView    = require './table/view'
+PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.paginator'
+require 'bootstrap.paginate'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -43,7 +45,7 @@ class Collection extends Backbone.Collection
   parse: (response) -> response.strength
 
 #-------------------------------------------------------------------------------
-# Collection
+# Pageable Collection
 #-------------------------------------------------------------------------------
 
 class PageableCollection extends Backbone.PageableCollection
@@ -56,31 +58,37 @@ class PageableCollection extends Backbone.PageableCollection
 
   state:
     currentPage: 1
-    pageSize:    10
+    pageSize:    2
 
   comparator: (item) -> return -item.get('date')
 
   parseRecords: (response) -> response[0].strength
+
+class Test extends Marionette.ItemView
+  template: _.template 'hello world'
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
 class View extends Marionette.LayoutView
+
   template: viewTemplate
 
   regions:
-    input: '#strength-input-view'
+    modal: '#strength-modal-view'
     table: '#strength-table-view'
+    page:  '#strength-paginate-view'
 
   events:
     'click #strength-back': ->
       @rootChannel.request('exercise')
       return
 
-  collectionEvents:
-    sync: ->
-      @filterCollection(@model.get('muscle'))
+    'click #strength-add': ->
+      @showChildView 'modal', new ModalView
+        collection: @collection
+        model:      @model
       return
 
   modelEvents:
@@ -88,10 +96,21 @@ class View extends Marionette.LayoutView
       @filterCollection(value)
       return
 
+  collectionEvents:
+    sync: ->
+      @filterCollection(@model.get('muscle'))
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
     @pageableCollection = new PageableCollection @collection.models
+    @channel = Backbone.Radio.channel('channel')
+
+    @channel.reply
+      'hey': ->
+        console.log 'hey'
+        return
 
   onShow: ->
 
@@ -99,11 +118,10 @@ class View extends Marionette.LayoutView
 
     @filterCollection(@model.get('muscle'))
 
-    @showChildView 'input', new InputView
-      collection: @collection
-      model:      @model
-
     @showChildView 'table', new TableView
+      collection: @pageableCollection
+
+    @showChildView 'page', new PaginateView
       collection: @pageableCollection
 
     return
