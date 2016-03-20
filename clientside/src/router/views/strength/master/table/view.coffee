@@ -34,7 +34,7 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('dddd MM/DD/YY hh:mm')
+      onGet: (value) -> moment(value).format('ddd MM/DD/YY')
 
     '.strength-table-td-muscle':
       observe: 'muscle'

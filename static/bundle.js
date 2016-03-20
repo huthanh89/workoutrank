@@ -67470,7 +67470,7 @@
 	    '.strength-table-td-date': {
 	      observe: 'date',
 	      onGet: function(value) {
-	        return moment(value).format('dddd MM/DD/YY hh:mm');
+	        return moment(value).format('ddd MM/DD/YY');
 	      }
 	    },
 	    '.strength-table-td-muscle': {
@@ -67729,7 +67729,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-lg-offset-2 col-lg-10 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"pull-right\"><div class=\"col-xs-12\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
