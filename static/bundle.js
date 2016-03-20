@@ -62731,7 +62731,7 @@
 
 	  PageableCollection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 2
+	    pageSize: 5
 	  };
 
 	  PageableCollection.prototype.comparator = function(item) {
@@ -67634,7 +67634,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Click on a workout</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover table-striped\"><thead><tr><td><b>Name</b></td><td><b>Started</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Click on a workout</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td><b>Name</b></td><td><b>Started</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -67729,7 +67729,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-lg-offset-2 col-lg-10 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10\"><ul id=\"strength-paginate-list\" class=\"pagination\"></ul></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-lg-offset-2 col-lg-10 col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div>");;return buf.join("");
 	}
 
 /***/ },

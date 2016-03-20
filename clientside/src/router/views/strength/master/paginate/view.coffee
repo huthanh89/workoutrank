@@ -23,7 +23,7 @@ class View extends Marionette.ItemView
     list: '#strength-paginate-list'
 
   events:
-  
+
     'click li': (event) ->
 
       # Do nothing if disabled li was clicked

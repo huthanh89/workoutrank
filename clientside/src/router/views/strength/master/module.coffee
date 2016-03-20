@@ -32,6 +32,7 @@ class Model extends Backbone.Model
 
 #-------------------------------------------------------------------------------
 # Collection
+#   Main collection used to fetch data from the server.
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
@@ -46,6 +47,7 @@ class Collection extends Backbone.Collection
 
 #-------------------------------------------------------------------------------
 # Pageable Collection
+#   Page collection to paginate table. Used specifically in client mode.
 #-------------------------------------------------------------------------------
 
 class PageableCollection extends Backbone.PageableCollection
@@ -58,7 +60,7 @@ class PageableCollection extends Backbone.PageableCollection
 
   state:
     currentPage: 1
-    pageSize:    2
+    pageSize:    5
 
   comparator: (item) -> return -item.get('date')
 
