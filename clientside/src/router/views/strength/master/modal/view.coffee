@@ -79,6 +79,7 @@ class View extends Marionette.LayoutView
       buttonWidth:    '100%'
       buttonClass:    'btn btn-info'
     .multiselect 'dataprovider', Data.Muscles
+    .multiselect('select', @model.get('muscle'))
 
     @ui.addset.TouchSpin
       buttondown_class: 'btn btn-info'
@@ -101,12 +102,14 @@ class View extends Marionette.LayoutView
 
     @stickit()
 
-    # Show dialog
+    # Show this dialog
+
     @ui.dialog.modal()
 
     return
 
   onBeforeDestroy: ->
+    @ui.muscle.multiselect('destroy')
     @ui.form.validator('destroy')
     @ui.date.datepicker('destroy')
     @ui.addset.TouchSpin('destroy')

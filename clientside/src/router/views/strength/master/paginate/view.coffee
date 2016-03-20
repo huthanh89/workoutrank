@@ -22,6 +22,11 @@ class View extends Marionette.ItemView
   ui:
     list: '#strength-paginate-list'
 
+  collectionEvents:
+    reset: ->
+      @updateList()
+      return
+
   events:
 
     'click li': (event) ->
@@ -46,14 +51,14 @@ class View extends Marionette.ItemView
         page = parseInt(target.attr('id'))
         @collection.getPage(page)
 
-      @createList()
+      @updateList()
       return
 
   onShow: ->
-    @createList()
+    @updateList()
     return
 
-  createList: ->
+  updateList: ->
 
     @ui.list.empty()
 

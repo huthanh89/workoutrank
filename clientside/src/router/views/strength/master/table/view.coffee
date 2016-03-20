@@ -8,6 +8,7 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Pageable     = require 'src/behavior/pageable/module'
 Data         = require '../../data/module'
+nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -19,7 +20,22 @@ require 'multiselect'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
-# View
+# Null View
+#-------------------------------------------------------------------------------
+
+class NullView extends Marionette.ItemView
+  tagName: 'tr'
+  template: nullTemplate
+
+  constructor: (options) ->
+    super
+    @mergeOptions options, 'channel'
+
+  events:
+    click: -> @channel.request 'add'
+
+#-------------------------------------------------------------------------------
+# ItemView
 #-------------------------------------------------------------------------------
 
 class ItemView extends Marionette.ItemView
@@ -65,6 +81,8 @@ class View extends Marionette.CompositeView
 
   childViewContainer: 'tbody'
 
+  emptyView: NullView
+
   childView: ItemView
 
   template: viewTemplate
@@ -83,9 +101,14 @@ class View extends Marionette.CompositeView
     Pageable:
       behaviorClass: Pageable
 
-  constructor: ->
+  constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'channel'
+
+  childViewOptions: ->
+    return {
+      channel: @channel
+    }
 
 #-------------------------------------------------------------------------------
 # Exports

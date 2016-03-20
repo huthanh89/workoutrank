@@ -179,6 +179,10 @@ Strength
     cursor: pointer;
 }
 
+#strength-table-null{
+    text-align: center;
+}
+
 #strength-graph{
     min-width: 70px;
 }

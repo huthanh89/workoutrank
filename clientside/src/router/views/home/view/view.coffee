@@ -17,7 +17,7 @@ class View extends Marionette.ItemView
   events:
 
     'click #home-exercise': ->
-      @rootChannel.request('exercise')
+      @rootChannel.request('strength')
       return
 
     'click #home-exercise-strength': ->

@@ -5,6 +5,7 @@
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 ModalView    = require './modal/view'
+FilterView   = require './filter/view'
 TableView    = require './table/view'
 PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
@@ -78,19 +79,18 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    modal: '#strength-modal-view'
-    table: '#strength-table-view'
-    page:  '#strength-paginate-view'
+    modal:  '#strength-modal-view'
+    filter: '#strength-filter-view'
+    table:  '#strength-table-view'
+    page:   '#strength-paginate-view'
 
   events:
     'click #strength-back': ->
-      @rootChannel.request('exercise')
+      @rootChannel.request 'home'
       return
 
     'click #strength-add': ->
-      @showChildView 'modal', new ModalView
-        collection: @collection
-        model:      @model
+      @addWorkout()
       return
 
   modelEvents:
@@ -110,8 +110,8 @@ class View extends Marionette.LayoutView
     @channel = Backbone.Radio.channel('channel')
 
     @channel.reply
-      'hey': ->
-        console.log 'hey'
+      'add': =>
+        @addWorkout()
         return
 
   onShow: ->
@@ -120,12 +120,23 @@ class View extends Marionette.LayoutView
 
     @filterCollection(@model.get('muscle'))
 
+    @showChildView 'filter', new FilterView
+      collection: @collection
+      model:      @model
+
     @showChildView 'table', new TableView
       collection: @pageableCollection
+      channel:    @channel
 
     @showChildView 'page', new PaginateView
       collection: @pageableCollection
 
+    return
+
+  addWorkout: ->
+    @showChildView 'modal', new ModalView
+      collection: @collection
+      model:      @model
     return
 
   # Fetch the latest collection then filter the collection by muscle.
@@ -133,6 +144,10 @@ class View extends Marionette.LayoutView
   filterCollection: (muscle) ->
     models = @collection.filter (model) -> model.get('muscle') is muscle
     @pageableCollection.fullCollection.reset models
+    return
+
+  onBeforeDestroy: ->
+    @channel.reset()
     return
 
 #-------------------------------------------------------------------------------
