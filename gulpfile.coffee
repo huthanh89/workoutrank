@@ -210,14 +210,20 @@ gulp.task 'css', ->
     './clientside/styles/css/jquery.timeentry.css'
     './clientside/styles/css/timepicker.css'
 
-    './clientside/styles/css/backbone.modal.css'
-    './clientside/styles/css/backbone.modal.theme.css'
-
     './clientside/styles/application.css'
 
   ]).pipe(concat('style.css')).pipe gulp.dest('./static/')
 
   return
+
+#-------------------------------------------------------------------------------
+# Compile Less
+#-------------------------------------------------------------------------------
+
+gulp.task 'less', ->
+  return gulp.src([ './clientside/styles/less/application.less' ])
+  .pipe less()
+  .pipe gulp.dest('./clientside/styles/')
 
 #-------------------------------------------------------------------------------
 # Move Fonts to public folder.
@@ -286,6 +292,7 @@ gulp.task 'minify', [
 ]
 
 gulp.task 'compile:css', [
+  'less'
   'css'
   'csslint'
 ], ->
@@ -293,6 +300,7 @@ gulp.task 'compile:css', [
 
 gulp.task 'compile:client', [
     'scripts'
+    'less'
     'css'
     'csslint'
     'coffeelint'
