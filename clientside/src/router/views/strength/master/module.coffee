@@ -67,9 +67,6 @@ class PageableCollection extends Backbone.PageableCollection
 
   parseRecords: (response) -> response[0].strength
 
-class Test extends Marionette.ItemView
-  template: _.template 'hello world'
-
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------

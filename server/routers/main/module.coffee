@@ -6,14 +6,6 @@ express = require 'express'
 router  = express.Router()
 
 #-------------------------------------------------------------------------------
-# Import Routes
-#-------------------------------------------------------------------------------
-
-profile  = require './profile/module'
-exercise = require './exercise/module'
-strength = require './strength/module'
-
-#-------------------------------------------------------------------------------
 # Router Level Middleware
 #-------------------------------------------------------------------------------
 
@@ -49,20 +41,30 @@ router.get '/log',               index
 router.get '/multiplayer',       index
 
 #-------------------------------------------------------------------------------
+# Import Routes
+#-------------------------------------------------------------------------------
+
+Profile  = require './profile/module'
+Exercise = require './exercise/module'
+Strength = require './strength/module'
+Log      = require './log/module'
+
+#-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get  '/api/profile', profile.get
+router.get  '/api/profile', Profile.get
 
-router.get  '/api/exercise', exercise.get
-router.post '/api/exercise', exercise.post
+router.get  '/api/exercise', Exercise.get
+router.post '/api/exercise', Exercise.post
 
-router.post '/api/strength', strength.post
+router.post '/api/strength', Strength.Detail.post
+router.get '/api/strength/:sid', Strength.Detail.get
+router.put '/api/strength/:sid', Strength.Detail.put
 
-router.get '/api/strength/:sid', strength.get
-router.put '/api/strength/:sid', strength.put
+router.get '/api/strength/:sid/log', Strength.Log.get
 
-router.get '/api/strength/:sid/log', strength.logGet
+router.get '/api/log', Log.get
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -67,6 +67,14 @@ class View extends Marionette.ItemView
       @channel.request 'strength'
       return
 
+    'click @ui.log': ->
+      @channel.request 'log'
+      return
+
+    'click @ui.stat': ->
+      @channel.request 'stat'
+      return
+
     'click @ui.profile': ->
       @channel.request 'profile'
       return

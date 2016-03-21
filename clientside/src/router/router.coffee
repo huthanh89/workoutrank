@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 _          = require 'lodash'
+async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Index      = require './views/index/module'
@@ -12,6 +13,7 @@ Home       = require './views/home/module'
 Profile    = require './views/profile/module'
 Exercise   = require './views/exercise/module'
 Strength   = require './views/strength/module'
+Log        = require './views/log/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -177,21 +179,50 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View  = Strength.Detail.View
-    Model = Strength.Detail.Model
+    View       = Strength.Detail.View
+    Model      = Strength.Detail.Model
+    Collection = Strength.Detail.Collection
+    region     = @rootView.content
 
-    model = new Model {},
-      id: strengthID
+    async.waterfall [
 
-    model.fetch
-      success: (model) =>
-        @rootView.content.show new View
-          model:      model
-          strengthID: strengthID
+      (callback) ->
+
+        model = new Model {},
+          id: strengthID
+
+        model.fetch
+          success: (model) -> callback null, model
+          error: (err) -> callback err
+
         return
-      error: ->
-        console.log 'error'
+
+      (model, callback) ->
+
+        return callback null, model
+
+        ###
+        collection = new Collection()
+
+        collection.fetch
+          success: (collection) -> callback null, model, collection
+          error: (err) -> callback err
+
+###
         return
+
+    ], (err, model, collection) ->
+
+      console.log 'Error:', err if err
+
+      console.log '---->', model, collection
+
+      region.show new View
+        model:      model
+        collection: collection
+        strengthID: strengthID
+
+      return
 
     return
 
@@ -244,7 +275,19 @@ class Router extends Marionette.AppRouter
 
   log: ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
+
+    collection = new Log.Collection()
+
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new Log.View
+          collection: collection
+          model:      new Log.Model()
+        return
+      error: (err) ->
+        console.log err
+        return
+
     return
 
   multiplayer: ->

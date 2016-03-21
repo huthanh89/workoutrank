@@ -1,10 +1,10 @@
 .modal.fade(role="dialog")
-    .modal-dialog.modal-sm
+    .modal-dialog.modal-lg
         .modal-content
 
             .modal-header
                 button.close(type='button', data-dismiss='modal') ×
-                h4.modal-title Create a new workout
+                h4.modal-title Add a new session
 
             .modal-body
                 form.form-horizontal#strength-modal-form
@@ -31,14 +31,16 @@
 
                         #strength-modal-basic.tab-pane.active(role='tabpanel')
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-muscle') Muscle
-                                .col-sm-10
-                                    select.form-control#strength-modal-muscle
-                            .form-group
                                 label.col-sm-2.control-label(for='strength-modal-name') Name
                                 .col-sm-10
-                                    input.form-control#strength-modal-name(required)
+                                    input.form-control#strength-modal-name(readonly)
                                     .help-block.with-errors
+                            #strength-modal-set-view
+                            hr
+                            .form-group
+                                label.col-sm-2.control-label(for='strength-modal-addset') Sets
+                                .col-sm-10
+                                    input.form-control#strength-modal-addset(placeholder=0)
 
                         // Advance
 
@@ -47,15 +49,15 @@
                                 label.col-sm-2.control-label(for='strength-modal-date') Date
                                 .col-sm-10
                                     .input-group.date
-                                        input.form-control.input-readonly#strength-modal-date(muscle="text" readonly)
-                                        .input-group-addon.btn-info#strength-modal-date-btn
+                                        input.form-control.input-readonly#strength-modal-date(type="text" readonly)
+                                        .input-group-addon.btn-info(style="color:white;")
                                             span.fa.fa-fw.fa-lg.fa-calendar
                             .form-group
                                 label.col-sm-2.control-label(for='strength-modal-time') Time
                                 .col-sm-10
                                     .input-group.bootstrap-timepicker.timepicker
                                         input.form-control.input-readonly#strength-modal-time(readonly)
-                                        .input-group-addon.btn-info#strength-modal-time-btn
+                                        .input-group-addon.btn-info(style="color:white;")
                                             span.fa.fa-fw.fa-lg.fa-clock-o
                             .form-group
                                 label.col-sm-2.control-label(for='strength-modal-note') Note

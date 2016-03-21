@@ -2,40 +2,50 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_        = require 'lodash'
+async    = require 'async'
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Models
 #-------------------------------------------------------------------------------
 
-StrengthSchema = new mongoose.Schema
-  date:
-    type: Date
-  name:
-    type: String
-  muscle:
-    type: Number
-  note:
-    type: String
-  session:
-    type: Array
-  exercise:
-    type: mongoose.Schema.ObjectId
-  user:
-    type: mongoose.Schema.ObjectId
-,
-  collection: 'strength'
+Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
-# Model Registration
+# GET
+#
+#   Get a list all logs.
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('strength', StrengthSchema)
+module.get = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      # Get logs
+
+      Strength.find
+        user: req.session.user._id
+      .sort 'date'
+      .lean()
+      .exec (err, exercises) ->
+        console.log 'ERROR', err if err
+        return callback null, exercises
+
+      return
+
+  ], (err, exercises) ->
+
+    console.log 'ERROR', err if err
+
+    return res.json exercises
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = model
+module.exports = module
 
 #-------------------------------------------------------------------------------

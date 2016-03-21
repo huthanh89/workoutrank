@@ -5,6 +5,7 @@
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+ModalView    = require './modal/view'
 InputView    = require './input/view'
 TableView    = require './table/view'
 viewTemplate = require './view.jade'
@@ -37,12 +38,12 @@ class Model extends Backbone.Model
   parse: (response) -> response
 
 #-------------------------------------------------------------------------------
-# Collection
+# Pageable Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.PageableCollection
 
-  url:  '/api/strength'
+  url:  '/api/strength/log'
 
   model: Model
 
@@ -52,6 +53,10 @@ class Collection extends Backbone.PageableCollection
     currentPage: 1
     pageSize:    10
 
+  comparator: (item) -> return -item.get('date')
+
+  parseRecords: (response) -> response[0].strength
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -60,6 +65,7 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
+    modal: '#strength-modal-view'
     input: '#strength-input-view'
     table: '#strength-table-view'
 
@@ -70,6 +76,10 @@ class View extends Marionette.LayoutView
 
     'click #strength-log': ->
       @rootChannel.request 'strength:log', @strengthID
+      return
+
+    'click #strength-detail-add': ->
+      @addWorkout()
       return
 
   bindings:
@@ -95,9 +105,11 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
-    @showChildView 'input', new InputView
-      model:      @model
-      collection: @collection
+    console.log 'collection', @collection
+
+    #@showChildView 'input', new InputView
+    #  model:      @model
+    #  collection: @collection
 
     ###
     @showChildView 'table', new TableView
@@ -105,6 +117,14 @@ class View extends Marionette.LayoutView
       collection: new Backbone.Collection()
       model: @model
 ###
+
+    #@addWorkout()
+    return
+
+  addWorkout: ->
+    @showChildView 'modal', new ModalView
+      collection: @collection
+      model:      @model
     return
 
 #-------------------------------------------------------------------------------

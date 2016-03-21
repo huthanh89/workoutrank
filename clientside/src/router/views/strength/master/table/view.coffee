@@ -52,10 +52,6 @@ class ItemView extends Marionette.ItemView
       observe: 'date'
       onGet: (value) -> moment(value).format('ddd MM/DD/YY')
 
-    '.strength-table-td-muscle':
-      observe: 'muscle'
-      onGet: (value) -> _.find(Data.Muscles, value: value).label
-
   events:
     click: ->
       @rootChannel.request 'strength:detail', @model.id
