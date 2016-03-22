@@ -36,6 +36,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('exercise:detail', 'balance')
       return
 
+    'click #home-log': ->
+      @rootChannel.request('log')
+      return
+
     'click #home-stat': ->
       @rootChannel.request('stat')
       return

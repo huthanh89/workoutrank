@@ -42,7 +42,7 @@ class View extends Marionette.ItemView
         renderTo: @ui.chart[0]
 
       title:
-        text: @model.get('name').toUpperCase()
+        #text: @model.get('name').toUpperCase()
         style:
           fontWeight: 'bold'
 
@@ -74,7 +74,7 @@ class View extends Marionette.ItemView
             fontSize:  '12px'
       ]
 
-      series: seriesData(@model.get('log'))
+      series: seriesData(@collection.at(0).get('data'))
 
       legend:
         enabled:     true
@@ -86,9 +86,6 @@ class View extends Marionette.ItemView
     return
 
   onShow: ->
-
-    @model.set 'max', @chart.yAxis[0].dataMax
-    @model.set 'min', @chart.yAxis[0].dataMin
 
     # Chart does not stretch the full container unless reflow is called.
 

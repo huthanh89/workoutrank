@@ -269,7 +269,7 @@ gulp.task 'watch', ->
   gulp.watch [
     './static/**'
     './views/**'
-  ]
+  ], livereload.reload()
 
   return
 
@@ -295,17 +295,16 @@ gulp.task 'compile:css', [
   'less'
   'css'
   'csslint'
-], ->
-  livereload.reload()
+]
 
 gulp.task 'compile:client', [
-    'scripts'
-    'less'
-    'css'
-    'csslint'
-    'coffeelint'
-  ], ->
-    livereload.reload()
+  'scripts'
+  'less'
+  'css'
+  'csslint'
+  'coffeelint'
+], ->
+  livereload.reload()
 
 gulp.task 'production', [
   'compile:client'

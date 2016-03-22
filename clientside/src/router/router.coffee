@@ -11,6 +11,7 @@ Signup     = require './views/signup/module'
 Login      = require './views/login/module'
 Home       = require './views/home/module'
 Profile    = require './views/profile/module'
+Stat       = require './views/stat/module'
 Exercise   = require './views/exercise/module'
 Strength   = require './views/strength/module'
 Log        = require './views/log/module'
@@ -265,7 +266,7 @@ class Router extends Marionette.AppRouter
 
   stat: ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
+    @rootView.content.show new Stat.View()
     return
 
   schedule: ->

@@ -2,10 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-GraphView    = require './graph/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -13,59 +11,31 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-
   defaults:
     name: ''
-    data: []
 
 #-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
-
-  url: '/api/log'
-
-  parse: (response) ->
-    result = []
-
-    grouped = _.groupBy response, (record) -> record.muscle
-
-    for key, records of grouped
-
-      data = []
-      console.log key, records
-
-      for record in records
-
-        data.push _.map record.session, (set) ->
-          return {
-            x: moment(record.date).valueOf()
-            y: set.weight
-          }
-
-      result.push
-        muscle: parseInt(key)
-        data:   data
-
-    console.log 'RESULT', result
-
-    return result
+  url:  'api/profile'
+  model: Model
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.ItemView
 
   template: viewTemplate
 
-  regions:
-    graph: '#log-graph-view'
-    table: '#log-table-view'
+  ui:
+    reps:      '#reps'
+    touchspin: '#touchspin'
 
   events:
-    'click #log-home': ->
+    'click #stat-home': ->
       @rootChannel.request 'home'
       return
 
@@ -73,25 +43,12 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-  onRender: ->
-    @stickit()
-    return
-
-  onShow: ->
-
-    console.log @collection
-
-    @showChildView 'graph', new GraphView
-      collection: @collection
-
-    return
-
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Model      = Model
-module.exports.Collection = Collection
-module.exports.View       = View
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = View
 
 #-------------------------------------------------------------------------------
