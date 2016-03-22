@@ -1,15 +1,11 @@
 .col-xs-12
-    nav.navbar.navbar-fixed-top.navbar-default
+    nav.navbar.navbar-default.navbar-fixed-top
         .container-fluid
             .navbar-header
-
-                // Left side icons.
-
                 a.navbar-brand
-                    i.fa.fa-lg.fa-navicon#navbar-brand
-
-                // Right side icons.
-
+                    i.fa.fa-lg.fa-navicon
+                    = ' '
+                    span#navbar-brand WR
                 button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-collapse-menu")
                     span.sr-only Toggle navigation
                     span.icon-bar
@@ -21,7 +17,7 @@
                     li.nav-divider-vertical.hidden-xs
                     li.nav-home.nav-home-tip.hidden-xs
                         a
-                            i.nav-collapse-item.nav-icon.fa.fa-fw.fa-2x.fa-home
+                            i.nav-icon.fa.fa-fw.fa-2x.fa-home
                     li.nav-divider-vertical.hidden-xs
                     li.nav-strength.nav-strength-tip.hidden-xs
                         a
@@ -36,7 +32,7 @@
                             i.nav-icon.fa.fa-fw.fa-2x.fa-line-chart
                     li.nav-divider-vertical.hidden-xs
                     li.dropdown
-                        a.dropdown-toggle(href="#", data-toggle="dropdown", role="button", aria-expanded="false")
+                        a.dropdown-toggle(data-toggle="dropdown", role="button", aria-expanded="false")
                             b#nav-username USERNAME
                             .caret
                         ul.dropdown-menu(role="menu")
@@ -104,62 +100,3 @@
                         i.fa.fa-fw.fa-lg.fa-sign-out
                         = ' '
                         | Sign Out
-
-// Sliding left menu
-
-nav#my-menu.mm-light
-    ul
-        li#side-nav-side-home
-            a
-                i.fa.fa-fw.fa-lg.fa-home
-                | &nbsp Home
-        li
-            a#side-nav-exercise
-                i.fa.fa-fw.fa-heartbeat
-                | &nbsp Exercises
-                ul
-                    li
-                        a
-                            i.fa.fa-fw.fa-lg.fa-shield
-                            | &nbsp Strength
-                    li
-                        a
-                            i.fa.fa-fw.fa-lg.fa-bicycle
-                            | &nbsp Endurance
-                    li
-                        a
-                            i.fa.fa-fw.fa-lg.fa-heart
-                            | &nbsp Flexibility
-                    li
-                        a
-                            i.fa.fa-fw.fa-lg.fa-balance-scale
-                            | &nbsp Balance
-        li
-            a#side-nav-schedule
-                i.fa.fa-fw.fa-lg.fa-calendar
-                | &nbsp Schedule
-        li
-            a#side-nav-stat
-                i.fa.fa-fw.fa-lg.fa-line-chart
-                | &nbsp Stats
-        li
-            a#side-nav-log
-                i.fa.fa-fw.fa-lg.fa-area-chart
-                | &nbsp Logs
-        li
-            a#side-nav-contacts
-                i.fa.fa-fw.fa-lg.fa-group
-                | &nbsp Multiplayers
-            ul
-                li
-                    a
-                        i.fa.fa-fw.fa-lg.fa-th-list
-                        | &nbsp Friends
-                li
-                    a
-                        i.fa.fa-fw.fa-lg.fa-trophy
-                        | &nbsp Ranking
-                li
-                    a#side-nav-chat
-                        i.fa.fa-fw.fa-lg.fa-comments-o
-                        | &nbsp Chat

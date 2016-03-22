@@ -120,6 +120,28 @@ class View extends Marionette.ItemView
     @stickit()
     return
 
+  # Elements are not ready until onShow.
+
+  onShow: ->
+
+    # Create menu.
+
+    @ui.menu.mmenu
+      offCanvas:
+        zposition: "front"
+      onClick:
+        close: false
+      header: true,
+      footer:
+        add: true,
+        content: "(c) 2015 WebApp. All rights reserved"
+
+    @ui.profile.on 'click', =>
+      @channel.request('profile')
+      return
+
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
