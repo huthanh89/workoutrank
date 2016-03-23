@@ -31,12 +31,14 @@
 
                         #strength-modal-basic.tab-pane.active(role='tabpanel')
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-muscle') Muscle
-                                .col-sm-10
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-muscle') Muscle
+                                .col-xs-12
                                     select.form-control#strength-modal-muscle
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-name') Name
-                                .col-sm-10
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-name') Name
+                                .col-xs-12
                                     input.form-control#strength-modal-name(required)
                                     .help-block.with-errors
 
@@ -44,22 +46,25 @@
 
                         #strength-modal-advance.tab-pane(role='tabpanel')
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-date') Date
-                                .col-sm-10
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-date') Date
+                                .col-xs-12
                                     .input-group.date
                                         input.form-control.input-readonly#strength-modal-date(muscle="text" readonly)
                                         .input-group-addon.btn-info#strength-modal-date-btn
                                             span.fa.fa-fw.fa-lg.fa-calendar
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-time') Time
-                                .col-sm-10
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-time') Time
+                                .col-xs-12
                                     .input-group.bootstrap-timepicker.timepicker
                                         input.form-control.input-readonly#strength-modal-time(readonly)
                                         .input-group-addon.btn-info#strength-modal-time-btn
                                             span.fa.fa-fw.fa-lg.fa-clock-o
                             .form-group
-                                label.col-sm-2.control-label(for='strength-modal-note') Note
-                                .col-sm-10
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-note') Note
+                                .col-xs-12
                                     input.form-control#strength-modal-note
 
             .modal-footer
