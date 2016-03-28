@@ -271,7 +271,18 @@ class Router extends Marionette.AppRouter
 
   stat: ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Stat.View()
+
+    collection = new Stat.Collection()
+
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new Stat.View
+          collection: collection
+        return
+      error: (err) ->
+        console.log err
+        return
+
     return
 
   schedule: ->

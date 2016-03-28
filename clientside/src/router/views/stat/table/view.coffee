@@ -3,70 +3,76 @@
 #-------------------------------------------------------------------------------
 
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-TableView    = require './table/view'
+nullTemplate = require './null.jade'
+itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Model
+# Plugins
 #-------------------------------------------------------------------------------
 
-class Model extends Backbone.Model
-  defaults:
-    name: ''
-    max:  0
-    avg:  0
+require 'multiselect'
+require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
-# Collection
+# Null View
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.Collection
-
-  url:  'api/log'
-
-  model: Model
-
-  parse: (response) ->
-
-    result = []
-
-    grouped = _.groupBy response, (record) -> record.exercise
-
-    for exercise, records of grouped
-      pr      = _.max records, (record) -> record.weight
-      weights = _.map(records, (record) -> record.weight)
-      result.push
-        name: records[0].name
-        date: pr.date
-        max:  pr.weight
-        avg:  Math.round(_.mean(weights)) / 100
-
-    return result
+class NullView extends Marionette.CompositeView
+  tagName: 'tr'
+  template: nullTemplate
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class ItemView extends Marionette.CompositeView
+
+  tagName: 'tr'
+
+  template: itemTemplate
+
+  bindings:
+
+    '.stat-table-td-name': 'name'
+
+    '.stat-table-td-max': 'max'
+
+    '.stat-table-td-date':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('MM/DD/YY')
+
+    '.stat-table-td-avg': 'avg'
+
+  onRender: ->
+    @stickit()
+    return
+
+#-------------------------------------------------------------------------------
+# View
+#-------------------------------------------------------------------------------
+
+class View extends Marionette.CompositeView
+
+  childViewContainer: 'tbody'
+
+  childView: ItemView
+
+  emptyView: NullView
 
   template: viewTemplate
 
-  regions:
-    table: '#stat-table-view'
-
-  onShow: ->
-    @showChildView 'table', new TableView
-      collection: @collection
-    return
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Model      = Model
-exports.Collection = Collection
-exports.View       = View
+module.exports = View
 
 #-------------------------------------------------------------------------------
