@@ -2,21 +2,30 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highstock    = require 'highstock'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Series Data
+# Series Rep Data
 #-------------------------------------------------------------------------------
 
-seriesData = (models) ->
-  series = []
-  for model in models
-    series.push model
-  return series
+seriesRepData = (model) ->
+  return {
+    name: 'Reps'
+    data: model.get('repData')
+  }
+
+#-------------------------------------------------------------------------------
+# Series Weight Data
+#-------------------------------------------------------------------------------
+
+seriesWeightData = (model) ->
+  return {
+    name: 'Weight'
+    data: model.get('weightData')
+  }
 
 #-------------------------------------------------------------------------------
 # View
@@ -29,11 +38,13 @@ class View extends Marionette.ItemView
   ui:
     chart: '#strength-log-graph-ui'
 
-  constructor: (options) ->
+  constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
+
+    model = @collection.at(0)
 
     @chart = new Highstock.StockChart
 
@@ -42,7 +53,7 @@ class View extends Marionette.ItemView
         renderTo: @ui.chart[0]
 
       title:
-        #text: @model.get('name').toUpperCase()
+        text: model.get('name').toUpperCase()
         style:
           fontWeight: 'bold'
 
@@ -58,23 +69,13 @@ class View extends Marionette.ItemView
 
       xAxis:
         lineWidth: 2
-        title:
-          text: 'Time'
-          style:
-            fontWeight: 600
-            fontSize:  '12px'
 
       yAxis: [
         lineWidth: 2
         opposite:  false
-        title:
-          text: 'Weight'
-          style:
-            fontWeight: 600
-            fontSize:  '12px'
       ]
 
-      series: seriesData(@collection.at(0).get('data'))
+      series: [seriesWeightData(model), seriesRepData(model)]
 
       legend:
         enabled:     true
@@ -85,12 +86,10 @@ class View extends Marionette.ItemView
 
     return
 
+  # Chart does not stretch the full container unless reflow is called.
+
   onShow: ->
-
-    # Chart does not stretch the full container unless reflow is called.
-
     @chart.reflow()
-
     return
 
 #-------------------------------------------------------------------------------

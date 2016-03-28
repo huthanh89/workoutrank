@@ -46,8 +46,6 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      console.log req.session
-
       Exercise.findOne
         user: req.session.user._id
       .exec (err, exercise) ->

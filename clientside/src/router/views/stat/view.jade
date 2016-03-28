@@ -1,33 +1,23 @@
 .row
     .col-xs-12
-        button.btn.btn-default.page-nav-btn#stat-home
-            i.fa.fa-lg.fa-home
-br
-.row
-    .col-xs-12
         span.lead.page-header
             i.fa.fa-fw.fa-lg.fa-line-chart
             = ' '
-            | Stat
+            | Stats
 br
 .row
-    .col-sm-12
-        form.form-horizontal
-            .form-group
-                label.col-sm-2.control-label(for='profile-name') Name
-                .col-sm-10
-                    input.form-control#profile-name(input='text')
-            .form-group
-                label.col-sm-2.control-label(for='profile-email') Email
-                .col-sm-10
-                    input.form-control#profile-email(input='text')
-            .form-group
-                label.col-sm-2.control-label(for='profile-password') Password
-                .col-sm-10
-                    input.form-control#profile-password(input='text')
-            .form-group
-                .col-sm-12
-                    button.btn.btn-primary.pull-right
-                        i.fa.fa-cloud-upload
-                        = ' '
-                        | Update
+    .col-sm-6
+        table.table.table-condensed.table-hover
+            thead
+                tr
+                    td
+                        b Workout
+                    td
+                        b Personal Record
+            tbody
+                tr
+                    td Pull-Up
+                    td 145
+                tr
+                    td Bench
+                    td 120

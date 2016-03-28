@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(96);
+	__webpack_require__(94);
 
-	__webpack_require__(97);
+	__webpack_require__(95);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -54523,7 +54523,7 @@
 
 	Strength = __webpack_require__(54);
 
-	Log = __webpack_require__(92);
+	Log = __webpack_require__(90);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -54681,8 +54681,21 @@
 	  };
 
 	  Router.prototype.home = function() {
+	    var model;
 	    this.navChannel.request('nav:main');
-	    this.rootView.content.show(new Home.View());
+	    model = new Home.Model();
+	    model.fetch({
+	      success: (function(_this) {
+	        return function(model) {
+	          _this.rootView.content.show(new Home.View({
+	            model: model
+	          }));
+	        };
+	      })(this),
+	      error: function() {
+	        console.log('error');
+	      }
+	    });
 	  };
 
 	  Router.prototype.profile = function() {
@@ -57212,7 +57225,7 @@
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Model,
+	var Backbone, Model,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -57225,32 +57238,13 @@
 	    return Model.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Model.prototype.defaults = {
-	    name: ''
-	  };
+	  Model.prototype.url = 'api/home';
 
 	  return Model;
 
 	})(Backbone.Model);
 
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = 'api/user';
-
-	  Collection.prototype.model = Model;
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
 	exports.Model = Model;
-
-	exports.Collection = Collection;
 
 	exports.View = __webpack_require__(35);
 
@@ -57273,6 +57267,11 @@
 	  extend(View, superClass);
 
 	  View.prototype.template = viewTemplate;
+
+	  View.prototype.bindings = {
+	    '#home-log-count': 'logCount',
+	    '#home-exercise-count': 'exerciseCount'
+	  };
 
 	  View.prototype.events = {
 	    'click #home-exercise': function() {
@@ -57312,6 +57311,10 @@
 	    this.rootChannel = Backbone.Radio.channel('root');
 	  }
 
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
 	  return View;
 
 	})(Marionette.ItemView);
@@ -57330,7 +57333,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-stat\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "View Stats</b></span></li><li id=\"home-exercise\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-heartbeat\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercises</b></span><span class=\"badge badge-color\">0</span></li><li id=\"home-log\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Logs</b></span><span class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-stat\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "View Stats</b></span></li><li id=\"home-exercise\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-heartbeat\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercises</b></span><span id=\"home-exercise-count\" class=\"badge badge-color\">0</span></li><li id=\"home-log\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Logs</b></span><span id=\"home-log-count\" class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -57529,7 +57532,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"stat-home\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Stat</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"profile-name\" class=\"col-sm-2 control-label\">Name</label><div class=\"col-sm-10\"><input id=\"profile-name\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"profile-email\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"profile-password\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Update</button></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Stats</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><table class=\"table table-condensed table-hover\"><thead><tr><td><b>Workout</b></td><td><b>Personal Record</b></td></tr></thead><tbody><tr><td>Pull-Up</td><td>145</td></tr><tr><td>Bench</td><td>120</td></tr></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -64722,7 +64725,7 @@
 
 	module.exports.Detail = __webpack_require__(74);
 
-	module.exports.Log = __webpack_require__(86);
+	module.exports.Log = __webpack_require__(84);
 
 
 /***/ },
@@ -70141,7 +70144,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-home\"></i></button><div class=\"pull-right\"><button id=\"strength-add\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right\"><div id=\"strength-filter-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-paginate-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-filter-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -70160,11 +70163,11 @@
 
 	ModalView = __webpack_require__(75);
 
-	DateView = __webpack_require__(79);
+	DateView = __webpack_require__(77);
 
-	TableView = __webpack_require__(81);
+	TableView = __webpack_require__(79);
 
-	viewTemplate = __webpack_require__(85);
+	viewTemplate = __webpack_require__(83);
 
 	__webpack_require__(53);
 
@@ -70183,11 +70186,6 @@
 	      this.url = '/api/strength';
 	    }
 	  }
-
-	  Model.prototype.defaults = {
-	    count: 1,
-	    session: []
-	  };
 
 	  Model.prototype.parse = function(response) {
 	    return response;
@@ -70271,30 +70269,14 @@
 	    this.tableCollection = this.collection;
 	    this.listenTo(this.model, 'change:date', (function(_this) {
 	      return function() {
-	        var i, index, j, len, len1, model, models, ref, session, sessions;
+	        var models;
 	        models = _this.collection.fullCollection.filter(function(model) {
 	          var dateA, dateB;
 	          dateA = moment(model.get('date')).startOf('day');
 	          dateB = moment(_this.model.get('date')).startOf('day');
 	          return dateA.isSame(dateB);
 	        });
-	        sessions = [];
-	        index = 0;
-	        for (i = 0, len = models.length; i < len; i++) {
-	          model = models[i];
-	          ref = model.get('session');
-	          for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
-	            session = ref[index];
-	            index = index + 1;
-	            console.log(index);
-	            sessions.push({
-	              set: index,
-	              rep: session.rep,
-	              weight: session.weight
-	            });
-	          }
-	        }
-	        _this.tableCollection = new Backbone.Collection(sessions);
+	        _this.tableCollection = new Backbone.Collection(models);
 	        _this.showChildView('table', new TableView({
 	          collection: _this.tableCollection
 	        }));
@@ -70337,7 +70319,7 @@
 /* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Marionette, Model, SetView, View, _, moment, viewTemplate,
+	var Backbone, Marionette, View, _, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -70349,9 +70331,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	SetView = __webpack_require__(76);
-
-	viewTemplate = __webpack_require__(78);
+	viewTemplate = __webpack_require__(76);
 
 	__webpack_require__(59);
 
@@ -70363,33 +70343,10 @@
 
 	__webpack_require__(62);
 
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.idAttribute = '_id';
-
-	  Model.prototype.defaults = {
-	    index: 1,
-	    weight: 0,
-	    rep: 1
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
 	View = (function(superClass) {
 	  extend(View, superClass);
 
 	  View.prototype.template = viewTemplate;
-
-	  View.prototype.regions = {
-	    set: '#strength-modal-set-view'
-	  };
 
 	  View.prototype.ui = {
 	    dialog: '.modal',
@@ -70402,19 +70359,19 @@
 	  };
 
 	  View.prototype.bindings = {
-	    '#strength-modal-note': 'note',
-	    '#strength-modal-addset': {
-	      observe: 'count',
+	    '.strength-modal-rep': {
+	      observe: 'rep',
 	      onSet: function(value) {
-	        if (value > this.sessionCollection.length) {
-	          this.sessionCollection.add(new Model({
-	            index: parseInt(value)
-	          }));
-	        } else {
-	          this.sessionCollection.remove(this.sessionCollection.last());
-	        }
+	        return parseInt(value);
 	      }
-	    }
+	    },
+	    '.strength-modal-weight': {
+	      observe: 'weight',
+	      onSet: function(value) {
+	        return parseInt(value);
+	      }
+	    },
+	    '#strength-modal-note': 'note'
 	  };
 
 	  View.prototype.events = {
@@ -70431,9 +70388,6 @@
 	      this.model.set({
 	        date: moment(new Date(date + " " + time)).format()
 	      });
-	      this.ui.form.validator('validate');
-	      this.model.set('session', this.sessionCollection.toJSON());
-	      this.ui.form.validator('validate');
 	      this.model.save({}, {
 	        success: (function(_this) {
 	          return function() {
@@ -70448,13 +70402,8 @@
 	  };
 
 	  function View() {
-	    var model;
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    model = new Model({}, {
-	      id: this.model.id
-	    });
-	    this.sessionCollection = new Backbone.Collection(model);
 	  }
 
 	  View.prototype.onRender = function() {
@@ -70479,12 +70428,6 @@
 	    this.ui.dialog.modal();
 	  };
 
-	  View.prototype.onShow = function() {
-	    this.showChildView('set', new SetView({
-	      collection: this.sessionCollection
-	    }));
-	  };
-
 	  View.prototype.onBeforeDestroy = function() {
 	    this.ui.form.validator('destroy');
 	    this.ui.date.datepicker('destroy');
@@ -70494,7 +70437,7 @@
 
 	  return View;
 
-	})(Marionette.LayoutView);
+	})(Marionette.ItemView);
 
 	module.exports = View;
 
@@ -70503,116 +70446,18 @@
 /* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, ItemView, Marionette, View, _, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
+	var jade = __webpack_require__(14);
 
-	_ = __webpack_require__(3);
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
 
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(77);
-
-	ItemView = (function(superClass) {
-	  extend(ItemView, superClass);
-
-	  function ItemView() {
-	    return ItemView.__super__.constructor.apply(this, arguments);
-	  }
-
-	  ItemView.prototype.template = viewTemplate;
-
-	  ItemView.prototype.ui = {
-	    rep: '.strength-modal-rep',
-	    weight: '.strength-modal-weight'
-	  };
-
-	  ItemView.prototype.bindings = {
-	    '.strength-modal-rep': {
-	      observe: 'rep',
-	      onSet: function(value) {
-	        return parseInt(value);
-	      }
-	    },
-	    '.strength-modal-weight': {
-	      observe: 'weight',
-	      onSet: function(value) {
-	        return parseInt(value);
-	      }
-	    },
-	    '.strength-modal-set-label': {
-	      observe: 'index',
-	      onGet: function(value) {
-	        return "Set #" + value;
-	      }
-	    }
-	  };
-
-	  ItemView.prototype.onRender = function() {
-	    this.ui.rep.TouchSpin();
-	    this.ui.weight.TouchSpin();
-	    this.stickit();
-	  };
-
-	  ItemView.prototype.onBeforeDestroy = function() {
-	    this.ui.rep.TouchSpin('destroy');
-	    this.ui.weight.TouchSpin('destroy');
-	  };
-
-	  return ItemView;
-
-	})(Marionette.ItemView);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = false;
-
-	  View.prototype.childView = ItemView;
-
-	  return View;
-
-	})(Marionette.CollectionView);
-
-	module.exports = View;
-
+	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-weight\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-rep\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
+	}
 
 /***/ },
 /* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<hr><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"strength-modal-set-label\">Set #</label></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-weight\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-rep\"></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div id=\"strength-modal-set-view\"></div><hr><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-addset\" class=\"control-label\">Sets</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-addset\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, moment, viewTemplate,
@@ -70623,7 +70468,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(80);
+	viewTemplate = __webpack_require__(78);
 
 	__webpack_require__(60);
 
@@ -70682,7 +70527,7 @@
 
 
 /***/ },
-/* 80 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -70692,11 +70537,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"input-group\"><span class=\"input-group-btn\"><button id=\"strength-date-prev\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i></button></span><input id=\"strength-date-datepicker\" type=\"text\" readonly class=\"form-control\"><span class=\"input-group-btn\"><button id=\"strength-date-next\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-right\"></i></button></span></div>");;return buf.join("");
+	buf.push("<div class=\"input-group\"><span class=\"input-group-btn\"><button id=\"strength-date-prev\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-arrow-left\"></i></button></span><input id=\"strength-date-datepicker\" type=\"text\" readonly class=\"form-control\"><span class=\"input-group-btn\"><button id=\"strength-date-next\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-arrow-right\"></i></button></span></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 81 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -70711,11 +70556,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	nullTemplate = __webpack_require__(82);
+	nullTemplate = __webpack_require__(80);
 
-	itemTemplate = __webpack_require__(83);
+	itemTemplate = __webpack_require__(81);
 
-	viewTemplate = __webpack_require__(84);
+	viewTemplate = __webpack_require__(82);
 
 	__webpack_require__(47);
 
@@ -70748,7 +70593,12 @@
 	  ItemView.prototype.template = itemTemplate;
 
 	  ItemView.prototype.bindings = {
-	    '.strength-table-td-set': 'set',
+	    '.strength-table-td-time': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('h:mm A');
+	      }
+	    },
 	    '.strength-table-td-rep': 'rep',
 	    '.strength-table-td-weight': 'weight'
 	  };
@@ -70785,7 +70635,7 @@
 
 
 /***/ },
-/* 82 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -70799,6 +70649,34 @@
 	}
 
 /***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td class=\"strength-table-td-time\"></td><td class=\"strength-table-td-rep\"></td><td class=\"strength-table-td-weight\"></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Time</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -70809,39 +70687,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-set\"></td><td class=\"strength-table-td-rep\"></td><td class=\"strength-table-td-weight\"></td>");;return buf.join("");
+	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span><b>Table of past sets</b></span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Set</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-back\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-shield hidden-xs\"></i></button><div class=\"pull-right\"><button id=\"strength-detail-add\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
@@ -70854,11 +70704,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(87);
+	GraphView = __webpack_require__(85);
 
-	TableView = __webpack_require__(89);
+	TableView = __webpack_require__(87);
 
-	viewTemplate = __webpack_require__(91);
+	viewTemplate = __webpack_require__(89);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -70947,7 +70797,7 @@
 
 
 /***/ },
-/* 87 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
@@ -70962,7 +70812,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(88);
+	viewTemplate = __webpack_require__(86);
 
 	seriesData = function(models) {
 	  var i, len, model, series;
@@ -71060,7 +70910,7 @@
 
 
 /***/ },
-/* 88 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -71074,7 +70924,7 @@
 	}
 
 /***/ },
-/* 89 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, moment, viewTemplate,
@@ -71089,7 +70939,7 @@
 
 	Data = __webpack_require__(57);
 
-	viewTemplate = __webpack_require__(90);
+	viewTemplate = __webpack_require__(88);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -71145,7 +70995,7 @@
 
 
 /***/ },
-/* 90 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -71159,7 +71009,7 @@
 	}
 
 /***/ },
-/* 91 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -71173,7 +71023,7 @@
 	}
 
 /***/ },
-/* 92 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, GraphView, Marionette, Model, View, moment, viewTemplate,
@@ -71186,9 +71036,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(93);
+	GraphView = __webpack_require__(91);
 
-	viewTemplate = __webpack_require__(95);
+	viewTemplate = __webpack_require__(93);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -71216,30 +71066,34 @@
 	  Collection.prototype.url = '/api/log';
 
 	  Collection.prototype.parse = function(response) {
-	    var data, grouped, i, key, len, record, records, result;
+	    var exercise, grouped, i, len, record, records, repData, result, weightData, x;
 	    result = [];
 	    grouped = _.groupBy(response, function(record) {
-	      return record.muscle;
+	      return record.exercise;
 	    });
-	    for (key in grouped) {
-	      records = grouped[key];
-	      data = [];
-	      console.log(key, records);
+	    for (exercise in grouped) {
+	      records = grouped[exercise];
+	      weightData = [];
+	      repData = [];
 	      for (i = 0, len = records.length; i < len; i++) {
 	        record = records[i];
-	        data.push(_.map(record.session, function(set) {
-	          return {
-	            x: moment(record.date).valueOf(),
-	            y: set.weight
-	          };
-	        }));
+	        x = moment(record.date).valueOf();
+	        weightData.push({
+	          x: x,
+	          y: record.weight
+	        });
+	        repData.push({
+	          x: x,
+	          y: record.rep
+	        });
 	      }
 	      result.push({
-	        muscle: parseInt(key),
-	        data: data
+	        exercise: exercise,
+	        name: records[0].name,
+	        weightData: weightData,
+	        repData: repData
 	      });
 	    }
-	    console.log('RESULT', result);
 	    return result;
 	  };
 
@@ -71273,7 +71127,6 @@
 	  };
 
 	  View.prototype.onShow = function() {
-	    console.log(this.collection);
 	    this.showChildView('graph', new GraphView({
 	      collection: this.collection
 	    }));
@@ -71291,14 +71144,12 @@
 
 
 /***/ },
-/* 93 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
+	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
-
-	$ = __webpack_require__(2);
 
 	Backbone = __webpack_require__(8);
 
@@ -71306,16 +71157,20 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(94);
+	viewTemplate = __webpack_require__(92);
 
-	seriesData = function(models) {
-	  var i, len, model, series;
-	  series = [];
-	  for (i = 0, len = models.length; i < len; i++) {
-	    model = models[i];
-	    series.push(model);
-	  }
-	  return series;
+	seriesRepData = function(model) {
+	  return {
+	    name: 'Reps',
+	    data: model.get('repData')
+	  };
+	};
+
+	seriesWeightData = function(model) {
+	  return {
+	    name: 'Weight',
+	    data: model.get('weightData')
+	  };
 	};
 
 	View = (function(superClass) {
@@ -71327,18 +71182,21 @@
 	    chart: '#strength-log-graph-ui'
 	  };
 
-	  function View(options) {
+	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	  }
 
 	  View.prototype.onRender = function() {
+	    var model;
+	    model = this.collection.at(0);
 	    this.chart = new Highstock.StockChart({
 	      chart: {
 	        type: 'areaspline',
 	        renderTo: this.ui.chart[0]
 	      },
 	      title: {
+	        text: model.get('name').toUpperCase(),
 	        style: {
 	          fontWeight: 'bold'
 	        }
@@ -71356,29 +71214,15 @@
 	        }
 	      },
 	      xAxis: {
-	        lineWidth: 2,
-	        title: {
-	          text: 'Time',
-	          style: {
-	            fontWeight: 600,
-	            fontSize: '12px'
-	          }
-	        }
+	        lineWidth: 2
 	      },
 	      yAxis: [
 	        {
 	          lineWidth: 2,
-	          opposite: false,
-	          title: {
-	            text: 'Weight',
-	            style: {
-	              fontWeight: 600,
-	              fontSize: '12px'
-	            }
-	          }
+	          opposite: false
 	        }
 	      ],
-	      series: seriesData(this.collection.at(0).get('data')),
+	      series: [seriesWeightData(model), seriesRepData(model)],
 	      legend: {
 	        enabled: true,
 	        borderWidth: 2
@@ -71401,7 +71245,7 @@
 
 
 /***/ },
-/* 94 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -71415,7 +71259,7 @@
 	}
 
 /***/ },
-/* 95 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -71425,11 +71269,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"log-home\" class=\"btn btn-default page-nav-btn\"><i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log</span></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><div id=\"log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"log-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log</span></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><div id=\"log-graph-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"log-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 96 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -71521,7 +71365,7 @@
 
 
 /***/ },
-/* 97 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

@@ -9,194 +9,228 @@ body {
 a:hover {
   cursor: pointer;
 }
+
 /*-----------------------------------------------------------------------------
 Content
 -----------------------------------------------------------------------------*/
 
-/*
-Content padding, to pad body from fixed navbar.
-*/
+// Content padding, to pad body from fixed navbar.
 
 .header {
   height: 30px;
 }
+
 .content {
-  border: double 3px lightgrey;
-  min-height: 250px;
+  border:           double 3px lightgrey;
+  min-height:       250px;
   background-color: white;
 }
-/*
-Change margin if viewport gets smaller.
-*/
+
+// Change margin if viewport gets smaller.
+
 @media (min-width: 1200px) {
   .content {
-    margin: 50px 150px 0;
+    margin:  50px 150px 0;
     padding: 30px 90px 30px;
   }
 }
+
 @media (min-device-width: 800px) and (max-width: 1200px) {
   .content {
-    margin: 50px 50px 0;
+    margin:  50px 50px 0;
     padding: 30px 50px 30px;
   }
 }
+
 @media (max-width: 767px) {
   .content {
-    margin: 50px 10px 0;
+    margin:  50px 10px 0;
     padding: 30px 15px 30px;
   }
 }
+
 /*-----------------------------------------------------------------------------
 Footer
 -----------------------------------------------------------------------------*/
+
 .footer {
   text-align: center;
   margin-top: 20px;
-  padding: 0 0 0;
+  padding:    0 0 0;
 }
+
 /*-----------------------------------------------------------------------------
 Top Nav Bar
+
 -----------------------------------------------------------------------------*/
-/*
-Vertical divider for nav bar.
-*/
+
+// Vertical divider for nav bar.
+
 .nav-icon {
-  height: 20px;
+  height:      20px;
   line-height: 20px;
 }
 
-/*
-Vertical divider for nav bar.
-*/
+// Vertical divider for nav bar.
+
 .nav-divider-vertical {
-  height: 50px;
-  margin: 0 4px;
-  border-left: 3px solid #F2F2F2;
+  height:       50px;
+  margin:       0 4px;
+  border-left:  3px solid #F2F2F2;
   border-right: 3px solid #FFF;
 }
-/*
-Collapsible menu
-*/
+
+// Collapsible menu
+
 #nav-collapse-menu li:hover {
   background-color: lightgrey;
 }
+
 /*-----------------------------------------------------------------------------
 Page nav
 -----------------------------------------------------------------------------*/
+
 .page-nav-btn {
-  width: 70px;
-  height: 35px;
+  width:      70px;
+  height:     35px;
   text-align: center;
 }
+
 /*-----------------------------------------------------------------------------
 Left Sliding Menu
 -----------------------------------------------------------------------------*/
+
 .my-menu {
   box-shadow: none;
-  z-index: 2000;
+  z-index:    2000;
 }
+
 /*-----------------------------------------------------------------------------
 Multiselect
 -----------------------------------------------------------------------------*/
+
 .multiselect-button {
-  color: black;
+  color:            black;
   background-color: white;
-  box-shadow: none;
-  text-align: left;
-  /*
-    padding-left:     13px;
-*/
-  border: solid 1px lightgray;
-  border-radius: 4px;
+  box-shadow:       none;
+  text-align:       left;
+  border:           solid 1px lightgray;
+  border-radius:    4px;
 }
+
 /*-----------------------------------------------------------------------------
 Form
 -----------------------------------------------------------------------------*/
+
 .input-group-addon {
-  color: grey;
+  color:            grey;
   background-color: whitesmoke;
 }
+
 /*-----------------------------------------------------------------------------
 Home
 -----------------------------------------------------------------------------*/
+
 #home-list li:hover {
-  cursor: pointer;
+  cursor:           pointer;
   background-color: #FFFFFF;
   background-color: rgba(0, 0, 0, 0.1);
 }
+
 /*-----------------------------------------------------------------------------
 Exercise
 -----------------------------------------------------------------------------*/
+
 .exercise-table-view tbody td {
   cursor: pointer;
 }
+
 .exercise-select {
-  min-width: 25px;
+  min-width:  25px;
   text-align: center;
 }
+
 #exercise-back-home {
   min-width: 70px;
 }
+
 /*-----------------------------------------------------------------------------
 Strength
 -----------------------------------------------------------------------------*/
+
 #strength-back {
   min-width: 70px;
 }
+
 #strength-modal-date {
   cursor: pointer;
 }
+
 #strength-modal-date-btn {
-  color: white;
+  color:  white;
   cursor: pointer;
 }
+
 #strength-modal-time-btn {
-  color: white;
+  color:  white;
   cursor: pointer;
 }
+
 #strength-table-view tbody tr {
   cursor: pointer;
 }
+
 #strength-table-null {
   text-align: center;
 }
+
 #strength-graph {
   min-width: 70px;
 }
+
 #strength-paginate-list {
-  width: 100%;
+  width:           100%;
   list-style-type: none;
-  margin: auto;
-  white-space: nowrap;
+  margin:          auto;
+  white-space:     nowrap;
 }
+
 /*-----------------------------------------------------------------------------
 Loader Icon
 -----------------------------------------------------------------------------*/
+
 .locder-icon {
-  color: #FFFFFF;
-  color: rgba(0, 0, 0, 0.3);
+  color:     #FFFFFF;
+  color:     rgba(0, 0, 0, 0.3);
   font-size: 250px;
-  z-index: 1000;
+  z-index:   1000;
 }
+
 .page-header {
-  font-weight: 600;
+  font-weight:    600;
   letter-spacing: 3px;
 }
+
 .badge-color {
   background-color: dodgerblue;
 }
+
 .noselect {
   -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
-  -khtml-user-select: none;
-  /* Konqueror */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* IE/Edge */
-  user-select: none;
+  -webkit-user-select:   none;
+  -khtml-user-select:    none;
+  -moz-user-select:      none;
+  -ms-user-select:       none;
+  user-select:           none;
+}
+
+.date-navigate-btn{
+  height: 33px;
+}
+
+.btn-full-width{
+  display: block;
+  width:   100%;
 }
 
 /*-----------------------------------------------------------------------------

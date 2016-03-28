@@ -61,7 +61,8 @@ module.post = (req, res) ->
         muscle:   req.body.muscle
         exercise: req.body.exercise
         note:     req.body.note
-        session:  req.body.session
+        rep:      req.body.rep
+        weight:   req.body.weight
         user:     req.session.user._id
       , (err, result) ->
         return callback err if err

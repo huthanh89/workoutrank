@@ -14,6 +14,10 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
+  bindings:
+    '#home-log-count': 'logCount'
+    '#home-exercise-count': 'exerciseCount'
+
   events:
 
     'click #home-exercise': ->
@@ -59,6 +63,11 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+
+  onRender: ->
+    @stickit()
+    return
+
 
 #-------------------------------------------------------------------------------
 # Exports

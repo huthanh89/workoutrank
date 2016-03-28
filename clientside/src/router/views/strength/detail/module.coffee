@@ -32,10 +32,6 @@ class Model extends Backbone.Model
     else
       @url = '/api/strength'
 
-  defaults:
-    count:   1
-    session: []
-
   parse: (response) -> response
 
 #-------------------------------------------------------------------------------
@@ -118,22 +114,7 @@ class View extends Marionette.LayoutView
         dateB = moment(@model.get('date')).startOf('day')
         return dateA.isSame(dateB)
 
-      sessions = []
-      index    = 0
-
-      for model in models
-        for session, index in model.get('session')
-
-          index = index + 1
-          console.log index
-
-          sessions.push {
-            set:    index
-            rep:    session.rep
-            weight: session.weight
-          }
-
-      @tableCollection = new Backbone.Collection(sessions)
+      @tableCollection = new Backbone.Collection(models)
 
       @showChildView 'table', new TableView
         collection: @tableCollection

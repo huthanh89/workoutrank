@@ -17,8 +17,10 @@ StrengthSchema = new mongoose.Schema
     type: Number
   note:
     type: String
-  session:
-    type: Array
+  rep:
+    type: Number
+  weight:
+    type: Number
   exercise:
     type: mongoose.Schema.ObjectId
   user:

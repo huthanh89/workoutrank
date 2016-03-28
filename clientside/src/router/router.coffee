@@ -147,7 +147,17 @@ class Router extends Marionette.AppRouter
 
   home: ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Home.View()
+
+    model = new Home.Model()
+
+    model.fetch
+      success: (model) =>
+        @rootView.content.show new Home.View
+          model: model
+        return
+      error: ->
+        console.log 'error'
+        return
     return
 
   profile: ->

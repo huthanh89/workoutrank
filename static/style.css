@@ -11426,9 +11426,6 @@ a:hover {
 /*-----------------------------------------------------------------------------
 Content
 -----------------------------------------------------------------------------*/
-/*
-Content padding, to pad body from fixed navbar.
-*/
 .header {
   height: 30px;
 }
@@ -11437,9 +11434,6 @@ Content padding, to pad body from fixed navbar.
   min-height: 250px;
   background-color: white;
 }
-/*
-Change margin if viewport gets smaller.
-*/
 @media (min-width: 1200px) {
   .content {
     margin: 50px 150px 0;
@@ -11468,26 +11462,18 @@ Footer
 }
 /*-----------------------------------------------------------------------------
 Top Nav Bar
+
 -----------------------------------------------------------------------------*/
-/*
-Vertical divider for nav bar.
-*/
 .nav-icon {
   height: 20px;
   line-height: 20px;
 }
-/*
-Vertical divider for nav bar.
-*/
 .nav-divider-vertical {
   height: 50px;
   margin: 0 4px;
   border-left: 3px solid #F2F2F2;
   border-right: 3px solid #FFF;
 }
-/*
-Collapsible menu
-*/
 #nav-collapse-menu li:hover {
   background-color: lightgrey;
 }
@@ -11514,9 +11500,6 @@ Multiselect
   background-color: white;
   box-shadow: none;
   text-align: left;
-  /*
-    padding-left:     13px;
-*/
   border: solid 1px lightgray;
   border-radius: 4px;
 }
@@ -11598,16 +11581,18 @@ Loader Icon
 }
 .noselect {
   -webkit-touch-callout: none;
-  /* iOS Safari */
   -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
   -khtml-user-select: none;
-  /* Konqueror */
   -moz-user-select: none;
-  /* Firefox */
   -ms-user-select: none;
-  /* IE/Edge */
   user-select: none;
+}
+.date-navigate-btn {
+  height: 33px;
+}
+.btn-full-width {
+  display: block;
+  width: 100%;
 }
 /*-----------------------------------------------------------------------------
                               End of Document

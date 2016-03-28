@@ -6,7 +6,6 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-SetView      = require './set/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -20,29 +19,12 @@ require 'backbone.stickit'
 require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
-# Model
-#   contain data for each set in a session
-#-------------------------------------------------------------------------------
-
-class Model extends Backbone.Model
-
-  idAttribute: '_id'
-
-  defaults:
-    index:  1
-    weight: 0
-    rep:    1
-
-#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.ItemView
 
   template: viewTemplate
-
-  regions:
-    set: '#strength-modal-set-view'
 
   ui:
     dialog: '.modal'
@@ -55,17 +37,15 @@ class View extends Marionette.LayoutView
 
   bindings:
 
-    '#strength-modal-note': 'note'
+    '.strength-modal-rep':
+      observe: 'rep'
+      onSet: (value) -> parseInt(value)
 
-    '#strength-modal-addset':
-      observe: 'count'
-      onSet: (value) ->
-        if value > @sessionCollection.length
-          @sessionCollection.add new Model
-            index: parseInt(value)
-        else
-          @sessionCollection.remove(@sessionCollection.last())
-        return
+    '.strength-modal-weight':
+      observe: 'weight'
+      onSet: (value) -> parseInt(value)
+
+    '#strength-modal-note': 'note'
 
   events:
 
@@ -85,10 +65,6 @@ class View extends Marionette.LayoutView
       @model.set
         date: moment(new Date("#{date} #{time}")).format()
 
-      @ui.form.validator('validate')
-      @model.set 'session', @sessionCollection.toJSON()
-      @ui.form.validator('validate')
-
       @model.save {},
         success: =>
           @ui.dialog.modal('hide')
@@ -102,11 +78,6 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-
-    model = new Model {},
-      id: @model.id
-
-    @sessionCollection = new Backbone.Collection(model)
 
   onRender: ->
 
@@ -135,11 +106,6 @@ class View extends Marionette.LayoutView
 
     @ui.dialog.modal()
 
-    return
-
-  onShow: ->
-    @showChildView 'set', new SetView
-      collection: @sessionCollection
     return
 
   onBeforeDestroy: ->

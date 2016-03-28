@@ -2,16 +2,6 @@
     .col-xs-12
         #strength-modal-view
 .row
-    .col-xs-12
-        button.btn.btn-default.page-nav-btn#strength-back
-            i.fa.fa-lg.fa-home
-        .pull-right
-            button.btn.btn-default.page-nav-btn#strength-add
-                i.fa.fa-lg.fa-book
-                = ' '
-                i.fa.fa.fa-plus
-br
-.row
     .col-sm-12
         span.lead.page-header
             i.fa.fa-fw.fa-lg.fa-shield
@@ -19,12 +9,19 @@ br
             | Strength Workout
 br
 .row
-    .col-lg-6.col-md-6.col-sm-6.col-xs-12.pull-right
+    .col-sm-6
         #strength-filter-view
 br
 .row
-    .col-sm-12
+    .col-sm-6
         #strength-table-view
 .row
-    .col-sm-12
+    .col-sm-6
         #strength-paginate-view
+br
+.row
+    .col-sm-6
+        button.btn.btn-primary.btn-full-width#strength-add
+            i.fa.fa-lg.fa-book
+            = ' '
+            i.fa.fa.fa-plus

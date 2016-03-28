@@ -22,9 +22,7 @@ require 'backbone.stickit'
 #-------------------------------------------------------------------------------
 
 class NullView extends Marionette.CompositeView
-
   tagName: 'tr'
-
   template: nullTemplate
 
 #-------------------------------------------------------------------------------
@@ -38,8 +36,13 @@ class ItemView extends Marionette.CompositeView
   template: itemTemplate
 
   bindings:
-    '.strength-table-td-set':    'set'
-    '.strength-table-td-rep':    'rep'
+
+    '.strength-table-td-time':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('h:mm A')
+
+    '.strength-table-td-rep': 'rep'
+
     '.strength-table-td-weight': 'weight'
 
   onRender: ->

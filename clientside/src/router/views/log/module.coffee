@@ -29,26 +29,28 @@ class Collection extends Backbone.Collection
   parse: (response) ->
     result = []
 
-    grouped = _.groupBy response, (record) -> record.muscle
+    grouped = _.groupBy response, (record) -> record.exercise
 
-    for key, records of grouped
-
-      data = []
-      console.log key, records
+    for exercise, records of grouped
+      weightData = []
+      repData    = []
 
       for record in records
+        x = moment(record.date).valueOf()
 
-        data.push _.map record.session, (set) ->
-          return {
-            x: moment(record.date).valueOf()
-            y: set.weight
-          }
+        weightData.push
+          x: x
+          y: record.weight
+
+        repData.push
+          x: x
+          y: record.rep
 
       result.push
-        muscle: parseInt(key)
-        data:   data
-
-    console.log 'RESULT', result
+        exercise:   exercise
+        name:       records[0].name
+        weightData: weightData
+        repData:    repData
 
     return result
 
@@ -78,9 +80,6 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
-
-    console.log @collection
-
     @showChildView 'graph', new GraphView
       collection: @collection
 
