@@ -70351,21 +70351,22 @@
 	  View.prototype.ui = {
 	    dialog: '.modal',
 	    type: '#strength-modal-type',
+	    rep: '#strength-modal-rep',
+	    weight: '#strength-modal-weight',
 	    submit: '#strength-modal-submit',
-	    addset: '#strength-modal-addset',
 	    date: '#strength-modal-date',
 	    time: '#strength-modal-time',
 	    form: '#strength-modal-form'
 	  };
 
 	  View.prototype.bindings = {
-	    '.strength-modal-rep': {
+	    '#strength-modal-rep': {
 	      observe: 'rep',
 	      onSet: function(value) {
 	        return parseInt(value);
 	      }
 	    },
-	    '.strength-modal-weight': {
+	    '#strength-modal-weight': {
 	      observe: 'weight',
 	      onSet: function(value) {
 	        return parseInt(value);
@@ -70407,7 +70408,13 @@
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.ui.addset.TouchSpin({
+	    this.ui.rep.TouchSpin({
+	      buttondown_class: 'btn btn-info',
+	      buttonup_class: 'btn btn-info',
+	      min: 1,
+	      max: 20
+	    });
+	    this.ui.weight.TouchSpin({
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
 	      min: 1,
@@ -70431,7 +70438,8 @@
 	  View.prototype.onBeforeDestroy = function() {
 	    this.ui.form.validator('destroy');
 	    this.ui.date.datepicker('destroy');
-	    this.ui.addset.TouchSpin('destroy');
+	    this.ui.rep.TouchSpin('destroy');
+	    this.ui.weight.TouchSpin('destroy');
 	    this.unstickit();
 	  };
 
@@ -70453,7 +70461,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-weight\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input placeholder=\"0\" class=\"form-control strength-modal-rep\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-weight\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-rep\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

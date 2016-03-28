@@ -29,19 +29,20 @@ class View extends Marionette.ItemView
   ui:
     dialog: '.modal'
     type:   '#strength-modal-type'
+    rep:    '#strength-modal-rep'
+    weight: '#strength-modal-weight'
     submit: '#strength-modal-submit'
-    addset: '#strength-modal-addset'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
     form:   '#strength-modal-form'
 
   bindings:
 
-    '.strength-modal-rep':
+    '#strength-modal-rep':
       observe: 'rep'
       onSet: (value) -> parseInt(value)
 
-    '.strength-modal-weight':
+    '#strength-modal-weight':
       observe: 'weight'
       onSet: (value) -> parseInt(value)
 
@@ -81,7 +82,13 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.addset.TouchSpin
+    @ui.rep.TouchSpin
+      buttondown_class: 'btn btn-info'
+      buttonup_class:   'btn btn-info'
+      min:              1
+      max:              20
+
+    @ui.weight.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1
@@ -97,7 +104,7 @@ class View extends Marionette.ItemView
 
     @ui.time
     .timepicker
-      template:   'dropdown'
+      template: 'dropdown'
     .timepicker('setTime', moment().format('HH:mm:ss'))
 
     @stickit()
@@ -111,7 +118,8 @@ class View extends Marionette.ItemView
   onBeforeDestroy: ->
     @ui.form.validator('destroy')
     @ui.date.datepicker('destroy')
-    @ui.addset.TouchSpin('destroy')
+    @ui.rep.TouchSpin('destroy')
+    @ui.weight.TouchSpin('destroy')
     @unstickit()
     return
 
