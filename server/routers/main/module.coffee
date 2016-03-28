@@ -55,15 +55,21 @@ Log      = require './log/module'
 
 router.get  '/api/profile', Profile.get
 
+# Get complete exercise belonging to a user.
 router.get  '/api/exercise', Exercise.get
+# Post any exercise for an user.
 router.post '/api/exercise', Exercise.post
-
+# Get all workout sessions of an exercise.
 router.post '/api/strength', Strength.Detail.post
+# Post a workout session.
+router.post '/api/strength', Strength.Detail.post
+# Get a workout session.
 router.get '/api/strength/:sid', Strength.Detail.get
+# Edit an workout session.
 router.put '/api/strength/:sid', Strength.Detail.put
-
+# Get all workout session for an exercise.
 router.get '/api/strength/:sid/log', Strength.Log.get
-
+# Get all logs.
 router.get '/api/log', Log.get
 
 #-------------------------------------------------------------------------------

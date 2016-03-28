@@ -2,10 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -15,6 +16,16 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Null View
+#-------------------------------------------------------------------------------
+
+class NullView extends Marionette.CompositeView
+
+  tagName: 'tr'
+
+  template: nullTemplate
 
 #-------------------------------------------------------------------------------
 # View
@@ -27,7 +38,9 @@ class ItemView extends Marionette.CompositeView
   template: itemTemplate
 
   bindings:
-    '.strength-table-td-name': 'name'
+    '.strength-table-td-set':    'set'
+    '.strength-table-td-rep':    'rep'
+    '.strength-table-td-weight': 'weight'
 
   onRender: ->
     @stickit()
@@ -43,11 +56,9 @@ class View extends Marionette.CompositeView
 
   childView: ItemView
 
-  template: viewTemplate
+  emptyView: NullView
 
-  ui:
-    name: '#strength-name'
-    type: '#strength-type'
+  template: viewTemplate
 
   constructor: ->
     super

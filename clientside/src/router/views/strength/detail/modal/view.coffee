@@ -46,7 +46,6 @@ class View extends Marionette.LayoutView
 
   ui:
     dialog: '.modal'
-    name:   '#strength-modal-name'
     type:   '#strength-modal-type'
     submit: '#strength-modal-submit'
     addset: '#strength-modal-addset'
@@ -55,8 +54,6 @@ class View extends Marionette.LayoutView
     form:   '#strength-modal-form'
 
   bindings:
-
-    '#strength-modal-name': 'name'
 
     '#strength-modal-note': 'note'
 

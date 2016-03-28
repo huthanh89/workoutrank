@@ -200,23 +200,18 @@ class Router extends Marionette.AppRouter
 
       (model, callback) ->
 
-        return callback null, model
+        logs = new Collection [],
+          id: strengthID
 
-        ###
-        collection = new Collection()
-
-        collection.fetch
+        logs.fetch
           success: (collection) -> callback null, model, collection
           error: (err) -> callback err
 
-###
         return
 
     ], (err, model, collection) ->
 
       console.log 'Error:', err if err
-
-      console.log '---->', model, collection
 
       region.show new View
         model:      model

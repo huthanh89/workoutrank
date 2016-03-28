@@ -14,7 +14,7 @@ Exercise = mongoose.model('exercise')
 
 #-------------------------------------------------------------------------------
 # Get
-#   Return exercise model, which matches uid
+#   Return exercise model that belongs a user.
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->

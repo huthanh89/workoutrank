@@ -6,7 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 ModalView    = require './modal/view'
-InputView    = require './input/view'
+DateView     = require './date/view'
 TableView    = require './table/view'
 viewTemplate = require './view.jade'
 
@@ -15,6 +15,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.paginator'
+require 'datepicker'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -49,27 +50,37 @@ class Collection extends Backbone.PageableCollection
 
   mode: 'client'
 
+  constructor: (attributes, options) ->
+    super
+    @url = "/api/strength/#{options.id}/log"
+
   state:
     currentPage: 1
     pageSize:    10
 
   comparator: (item) -> return -item.get('date')
 
-  parseRecords: (response) -> response[0].strength
+  parseRecords: (response) ->
+    @date   = response.date
+    @muscle = response.muscle
+    @name   = response.name
+    return response.log
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
 class View extends Marionette.LayoutView
+
   template: viewTemplate
 
   regions:
     modal: '#strength-modal-view'
-    input: '#strength-input-view'
+    date:  '#strength-date-view'
     table: '#strength-table-view'
 
   events:
+
     'click #strength-back': ->
       @rootChannel.request 'strength'
       return
@@ -99,26 +110,48 @@ class View extends Marionette.LayoutView
 
     @model = new Model attributes
 
+    @tableCollection = @collection
+
+    @listenTo @model, 'change:date', =>
+      models = @collection.fullCollection.filter (model) =>
+        dateA = moment(model.get('date')).startOf('day')
+        dateB = moment(@model.get('date')).startOf('day')
+        return dateA.isSame(dateB)
+
+      sessions = []
+      index    = 0
+
+      for model in models
+        for session, index in model.get('session')
+
+          index = index + 1
+          console.log index
+
+          sessions.push {
+            set:    index
+            rep:    session.rep
+            weight: session.weight
+          }
+
+      @tableCollection = new Backbone.Collection(sessions)
+
+      @showChildView 'table', new TableView
+        collection: @tableCollection
+
+      return
+
   onRender: ->
     @stickit()
     return
 
   onShow: ->
 
-    console.log 'collection', @collection
-
-    #@showChildView 'input', new InputView
-    #  model:      @model
-    #  collection: @collection
-
-    ###
-    @showChildView 'table', new TableView
-      #collection: @collection
-      collection: new Backbone.Collection()
+    @showChildView 'date', new DateView
       model: @model
-###
 
-    #@addWorkout()
+    @showChildView 'table', new TableView
+      collection: @tableCollection
+
     return
 
   addWorkout: ->
