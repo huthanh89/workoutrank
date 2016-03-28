@@ -61377,7 +61377,8 @@
 	        name: records[0].name,
 	        date: pr.date,
 	        max: pr.weight,
-	        avg: Math.round(_.mean(weights)) / 100
+	        avg: Math.round(_.mean(weights)) / 100,
+	        count: records.length
 	      });
 	    }
 	    return result;
@@ -61478,7 +61479,8 @@
 	        return moment(value).format('MM/DD/YY');
 	      }
 	    },
-	    '.stat-table-td-avg': 'avg'
+	    '.stat-table-td-avg': 'avg',
+	    '.stat-table-td-count': 'count'
 	  };
 
 	  ItemView.prototype.onRender = function() {
@@ -65231,7 +65233,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"stat-table-td-name\"></td><td class=\"stat-table-td-max\"></td><td class=\"stat-table-td-date\"></td><td class=\"stat-table-td-avg\"></td>");;return buf.join("");
+	buf.push("<td class=\"stat-table-td-name\"></td><td class=\"stat-table-td-max\"></td><td class=\"stat-table-td-date\"></td><td class=\"stat-table-td-avg\"></td><td class=\"stat-table-td-count\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -65245,7 +65247,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Workout</b></td><td><b>P.R</b></td><td><b>P.R Date</b></td><td><b>Avg</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<br><div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Workout</b></td><td><b>P.R</b></td><td><b>Date</b></td><td><b>Avg</b></td><td><b>Entries</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

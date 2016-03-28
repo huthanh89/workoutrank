@@ -47,6 +47,8 @@ class ItemView extends Marionette.CompositeView
 
     '.stat-table-td-avg': 'avg'
 
+    '.stat-table-td-count': 'count'
+
   onRender: ->
     @stickit()
     return

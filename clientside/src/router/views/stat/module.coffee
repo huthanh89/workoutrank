@@ -37,11 +37,13 @@ class Collection extends Backbone.Collection
     for exercise, records of grouped
       pr      = _.max records, (record) -> record.weight
       weights = _.map(records, (record) -> record.weight)
+
       result.push
-        name: records[0].name
-        date: pr.date
-        max:  pr.weight
-        avg:  Math.round(_.mean(weights)) / 100
+        name:  records[0].name
+        date:  pr.date
+        max:   pr.weight
+        avg:   Math.round(_.mean(weights)) / 100
+        count: records.length
 
     return result
 
