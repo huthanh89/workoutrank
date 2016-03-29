@@ -5,7 +5,7 @@
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-ModalView    = require './modal/view'
+Modal        = require './modal/module'
 DateView     = require './date/view'
 TableView    = require './table/view'
 viewTemplate = require './view.jade'
@@ -75,6 +75,9 @@ class View extends Marionette.LayoutView
     date:  '#strength-date-view'
     table: '#strength-table-view'
 
+  bindings:
+    '#strength-header': 'name'
+
   events:
 
     'click #strength-back': ->
@@ -86,11 +89,14 @@ class View extends Marionette.LayoutView
       return
 
     'click #strength-detail-add': ->
-      @addWorkout()
+      @showChildView 'modal', new Modal.View
+        collection: @collection
+        model:      new Modal.Model @model.attributes
+        date:       @model.get('date')
       return
 
-  bindings:
-    '#strength-header': 'name'
+  collectionEvents:
+    sync: 'updateTable'
 
   constructor: (options) ->
     super
@@ -109,17 +115,21 @@ class View extends Marionette.LayoutView
     @tableCollection = @collection
 
     @listenTo @model, 'change:date', =>
-      models = @collection.fullCollection.filter (model) =>
-        dateA = moment(model.get('date')).startOf('day')
-        dateB = moment(@model.get('date')).startOf('day')
-        return dateA.isSame(dateB)
-
-      @tableCollection = new Backbone.Collection(models)
-
-      @showChildView 'table', new TableView
-        collection: @tableCollection
-
+      @updateTable()
       return
+
+  updateTable: ->
+    models = @collection.fullCollection.filter (model) =>
+      dateA = moment(model.get('date')).startOf('day')
+      dateB = moment(@model.get('date')).startOf('day')
+      return dateA.isSame(dateB)
+
+    @tableCollection = new Backbone.Collection(models)
+
+    @showChildView 'table', new TableView
+      collection: @tableCollection
+
+    return
 
   onRender: ->
     @stickit()
@@ -133,12 +143,6 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new TableView
       collection: @tableCollection
 
-    return
-
-  addWorkout: ->
-    @showChildView 'modal', new ModalView
-      collection: @collection
-      model:      @model
     return
 
 #-------------------------------------------------------------------------------

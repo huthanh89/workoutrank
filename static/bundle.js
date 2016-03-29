@@ -74186,7 +74186,7 @@
 /* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, DateView, Marionette, ModalView, Model, TableView, View, moment, viewTemplate,
+	var Backbone, Collection, DateView, Marionette, Modal, Model, TableView, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74196,7 +74196,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	ModalView = __webpack_require__(79);
+	Modal = __webpack_require__(79);
 
 	DateView = __webpack_require__(81);
 
@@ -74275,6 +74275,10 @@
 	    table: '#strength-table-view'
 	  };
 
+	  View.prototype.bindings = {
+	    '#strength-header': 'name'
+	  };
+
 	  View.prototype.events = {
 	    'click #strength-back': function() {
 	      this.rootChannel.request('strength');
@@ -74283,12 +74287,16 @@
 	      this.rootChannel.request('strength:log', this.strengthID);
 	    },
 	    'click #strength-detail-add': function() {
-	      this.addWorkout();
+	      this.showChildView('modal', new Modal.View({
+	        collection: this.collection,
+	        model: new Modal.Model(this.model.attributes),
+	        date: this.model.get('date')
+	      }));
 	    }
 	  };
 
-	  View.prototype.bindings = {
-	    '#strength-header': 'name'
+	  View.prototype.collectionEvents = {
+	    sync: 'updateTable'
 	  };
 
 	  function View(options) {
@@ -74304,20 +74312,26 @@
 	    this.tableCollection = this.collection;
 	    this.listenTo(this.model, 'change:date', (function(_this) {
 	      return function() {
-	        var models;
-	        models = _this.collection.fullCollection.filter(function(model) {
-	          var dateA, dateB;
-	          dateA = moment(model.get('date')).startOf('day');
-	          dateB = moment(_this.model.get('date')).startOf('day');
-	          return dateA.isSame(dateB);
-	        });
-	        _this.tableCollection = new Backbone.Collection(models);
-	        _this.showChildView('table', new TableView({
-	          collection: _this.tableCollection
-	        }));
+	        _this.updateTable();
 	      };
 	    })(this));
 	  }
+
+	  View.prototype.updateTable = function() {
+	    var models;
+	    models = this.collection.fullCollection.filter((function(_this) {
+	      return function(model) {
+	        var dateA, dateB;
+	        dateA = moment(model.get('date')).startOf('day');
+	        dateB = moment(_this.model.get('date')).startOf('day');
+	        return dateA.isSame(dateB);
+	      };
+	    })(this));
+	    this.tableCollection = new Backbone.Collection(models);
+	    this.showChildView('table', new TableView({
+	      collection: this.tableCollection
+	    }));
+	  };
 
 	  View.prototype.onRender = function() {
 	    this.stickit();
@@ -74329,13 +74343,6 @@
 	    }));
 	    this.showChildView('table', new TableView({
 	      collection: this.tableCollection
-	    }));
-	  };
-
-	  View.prototype.addWorkout = function() {
-	    this.showChildView('modal', new ModalView({
-	      collection: this.collection,
-	      model: this.model
 	    }));
 	  };
 
@@ -74354,7 +74361,7 @@
 /* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Marionette, View, _, moment, viewTemplate,
+	var Backbone, Marionette, Model, View, _, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74377,6 +74384,29 @@
 	__webpack_require__(19);
 
 	__webpack_require__(66);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = '/api/strength';
+
+	  Model.prototype.defaults = {
+	    date: new Date(),
+	    name: '',
+	    exercise: '',
+	    rep: 0,
+	    weight: 0,
+	    muscle: 0,
+	    note: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74424,7 +74454,9 @@
 	      this.model.set({
 	        date: moment(new Date(date + " " + time)).format()
 	      });
-	      this.model.save({}, {
+	      this.collection.create(this.model.attributes, {
+	        wait: true,
+	        at: 0,
 	        success: (function(_this) {
 	          return function() {
 	            _this.ui.dialog.modal('hide');
@@ -74482,7 +74514,9 @@
 
 	})(Marionette.ItemView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.View = View;
 
 
 /***/ },
@@ -74622,7 +74656,7 @@
 
 	  return NullView;
 
-	})(Marionette.CompositeView);
+	})(Marionette.ItemView);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
@@ -74652,7 +74686,7 @@
 
 	  return ItemView;
 
-	})(Marionette.CompositeView);
+	})(Marionette.ItemView);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74688,7 +74722,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td colspan=\"3\"><span class=\"lead\">No workout session on this date.</span></td>");;return buf.join("");
+	buf.push("<td colspan=\"4\"><span class=\"lead\">No workout session on this date.</span></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -74702,7 +74736,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-time\"></td><td class=\"strength-table-td-rep\"></td><td class=\"strength-table-td-weight\"></td>");;return buf.join("");
+	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-time\"></td><td class=\"strength-table-td-rep\"></td><td class=\"strength-table-td-weight\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -74716,7 +74750,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Time</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Time</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -75380,7 +75414,7 @@
 	    '#log-table-date': {
 	      observe: 'date',
 	      onGet: function(value) {
-	        return moment(value).format('YYYY-MM-DD');
+	        return moment(value).format('MM/DD/YY');
 	      }
 	    },
 	    '#log-table-weight-max': {
@@ -75537,7 +75571,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"log-table-name\"></td></tr><tr><td>Muscle</td><td id=\"log-table-muscle\"></td></tr><tr><td>Started</td><td id=\"log-table-date\"></td></tr><tr><td>Weight Max</td><td id=\"log-table-weight-max\"></td></tr><tr><td>Weight Avg</td><td id=\"log-table-weight-avg\"></td></tr><tr><td>Weight Min</td><td id=\"log-table-weight-min\"></td></tr><tr><td>Rep Max</td><td id=\"log-table-rep-max\"></td></tr><tr><td>Rep Avg</td><td id=\"log-table-rep-avg\"></td></tr><tr><td>Rep Min</td><td id=\"log-table-rep-min\"></td></tr></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Stats</b></td></tr></thead><tbody><tr><td>Weight Max</td><td id=\"log-table-weight-max\"></td></tr><tr><td>Weight Avg</td><td id=\"log-table-weight-avg\"></td></tr><tr><td>Weight Min</td><td id=\"log-table-weight-min\"></td></tr><tr><td>Rep Max</td><td id=\"log-table-rep-max\"></td></tr><tr><td>Rep Avg</td><td id=\"log-table-rep-avg\"></td></tr><tr><td>Rep Min</td><td id=\"log-table-rep-min\"></td></tr><tr><td>Started</td><td id=\"log-table-date\"></td></tr></tbody></table></div></div><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"log-table-name\"></td></tr><tr><td>Muscle</td><td id=\"log-table-muscle\"></td></tr></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

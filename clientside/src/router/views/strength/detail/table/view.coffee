@@ -21,7 +21,7 @@ require 'backbone.stickit'
 # Null View
 #-------------------------------------------------------------------------------
 
-class NullView extends Marionette.CompositeView
+class NullView extends Marionette.ItemView
   tagName: 'tr'
   template: nullTemplate
 
@@ -29,7 +29,7 @@ class NullView extends Marionette.CompositeView
 # View
 #-------------------------------------------------------------------------------
 
-class ItemView extends Marionette.CompositeView
+class ItemView extends Marionette.ItemView
 
   tagName: 'tr'
 

@@ -42,7 +42,7 @@ class View extends Marionette.ItemView
 
     '#log-table-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('YYYY-MM-DD')
+      onGet: (value) -> moment(value).format('MM/DD/YY')
 
     '#log-table-weight-max':
       observe: 'weightMax'

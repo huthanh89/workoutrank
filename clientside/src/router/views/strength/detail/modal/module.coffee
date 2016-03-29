@@ -19,6 +19,23 @@ require 'backbone.stickit'
 require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  url: '/api/strength'
+
+  defaults:
+    date:     new Date()
+    name:     ''
+    exercise: ''
+    rep:      0
+    weight:   0
+    muscle:   0
+    note:     ''
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -66,7 +83,9 @@ class View extends Marionette.ItemView
       @model.set
         date: moment(new Date("#{date} #{time}")).format()
 
-      @model.save {},
+      @collection.create @model.attributes,
+        wait: true
+        at:   0
         success: =>
           @ui.dialog.modal('hide')
           return
@@ -127,6 +146,7 @@ class View extends Marionette.ItemView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+module.exports.Model = Model
+module.exports.View  = View
 
 #-------------------------------------------------------------------------------
