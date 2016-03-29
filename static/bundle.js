@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(98);
+	__webpack_require__(101);
 
-	__webpack_require__(99);
+	__webpack_require__(102);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -75069,7 +75069,7 @@
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, GraphView, Marionette, Model, View, moment, viewTemplate,
+	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -75081,7 +75081,9 @@
 
 	GraphView = __webpack_require__(95);
 
-	viewTemplate = __webpack_require__(97);
+	Table = __webpack_require__(97);
+
+	viewTemplate = __webpack_require__(100);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75090,9 +75092,13 @@
 	    return Model.__super__.constructor.apply(this, arguments);
 	  }
 
+	  Model.prototype.idAttribute = 'exerciseID';
+
 	  Model.prototype.defaults = {
+	    exerciseID: '',
 	    name: '',
-	    data: []
+	    weightData: [],
+	    repData: []
 	  };
 
 	  return Model;
@@ -75107,6 +75113,8 @@
 	  }
 
 	  Collection.prototype.url = '/api/log';
+
+	  Collection.prototype.model = Model;
 
 	  Collection.prototype.parse = function(response) {
 	    var exercise, grouped, i, len, record, records, repData, result, weightData, x;
@@ -75131,10 +75139,12 @@
 	        });
 	      }
 	      result.push({
-	        exercise: exercise,
+	        exerciseID: exercise,
 	        name: records[0].name,
 	        weightData: weightData,
-	        repData: repData
+	        repData: repData,
+	        muscle: records[0].muscle,
+	        user: records[0].user
 	      });
 	    }
 	    return result;
@@ -75173,6 +75183,11 @@
 	    this.showChildView('graph', new GraphView({
 	      collection: this.collection
 	    }));
+	    this.showChildView('table', new Table.View({
+	      collection: this.collection,
+	      model: new Table.Model(),
+	      exerciseID: this.collection.at(0).id
+	    }));
 	  };
 
 	  return View;
@@ -75205,6 +75220,7 @@
 	seriesRepData = function(model) {
 	  return {
 	    name: 'Reps',
+	    yAxis: 0,
 	    data: model.get('repData')
 	  };
 	};
@@ -75212,6 +75228,7 @@
 	seriesWeightData = function(model) {
 	  return {
 	    name: 'Weight',
+	    yAxis: 1,
 	    data: model.get('weightData')
 	  };
 	};
@@ -75235,7 +75252,7 @@
 	    model = this.collection.at(0);
 	    this.chart = new Highstock.StockChart({
 	      chart: {
-	        type: 'areaspline',
+	        type: 'column',
 	        renderTo: this.ui.chart[0]
 	      },
 	      title: {
@@ -75261,8 +75278,11 @@
 	      },
 	      yAxis: [
 	        {
-	          lineWidth: 2,
+	          lineWidth: 1,
 	          opposite: false
+	        }, {
+	          lineWidth: 1,
+	          opposite: true
 	        }
 	      ],
 	      series: [seriesWeightData(model), seriesRepData(model)],
@@ -75305,6 +75325,225 @@
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	moment = __webpack_require__(42);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Data = __webpack_require__(98);
+
+	viewTemplate = __webpack_require__(99);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    exercise: '',
+	    muscle: 0,
+	    weightMin: 0,
+	    weightAvg: 0,
+	    weightMax: 0,
+	    repMin: 0,
+	    repAvg: 0,
+	    repMax: 0
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.bindings = {
+	    '#log-table-name': 'name',
+	    '#log-table-muscle': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    },
+	    '#log-table-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('YYYY-MM-DD');
+	      }
+	    },
+	    '#log-table-weight-max': {
+	      observe: 'weightMax'
+	    },
+	    '#log-table-weight-min': {
+	      observe: 'weightMin'
+	    },
+	    '#log-table-weight-avg': {
+	      observe: 'weightAvg'
+	    },
+	    '#log-table-rep-max': {
+	      observe: 'repMax'
+	    },
+	    '#log-table-rep-min': {
+	      observe: 'repMin'
+	    },
+	    '#log-table-rep-avg': {
+	      observe: 'repAvg'
+	    }
+	  };
+
+	  function View(options) {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'exerciseID');
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	    this.updateModel(this.exerciseID);
+	  };
+
+	  View.prototype.updateModel = function(exerciseID) {
+	    var model, rep, wieght;
+	    model = this.collection.get(exerciseID);
+	    wieght = this.reduce(model.get('weightData'));
+	    rep = this.reduce(model.get('repData'));
+	    this.model.set({
+	      name: model.get('name'),
+	      exerciseID: model.id,
+	      muscle: model.get('muscle'),
+	      weightMin: wieght.min,
+	      weightMax: wieght.max,
+	      weightAvg: wieght.avg,
+	      repMin: rep.min,
+	      repMax: rep.max,
+	      repAvg: rep.avg
+	    });
+	  };
+
+	  View.prototype.reduce = function(records) {
+	    var values;
+	    values = _.map(records, function(record) {
+	      return record.y;
+	    });
+	    return {
+	      min: this.min(values),
+	      max: this.max(values),
+	      avg: this.avg(values)
+	    };
+	  };
+
+	  View.prototype.min = function(values) {
+	    return _.min(values);
+	  };
+
+	  View.prototype.max = function(values) {
+	    return _.max(values);
+	  };
+
+	  View.prototype.avg = function(values) {
+	    return _.mean(values);
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports.Model = Model;
+
+	module.exports.View = View;
+
+
+/***/ },
+/* 98 */
+/***/ function(module, exports) {
+
+	var Muscles;
+
+	Muscles = [
+	  {
+	    value: 0,
+	    label: 'Abdominals'
+	  }, {
+	    value: 1,
+	    label: 'Arms'
+	  }, {
+	    value: 2,
+	    label: 'Back'
+	  }, {
+	    value: 3,
+	    label: 'Biceps'
+	  }, {
+	    value: 4,
+	    label: 'Calves'
+	  }, {
+	    value: 5,
+	    label: 'Chest'
+	  }, {
+	    value: 6,
+	    label: 'Forearms'
+	  }, {
+	    value: 7,
+	    label: 'Glutes'
+	  }, {
+	    value: 8,
+	    label: 'Hamstrings'
+	  }, {
+	    value: 9,
+	    label: 'Lats'
+	  }, {
+	    value: 10,
+	    label: 'Legs'
+	  }, {
+	    value: 11,
+	    label: 'Neck'
+	  }, {
+	    value: 12,
+	    label: 'Quadriceps'
+	  }, {
+	    value: 13,
+	    label: 'Shoulders'
+	  }, {
+	    value: 14,
+	    label: 'Traps'
+	  }, {
+	    value: 15,
+	    label: 'Triceps'
+	  }
+	];
+
+	exports.Muscles = Muscles;
+
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"log-table-name\"></td></tr><tr><td>Muscle</td><td id=\"log-table-muscle\"></td></tr><tr><td>Started</td><td id=\"log-table-date\"></td></tr><tr><td>Weight Max</td><td id=\"log-table-weight-max\"></td></tr><tr><td>Weight Avg</td><td id=\"log-table-weight-avg\"></td></tr><tr><td>Weight Min</td><td id=\"log-table-weight-min\"></td></tr><tr><td>Rep Max</td><td id=\"log-table-rep-max\"></td></tr><tr><td>Rep Avg</td><td id=\"log-table-rep-avg\"></td></tr><tr><td>Rep Min</td><td id=\"log-table-rep-min\"></td></tr></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var jade = __webpack_require__(14);
 
 	module.exports = function template(locals) {
@@ -75316,7 +75555,7 @@
 	}
 
 /***/ },
-/* 98 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75408,7 +75647,7 @@
 
 
 /***/ },
-/* 99 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

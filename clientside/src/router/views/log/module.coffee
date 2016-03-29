@@ -6,6 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 GraphView    = require './graph/view'
+Table        = require './table/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -14,9 +15,13 @@ viewTemplate = require './view.jade'
 
 class Model extends Backbone.Model
 
+  idAttribute: 'exerciseID'
+
   defaults:
-    name: ''
-    data: []
+    exerciseID: ''
+    name:       ''
+    weightData: []
+    repData:    []
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -25,6 +30,8 @@ class Model extends Backbone.Model
 class Collection extends Backbone.Collection
 
   url: '/api/log'
+
+  model: Model
 
   parse: (response) ->
     result = []
@@ -47,10 +54,12 @@ class Collection extends Backbone.Collection
           y: record.rep
 
       result.push
-        exercise:   exercise
+        exerciseID: exercise
         name:       records[0].name
         weightData: weightData
         repData:    repData
+        muscle:     records[0].muscle
+        user:       records[0].user
 
     return result
 
@@ -82,6 +91,11 @@ class View extends Marionette.LayoutView
   onShow: ->
     @showChildView 'graph', new GraphView
       collection: @collection
+
+    @showChildView 'table', new Table.View
+      collection: @collection
+      model:      new Table.Model()
+      exerciseID: @collection.at(0).id
 
     return
 

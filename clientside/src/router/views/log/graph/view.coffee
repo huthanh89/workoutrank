@@ -14,6 +14,7 @@ viewTemplate = require './view.jade'
 seriesRepData = (model) ->
   return {
     name: 'Reps'
+    yAxis: 0
     data: model.get('repData')
   }
 
@@ -24,6 +25,7 @@ seriesRepData = (model) ->
 seriesWeightData = (model) ->
   return {
     name: 'Weight'
+    yAxis: 1
     data: model.get('weightData')
   }
 
@@ -49,7 +51,7 @@ class View extends Marionette.ItemView
     @chart = new Highstock.StockChart
 
       chart:
-        type:     'areaspline'
+        type:     'column'
         renderTo: @ui.chart[0]
 
       title:
@@ -71,8 +73,11 @@ class View extends Marionette.ItemView
         lineWidth: 2
 
       yAxis: [
-        lineWidth: 2
+        lineWidth: 1
         opposite:  false
+      ,
+        lineWidth: 1
+        opposite:  true
       ]
 
       series: [seriesWeightData(model), seriesRepData(model)]
