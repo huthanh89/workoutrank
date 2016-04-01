@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(100);
+	__webpack_require__(102);
 
-	__webpack_require__(101);
+	__webpack_require__(103);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -58378,7 +58378,7 @@
 
 	Strength = __webpack_require__(57);
 
-	Log = __webpack_require__(93);
+	Log = __webpack_require__(95);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -68761,7 +68761,7 @@
 
 	module.exports.Detail = __webpack_require__(77);
 
-	module.exports.Log = __webpack_require__(87);
+	module.exports.Log = __webpack_require__(89);
 
 
 /***/ },
@@ -73581,10 +73581,6 @@
 	    return -item.get('date');
 	  };
 
-	  Collection.prototype.parseRecords = function(response) {
-	    return response[0].strength;
-	  };
-
 	  return Collection;
 
 	})(Backbone.PageableCollection);
@@ -73620,11 +73616,18 @@
 
 	  ItemView.prototype.bindings = {
 	    '.strength-table-td-name': 'name',
-	    '.strength-table-td-muscle': 'muscle',
+	    '.strength-table-td-muscle': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    },
 	    '.strength-table-td-date': {
 	      observe: 'date',
 	      onGet: function(value) {
-	        return moment(value).format('ddd MM/DD/YY');
+	        return moment(value).format('ddd MM/DD hh:MM A');
 	      }
 	    }
 	  };
@@ -73795,7 +73798,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
+	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle hidden-xs\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -73809,7 +73812,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Last</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Lastest</b></td><td class=\"hidden-xs\"><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -74209,7 +74212,7 @@
 /* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, DateView, Marionette, Modal, Model, Table, View, moment, viewTemplate,
+	var Backbone, Collection, DateView, Marionette, Modal, Model, PaginateView, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74225,9 +74228,9 @@
 
 	Table = __webpack_require__(82);
 
-	viewTemplate = __webpack_require__(86);
+	PaginateView = __webpack_require__(86);
 
-	__webpack_require__(55);
+	viewTemplate = __webpack_require__(88);
 
 	__webpack_require__(63);
 
@@ -74263,13 +74266,9 @@
 	    pageSize: 10
 	  };
 
-	  Collection.prototype.comparator = function(item) {
-	    return -item.get('date');
-	  };
-
 	  return Collection;
 
-	})(Backbone.PageableCollection);
+	})(Backbone.Collection);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74279,7 +74278,8 @@
 	  View.prototype.regions = {
 	    modal: '#strength-modal-view',
 	    date: '#strength-date-view',
-	    table: '#strength-table-view'
+	    table: '#strength-table-view',
+	    page: '#strength-paginate-view'
 	  };
 
 	  View.prototype.bindings = {
@@ -74303,7 +74303,7 @@
 	  };
 
 	  View.prototype.collectionEvents = {
-	    'sync update': 'updateTable'
+	    'sync update': 'updatePageableCollection'
 	  };
 
 	  function View(options) {
@@ -74315,17 +74315,17 @@
 	      date: new Date(),
 	      exercise: this.model.get('_id')
 	    }).omit('_id').value();
-	    this.tableCollection = this.collection;
+	    this.pageableCollection = new Table.Collection(this.collection.models);
 	    this.listenTo(this.model, 'change:date', (function(_this) {
 	      return function() {
-	        _this.updateTable();
+	        _this.updatePageableCollection();
 	      };
 	    })(this));
 	  }
 
-	  View.prototype.updateTable = function() {
+	  View.prototype.updatePageableCollection = function() {
 	    var models;
-	    models = this.collection.fullCollection.filter((function(_this) {
+	    models = this.collection.filter((function(_this) {
 	      return function(model) {
 	        var dateA, dateB;
 	        dateA = moment(model.get('date')).startOf('day');
@@ -74333,8 +74333,7 @@
 	        return dateA.isSame(dateB);
 	      };
 	    })(this));
-	    this.tableCollection = new Backbone.Collection(models);
-	    this.showTable();
+	    this.pageableCollection.fullCollection.reset(models);
 	  };
 
 	  View.prototype.onRender = function() {
@@ -74345,12 +74344,11 @@
 	    this.showChildView('date', new DateView({
 	      model: this.model
 	    }));
-	    this.showTable();
-	  };
-
-	  View.prototype.showTable = function() {
 	    this.showChildView('table', new Table.View({
-	      collection: this.tableCollection
+	      collection: this.pageableCollection
+	    }));
+	    this.showChildView('page', new PaginateView({
+	      collection: this.pageableCollection
 	    }));
 	  };
 
@@ -74673,29 +74671,17 @@
 	Collection = (function(superClass) {
 	  extend(Collection, superClass);
 
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
 	  Collection.prototype.model = Model;
 
 	  Collection.prototype.mode = 'client';
 
-	  function Collection(attributes, options) {
-	    Collection.__super__.constructor.apply(this, arguments);
-	    this.url = "/api/strength/" + options.id + "/log";
-	  }
-
 	  Collection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 10
-	  };
-
-	  Collection.prototype.comparator = function(item) {
-	    return -item.get('date');
-	  };
-
-	  Collection.prototype.parseRecords = function(response) {
-	    this.date = response.date;
-	    this.muscle = response.muscle;
-	    this.name = response.name;
-	    return response.log;
+	    pageSize: 5
 	  };
 
 	  return Collection;
@@ -74829,6 +74815,93 @@
 /* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(87);
+
+	__webpack_require__(75);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    list: '#strength-paginate-list'
+	  };
+
+	  View.prototype.collectionEvents = {
+	    reset: function() {
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.events = {
+	    'click li': function(event) {
+	      var id, page, target;
+	      target = $(event.currentTarget);
+	      if (target.hasClass('disabled')) {
+	        return;
+	      }
+	      id = target.attr('id');
+	      if (id === 'prev') {
+	        if (this.collection.hasPreviousPage()) {
+	          this.collection.getPreviousPage();
+	        }
+	      } else if (id === 'next') {
+	        if (this.collection.hasNextPage()) {
+	          this.collection.getNextPage();
+	        }
+	      } else {
+	        page = parseInt(target.attr('id'));
+	        this.collection.getPage(page);
+	      }
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.updateList();
+	  };
+
+	  View.prototype.updateList = function() {
+	    var currentPage, firstPage, i, lastPage, page, ref, ref1, state;
+	    this.ui.list.empty();
+	    state = this.collection.state;
+	    currentPage = state.currentPage;
+	    firstPage = state.firstPage;
+	    lastPage = state.lastPage;
+	    this.ui.list.append('<li id="prev" class="pagination-prev"><a>Prev</a></li>');
+	    for (page = i = ref = firstPage, ref1 = lastPage; ref <= ref1 ? i <= ref1 : i >= ref1; page = ref <= ref1 ? ++i : --i) {
+	      if (page === currentPage) {
+	        this.ui.list.append('<li class="active" id=' + page + ("><a>" + page + "</a></li>"));
+	      } else {
+	        this.ui.list.append('<li id=' + page + ("><a>" + page + "</a></li>"));
+	      }
+	    }
+	    this.ui.list.append('<li  id="next" class="pagination-next"><a>Next</a></li>');
+	    this.ui.list.rPage();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var jade = __webpack_require__(14);
 
 	module.exports = function template(locals) {
@@ -74836,11 +74909,25 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"pull-right\"><div class=\"col-xs-12\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 87 */
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
@@ -74853,11 +74940,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(88);
+	GraphView = __webpack_require__(90);
 
-	TableView = __webpack_require__(90);
+	TableView = __webpack_require__(92);
 
-	viewTemplate = __webpack_require__(92);
+	viewTemplate = __webpack_require__(94);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74946,7 +75033,7 @@
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
@@ -74961,7 +75048,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(89);
+	viewTemplate = __webpack_require__(91);
 
 	seriesData = function(models) {
 	  var i, len, model, series;
@@ -75059,7 +75146,7 @@
 
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75073,7 +75160,7 @@
 	}
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, moment, viewTemplate,
@@ -75088,7 +75175,7 @@
 
 	Data = __webpack_require__(60);
 
-	viewTemplate = __webpack_require__(91);
+	viewTemplate = __webpack_require__(93);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -75144,7 +75231,7 @@
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75158,7 +75245,7 @@
 	}
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75172,7 +75259,7 @@
 	}
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
@@ -75185,11 +75272,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(94);
+	GraphView = __webpack_require__(96);
 
-	Table = __webpack_require__(96);
+	Table = __webpack_require__(98);
 
-	viewTemplate = __webpack_require__(99);
+	viewTemplate = __webpack_require__(101);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75308,7 +75395,7 @@
 
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
@@ -75321,7 +75408,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(95);
+	viewTemplate = __webpack_require__(97);
 
 	seriesRepData = function(model) {
 	  return {
@@ -75414,7 +75501,7 @@
 
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75428,7 +75515,7 @@
 	}
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
@@ -75441,9 +75528,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(97);
+	Data = __webpack_require__(99);
 
-	viewTemplate = __webpack_require__(98);
+	viewTemplate = __webpack_require__(100);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75572,7 +75659,7 @@
 
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -75633,7 +75720,7 @@
 
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75647,7 +75734,7 @@
 	}
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75661,7 +75748,7 @@
 	}
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75753,7 +75840,7 @@
 
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

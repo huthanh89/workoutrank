@@ -26,6 +26,8 @@ module.list = (req, res, next) ->
 
       Strength.find
         user: req.session.user._id
+      .sort(date: -1)
+      .lean()
       .exec (err, strengths) ->
         return callback err if err
         return callback null, strengths
@@ -111,6 +113,7 @@ module.log = (req, res, next) ->
 
       SLog.find
         exercise: req.params.sid
+      .sort(date: -1)
       .lean()
       .exec (err, slogs) ->
         return callback err if err

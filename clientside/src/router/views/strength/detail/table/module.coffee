@@ -37,21 +37,9 @@ class Collection extends Backbone.PageableCollection
 
   mode: 'client'
 
-  constructor: (attributes, options) ->
-    super
-    @url = "/api/strength/#{options.id}/log"
-
   state:
     currentPage: 1
-    pageSize:    10
-
-  comparator: (item) -> return -item.get('date')
-
-  parseRecords: (response) ->
-    @date   = response.date
-    @muscle = response.muscle
-    @name   = response.name
-    return response.log
+    pageSize:    5
 
 #-------------------------------------------------------------------------------
 # Null View

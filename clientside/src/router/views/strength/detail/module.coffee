@@ -8,13 +8,13 @@ Marionette   = require 'marionette'
 Modal        = require './modal/module'
 DateView     = require './date/view'
 Table        = require './table/module'
+PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'backbone.paginator'
 require 'datepicker'
 
 #-------------------------------------------------------------------------------
@@ -30,10 +30,10 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
 #-------------------------------------------------------------------------------
-# Pageable Collection
+# Collection
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.PageableCollection
+class Collection extends Backbone.Collection
 
   model: Model
 
@@ -47,8 +47,6 @@ class Collection extends Backbone.PageableCollection
     currentPage: 1
     pageSize:    10
 
-  comparator: (item) -> return -item.get('date')
-
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -61,6 +59,7 @@ class View extends Marionette.LayoutView
     modal: '#strength-modal-view'
     date:  '#strength-date-view'
     table: '#strength-table-view'
+    page:  '#strength-paginate-view'
 
   bindings:
     '#strength-header': 'name'
@@ -83,7 +82,7 @@ class View extends Marionette.LayoutView
       return
 
   collectionEvents:
-    'sync update': 'updateTable'
+    'sync update': 'updatePageableCollection'
 
   constructor: (options) ->
     super
@@ -97,22 +96,22 @@ class View extends Marionette.LayoutView
       .omit '_id'
       .value()
 
-    @tableCollection = @collection
+    @pageableCollection = new Table.Collection @collection.models
+
+    # When date is changed, update pageable collection.
 
     @listenTo @model, 'change:date', =>
-      @updateTable()
+      @updatePageableCollection()
       return
 
-  updateTable: ->
+  updatePageableCollection: ->
 
-    models = @collection.fullCollection.filter (model) =>
+    models = @collection.filter (model) =>
       dateA = moment(model.get('date')).startOf('day')
       dateB = moment(@model.get('date')).startOf('day')
       return dateA.isSame(dateB)
 
-    @tableCollection = new Backbone.Collection(models)
-
-    @showTable()
+    @pageableCollection.fullCollection.reset models
 
     return
 
@@ -121,16 +120,18 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
+
     @showChildView 'date', new DateView
       model: @model
 
-    @showTable()
+    @showChildView 'table', new Table.View
+        collection: @pageableCollection
+
+    @showChildView 'page', new PaginateView
+      collection: @pageableCollection
+
     return
 
-  showTable: ->
-    @showChildView 'table', new Table.View
-      collection: @tableCollection
-    return
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -10,7 +10,8 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
-SLog = mongoose.model('slog')
+SLog     = mongoose.model('slog')
+Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
 # List
@@ -63,7 +64,7 @@ module.get = (req, res, next) ->
 
 #-------------------------------------------------------------------------------
 # Post
-#   Create a new slog.
+#   Create a new slog. As well as updating the strength workout's last date.
 #-------------------------------------------------------------------------------
 
 module.post = (req, res) ->
@@ -71,6 +72,28 @@ module.post = (req, res) ->
   async.waterfall [
 
     (callback) ->
+
+      # Find the specific strength exercise.
+
+      Strength.findById req.body.exercise, (err, strength) ->
+        return callback err if err
+        return callback null, strength
+      return
+
+    (strength, callback) ->
+
+      # Update that strength's last date.
+
+      strength.date = req.body.date
+
+      strength.save (err) ->
+        return callback err if err
+        return callback null
+      return
+
+    (callback) ->
+
+      # Create a new slog entry.
 
       SLog.create
         date:     req.body.date

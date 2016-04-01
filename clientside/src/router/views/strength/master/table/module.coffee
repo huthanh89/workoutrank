@@ -36,8 +36,6 @@ class Collection extends Backbone.PageableCollection
 
   comparator: (item) -> return -item.get('date')
 
-  parseRecords: (response) -> response[0].strength
-
 #-------------------------------------------------------------------------------
 # Null View
 #-------------------------------------------------------------------------------
@@ -66,11 +64,14 @@ class ItemView extends Marionette.ItemView
   bindings:
 
     '.strength-table-td-name': 'name'
-    '.strength-table-td-muscle': 'muscle'
+
+    '.strength-table-td-muscle':
+      observe: 'muscle'
+      onGet: (value) -> _.find(Data.Muscles, value: value).label
 
     '.strength-table-td-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('ddd MM/DD/YY')
+      onGet: (value) -> moment(value).format('ddd MM/DD hh:MM A')
 
   events:
     'click td:not(:first-child)': ->
