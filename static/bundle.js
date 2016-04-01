@@ -58574,8 +58574,8 @@
 	          }));
 	        };
 	      })(this),
-	      error: function() {
-	        console.log('error');
+	      error: function(err) {
+	        console.log('error', arguments);
 	      }
 	    });
 	  };
@@ -58588,26 +58588,26 @@
 	    Collection = Strength.Detail.Collection;
 	    async.waterfall([
 	      function(callback) {
-	        var model;
-	        model = new Model({}, {
-	          id: strengthID
+	        var strength;
+	        strength = new Model({
+	          _id: strengthID
 	        });
-	        model.fetch({
-	          success: function(model) {
-	            return callback(null, model);
+	        strength.fetch({
+	          success: function(strength) {
+	            return callback(null, strength);
 	          },
 	          error: function(err) {
 	            return callback(err);
 	          }
 	        });
-	      }, function(model, callback) {
+	      }, function(strength, callback) {
 	        var logs;
 	        logs = new Collection([], {
 	          id: strengthID
 	        });
 	        logs.fetch({
 	          success: function(collection) {
-	            return callback(null, model, collection);
+	            return callback(null, strength, collection);
 	          },
 	          error: function(err) {
 	            return callback(err);
@@ -58615,12 +58615,12 @@
 	        });
 	      }
 	    ], (function(_this) {
-	      return function(err, model, collection) {
+	      return function(err, strength, collection) {
 	        if (err) {
 	          console.log('Error:', err);
 	        }
 	        _this.rootView.content.show(new View({
-	          model: model,
+	          model: strength,
 	          collection: collection,
 	          strengthID: strengthID
 	        }));
@@ -68835,16 +68835,12 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = '/api/exercise';
+	  Collection.prototype.url = '/api/strengths';
 
 	  Collection.prototype.model = Model;
 
 	  Collection.prototype.comparator = function(item) {
 	    return -item.get('date');
-	  };
-
-	  Collection.prototype.parse = function(response) {
-	    return response.strength;
 	  };
 
 	  return Collection;
@@ -68858,7 +68854,7 @@
 	    return PageableCollection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  PageableCollection.prototype.url = '/api/exercise';
+	  PageableCollection.prototype.url = '/api/strengths';
 
 	  PageableCollection.prototype.model = Model;
 
@@ -74230,20 +74226,13 @@
 	Model = (function(superClass) {
 	  extend(Model, superClass);
 
-	  Model.prototype.idAttribute = '_id';
-
-	  function Model(attributes, options) {
-	    Model.__super__.constructor.apply(this, arguments);
-	    if (options != null ? options.id : void 0) {
-	      this.url = "/api/strength/" + options.id;
-	    } else {
-	      this.url = '/api/strength';
-	    }
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Model.prototype.parse = function(response) {
-	    return response;
-	  };
+	  Model.prototype.urlRoot = '/api/strengths';
+
+	  Model.prototype.idAttribute = '_id';
 
 	  return Model;
 
@@ -74258,7 +74247,7 @@
 
 	  function Collection(attributes, options) {
 	    Collection.__super__.constructor.apply(this, arguments);
-	    this.url = "/api/strength/" + options.id + "/log";
+	    this.url = "/api/strengths/" + options.id + "/log";
 	  }
 
 	  Collection.prototype.state = {
@@ -74268,13 +74257,6 @@
 
 	  Collection.prototype.comparator = function(item) {
 	    return -item.get('date');
-	  };
-
-	  Collection.prototype.parseRecords = function(response) {
-	    this.date = response.date;
-	    this.muscle = response.muscle;
-	    this.name = response.name;
-	    return response.log;
 	  };
 
 	  return Collection;
@@ -74325,7 +74307,6 @@
 	      date: new Date(),
 	      exercise: this.model.get('_id')
 	    }).omit('_id').value();
-	    this.model = new Model(attributes);
 	    this.tableCollection = this.collection;
 	    this.listenTo(this.model, 'change:date', (function(_this) {
 	      return function() {
@@ -74411,7 +74392,7 @@
 	    return Model.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Model.prototype.url = '/api/strength';
+	  Model.prototype.url = '/api/slogs';
 
 	  Model.prototype.defaults = {
 	    date: new Date(),
@@ -74473,7 +74454,8 @@
 	      this.model.set({
 	        date: moment(new Date(date + " " + time)).format()
 	      });
-	      this.collection.create(this.model.attributes, {
+	      this.model.save();
+	      this.collection.add(this.model.attributes, {
 	        wait: true,
 	        at: 0,
 	        success: (function(_this) {
@@ -74748,7 +74730,10 @@
 
 	  ItemView.prototype.events = {
 	    'click .strength-table-td-remove': function() {
-	      this.model.destroy();
+	      this.model.urlRoot = '/api/slogs';
+	      this.model.destroy({
+	        wait: true
+	      });
 	    }
 	  };
 
@@ -75222,7 +75207,7 @@
 	    return Collection.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Collection.prototype.url = '/api/log';
+	  Collection.prototype.url = '/api/logs';
 
 	  Collection.prototype.model = Model;
 

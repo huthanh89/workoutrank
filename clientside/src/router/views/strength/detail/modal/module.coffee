@@ -24,7 +24,7 @@ require 'bootstrap.validator'
 
 class Model extends Backbone.Model
 
-  url: '/api/strength'
+  url: '/api/slogs'
 
   defaults:
     date:     new Date()
@@ -83,7 +83,9 @@ class View extends Marionette.ItemView
       @model.set
         date: moment(new Date("#{date} #{time}")).format()
 
-      @collection.create @model.attributes,
+      @model.save()
+
+      @collection.add @model.attributes,
         wait: true
         at:   0
         success: =>

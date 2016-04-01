@@ -10,8 +10,7 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
-Strength = mongoose.model('strength')
-SLog     = mongoose.model('slog')
+SLog = mongoose.model('slog')
 
 #-------------------------------------------------------------------------------
 # List
@@ -27,7 +26,7 @@ module.list = (req, res, next) ->
       SLog.find
         user: req.session.user.id
       .exec (err, slogs) ->
-        console.log 'ERROR', err if err
+        return callback err if err
         return callback null, slogs
 
       return
@@ -52,7 +51,7 @@ module.get = (req, res, next) ->
       SLog.find
         exercise: req.params.sid
       .exec (err, slogs) ->
-        console.log 'ERROR', err if err
+        return callback err if err
         return callback null, slogs
       return
 
@@ -82,17 +81,17 @@ module.post = (req, res) ->
         rep:      req.body.rep
         weight:   req.body.weight
         user:     req.session.user._id
-      , (err, result) ->
+      , (err, slog) ->
         return callback err if err
-        return callback null, result
+        return callback null, slog
 
-  ], (err, result) ->
+  ], (err, slog) ->
 
     console.log err if err
 
     res
     .status 201
-    .json result
+    .json slog
 
     return
 
@@ -110,7 +109,7 @@ module.put = (req, res, next) ->
     (callback) ->
 
       SLog.findById req.params.sid, (err, strength) ->
-        console.log 'ERROR', err if err
+        return callback err if err
         return callback null, slog
 
       return
@@ -124,7 +123,7 @@ module.put = (req, res, next) ->
       slog.session = req.body.session
 
       slog.save (err, slog) ->
-        console.log 'ERROR', err if err
+        return callback err if err
         return callback null, slog
 
       return
@@ -136,6 +135,38 @@ module.put = (req, res, next) ->
     # Return json if success.
 
     return res.json document
+
+#-------------------------------------------------------------------------------
+# Delete
+#   Delete a slog record.
+#-------------------------------------------------------------------------------
+
+module.delete = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      SLog.findById req.params.sid, (err, slog) ->
+        console.log 'ERROR', err if err
+        return callback null, slog
+      return
+
+    (slog, callback) ->
+
+      slog.remove (err) ->
+        return callback err if err
+        return callback null
+
+      return
+
+  ], (err) ->
+
+    console.log 'ERROR', err if err
+
+    res.sendStatus 204
+
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

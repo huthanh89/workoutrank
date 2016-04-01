@@ -181,8 +181,8 @@ class Router extends Marionette.AppRouter
           collection: collection
           model:      new Model()
         return
-      error: ->
-        console.log 'error'
+      error: (err) ->
+        console.log 'error', arguments
         return
     return
 
@@ -198,32 +198,32 @@ class Router extends Marionette.AppRouter
 
       (callback) ->
 
-        model = new Model {},
-          id: strengthID
+        strength = new Model
+          _id: strengthID
 
-        model.fetch
-          success: (model) -> callback null, model
+        strength.fetch
+          success: (strength) -> callback null, strength
           error: (err) -> callback err
 
         return
 
-      (model, callback) ->
+      (strength, callback) ->
 
         logs = new Collection [],
           id: strengthID
 
         logs.fetch
-          success: (collection) -> callback null, model, collection
+          success: (collection) -> callback null, strength, collection
           error: (err) -> callback err
 
         return
 
-    ], (err, model, collection) =>
+    ], (err, strength, collection) =>
 
       console.log 'Error:', err if err
 
       @rootView.content.show new View
-        model:      model
+        model:      strength
         collection: collection
         strengthID: strengthID
 

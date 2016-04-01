@@ -19,20 +19,15 @@ require 'datepicker'
 
 #-------------------------------------------------------------------------------
 # Model
+#   Strength model used to fetch data of that exercises
+#   such as the name and muscle type.
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
 
+  urlRoot: '/api/strengths'
+
   idAttribute: '_id'
-
-  constructor: (attributes, options) ->
-    super
-    if options?.id
-      @url = "/api/strength/#{options.id}"
-    else
-      @url = '/api/strength'
-
-  parse: (response) -> response
 
 #-------------------------------------------------------------------------------
 # Pageable Collection
@@ -46,19 +41,13 @@ class Collection extends Backbone.PageableCollection
 
   constructor: (attributes, options) ->
     super
-    @url = "/api/strength/#{options.id}/log"
+    @url = "/api/strengths/#{options.id}/log"
 
   state:
     currentPage: 1
     pageSize:    10
 
   comparator: (item) -> return -item.get('date')
-
-  parseRecords: (response) ->
-    @date   = response.date
-    @muscle = response.muscle
-    @name   = response.name
-    return response.log
 
 #-------------------------------------------------------------------------------
 # View
@@ -108,8 +97,6 @@ class View extends Marionette.LayoutView
       .omit '_id'
       .value()
 
-    @model = new Model attributes
-
     @tableCollection = @collection
 
     @listenTo @model, 'change:date', =>
@@ -129,6 +116,7 @@ class View extends Marionette.LayoutView
     return
 
   onRender: ->
+
     @stickit()
     return
 

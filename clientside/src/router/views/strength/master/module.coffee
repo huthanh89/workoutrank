@@ -38,13 +38,11 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  url:  '/api/exercise'
+  url:  '/api/strengths'
 
   model: Model
 
   comparator: (item) -> return -item.get('date')
-
-  parse: (response) -> response.strength
 
 #-------------------------------------------------------------------------------
 # Pageable Collection
@@ -53,7 +51,7 @@ class Collection extends Backbone.Collection
 
 class PageableCollection extends Backbone.PageableCollection
 
-  url:  '/api/exercise'
+  url:  '/api/strengths'
 
   model: Model
 

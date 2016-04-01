@@ -14,11 +14,11 @@ Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
 
 #-------------------------------------------------------------------------------
-# Get
+# List
 #   Return all strength exercises matching user id.
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.list = (req, res, next) ->
 
   async.waterfall [
 
@@ -35,7 +35,31 @@ module.get = (req, res, next) ->
 
     console.log 'ERROR', err if err
 
-    return res.json strengths1
+    return res.json strengths
+
+#-------------------------------------------------------------------------------
+# Get
+#   Get a specific strength workout matching strength ID.
+#-------------------------------------------------------------------------------
+
+module.get = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      Strength.findOne
+        _id: req.params.sid
+      .exec (err, strength) ->
+        console.log 'ERROR', err if err
+        callback null, strength
+      return
+
+  ], (err, strength) ->
+
+    console.log 'ERROR', err if err
+
+    return res.json strength
 
 #-------------------------------------------------------------------------------
 # Post
@@ -53,6 +77,7 @@ module.post = (req, res) ->
         name:   req.body.name
         note:   req.body.note
         muscle: req.body.muscle
+        user:   req.session.user._id
 
       , (err, strength) ->
         return callback err if err

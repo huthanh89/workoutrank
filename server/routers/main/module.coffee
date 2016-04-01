@@ -63,29 +63,35 @@ router.get '/api/home', Home.get
 #-------------------------------------------------------------------------------
 
 # Get all strength exercises belonging to a user.
-router.get '/api/strengths', Strength.get
+router.get '/api/strengths', Strength.list
+
+# Get a specific strength workout matching strength ID.
+router.get '/api/strengths/:sid', Strength.get
 
 # Post a new strength exercise for an user.
 router.post '/api/strengths', Strength.post
 
-# Get all slog for an exercise.
+# Get all slog for a strength exercise.
 router.get '/api/strengths/:sid/log', Strength.log
 
 #-------------------------------------------------------------------------------
 # Strength Logs
 #-------------------------------------------------------------------------------
 
-# Get all slogs.
+# Get all slogs from a user.
 router.get '/api/slogs', SLog.list
 
-# Post a new workout session.
+# Post a new slog record.
 router.post '/api/slogs', SLog.post
 
-# Get a specific session log.
+# Get a specific slog.
 router.get '/api/slogs/:sid', SLog.get
 
-# Edit an workout session.
+# Edit a specific slog record.
 router.put '/api/slogs/:sid', SLog.put
+
+# Delete a specific slog record.
+router.delete '/api/slogs/:sid', SLog.delete
 
 #-------------------------------------------------------------------------------
 # ALL Logs

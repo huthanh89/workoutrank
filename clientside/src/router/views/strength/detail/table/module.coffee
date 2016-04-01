@@ -84,7 +84,11 @@ class ItemView extends Marionette.ItemView
 
   events:
     'click .strength-table-td-remove': ->
-      @model.destroy()
+
+      @model.urlRoot = '/api/slogs'
+
+      @model.destroy
+        wait: true
       return
 
   onRender: ->
