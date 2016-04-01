@@ -27,8 +27,8 @@ module.list = (req, res, next) ->
       Strength.find
         user: req.session.user._id
       .exec (err, strengths) ->
-        console.log 'ERROR', err if err
-        callback null, strengths
+        return callback err if err
+        return callback null, strengths
       return
 
   ], (err, strengths) ->
@@ -51,8 +51,8 @@ module.get = (req, res, next) ->
       Strength.findOne
         _id: req.params.sid
       .exec (err, strength) ->
-        console.log 'ERROR', err if err
-        callback null, strength
+        return callback err if err
+        return callback null, strength
       return
 
   ], (err, strength) ->
@@ -113,7 +113,7 @@ module.log = (req, res, next) ->
         exercise: req.params.sid
       .lean()
       .exec (err, slogs) ->
-        console.log 'ERROR', err if err
+        return callback err if err
         return callback null, slogs
       return
 
@@ -122,6 +122,38 @@ module.log = (req, res, next) ->
     console.log 'ERROR', err if err
 
     return res.json slogs
+
+#-------------------------------------------------------------------------------
+# Delete
+#   Delete a slog record.
+#-------------------------------------------------------------------------------
+
+module.delete = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      Strength.findById req.params.sid, (err, strength) ->
+        console.log 'ERROR', err if err
+        return callback null, strength
+      return
+
+    (strength, callback) ->
+
+      strength.remove (err) ->
+        return callback err if err
+        return callback null
+
+      return
+
+  ], (err) ->
+
+    console.log 'ERROR', err if err
+
+    res.sendStatus 204
+
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -26,6 +26,8 @@ class Model extends Backbone.Model
 
   url: '/api/slogs'
 
+  idAttribute: '_id'
+
   defaults:
     date:     new Date()
     name:     ''
@@ -83,12 +85,9 @@ class View extends Marionette.ItemView
       @model.set
         date: moment(new Date("#{date} #{time}")).format()
 
-      @model.save()
-
-      @collection.add @model.attributes,
-        wait: true
-        at:   0
-        success: =>
+      @model.save {},
+        success: (model) =>
+          @collection.add model.attributes
           @ui.dialog.modal('hide')
           return
         error: ->

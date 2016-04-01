@@ -4,9 +4,9 @@
 
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-ModalView    = require './modal/view'
+Add          = require './add/module'
+Table        = require './table/module'
 FilterView   = require './filter/view'
-TableView    = require './table/view'
 PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
 
@@ -19,6 +19,8 @@ require 'bootstrap.paginate'
 
 #-------------------------------------------------------------------------------
 # Model
+#   Keeps current state data of the page.
+#   Here we maintain what muscle type is being chosen.
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
@@ -26,14 +28,14 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
+    name: ''
     date: new Date()
-    name:    ''
     muscle:  0
-    note:    ''
 
 #-------------------------------------------------------------------------------
-# Collection
-#   Main collection used to fetch data from the server.
+# Main Collection
+#   Clean collection used to fetch data from the server.
+#   Refer back to this collection to filter and sort models.
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
@@ -43,27 +45,6 @@ class Collection extends Backbone.Collection
   model: Model
 
   comparator: (item) -> return -item.get('date')
-
-#-------------------------------------------------------------------------------
-# Pageable Collection
-#   Page collection to paginate table. Used specifically in client mode.
-#-------------------------------------------------------------------------------
-
-class PageableCollection extends Backbone.PageableCollection
-
-  url:  '/api/strengths'
-
-  model: Model
-
-  mode: 'client'
-
-  state:
-    currentPage: 1
-    pageSize:    5
-
-  comparator: (item) -> return -item.get('date')
-
-  parseRecords: (response) -> response[0].strength
 
 #-------------------------------------------------------------------------------
 # View
@@ -94,14 +75,14 @@ class View extends Marionette.LayoutView
       return
 
   collectionEvents:
-    sync: ->
-      @filterCollection(@model.get('muscle'))
+    update: ->
+      @getChildView('filter').filterCollection()
       return
 
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @pageableCollection = new PageableCollection @collection.models
+    @pageableCollection = new Table.Collection @collection.models
     @channel = Backbone.Radio.channel('channel')
 
     @channel.reply
@@ -111,15 +92,11 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
-    # Filter collection before showing table view.
-
-    @filterCollection(@model.get('muscle'))
-
     @showChildView 'filter', new FilterView
-      collection: @collection
-      model:      @model
+      collection:         @collection
+      pageableCollection: @pageableCollection
 
-    @showChildView 'table', new TableView
+    @showChildView 'table', new Table.View
       collection: @pageableCollection
       channel:    @channel
 
@@ -129,16 +106,9 @@ class View extends Marionette.LayoutView
     return
 
   addWorkout: ->
-    @showChildView 'modal', new ModalView
+    @showChildView 'modal', new Add.View
       collection: @collection
-      model:      @model
-    return
-
-  # Fetch the latest collection then filter the collection by muscle.
-
-  filterCollection: (muscle) ->
-    models = @collection.filter (model) -> model.get('muscle') is muscle
-    @pageableCollection.fullCollection.reset models
+      model:      new Add.Model()
     return
 
   onBeforeDestroy: ->

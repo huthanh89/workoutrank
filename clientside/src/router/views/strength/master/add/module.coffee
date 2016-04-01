@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
@@ -15,6 +16,20 @@ require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
 require 'bootstrap.validator'
+
+#-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  idAttribute: '_id'
+
+  defaults:
+    date:    new Date()
+    name:    ''
+    muscle:  0
+    note:    ''
 
 #-------------------------------------------------------------------------------
 # View
@@ -120,6 +135,7 @@ class View extends Marionette.LayoutView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+module.exports.Model = Model
+module.exports.View  = View
 
 #-------------------------------------------------------------------------------

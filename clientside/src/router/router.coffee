@@ -162,7 +162,18 @@ class Router extends Marionette.AppRouter
 
   profile: ->
     @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
+
+    model = new Profile.Model()
+
+    model.fetch
+      success: (model) =>
+        @rootView.content.show new Profile.View
+          model: model
+        return
+      error: (err) ->
+        console.log 'error', arguments
+        return
+
     return
 
   strength: ->
@@ -170,7 +181,6 @@ class Router extends Marionette.AppRouter
     @navChannel.request('nav:main')
 
     Collection = Strength.Master.Collection
-    Model      = Strength.Master.Model
     View       = Strength.Master.View
 
     collection = new Collection()
@@ -179,7 +189,6 @@ class Router extends Marionette.AppRouter
       success: (collection) =>
         @rootView.content.show new View
           collection: collection
-          model:      new Model()
         return
       error: (err) ->
         console.log 'error', arguments

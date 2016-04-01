@@ -20,6 +20,25 @@ require 'multiselect'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Pageable Collection
+#   Page collection to paginate table. Used specifically in client mode.
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.PageableCollection
+
+  url:  '/api/strengths'
+
+  mode: 'client'
+
+  state:
+    currentPage: 1
+    pageSize:    20
+
+  comparator: (item) -> return -item.get('date')
+
+  parseRecords: (response) -> response[0].strength
+
+#-------------------------------------------------------------------------------
 # Null View
 #-------------------------------------------------------------------------------
 
@@ -53,8 +72,13 @@ class ItemView extends Marionette.ItemView
       onGet: (value) -> moment(value).format('ddd MM/DD/YY')
 
   events:
-    click: ->
+    'click td:not(:first-child)': ->
       @rootChannel.request 'strength:detail', @model.id
+      return
+
+    'click .strength-table-td-remove': ->
+      @model.destroy
+        wait: true
       return
 
   constructor: ->
@@ -110,6 +134,7 @@ class View extends Marionette.CompositeView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+module.exports.Collection = Collection
+module.exports.View       = View
 
 #-------------------------------------------------------------------------------

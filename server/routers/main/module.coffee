@@ -28,7 +28,6 @@ index = (req, res, next) ->
   return
 
 router.get '/home',              index
-router.get '/profile',           index
 router.get '/exercise',          index
 router.get '/exercise/:type',    index
 router.get '/cardio',            index
@@ -45,7 +44,6 @@ router.get '/multiplayer',       index
 #-------------------------------------------------------------------------------
 
 Home     = require './home/module'
-Profile  = require './profile/module'
 Strength = require './strength/module'
 Log      = require './log/module'
 SLog     = require './slog/module'
@@ -53,8 +51,6 @@ SLog     = require './slog/module'
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
-
-router.get '/api/profile', Profile.get
 
 router.get '/api/home', Home.get
 
@@ -73,6 +69,9 @@ router.post '/api/strengths', Strength.post
 
 # Get all slog for a strength exercise.
 router.get '/api/strengths/:sid/log', Strength.log
+
+# Delete a strength exercise.
+router.delete '/api/strengths/:sid', Strength.delete
 
 #-------------------------------------------------------------------------------
 # Strength Logs

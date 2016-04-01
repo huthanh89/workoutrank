@@ -11,6 +11,7 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 Strength = mongoose.model('strength')
+SLog     = mongoose.model('slog')
 
 #-------------------------------------------------------------------------------
 # GET XXX Not yet implemented
@@ -26,21 +27,21 @@ module.get = (req, res, next) ->
 
       # Get logs
 
-      Strength.find
+      SLog.find
         user: req.session.user._id
       .sort 'date'
       .lean()
-      .exec (err, exercises) ->
-        console.log 'ERROR', err if err
-        return callback null, exercises
+      .exec (err, slogs) ->
+        return callback err if err
+        return callback null, slogs
 
       return
 
-  ], (err, exercises) ->
+  ], (err, slogs) ->
 
     console.log 'ERROR', err if err
 
-    return res.json exercises
+    return res.json slogs
 
 #-------------------------------------------------------------------------------
 # Exports

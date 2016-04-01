@@ -24,7 +24,7 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  url:  'api/log'
+  url:  'api/logs'
 
   model: Model
 

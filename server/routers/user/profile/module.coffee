@@ -20,16 +20,17 @@ module.get = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-      User.find()
-      .exec (err, users) ->
-        console.log 'ERROR', err if err
-        callback null, users
+
+      User.findById req.session.user._id, (err, user) ->
+        return callback err if err
+        return callback null, user
       return
-  ], (err, entries) ->
+
+  ], (err, user) ->
 
     console.log 'ERROR', err if err
 
-    return res.json entries
+    return res.json user
 
 #-------------------------------------------------------------------------------
 # Exports

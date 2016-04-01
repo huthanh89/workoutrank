@@ -17,26 +17,43 @@ class View extends Marionette.ItemView
   ui:
     muscle: '#strength-filter-muscle'
 
-  bindings:
-    '#strength-filter-muscle':
-      observe: 'muscle'
-      onSet: (value) -> parseInt(value)
-
-  modelEvents:
-    'change:muscle': (model, value) ->
-      @ui.muscle.multiselect('select', value)
-      return
+  constructor: (options) ->
+    super
+    @mergeOptions options, 'pageableCollection'
+    @muscles = []
 
   onRender: ->
 
     @ui.muscle.multiselect
       enableFiltering: true
-      maxHeight:       200
-      buttonWidth:    '100%'
+      maxHeight:       300
       buttonClass:    'btn btn-info'
+      onChange: =>
+        @muscles = @ui.muscle.val() or []
+
+        console.log @muscles
+
+        @filterCollection()
     .multiselect 'dataprovider', Data.Muscles
 
-    @stickit()
+    return
+
+  # Use the clean collection to filter the pageable collection base
+  # on muscle types.
+
+  filterCollection: ->
+
+    console.log 'called'
+
+    models = @collection.models
+
+    console.log models
+
+    if @muscles.length > 0
+      models = @collection.filter (model) =>
+        return model.get('muscle').toString() in @muscles
+
+    @pageableCollection.fullCollection.reset models
 
     return
 

@@ -6,16 +6,29 @@ express = require 'express'
 router  = express.Router()
 
 #-------------------------------------------------------------------------------
+# Path Routes.
+#   Pass index to all routes.
+#-------------------------------------------------------------------------------
+
+index = (req, res, next) ->
+  res.render 'index'
+  return
+
+router.get '/profile', index
+
+#-------------------------------------------------------------------------------
 # Import Routes
 #-------------------------------------------------------------------------------
 
-user = require './user/module'
+User    = require './user/module'
+Profile = require './profile/module'
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get '/api/user', user.get
+router.get '/api/user', User.get
+router.get '/api/profile', Profile.get
 
 #-------------------------------------------------------------------------------
 # Exports

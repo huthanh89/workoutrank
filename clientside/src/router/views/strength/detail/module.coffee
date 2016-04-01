@@ -78,12 +78,12 @@ class View extends Marionette.LayoutView
     'click #strength-detail-add': ->
       @showChildView 'modal', new Modal.View
         collection: @collection
-        model:      new Modal.Model(@model.attributes)
+        model:      new Modal.Model _.omit(@model.attributes, '_id')
         date:       @model.get('date')
       return
 
   collectionEvents:
-    sync: 'updateTable'
+    'sync update': 'updateTable'
 
   constructor: (options) ->
     super
@@ -104,6 +104,7 @@ class View extends Marionette.LayoutView
       return
 
   updateTable: ->
+
     models = @collection.fullCollection.filter (model) =>
       dateA = moment(model.get('date')).startOf('day')
       dateB = moment(@model.get('date')).startOf('day')
@@ -116,7 +117,6 @@ class View extends Marionette.LayoutView
     return
 
   onRender: ->
-
     @stickit()
     return
 
