@@ -73,6 +73,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('exercise')
       return
 
+    'click #strength-modal-date-btn': ->
+      @ui.date.datepicker 'show'
+      return
+
     'click #strength-modal-time': ->
       @ui.time.timepicker('showWidget')
       return

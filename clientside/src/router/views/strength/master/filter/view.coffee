@@ -28,11 +28,11 @@ class View extends Marionette.ItemView
       enableFiltering: true
       maxHeight:       300
       buttonClass:    'btn btn-info'
+
+      # Filter pageable collection on change.
+
       onChange: =>
         @muscles = @ui.muscle.val() or []
-
-        console.log @muscles
-
         @filterCollection()
     .multiselect 'dataprovider', Data.Muscles
 
@@ -43,11 +43,7 @@ class View extends Marionette.ItemView
 
   filterCollection: ->
 
-    console.log 'called'
-
     models = @collection.models
-
-    console.log models
 
     if @muscles.length > 0
       models = @collection.filter (model) =>

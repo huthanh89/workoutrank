@@ -73574,7 +73574,7 @@
 
 	  Collection.prototype.state = {
 	    currentPage: 1,
-	    pageSize: 20
+	    pageSize: 10
 	  };
 
 	  Collection.prototype.comparator = function(item) {
@@ -73620,6 +73620,7 @@
 
 	  ItemView.prototype.bindings = {
 	    '.strength-table-td-name': 'name',
+	    '.strength-table-td-muscle': 'muscle',
 	    '.strength-table-td-date': {
 	      observe: 'date',
 	      onGet: function(value) {
@@ -73794,7 +73795,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td>");;return buf.join("");
+	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -73808,7 +73809,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Started</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Last</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73849,7 +73850,6 @@
 	      onChange: (function(_this) {
 	        return function() {
 	          _this.muscles = _this.ui.muscle.val() || [];
-	          console.log(_this.muscles);
 	          return _this.filterCollection();
 	        };
 	      })(this)
@@ -73858,9 +73858,7 @@
 
 	  View.prototype.filterCollection = function() {
 	    var models;
-	    console.log('called');
 	    models = this.collection.models;
-	    console.log(models);
 	    if (this.muscles.length > 0) {
 	      models = this.collection.filter((function(_this) {
 	        return function(model) {
@@ -74204,7 +74202,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-filter-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -74456,6 +74454,9 @@
 	    'click #strength-modal-exercise': function() {
 	      this.rootChannel.request('exercise');
 	    },
+	    'click #strength-modal-date-btn': function() {
+	      this.ui.date.datepicker('show');
+	    },
 	    'click #strength-modal-time': function() {
 	      this.ui.time.timepicker('showWidget');
 	    },
@@ -74541,7 +74542,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-weight\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-rep\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-weight\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-rep\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
