@@ -7,7 +7,7 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Modal        = require './modal/module'
 DateView     = require './date/view'
-TableView    = require './table/view'
+Table        = require './table/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -39,8 +39,6 @@ class Model extends Backbone.Model
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.PageableCollection
-
-  url:  '/api/strength/log'
 
   model: Model
 
@@ -91,7 +89,7 @@ class View extends Marionette.LayoutView
     'click #strength-detail-add': ->
       @showChildView 'modal', new Modal.View
         collection: @collection
-        model:      new Modal.Model @model.attributes
+        model:      new Modal.Model(@model.attributes)
         date:       @model.get('date')
       return
 
@@ -126,8 +124,7 @@ class View extends Marionette.LayoutView
 
     @tableCollection = new Backbone.Collection(models)
 
-    @showChildView 'table', new TableView
-      collection: @tableCollection
+    @showTable()
 
     return
 
@@ -136,13 +133,15 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
-
     @showChildView 'date', new DateView
       model: @model
 
-    @showChildView 'table', new TableView
-      collection: @tableCollection
+    @showTable()
+    return
 
+  showTable: ->
+    @showChildView 'table', new Table.View
+      collection: @tableCollection
     return
 
 #-------------------------------------------------------------------------------

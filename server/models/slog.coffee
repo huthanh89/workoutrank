@@ -8,27 +8,31 @@ mongoose = require 'mongoose'
 # Schema
 #-------------------------------------------------------------------------------
 
-ExerciseSchema = new mongoose.Schema
+SlogSchema = new mongoose.Schema
+  date:
+    type: Date
+  name:
+    type: String
+  muscle:
+    type: Number
+  note:
+    type: String
+  rep:
+    type: Number
+  weight:
+    type: Number
+  exercise:
+    type: mongoose.Schema.ObjectId
   user:
     type: mongoose.Schema.ObjectId
-  strength: [
-    date:
-      type: Date
-    name:
-      type: String
-    muscle:
-      type: Number
-    note:
-      type: String
-  ]
 ,
-  collection: 'exercise'
+  collection: 'slog'
 
 #-------------------------------------------------------------------------------
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('exercise', ExerciseSchema)
+model = mongoose.model('slog', SlogSchema)
 
 #-------------------------------------------------------------------------------
 # Exports

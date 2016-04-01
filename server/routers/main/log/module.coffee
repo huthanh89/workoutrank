@@ -13,9 +13,9 @@ mongoose = require 'mongoose'
 Strength = mongoose.model('strength')
 
 #-------------------------------------------------------------------------------
-# GET
+# GET XXX Not yet implemented
 #
-#   Get a list all logs.
+#   Get a list of all logs combine.
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->

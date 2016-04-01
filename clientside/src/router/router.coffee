@@ -193,7 +193,6 @@ class Router extends Marionette.AppRouter
     View       = Strength.Detail.View
     Model      = Strength.Detail.Model
     Collection = Strength.Detail.Collection
-    region     = @rootView.content
 
     async.waterfall [
 
@@ -219,11 +218,11 @@ class Router extends Marionette.AppRouter
 
         return
 
-    ], (err, model, collection) ->
+    ], (err, model, collection) =>
 
       console.log 'Error:', err if err
 
-      region.show new View
+      @rootView.content.show new View
         model:      model
         collection: collection
         strengthID: strengthID

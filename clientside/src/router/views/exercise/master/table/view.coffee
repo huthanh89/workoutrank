@@ -15,6 +15,37 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+require 'backbone.paginator'
+
+#-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+  url:  '/api/exercise'
+  defaults:
+    name: ''
+    type: 0
+    note: ''
+    date: new Date()
+
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.PageableCollection
+
+  url:  '/api/exercise'
+
+  model: Model
+
+  mode: 'client'
+
+  state:
+    currentPage: 1
+    pageSize:    10
+
+  comparator: (item) -> return -item.get('date')
 
 #-------------------------------------------------------------------------------
 # View

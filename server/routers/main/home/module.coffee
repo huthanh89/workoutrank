@@ -10,13 +10,13 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
-Exercise = mongoose.model('exercise')
 Strength = mongoose.model('strength')
+SLog     = mongoose.model('slog')
 
 #-------------------------------------------------------------------------------
 # GET
 #
-#   Get a list all logs.
+#   Get count of all exercises and all logs.
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->
@@ -25,22 +25,22 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      Exercise.findOne
-        user: req.session.user._id
-      .exec (err, exercise) ->
-        console.log 'ERROR', err if err
-        callback null,  exercise.strength.length
-      return
-
-    (exerciseCount, callback) ->
-
-      # Get logs
-
       Strength.count
         user: req.session.user._id
       .exec (err, count) ->
         console.log 'ERROR', err if err
-        return callback null, exerciseCount, count
+        callback null, count
+      return
+
+    (strengthCount, callback) ->
+
+      # Get logs
+
+      SLog.count
+        user: req.session.user._id
+      .exec (err, count) ->
+        console.log 'ERROR', err if err
+        return callback null, strengthCount, count
 
       return
 

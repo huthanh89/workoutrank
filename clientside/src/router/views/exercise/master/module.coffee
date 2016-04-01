@@ -9,40 +9,18 @@ TableView    = require './table/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Plugins
-#-------------------------------------------------------------------------------
-
-require 'backbone.paginator'
-
-#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-  url:  '/api/exercise'
+
+  url: '/api/exercise'
+
+  idAttribute: '_id'
+
   defaults:
-    name: ''
-    type: 0
-    note: ''
-    date: new Date()
-
-#-------------------------------------------------------------------------------
-# Collection
-#-------------------------------------------------------------------------------
-
-class Collection extends Backbone.PageableCollection
-
-  url:  '/api/exercise'
-
-  model: Model
-
-  mode: 'client'
-
-  state:
-    currentPage: 1
-    pageSize:    10
-
-  comparator: (item) -> return -item.get('date')
+    user:     ''
+    strength: []
 
 #-------------------------------------------------------------------------------
 # View
@@ -104,8 +82,7 @@ class View extends Marionette.LayoutView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Model      = Model
-module.exports.Collection = Collection
-module.exports.View       = View
+module.exports.Model = Model
+module.exports.View  = View
 
 #-------------------------------------------------------------------------------

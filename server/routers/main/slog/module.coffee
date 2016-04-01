@@ -10,12 +10,37 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
-Exercise = mongoose.model('exercise')
 Strength = mongoose.model('strength')
+SLog     = mongoose.model('slog')
+
+#-------------------------------------------------------------------------------
+# List
+#   Get all slogs from this user.
+#-------------------------------------------------------------------------------
+
+module.list = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      SLog.find
+        user: req.session.user.id
+      .exec (err, slogs) ->
+        console.log 'ERROR', err if err
+        return callback null, slogs
+
+      return
+
+  ], (err, documents) ->
+
+    console.log 'ERROR', err if err
+
+    return res.json documents
 
 #-------------------------------------------------------------------------------
 # Get
-#   Get one exercise with given strengthID
+#   Get a specific slogs with matching strengthID
 #-------------------------------------------------------------------------------
 
 module.get = (req, res, next) ->
@@ -24,19 +49,12 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      Exercise.find()
-      .exec (err, exercises) ->
+      SLog.find
+        exercise: req.params.sid
+      .exec (err, slogs) ->
         console.log 'ERROR', err if err
-        return callback null, exercises[0].strength
-
+        return callback null, slogs
       return
-
-    (strengths, callback) ->
-
-      strength = _.find strengths, (strength) ->
-        return strength._id.toString() is req.params.sid
-
-      return callback null, strength
 
   ], (err, documents) ->
 
@@ -46,7 +64,7 @@ module.get = (req, res, next) ->
 
 #-------------------------------------------------------------------------------
 # Post
-#   Create a new strength log.
+#   Create a new slog.
 #-------------------------------------------------------------------------------
 
 module.post = (req, res) ->
@@ -55,7 +73,7 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      Strength.create
+      SLog.create
         date:     req.body.date
         name:     req.body.name
         muscle:   req.body.muscle
@@ -82,7 +100,7 @@ module.post = (req, res) ->
 
 #-------------------------------------------------------------------------------
 # Put
-#   Edit a new strength log.
+#   Edit a slog record.
 #-------------------------------------------------------------------------------
 
 module.put = (req, res, next) ->
@@ -91,29 +109,31 @@ module.put = (req, res, next) ->
 
     (callback) ->
 
-      Strength.findById req.params.sid, (err, strength) ->
+      SLog.findById req.params.sid, (err, strength) ->
         console.log 'ERROR', err if err
-        return callback null, strength
+        return callback null, slog
 
       return
 
-    (strength, callback) ->
+    (slog, callback) ->
 
-      strength.date    = req.body.date
-      strength.muscle  = req.body.muscle
-      strength.name    = req.body.name
-      strength.note    = req.body.note
-      strength.session = req.body.session
+      slog.date    = req.body.date
+      slog.muscle  = req.body.muscle
+      slog.name    = req.body.name
+      slog.note    = req.body.note
+      slog.session = req.body.session
 
-      strength.save (err, strength) ->
+      slog.save (err, slog) ->
         console.log 'ERROR', err if err
-        return callback null, strength
+        return callback null, slog
 
       return
 
   ], (err, document) ->
 
     console.log 'ERROR', err if err
+
+    # Return json if success.
 
     return res.json document
 

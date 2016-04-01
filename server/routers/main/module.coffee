@@ -46,42 +46,53 @@ router.get '/multiplayer',       index
 
 Home     = require './home/module'
 Profile  = require './profile/module'
-Exercise = require './exercise/module'
 Strength = require './strength/module'
 Log      = require './log/module'
+SLog     = require './slog/module'
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get  '/api/profile', Profile.get
+router.get '/api/profile', Profile.get
 
-router.get  '/api/home', Home.get
+router.get '/api/home', Home.get
 
-# Get complete exercise belonging to a user.
-router.get  '/api/exercise', Exercise.get
+#-------------------------------------------------------------------------------
+# Strengths
+#-------------------------------------------------------------------------------
 
-# Post any exercise for an user.
-router.post '/api/exercise', Exercise.post
+# Get all strength exercises belonging to a user.
+router.get '/api/strengths', Strength.get
 
-# Get all workout sessions of an exercise.
-router.post '/api/strength', Strength.Detail.post
+# Post a new strength exercise for an user.
+router.post '/api/strengths', Strength.post
 
-# Post a workout session.
-router.post '/api/strength', Strength.Detail.post
+# Get all slog for an exercise.
+router.get '/api/strengths/:sid/log', Strength.log
 
-# Get a workout session.
-router.get '/api/strength/:sid', Strength.Detail.get
+#-------------------------------------------------------------------------------
+# Strength Logs
+#-------------------------------------------------------------------------------
+
+# Get all slogs.
+router.get '/api/slogs', SLog.list
+
+# Post a new workout session.
+router.post '/api/slogs', SLog.post
+
+# Get a specific session log.
+router.get '/api/slogs/:sid', SLog.get
 
 # Edit an workout session.
-router.put '/api/strength/:sid', Strength.Detail.put
+router.put '/api/slogs/:sid', SLog.put
 
-# Get all workout session for an exercise.
-router.get '/api/strength/:sid/log', Strength.Log.get
+#-------------------------------------------------------------------------------
+# ALL Logs
+#-------------------------------------------------------------------------------
 
 # Get all logs.
-router.get '/api/log', Log.get
-router.get '/api/log', Log.get
+router.get '/api/logs', Log.get
 
 #-------------------------------------------------------------------------------
 # Exports

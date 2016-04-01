@@ -58581,12 +58581,11 @@
 	  };
 
 	  Router.prototype.strengthDetail = function(strengthID) {
-	    var Collection, Model, View, region;
+	    var Collection, Model, View;
 	    this.navChannel.request('nav:main');
 	    View = Strength.Detail.View;
 	    Model = Strength.Detail.Model;
 	    Collection = Strength.Detail.Collection;
-	    region = this.rootView.content;
 	    async.waterfall([
 	      function(callback) {
 	        var model;
@@ -58615,16 +58614,18 @@
 	          }
 	        });
 	      }
-	    ], function(err, model, collection) {
-	      if (err) {
-	        console.log('Error:', err);
-	      }
-	      region.show(new View({
-	        model: model,
-	        collection: collection,
-	        strengthID: strengthID
-	      }));
-	    });
+	    ], (function(_this) {
+	      return function(err, model, collection) {
+	        if (err) {
+	          console.log('Error:', err);
+	        }
+	        _this.rootView.content.show(new View({
+	          model: model,
+	          collection: collection,
+	          strengthID: strengthID
+	        }));
+	      };
+	    })(this));
 	  };
 
 	  Router.prototype.strengthLog = function(strengthID) {
@@ -66919,7 +66920,7 @@
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, InputView, Marionette, Model, TableView, View, viewTemplate,
+	var Backbone, InputView, Marionette, Model, TableView, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -66931,9 +66932,7 @@
 
 	TableView = __webpack_require__(53);
 
-	viewTemplate = __webpack_require__(56);
-
-	__webpack_require__(57);
+	viewTemplate = __webpack_require__(57);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -66944,42 +66943,16 @@
 
 	  Model.prototype.url = '/api/exercise';
 
+	  Model.prototype.idAttribute = '_id';
+
 	  Model.prototype.defaults = {
-	    name: '',
-	    type: 0,
-	    note: '',
-	    date: new Date()
+	    user: '',
+	    strength: []
 	  };
 
 	  return Model;
 
 	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = '/api/exercise';
-
-	  Collection.prototype.model = Model;
-
-	  Collection.prototype.mode = 'client';
-
-	  Collection.prototype.state = {
-	    currentPage: 1,
-	    pageSize: 10
-	  };
-
-	  Collection.prototype.comparator = function(item) {
-	    return -item.get('date');
-	  };
-
-	  return Collection;
-
-	})(Backbone.PageableCollection);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -67041,8 +67014,6 @@
 	})(Marionette.LayoutView);
 
 	module.exports.Model = Model;
-
-	module.exports.Collection = Collection;
 
 	module.exports.View = View;
 
@@ -67239,7 +67210,7 @@
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Data, ItemView, Marionette, View, _, itemTemplate, moment, viewTemplate,
+	var Backbone, Collection, Data, ItemView, Marionette, Model, View, _, itemTemplate, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -67258,6 +67229,54 @@
 	viewTemplate = __webpack_require__(55);
 
 	__webpack_require__(19);
+
+	__webpack_require__(56);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = '/api/exercise';
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    type: 0,
+	    note: '',
+	    date: new Date()
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = '/api/exercise';
+
+	  Collection.prototype.model = Model;
+
+	  Collection.prototype.mode = 'client';
+
+	  Collection.prototype.state = {
+	    currentPage: 1,
+	    pageSize: 10
+	  };
+
+	  Collection.prototype.comparator = function(item) {
+	    return -item.get('date');
+	  };
+
+	  return Collection;
+
+	})(Backbone.PageableCollection);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
@@ -67405,20 +67424,6 @@
 
 /***/ },
 /* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"exercise-input-view\"></div></div><div class=\"col-sm-6\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -68753,6 +68758,20 @@
 
 
 /***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><button id=\"exercise-back-home\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-home\"></i></button></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-heartbeat\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercise</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"exercise-input-view\"></div></div><div class=\"col-sm-6\"><div id=\"exercise-table-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
 /* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -68785,7 +68804,7 @@
 
 	viewTemplate = __webpack_require__(77);
 
-	__webpack_require__(57);
+	__webpack_require__(56);
 
 	__webpack_require__(76);
 
@@ -74186,7 +74205,7 @@
 /* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, DateView, Marionette, Modal, Model, TableView, View, moment, viewTemplate,
+	var Backbone, Collection, DateView, Marionette, Modal, Model, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74200,11 +74219,11 @@
 
 	DateView = __webpack_require__(81);
 
-	TableView = __webpack_require__(83);
+	Table = __webpack_require__(83);
 
 	viewTemplate = __webpack_require__(87);
 
-	__webpack_require__(57);
+	__webpack_require__(56);
 
 	__webpack_require__(64);
 
@@ -74232,8 +74251,6 @@
 
 	Collection = (function(superClass) {
 	  extend(Collection, superClass);
-
-	  Collection.prototype.url = '/api/strength/log';
 
 	  Collection.prototype.model = Model;
 
@@ -74328,9 +74345,7 @@
 	      };
 	    })(this));
 	    this.tableCollection = new Backbone.Collection(models);
-	    this.showChildView('table', new TableView({
-	      collection: this.tableCollection
-	    }));
+	    this.showTable();
 	  };
 
 	  View.prototype.onRender = function() {
@@ -74341,7 +74356,11 @@
 	    this.showChildView('date', new DateView({
 	      model: this.model
 	    }));
-	    this.showChildView('table', new TableView({
+	    this.showTable();
+	  };
+
+	  View.prototype.showTable = function() {
+	    this.showChildView('table', new Table.View({
 	      collection: this.tableCollection
 	    }));
 	  };
@@ -74621,7 +74640,7 @@
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
+	var Backbone, Collection, ItemView, Marionette, Model, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74638,6 +74657,53 @@
 	itemTemplate = __webpack_require__(85);
 
 	viewTemplate = __webpack_require__(86);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = '/api/strength';
+
+	  Model.prototype.idAttribute = '_id';
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  Collection.prototype.model = Model;
+
+	  Collection.prototype.mode = 'client';
+
+	  function Collection(attributes, options) {
+	    Collection.__super__.constructor.apply(this, arguments);
+	    this.url = "/api/strength/" + options.id + "/log";
+	  }
+
+	  Collection.prototype.state = {
+	    currentPage: 1,
+	    pageSize: 10
+	  };
+
+	  Collection.prototype.comparator = function(item) {
+	    return -item.get('date');
+	  };
+
+	  Collection.prototype.parseRecords = function(response) {
+	    this.date = response.date;
+	    this.muscle = response.muscle;
+	    this.name = response.name;
+	    return response.log;
+	  };
+
+	  return Collection;
+
+	})(Backbone.PageableCollection);
 
 	__webpack_require__(46);
 
@@ -74680,6 +74746,12 @@
 	    '.strength-table-td-weight': 'weight'
 	  };
 
+	  ItemView.prototype.events = {
+	    'click .strength-table-td-remove': function() {
+	      this.model.destroy();
+	    }
+	  };
+
 	  ItemView.prototype.onRender = function() {
 	    this.stickit();
 	  };
@@ -74708,7 +74780,11 @@
 
 	})(Marionette.CompositeView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
 
 
 /***/ },

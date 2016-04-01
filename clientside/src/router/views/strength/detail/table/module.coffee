@@ -11,6 +11,42 @@ itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  url: '/api/strength'
+
+  idAttribute: '_id'
+
+#-------------------------------------------------------------------------------
+# Pageable Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.PageableCollection
+
+  model: Model
+
+  mode: 'client'
+
+  constructor: (attributes, options) ->
+    super
+    @url = "/api/strength/#{options.id}/log"
+
+  state:
+    currentPage: 1
+    pageSize:    10
+
+  comparator: (item) -> return -item.get('date')
+
+  parseRecords: (response) ->
+    @date   = response.date
+    @muscle = response.muscle
+    @name   = response.name
+    return response.log
+
+#-------------------------------------------------------------------------------
 # Plugins
 #-------------------------------------------------------------------------------
 
@@ -35,6 +71,7 @@ class ItemView extends Marionette.ItemView
 
   template: itemTemplate
 
+
   bindings:
 
     '.strength-table-td-time':
@@ -44,6 +81,11 @@ class ItemView extends Marionette.ItemView
     '.strength-table-td-rep': 'rep'
 
     '.strength-table-td-weight': 'weight'
+
+  events:
+    'click .strength-table-td-remove': ->
+      @model.destroy()
+      return
 
   onRender: ->
     @stickit()
@@ -71,6 +113,8 @@ class View extends Marionette.CompositeView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = View
+module.exports.Model      = Model
+module.exports.Collection = Collection
+module.exports.View       = View
 
 #-------------------------------------------------------------------------------

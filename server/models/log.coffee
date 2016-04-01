@@ -5,26 +5,44 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Schema  XXX Not yet implemented
 #-------------------------------------------------------------------------------
 
-CardioSchema = new mongoose.Schema
-  date:
-    type: Date
-  rep:
-    type: Date
-  weight:
-    type: String
-  note:
-    type: String
+ExerciseSchema = new mongoose.Schema
+  workouts:[
+    date:
+      type: Date
+    name:
+      type: String
+    rep:
+      type: Number
+    weight:
+      type: Number
+  ]
+    type: Array
+  cardios:[
+    date:
+      type: Date
+    name:
+      type: String
+    duration:
+      type: Number
+  ]
+  weights:[
+    date:
+      type: Date
+    pound:
+      type: String
+  ]
+
 ,
-  collection: 'lift'
+  collection: 'log'
 
 #-------------------------------------------------------------------------------
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('cardio', CardioSchema)
+model = mongoose.model('log', ExerciseSchema)
 
 #-------------------------------------------------------------------------------
 # Exports

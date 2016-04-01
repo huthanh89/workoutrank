@@ -9,6 +9,8 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 StrengthSchema = new mongoose.Schema
+  user:
+    type: mongoose.Schema.ObjectId
   date:
     type: Date
   name:
@@ -17,14 +19,6 @@ StrengthSchema = new mongoose.Schema
     type: Number
   note:
     type: String
-  rep:
-    type: Number
-  weight:
-    type: Number
-  exercise:
-    type: mongoose.Schema.ObjectId
-  user:
-    type: mongoose.Schema.ObjectId
 ,
   collection: 'strength'
 

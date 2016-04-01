@@ -2,34 +2,45 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-mongoose = require 'mongoose'
+Backbone     = require 'backbone'
+viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Model
 #-------------------------------------------------------------------------------
 
-CardioSchema = new mongoose.Schema
-  date:
-    type: Date
-  rep:
-    type: Date
-  weight:
-    type: String
-  note:
-    type: String
-,
-  collection: 'lift'
+class Model extends Backbone.Model
+  defaults:
+    name: ''
 
 #-------------------------------------------------------------------------------
-# Model Registration
+# View
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('cardio', CardioSchema)
+class View extends Marionette.ItemView
+
+  template: viewTemplate
+
+  ui:
+    reps:      '#reps'
+    touchspin: '#touchspin'
+
+  events:
+    click: (event) ->
+      console.log 'event'
+      event.preventDefault()
+      return
+
+  onRender: ->
+
+    return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = model
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = View
 
 #-------------------------------------------------------------------------------
