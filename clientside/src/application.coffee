@@ -3,11 +3,12 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-GA         = require './ga'
-Backbone   = require 'backbone'
-Marionette = require 'marionette'
-Nav        = require './nav/module'
-Router     = require './router/router'
+GA           = require './ga'
+Backbone     = require 'backbone'
+Marionette   = require 'marionette'
+Nav          = require './nav/module'
+ShortcutView = require './shortcut/view'
+Router       = require './router/router'
 
 #-------------------------------------------------------------------------------
 # User
@@ -29,8 +30,9 @@ class User extends Backbone.Model
 class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
-    header:  '.header'
-    content: '.content'
+    header:   '.header'
+    shortcut: '.shortcut'
+    content:  '.content'
 
 #-------------------------------------------------------------------------------
 # Create Application.
@@ -71,9 +73,14 @@ class Application extends Marionette.Application
         return
 
       'nav:main': ->
+
         rootView.showChildView 'header', new Nav.Main
           model: user
+
+        rootView.showChildView 'shortcut', new ShortcutView()
+
         return
+
 
     # All router must be initialized before backbone.history starts to work.
 

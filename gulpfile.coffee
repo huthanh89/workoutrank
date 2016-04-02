@@ -260,7 +260,6 @@ gulp.task 'watch', ->
   livereload.listen start: true
 
   # Watch for change and re compile.
-  #gulp.watch './clientside/**', [ 'compile:client']
   gulp.watch './clientside/styles/**', [ 'compile:css']
   gulp.watch './clientside/src/**', [ 'compile:client']
 

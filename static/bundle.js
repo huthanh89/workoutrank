@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(102);
+	__webpack_require__(101);
 
-	__webpack_require__(103);
+	__webpack_require__(102);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -49422,7 +49422,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Backbone, GA, Marionette, Nav, RootView, Router, User,
+	var Application, Backbone, GA, Marionette, Nav, RootView, Router, ShortcutView, User,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -49434,7 +49434,9 @@
 
 	Nav = __webpack_require__(11);
 
-	Router = __webpack_require__(20);
+	ShortcutView = __webpack_require__(20);
+
+	Router = __webpack_require__(22);
 
 	User = (function(superClass) {
 	  extend(User, superClass);
@@ -49466,6 +49468,7 @@
 
 	  RootView.prototype.regions = {
 	    header: '.header',
+	    shortcut: '.shortcut',
 	    content: '.content'
 	  };
 
@@ -49507,6 +49510,7 @@
 	        rootView.showChildView('header', new Nav.Main({
 	          model: user
 	        }));
+	        rootView.showChildView('shortcut', new ShortcutView());
 	      }
 	    });
 	    new Router({
@@ -58350,35 +58354,137 @@
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Exercise, Home, Index, Log, Login, Marionette, Profile, Router, Signup, Stat, Strength, _, async,
+	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(8);
+
+	Radio = __webpack_require__(17);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(21);
+
+	__webpack_require__(19);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    home: '#shortcut-home',
+	    strength: '#shortcut-strength',
+	    logs: '#shortcut-logs',
+	    summary: '#shortcut-summary',
+	    homeTip: '.shortcut-home-tip',
+	    strengthTip: '.shortcut-strength-tip',
+	    logTip: '.shortcut-log-tip',
+	    statTip: '.shortcut-stat-tip',
+	    profile: '.shortcut-profile',
+	    setting: '.shortcut-setting',
+	    help: '.shortcut-help',
+	    report: '.shortcut-report',
+	    signout: '.shortcut-signout',
+	    menu: '#my-menu'
+	  };
+
+	  View.prototype.events = {
+	    'click @ui.brand': function(event) {
+	      event.preventDefault();
+	      $("#my-menu").trigger("open.mm");
+	    },
+	    'click @ui.home': function() {
+	      this.channel.request('home');
+	    },
+	    'click @ui.strength': function() {
+	      this.channel.request('strength');
+	    },
+	    'click @ui.logs': function() {
+	      this.channel.request('log');
+	    },
+	    'click @ui.summary': function() {
+	      this.channel.request('stat');
+	    },
+	    'click @ui.profile': function() {
+	      this.channel.request('profile');
+	    },
+	    'click @ui.setting': function() {
+	      this.channel.request('setting');
+	    },
+	    'click @ui.help': function() {
+	      this.channel.request('help');
+	    },
+	    'click @ui.report': function() {
+	      this.channel.request('report');
+	    },
+	    'click @ui.signout': function() {
+	      this.channel.request('signout');
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.channel = Backbone.Radio.channel('root');
+	  }
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"col-xs-12 visible-xs\"><div class=\"pull-right\"><div class=\"btn-group\"><button id=\"shortcut-home\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-home\"></i></button><button class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-list-ol\"></i></button><button id=\"shortcut-strength\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-shield\"></i></button><button id=\"shortcut-logs\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i></button><button id=\"shortcut-summary\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-line-chart\"></i></button></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Exercise, Home, Log, Login, Marionette, Profile, Router, Signup, Stat, Strength, _, async,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	_ = __webpack_require__(3);
 
-	async = __webpack_require__(21);
+	async = __webpack_require__(23);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Index = __webpack_require__(24);
+	Signup = __webpack_require__(26);
 
-	Signup = __webpack_require__(27);
+	Login = __webpack_require__(30);
 
-	Login = __webpack_require__(31);
+	Home = __webpack_require__(33);
 
-	Home = __webpack_require__(34);
+	Profile = __webpack_require__(36);
 
-	Profile = __webpack_require__(37);
+	Stat = __webpack_require__(38);
 
-	Stat = __webpack_require__(39);
+	Exercise = __webpack_require__(46);
 
-	Exercise = __webpack_require__(47);
+	Strength = __webpack_require__(56);
 
-	Strength = __webpack_require__(57);
-
-	Log = __webpack_require__(95);
+	Log = __webpack_require__(94);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -58737,7 +58843,7 @@
 
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, setImmediate) {/*!
@@ -59864,10 +59970,10 @@
 
 	}());
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22), __webpack_require__(23).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24), __webpack_require__(25).setImmediate))
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -59964,10 +60070,10 @@
 
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(22).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(24).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -60043,99 +60149,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23).setImmediate, __webpack_require__(23).clearImmediate))
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Collection, Model,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.defaults = {
-	    name: ''
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = 'api/user';
-
-	  Collection.prototype.model = Model;
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
-	exports.Model = Model;
-
-	exports.Collection = Collection;
-
-	exports.View = __webpack_require__(25);
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(26);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = viewTemplate;
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25).setImmediate, __webpack_require__(25).clearImmediate))
 
 /***/ },
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -60172,11 +60189,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(28);
+	exports.View = __webpack_require__(27);
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -60187,11 +60204,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(29);
+	viewTemplate = __webpack_require__(28);
 
 	__webpack_require__(19);
 
-	__webpack_require__(30);
+	__webpack_require__(29);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -60251,7 +60268,7 @@
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -60265,7 +60282,7 @@
 	}
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -60984,7 +61001,7 @@
 
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -61013,11 +61030,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(32);
+	exports.View = __webpack_require__(31);
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -61028,11 +61045,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(33);
+	viewTemplate = __webpack_require__(32);
 
 	__webpack_require__(19);
 
-	__webpack_require__(30);
+	__webpack_require__(29);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -61088,7 +61105,7 @@
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -61102,7 +61119,7 @@
 	}
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -61126,11 +61143,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(35);
+	exports.View = __webpack_require__(34);
 
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -61141,7 +61158,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(36);
+	viewTemplate = __webpack_require__(35);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -61203,7 +61220,7 @@
 
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -61217,7 +61234,7 @@
 	}
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -61228,7 +61245,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(38);
+	viewTemplate = __webpack_require__(37);
 
 	__webpack_require__(19);
 
@@ -61283,7 +61300,7 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -61297,7 +61314,7 @@
 	}
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Marionette, Model, TableView, View, _, viewTemplate,
@@ -61310,9 +61327,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	TableView = __webpack_require__(40);
+	TableView = __webpack_require__(39);
 
-	viewTemplate = __webpack_require__(46);
+	viewTemplate = __webpack_require__(45);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -61402,7 +61419,7 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -61411,19 +61428,19 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	nullTemplate = __webpack_require__(42);
+	nullTemplate = __webpack_require__(41);
 
-	itemTemplate = __webpack_require__(43);
+	itemTemplate = __webpack_require__(42);
 
-	viewTemplate = __webpack_require__(44);
+	viewTemplate = __webpack_require__(43);
 
-	__webpack_require__(45);
+	__webpack_require__(44);
 
 	__webpack_require__(19);
 
@@ -61498,7 +61515,7 @@
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -65192,7 +65209,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65206,7 +65223,7 @@
 	}
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65220,7 +65237,7 @@
 	}
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65234,7 +65251,7 @@
 	}
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -66878,7 +66895,7 @@
 
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -66888,18 +66905,18 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Stats</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"stat-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-line-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Summary</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"stat-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports.Master = __webpack_require__(48);
+	module.exports.Master = __webpack_require__(47);
 
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, InputView, Marionette, Model, TableView, View, viewTemplate,
@@ -66910,11 +66927,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	InputView = __webpack_require__(49);
+	InputView = __webpack_require__(48);
 
-	TableView = __webpack_require__(52);
+	TableView = __webpack_require__(51);
 
-	viewTemplate = __webpack_require__(56);
+	viewTemplate = __webpack_require__(55);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -67001,7 +67018,7 @@
 
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, _, viewTemplate,
@@ -67014,11 +67031,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(50);
+	Data = __webpack_require__(49);
 
-	viewTemplate = __webpack_require__(51);
+	viewTemplate = __webpack_require__(50);
 
-	__webpack_require__(45);
+	__webpack_require__(44);
 
 	__webpack_require__(19);
 
@@ -67096,7 +67113,7 @@
 
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports) {
 
 	var Muscles, Types;
@@ -67175,7 +67192,7 @@
 
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67189,7 +67206,7 @@
 	}
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Data, ItemView, Marionette, Model, View, _, itemTemplate, moment, viewTemplate,
@@ -67198,21 +67215,21 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(50);
+	Data = __webpack_require__(49);
 
-	itemTemplate = __webpack_require__(53);
+	itemTemplate = __webpack_require__(52);
 
-	viewTemplate = __webpack_require__(54);
+	viewTemplate = __webpack_require__(53);
 
 	__webpack_require__(19);
 
-	__webpack_require__(55);
+	__webpack_require__(54);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -67377,7 +67394,7 @@
 
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67391,7 +67408,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67405,7 +67422,7 @@
 	}
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -68740,7 +68757,7 @@
 
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68754,18 +68771,18 @@
 	}
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports.Master = __webpack_require__(58);
+	module.exports.Master = __webpack_require__(57);
 
-	module.exports.Detail = __webpack_require__(77);
+	module.exports.Detail = __webpack_require__(76);
 
-	module.exports.Log = __webpack_require__(89);
+	module.exports.Log = __webpack_require__(88);
 
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Add, Backbone, Collection, FilterView, Marionette, Model, PaginateView, Table, View, viewTemplate,
@@ -68776,19 +68793,19 @@
 
 	Marionette = __webpack_require__(10);
 
-	Add = __webpack_require__(59);
+	Add = __webpack_require__(58);
 
-	Table = __webpack_require__(66);
+	Table = __webpack_require__(65);
 
-	FilterView = __webpack_require__(71);
+	FilterView = __webpack_require__(70);
 
-	PaginateView = __webpack_require__(73);
+	PaginateView = __webpack_require__(72);
 
-	viewTemplate = __webpack_require__(76);
+	viewTemplate = __webpack_require__(75);
 
-	__webpack_require__(55);
+	__webpack_require__(54);
 
-	__webpack_require__(75);
+	__webpack_require__(74);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -68912,7 +68929,7 @@
 
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, viewTemplate,
@@ -68923,19 +68940,19 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(60);
+	Data = __webpack_require__(59);
 
-	viewTemplate = __webpack_require__(61);
+	viewTemplate = __webpack_require__(60);
+
+	__webpack_require__(61);
 
 	__webpack_require__(62);
 
 	__webpack_require__(63);
 
-	__webpack_require__(64);
-
 	__webpack_require__(19);
 
-	__webpack_require__(65);
+	__webpack_require__(64);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -69055,7 +69072,7 @@
 
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -69116,7 +69133,7 @@
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -69130,7 +69147,7 @@
 	}
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -69833,7 +69850,7 @@
 
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -71991,7 +72008,7 @@
 
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -73182,7 +73199,7 @@
 
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -73532,7 +73549,7 @@
 
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Data, ItemView, Marionette, NullView, Pageable, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -73541,23 +73558,23 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Pageable = __webpack_require__(67);
+	Pageable = __webpack_require__(66);
 
-	Data = __webpack_require__(60);
+	Data = __webpack_require__(59);
 
-	nullTemplate = __webpack_require__(68);
+	nullTemplate = __webpack_require__(67);
 
-	itemTemplate = __webpack_require__(69);
+	itemTemplate = __webpack_require__(68);
 
-	viewTemplate = __webpack_require__(70);
+	viewTemplate = __webpack_require__(69);
 
-	__webpack_require__(45);
+	__webpack_require__(44);
 
 	__webpack_require__(19);
 
@@ -73709,7 +73726,7 @@
 
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Behavior, Marionette,
@@ -73774,7 +73791,7 @@
 
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73784,11 +73801,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td colspan=\"2\" id=\"strength-table-null\"><span class=\"lead\">Add a new workout.</span></td>");;return buf.join("");
+	buf.push("<td colspan=\"4\" id=\"strength-table-null\"><span class=\"lead\">Add a new workout.</span></td>");;return buf.join("");
 	}
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73802,7 +73819,7 @@
 	}
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73812,11 +73829,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Lastest</b></td><td class=\"hidden-xs\"><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover table-bordered\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Name</b></td><td><b>Lastest</b></td><td class=\"hidden-xs\"><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Data, Marionette, View, viewTemplate,
@@ -73826,9 +73843,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(60);
+	Data = __webpack_require__(59);
 
-	viewTemplate = __webpack_require__(72);
+	viewTemplate = __webpack_require__(71);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -73885,7 +73902,7 @@
 
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73899,7 +73916,7 @@
 	}
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, viewTemplate,
@@ -73908,9 +73925,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(74);
+	viewTemplate = __webpack_require__(73);
 
-	__webpack_require__(75);
+	__webpack_require__(74);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -73986,7 +74003,7 @@
 
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74000,7 +74017,7 @@
 	}
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -74195,7 +74212,7 @@
 
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74209,30 +74226,30 @@
 	}
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, DateView, Marionette, Modal, Model, PaginateView, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Modal = __webpack_require__(78);
+	Modal = __webpack_require__(77);
 
-	DateView = __webpack_require__(80);
+	DateView = __webpack_require__(79);
 
-	Table = __webpack_require__(82);
+	Table = __webpack_require__(81);
 
-	PaginateView = __webpack_require__(86);
+	PaginateView = __webpack_require__(85);
 
-	viewTemplate = __webpack_require__(88);
+	viewTemplate = __webpack_require__(87);
 
-	__webpack_require__(63);
+	__webpack_require__(62);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74364,7 +74381,7 @@
 
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, _, moment, viewTemplate,
@@ -74373,23 +74390,23 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(79);
+	viewTemplate = __webpack_require__(78);
+
+	__webpack_require__(61);
 
 	__webpack_require__(62);
 
 	__webpack_require__(63);
 
-	__webpack_require__(64);
-
 	__webpack_require__(19);
 
-	__webpack_require__(65);
+	__webpack_require__(64);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74530,7 +74547,7 @@
 
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74544,20 +74561,20 @@
 	}
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(81);
+	viewTemplate = __webpack_require__(80);
 
-	__webpack_require__(63);
+	__webpack_require__(62);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74614,7 +74631,7 @@
 
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74628,7 +74645,7 @@
 	}
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, ItemView, Marionette, Model, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -74637,19 +74654,19 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	nullTemplate = __webpack_require__(83);
+	nullTemplate = __webpack_require__(82);
 
-	itemTemplate = __webpack_require__(84);
+	itemTemplate = __webpack_require__(83);
 
-	viewTemplate = __webpack_require__(85);
+	viewTemplate = __webpack_require__(84);
 
-	__webpack_require__(45);
+	__webpack_require__(44);
 
 	__webpack_require__(19);
 
@@ -74770,7 +74787,7 @@
 
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74784,7 +74801,7 @@
 	}
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74798,7 +74815,7 @@
 	}
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74812,7 +74829,7 @@
 	}
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, viewTemplate,
@@ -74821,9 +74838,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(87);
+	viewTemplate = __webpack_require__(86);
 
-	__webpack_require__(75);
+	__webpack_require__(74);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74899,7 +74916,7 @@
 
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74913,7 +74930,7 @@
 	}
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74927,24 +74944,24 @@
 	}
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(90);
+	GraphView = __webpack_require__(89);
 
-	TableView = __webpack_require__(92);
+	TableView = __webpack_require__(91);
 
-	viewTemplate = __webpack_require__(94);
+	viewTemplate = __webpack_require__(93);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75033,7 +75050,7 @@
 
 
 /***/ },
-/* 90 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
@@ -75048,7 +75065,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(91);
+	viewTemplate = __webpack_require__(90);
 
 	seriesData = function(models) {
 	  var i, len, model, series;
@@ -75146,7 +75163,7 @@
 
 
 /***/ },
-/* 91 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75160,22 +75177,22 @@
 	}
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(60);
+	Data = __webpack_require__(59);
 
-	viewTemplate = __webpack_require__(93);
+	viewTemplate = __webpack_require__(92);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -75231,7 +75248,7 @@
 
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75245,7 +75262,7 @@
 	}
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75259,24 +75276,24 @@
 	}
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(96);
+	GraphView = __webpack_require__(95);
 
-	Table = __webpack_require__(98);
+	Table = __webpack_require__(97);
 
-	viewTemplate = __webpack_require__(101);
+	viewTemplate = __webpack_require__(100);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75395,7 +75412,7 @@
 
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
@@ -75408,7 +75425,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(97);
+	viewTemplate = __webpack_require__(96);
 
 	seriesRepData = function(model) {
 	  return {
@@ -75501,7 +75518,7 @@
 
 
 /***/ },
-/* 97 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75515,22 +75532,22 @@
 	}
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(41);
+	moment = __webpack_require__(40);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(99);
+	Data = __webpack_require__(98);
 
-	viewTemplate = __webpack_require__(100);
+	viewTemplate = __webpack_require__(99);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75659,7 +75676,7 @@
 
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -75720,7 +75737,7 @@
 
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75734,7 +75751,7 @@
 	}
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75748,7 +75765,7 @@
 	}
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75840,7 +75857,7 @@
 
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
