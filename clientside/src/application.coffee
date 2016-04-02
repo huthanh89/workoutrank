@@ -67,7 +67,14 @@ class Application extends Marionette.Application
       'user': -> user
 
     rootChannel.reply
+
       'rootview': -> rootView
+
+      'message': (panelType, panelText) ->
+        rootView.showChildView 'message', new MessageView
+          panelType: panelType
+          panelText: panelText
+        return
 
     navChannel.reply
 
@@ -76,16 +83,10 @@ class Application extends Marionette.Application
         return
 
       'nav:main': ->
-
         rootView.showChildView 'header', new Nav.Main
           model: user
-
         rootView.showChildView 'shortcut', new ShortcutView()
-
-        rootView.showChildView 'message', new MessageView()
-
         return
-
 
     # All router must be initialized before backbone.history starts to work.
 

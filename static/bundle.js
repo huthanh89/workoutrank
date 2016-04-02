@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(104);
+	__webpack_require__(103);
 
-	__webpack_require__(105);
+	__webpack_require__(104);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -49505,6 +49505,12 @@
 	    rootChannel.reply({
 	      'rootview': function() {
 	        return rootView;
+	      },
+	      'message': function(panelType, panelText) {
+	        rootView.showChildView('message', new MessageView({
+	          panelType: panelType,
+	          panelText: panelText
+	        }));
 	      }
 	    });
 	    navChannel.reply({
@@ -49516,7 +49522,6 @@
 	          model: user
 	        }));
 	        rootView.showChildView('shortcut', new ShortcutView());
-	        rootView.showChildView('message', new MessageView());
 	      }
 	    });
 	    new MainRouter({
@@ -58477,10 +58482,20 @@
 
 	  View.prototype.template = viewTemplate;
 
-	  function View() {
+	  View.prototype.ui = {
+	    message: '#message',
+	    text: '#message-type'
+	  };
+
+	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
-	    this.channel = Backbone.Radio.channel('root');
+	    this.mergeOptions(options, ['panelType', 'panelText']);
 	  }
+
+	  View.prototype.onShow = function() {
+	    this.ui.message.addClass("alert-" + this.panelType);
+	    this.ui.text.html("" + this.panelText);
+	  };
 
 	  return View;
 
@@ -58500,7 +58515,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"message\" class=\"alert alert-danger\"><a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"close\">×</a>Panel content</div>");;return buf.join("");
+	buf.push("<div id=\"message\" class=\"alert\"><a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"close\">×</a><span id=\"message-type\">asd</span></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -74708,7 +74723,7 @@
 
 	Login = __webpack_require__(99);
 
-	Profile = __webpack_require__(102);
+	Profile = __webpack_require__(101);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -75663,11 +75678,19 @@
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Model,
+	var Backbone, Marionette, Model, View, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(100);
+
+	__webpack_require__(19);
+
+	__webpack_require__(98);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75686,29 +75709,6 @@
 	  return Model;
 
 	})(Backbone.Model);
-
-	exports.Model = Model;
-
-	exports.View = __webpack_require__(100);
-
-
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(101);
-
-	__webpack_require__(19);
-
-	__webpack_require__(98);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -75736,9 +75736,11 @@
 	            _this.rootChannel.request('home');
 	          };
 	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
+	        error: (function(_this) {
+	          return function(model, response) {
+	            _this.rootChannel.request('message', 'danger', response.responseText);
+	          };
+	        })(this)
 	      });
 	    }
 	  };
@@ -75760,11 +75762,13 @@
 
 	})(Marionette.ItemView);
 
-	module.exports = View;
+	module.exports.View = View;
+
+	module.exports.Model = Model;
 
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75778,7 +75782,7 @@
 	}
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -75789,7 +75793,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(103);
+	viewTemplate = __webpack_require__(102);
 
 	__webpack_require__(19);
 
@@ -75844,7 +75848,7 @@
 
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75858,7 +75862,7 @@
 	}
 
 /***/ },
-/* 104 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75950,7 +75954,7 @@
 
 
 /***/ },
-/* 105 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

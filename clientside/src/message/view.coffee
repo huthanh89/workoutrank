@@ -23,9 +23,21 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
-  constructor: ->
+  ui:
+    message: '#message'
+    text:    '#message-type'
+
+  constructor: (options) ->
     super
-    @channel = Backbone.Radio.channel('root')
+    @mergeOptions options, [
+      'panelType'
+      'panelText'
+    ]
+
+  onShow: ->
+    @ui.message.addClass "alert-#{@panelType}"
+    @ui.text.html "#{@panelText}"
+    return
 
 #-------------------------------------------------------------------------------
 # Exports
