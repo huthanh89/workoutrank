@@ -6,14 +6,11 @@ _          = require 'lodash'
 async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
-Signup     = require './main/signup/module'
-Login      = require './main/login/module'
-Home       = require './main/home/module'
-Profile    = require './main/profile/module'
-Stat       = require './main/stat/module'
-Exercise   = require './main/exercise/module'
-Strength   = require './main/strength/module'
-Log        = require './main/log/module'
+Home       = require './home/module'
+Stat       = require './stat/module'
+Exercise   = require './exercise/module'
+Strength   = require './strength/module'
+Log        = require './log/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -34,29 +31,9 @@ class Router extends Marionette.AppRouter
 
     @rootChannel.reply
 
-      'index': =>
-        @navigate('')
-        @signup()
-        return
-
-      'signup': =>
-        @navigate('signup', trigger: true)
-        @signup()
-        return
-
-      'login': =>
-        @navigate('login', trigger: true)
-        @login()
-        return
-
       'home': =>
         @navigate('home', trigger: true)
         @home()
-        return
-
-      'profile': =>
-        @navigate('profile', trigger: true)
-        @profile()
         return
 
       'exercise': =>
@@ -109,12 +86,7 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':                  'signup'
-    '/':                 'signup'
-    'signup':            'signup'
-    'login':             'login'
     'home':              'home'
-    'profile':           'profile'
     'exercise':          'exercise'
     'strength/':         'strength'
     'strength/:sid/':    'strengthDetail'
@@ -126,23 +98,6 @@ class Router extends Marionette.AppRouter
 
   # Api for Route handling.
   # Update Navbar and show view.
-
-  index: ->
-    @navChannel.request('nav:index')
-    console.log 'no index page, redirect to signup'
-    return
-
-  signup: ->
-    @navChannel.request('nav:index')
-    @rootView.content.show new Signup.View
-      model: new Signup.Model()
-    return
-
-  login: ->
-    @navChannel.request('nav:index')
-    @rootView.content.show new Login.View
-      model: new Login.Model()
-    return
 
   home: ->
     @navChannel.request('nav:main')
@@ -157,22 +112,6 @@ class Router extends Marionette.AppRouter
       error: ->
         console.log 'error'
         return
-    return
-
-  profile: ->
-    @navChannel.request('nav:main')
-
-    model = new Profile.Model()
-
-    model.fetch
-      success: (model) =>
-        @rootView.content.show new Profile.View
-          model: model
-        return
-      error: (err) ->
-        console.log 'error', arguments
-        return
-
     return
 
   strength: ->

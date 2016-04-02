@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(101);
+	__webpack_require__(104);
 
-	__webpack_require__(102);
+	__webpack_require__(105);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -49422,7 +49422,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Application, Backbone, GA, Marionette, Nav, RootView, Router, ShortcutView, User,
+	var Application, Backbone, GA, MainRouter, Marionette, MessageView, Nav, RootView, ShortcutView, User, UserRouter,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -49436,7 +49436,11 @@
 
 	ShortcutView = __webpack_require__(20);
 
-	Router = __webpack_require__(22);
+	MessageView = __webpack_require__(22);
+
+	MainRouter = __webpack_require__(24);
+
+	UserRouter = __webpack_require__(94);
 
 	User = (function(superClass) {
 	  extend(User, superClass);
@@ -49467,9 +49471,10 @@
 	  RootView.prototype.el = 'body';
 
 	  RootView.prototype.regions = {
-	    header: '.header',
-	    shortcut: '.shortcut',
-	    content: '.content'
+	    header: '#header',
+	    shortcut: '#shortcut-container',
+	    message: '#message-container',
+	    content: '#content'
 	  };
 
 	  return RootView;
@@ -49511,9 +49516,14 @@
 	          model: user
 	        }));
 	        rootView.showChildView('shortcut', new ShortcutView());
+	        rootView.showChildView('message', new MessageView());
 	      }
 	    });
-	    new Router({
+	    new MainRouter({
+	      mode: 'auto',
+	      trailingSlash: 'ignore'
+	    });
+	    new UserRouter({
 	      mode: 'auto',
 	      trailingSlash: 'ignore'
 	    });
@@ -57198,20 +57208,15 @@
 
 	  View.prototype.ui = {
 	    brand: '#navbar-brand',
-	    home: '.nav-home',
-	    strength: '.nav-strength',
-	    log: '.nav-log',
-	    stat: '.nav-stat',
-	    homeTip: '.nav-home-tip',
-	    strengthTip: '.nav-strength-tip',
-	    logTip: '.nav-log-tip',
-	    statTip: '.nav-stat-tip',
-	    profile: '.nav-profile',
-	    setting: '.nav-setting',
-	    help: '.nav-help',
-	    report: '.nav-report',
-	    signout: '.nav-signout',
-	    menu: '#my-menu'
+	    home: '#nav-home',
+	    strength: '#nav-strength',
+	    log: '#nav-log',
+	    stat: '#nav-stat',
+	    profile: '#nav-profile',
+	    setting: '#nav-setting',
+	    about: '#nav-about',
+	    report: '#nav-report',
+	    logout: '#nav-logout'
 	  };
 
 	  View.prototype.bindings = {
@@ -57246,14 +57251,14 @@
 	    'click @ui.setting': function() {
 	      this.channel.request('setting');
 	    },
-	    'click @ui.help': function() {
+	    'click @ui.about': function() {
 	      this.channel.request('help');
 	    },
 	    'click @ui.report': function() {
 	      this.channel.request('report');
 	    },
-	    'click @ui.signout': function() {
-	      this.channel.request('signout');
+	    'click @ui.logout': function() {
+	      this.channel.request('logout');
 	    }
 	  };
 
@@ -57263,19 +57268,19 @@
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.ui.homeTip.tooltip({
+	    this.ui.home.tooltip({
 	      title: 'Home',
 	      placement: 'bottom'
 	    });
-	    this.ui.strengthTip.tooltip({
+	    this.ui.strength.tooltip({
 	      title: 'Workout',
 	      placement: 'bottom'
 	    });
-	    this.ui.logTip.tooltip({
+	    this.ui.log.tooltip({
 	      title: 'Logs',
 	      placement: 'bottom'
 	    });
-	    this.ui.statTip.tooltip({
+	    this.ui.stat.tooltip({
 	      title: 'Stats',
 	      placement: 'bottom'
 	    });
@@ -57645,7 +57650,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\"><i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"navbar-brand\">WR</span></a><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-home nav-home-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-strength nav-strength-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-log nav-log-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"nav-stat nav-stat-tip hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li class=\"nav-profile\"><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</a></li><li class=\"nav-setting\"><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li class=\"nav-help\"><a><i class=\"fa fa-fw fa-lg fa-question\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Help</a></li><li class=\"nav-report\"><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li class=\"nav-signout\"><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-stat\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Personal Record</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\"><i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"navbar-brand\">WR</span></a><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-home\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-strength\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-log\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-stat\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li id=\"nav-profile\"><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Profile</a></li><li id=\"nav-setting\"><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li id=\"nav-about\"><a><i class=\"fa fa-fw fa-lg fa-info\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "About Us</a></li><li id=\"nav-report\"><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li id=\"nav-logout\"><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-stat\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Personal Record</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -58382,23 +58387,14 @@
 	    strength: '#shortcut-strength',
 	    logs: '#shortcut-logs',
 	    summary: '#shortcut-summary',
-	    homeTip: '.shortcut-home-tip',
-	    strengthTip: '.shortcut-strength-tip',
-	    logTip: '.shortcut-log-tip',
-	    statTip: '.shortcut-stat-tip',
 	    profile: '.shortcut-profile',
 	    setting: '.shortcut-setting',
 	    help: '.shortcut-help',
 	    report: '.shortcut-report',
-	    signout: '.shortcut-signout',
-	    menu: '#my-menu'
+	    signout: '.shortcut-signout'
 	  };
 
 	  View.prototype.events = {
-	    'click @ui.brand': function(event) {
-	      event.preventDefault();
-	      $("#my-menu").trigger("open.mm");
-	    },
 	    'click @ui.home': function() {
 	      this.channel.request('home');
 	    },
@@ -58451,40 +58447,87 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12 visible-xs\"><div class=\"pull-right\"><div class=\"btn-group\"><button id=\"shortcut-home\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-home\"></i></button><button class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-list-ol\"></i></button><button id=\"shortcut-strength\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-shield\"></i></button><button id=\"shortcut-logs\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i></button><button id=\"shortcut-summary\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-line-chart\"></i></button></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"visible-xs\"><div id=\"shortcut\"><div class=\"pull-right\"><div class=\"btn-group\"><button id=\"shortcut-home\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-home\"></i></button><button class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-list-ol\"></i></button><button id=\"shortcut-strength\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-shield\"></i></button><button id=\"shortcut-logs\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-area-chart\"></i></button><button id=\"shortcut-summary\" class=\"shortcut-btn btn btn-default\"><i class=\"fa fa-lg fa-line-chart\"></i></button></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Exercise, Home, Log, Login, Marionette, Profile, Router, Signup, Stat, Strength, _, async,
+	var $, Backbone, Marionette, Radio, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(8);
+
+	Radio = __webpack_require__(17);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(23);
+
+	__webpack_require__(19);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.channel = Backbone.Radio.channel('root');
+	  }
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div id=\"message\" class=\"alert alert-danger\"><a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"close\">×</a>Panel content</div>");;return buf.join("");
+	}
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Exercise, Home, Log, Marionette, Router, Stat, Strength, _, async,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	_ = __webpack_require__(3);
 
-	async = __webpack_require__(23);
+	async = __webpack_require__(25);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Signup = __webpack_require__(26);
+	Home = __webpack_require__(28);
 
-	Login = __webpack_require__(30);
+	Stat = __webpack_require__(31);
 
-	Home = __webpack_require__(33);
+	Exercise = __webpack_require__(39);
 
-	Profile = __webpack_require__(36);
+	Strength = __webpack_require__(49);
 
-	Stat = __webpack_require__(38);
-
-	Exercise = __webpack_require__(46);
-
-	Strength = __webpack_require__(56);
-
-	Log = __webpack_require__(94);
+	Log = __webpack_require__(87);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -58495,42 +58538,12 @@
 	    this.rootChannel = Backbone.Radio.channel('root');
 	    this.rootView = this.rootChannel.request('rootview');
 	    this.rootChannel.reply({
-	      'index': (function(_this) {
-	        return function() {
-	          _this.navigate('');
-	          _this.signup();
-	        };
-	      })(this),
-	      'signup': (function(_this) {
-	        return function() {
-	          _this.navigate('signup', {
-	            trigger: true
-	          });
-	          _this.signup();
-	        };
-	      })(this),
-	      'login': (function(_this) {
-	        return function() {
-	          _this.navigate('login', {
-	            trigger: true
-	          });
-	          _this.login();
-	        };
-	      })(this),
 	      'home': (function(_this) {
 	        return function() {
 	          _this.navigate('home', {
 	            trigger: true
 	          });
 	          _this.home();
-	        };
-	      })(this),
-	      'profile': (function(_this) {
-	        return function() {
-	          _this.navigate('profile', {
-	            trigger: true
-	          });
-	          _this.profile();
 	        };
 	      })(this),
 	      'exercise': (function(_this) {
@@ -58606,12 +58619,7 @@
 	  }
 
 	  Router.prototype.routes = {
-	    '': 'signup',
-	    '/': 'signup',
-	    'signup': 'signup',
-	    'login': 'login',
 	    'home': 'home',
-	    'profile': 'profile',
 	    'exercise': 'exercise',
 	    'strength/': 'strength',
 	    'strength/:sid/': 'strengthDetail',
@@ -58620,25 +58628,6 @@
 	    'schedule': 'schdeule',
 	    'log': 'log',
 	    'multiplayer': 'multiplayer'
-	  };
-
-	  Router.prototype.index = function() {
-	    this.navChannel.request('nav:index');
-	    console.log('no index page, redirect to signup');
-	  };
-
-	  Router.prototype.signup = function() {
-	    this.navChannel.request('nav:index');
-	    this.rootView.content.show(new Signup.View({
-	      model: new Signup.Model()
-	    }));
-	  };
-
-	  Router.prototype.login = function() {
-	    this.navChannel.request('nav:index');
-	    this.rootView.content.show(new Login.View({
-	      model: new Login.Model()
-	    }));
 	  };
 
 	  Router.prototype.home = function() {
@@ -58655,24 +58644,6 @@
 	      })(this),
 	      error: function() {
 	        console.log('error');
-	      }
-	    });
-	  };
-
-	  Router.prototype.profile = function() {
-	    var model;
-	    this.navChannel.request('nav:main');
-	    model = new Profile.Model();
-	    model.fetch({
-	      success: (function(_this) {
-	        return function(model) {
-	          _this.rootView.content.show(new Profile.View({
-	            model: model
-	          }));
-	        };
-	      })(this),
-	      error: function(err) {
-	        console.log('error', arguments);
 	      }
 	    });
 	  };
@@ -58843,7 +58814,7 @@
 
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, setImmediate) {/*!
@@ -59970,10 +59941,10 @@
 
 	}());
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24), __webpack_require__(25).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26), __webpack_require__(27).setImmediate))
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -60070,10 +60041,10 @@
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(24).nextTick;
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(26).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -60149,977 +60120,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25).setImmediate, __webpack_require__(25).clearImmediate))
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Model,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.url = 'api/signup';
-
-	  Model.prototype.defaults = {
-	    firstname: '',
-	    lastname: '',
-	    email: '',
-	    password: ''
-	  };
-
-	  Model.prototype.validation = {
-	    firstname: {
-	      required: true
-	    }
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	exports.Model = Model;
-
-	exports.View = __webpack_require__(27);
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(28);
-
-	__webpack_require__(19);
-
-	__webpack_require__(29);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    login: '#index-tab-login',
-	    submit: '#index-signup-submit'
-	  };
-
-	  View.prototype.bindings = {
-	    '#index-signup-firstname': 'firstname',
-	    '#index-signup-lastname': 'lastname',
-	    '#index-signup-email': 'email',
-	    '#index-signup-password': 'password'
-	  };
-
-	  View.prototype.events = {
-	    'click @ui.login': function() {
-	      this.rootChannel.request('login');
-	    },
-	    'submit': function(event) {
-	      event.preventDefault();
-	      this.model.save({}, {
-	        success: (function(_this) {
-	          return function() {
-	            _this.rootChannel.request('home');
-	          };
-	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
-	      });
-	    }
-	  };
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.initialize = function() {
-	    Backbone.Validation.bind(this, this.model);
-	    this.model.validate();
-	  };
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27).setImmediate, __webpack_require__(27).clearImmediate))
 
 /***/ },
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*** IMPORTS FROM imports-loader ***/
-	var Backbone = __webpack_require__(8);
-
-	// Backbone.Validation v0.11.5
-	//
-	// Copyright (c) 2011-2015 Thomas Pedersen
-	// Distributed under MIT License
-	//
-	// Documentation and full license available at:
-	// http://thedersen.com/projects/backbone-validation
-
-	Backbone.Validation = (function(_){
-	    'use strict';
-
-	    // Default options
-	    // ---------------
-
-	    var defaultOptions = {
-	        forceUpdate: false,
-	        selector: 'name',
-	        labelFormatter: 'sentenceCase',
-	        valid: Function.prototype,
-	        invalid: Function.prototype
-	    };
-
-
-	    // Helper functions
-	    // ----------------
-
-	    // Formatting functions used for formatting error messages
-	    var formatFunctions = {
-	        // Uses the configured label formatter to format the attribute name
-	        // to make it more readable for the user
-	        formatLabel: function(attrName, model) {
-	            return defaultLabelFormatters[defaultOptions.labelFormatter](attrName, model);
-	        },
-
-	        // Replaces nummeric placeholders like {0} in a string with arguments
-	        // passed to the function
-	        format: function() {
-	            var args = Array.prototype.slice.call(arguments),
-	                text = args.shift();
-	            return text.replace(/\{(\d+)\}/g, function(match, number) {
-	                return typeof args[number] !== 'undefined' ? args[number] : match;
-	            });
-	        }
-	    };
-
-	    // Flattens an object
-	    // eg:
-	    //
-	    //     var o = {
-	    //       owner: {
-	    //         name: 'Backbone',
-	    //         address: {
-	    //           street: 'Street',
-	    //           zip: 1234
-	    //         }
-	    //       }
-	    //     };
-	    //
-	    // becomes:
-	    //
-	    //     var o = {
-	    //       'owner': {
-	    //         name: 'Backbone',
-	    //         address: {
-	    //           street: 'Street',
-	    //           zip: 1234
-	    //         }
-	    //       },
-	    //       'owner.name': 'Backbone',
-	    //       'owner.address': {
-	    //         street: 'Street',
-	    //         zip: 1234
-	    //       },
-	    //       'owner.address.street': 'Street',
-	    //       'owner.address.zip': 1234
-	    //     };
-	    // This may seem redundant, but it allows for maximum flexibility
-	    // in validation rules.
-	    var flatten = function (obj, into, prefix) {
-	        into = into || {};
-	        prefix = prefix || '';
-
-	        _.each(obj, function(val, key) {
-	            if(obj.hasOwnProperty(key)) {
-	                if (!!val && _.isArray(val)) {
-	                    _.forEach(val, function(v, k) {
-	                        flatten(v, into, prefix + key + '.' + k + '.');
-	                        into[prefix + key + '.' + k] = v;
-	                    });
-	                } else if (!!val && typeof val === 'object' && val.constructor === Object) {
-	                    flatten(val, into, prefix + key + '.');
-	                }
-
-	                // Register the current level object as well
-	                into[prefix + key] = val;
-	            }
-	        });
-
-	        return into;
-	    };
-
-	    // Validation
-	    // ----------
-
-	    var Validation = (function(){
-
-	        // Returns an object with undefined properties for all
-	        // attributes on the model that has defined one or more
-	        // validation rules.
-	        var getValidatedAttrs = function(model, attrs) {
-	            attrs = attrs || _.keys(_.result(model, 'validation') || {});
-	            return _.reduce(attrs, function(memo, key) {
-	                memo[key] = void 0;
-	                return memo;
-	            }, {});
-	        };
-
-	        // Returns an array with attributes passed through options
-	        var getOptionsAttrs = function(options, view) {
-	            var attrs = options.attributes;
-	            if (_.isFunction(attrs)) {
-	                attrs = attrs(view);
-	            } else if (_.isString(attrs) && (_.isFunction(defaultAttributeLoaders[attrs]))) {
-	                attrs = defaultAttributeLoaders[attrs](view);
-	            }
-	            if (_.isArray(attrs)) {
-	                return attrs;
-	            }
-	        };
-
-
-	        // Looks on the model for validations for a specified
-	        // attribute. Returns an array of any validators defined,
-	        // or an empty array if none is defined.
-	        var getValidators = function(model, attr) {
-	            var attrValidationSet = model.validation ? _.result(model, 'validation')[attr] || {} : {};
-
-	            // If the validator is a function or a string, wrap it in a function validator
-	            if (_.isFunction(attrValidationSet) || _.isString(attrValidationSet)) {
-	                attrValidationSet = {
-	                    fn: attrValidationSet
-	                };
-	            }
-
-	            // Stick the validator object into an array
-	            if(!_.isArray(attrValidationSet)) {
-	                attrValidationSet = [attrValidationSet];
-	            }
-
-	            // Reduces the array of validators into a new array with objects
-	            // with a validation method to call, the value to validate against
-	            // and the specified error message, if any
-	            return _.reduce(attrValidationSet, function(memo, attrValidation) {
-	                _.each(_.without(_.keys(attrValidation), 'msg'), function(validator) {
-	                    memo.push({
-	                        fn: defaultValidators[validator],
-	                        val: attrValidation[validator],
-	                        msg: attrValidation.msg
-	                    });
-	                });
-	                return memo;
-	            }, []);
-	        };
-
-	        // Validates an attribute against all validators defined
-	        // for that attribute. If one or more errors are found,
-	        // the first error message is returned.
-	        // If the attribute is valid, an empty string is returned.
-	        var validateAttr = function(model, attr, value, computed) {
-	            // Reduces the array of validators to an error message by
-	            // applying all the validators and returning the first error
-	            // message, if any.
-	            return _.reduce(getValidators(model, attr), function(memo, validator){
-	                // Pass the format functions plus the default
-	                // validators as the context to the validator
-	                var ctx = _.extend({}, formatFunctions, defaultValidators),
-	                    result = validator.fn.call(ctx, value, attr, validator.val, model, computed);
-
-	                if(result === false || memo === false) {
-	                    return false;
-	                }
-	                if (result && !memo) {
-	                    return _.result(validator, 'msg') || result;
-	                }
-	                return memo;
-	            }, '');
-	        };
-
-	        // Loops through the model's attributes and validates the specified attrs.
-	        // Returns and object containing names of invalid attributes
-	        // as well as error messages.
-	        var validateModel = function(model, attrs, validatedAttrs) {
-	            var error,
-	                invalidAttrs = {},
-	                isValid = true,
-	                computed = _.clone(attrs);
-
-	            _.each(validatedAttrs, function(val, attr) {
-	                error = validateAttr(model, attr, val, computed);
-	                if (error) {
-	                    invalidAttrs[attr] = error;
-	                    isValid = false;
-	                }
-	            });
-
-	            return {
-	                invalidAttrs: invalidAttrs,
-	                isValid: isValid
-	            };
-	        };
-
-	        // Contains the methods that are mixed in on the model when binding
-	        var mixin = function(view, options) {
-	            return {
-
-	                // Check whether or not a value, or a hash of values
-	                // passes validation without updating the model
-	                preValidate: function(attr, value) {
-	                    var self = this,
-	                        result = {},
-	                        error;
-
-	                    if(_.isObject(attr)){
-	                        _.each(attr, function(value, key) {
-	                            error = self.preValidate(key, value);
-	                            if(error){
-	                                result[key] = error;
-	                            }
-	                        });
-
-	                        return _.isEmpty(result) ? undefined : result;
-	                    }
-	                    else {
-	                        return validateAttr(this, attr, value, _.extend({}, this.attributes));
-	                    }
-	                },
-
-	                // Check to see if an attribute, an array of attributes or the
-	                // entire model is valid. Passing true will force a validation
-	                // of the model.
-	                isValid: function(option) {
-	                    var flattened, attrs, error, invalidAttrs;
-
-	                    option = option || getOptionsAttrs(options, view);
-
-	                    if(_.isString(option)){
-	                        attrs = [option];
-	                    } else if(_.isArray(option)) {
-	                        attrs = option;
-	                    }
-	                    if (attrs) {
-	                        flattened = flatten(this.attributes);
-	                        //Loop through all associated views
-	                        _.each(this.associatedViews, function(view) {
-	                            _.each(attrs, function (attr) {
-	                                error = validateAttr(this, attr, flattened[attr], _.extend({}, this.attributes));
-	                                if (error) {
-	                                    options.invalid(view, attr, error, options.selector);
-	                                    invalidAttrs = invalidAttrs || {};
-	                                    invalidAttrs[attr] = error;
-	                                } else {
-	                                    options.valid(view, attr, options.selector);
-	                                }
-	                            }, this);
-	                        }, this);
-	                    }
-
-	                    if(option === true) {
-	                        invalidAttrs = this.validate();
-	                    }
-	                    if (invalidAttrs) {
-	                        this.trigger('invalid', this, invalidAttrs, {validationError: invalidAttrs});
-	                    }
-	                    return attrs ? !invalidAttrs : this.validation ? this._isValid : true;
-	                },
-
-	                // This is called by Backbone when it needs to perform validation.
-	                // You can call it manually without any parameters to validate the
-	                // entire model.
-	                validate: function(attrs, setOptions){
-	                    var model = this,
-	                        validateAll = !attrs,
-	                        opt = _.extend({}, options, setOptions),
-	                        validatedAttrs = getValidatedAttrs(model, getOptionsAttrs(options, view)),
-	                        allAttrs = _.extend({}, validatedAttrs, model.attributes, attrs),
-	                        flattened = flatten(allAttrs),
-	                        changedAttrs = attrs ? flatten(attrs) : flattened,
-	                        result = validateModel(model, allAttrs, _.pick(flattened, _.keys(validatedAttrs)));
-
-	                    model._isValid = result.isValid;
-
-	                    //After validation is performed, loop through all associated views
-	                    _.each(model.associatedViews, function(view){
-
-	                        // After validation is performed, loop through all validated and changed attributes
-	                        // and call the valid and invalid callbacks so the view is updated.
-	                        _.each(validatedAttrs, function(val, attr){
-	                            var invalid = result.invalidAttrs.hasOwnProperty(attr),
-	                                changed = changedAttrs.hasOwnProperty(attr);
-
-	                            if(!invalid){
-	                                opt.valid(view, attr, opt.selector);
-	                            }
-	                            if(invalid && (changed || validateAll)){
-	                                opt.invalid(view, attr, result.invalidAttrs[attr], opt.selector);
-	                            }
-	                        });
-	                    });
-
-	                    // Trigger validated events.
-	                    // Need to defer this so the model is actually updated before
-	                    // the event is triggered.
-	                    _.defer(function() {
-	                        model.trigger('validated', model._isValid, model, result.invalidAttrs);
-	                        model.trigger('validated:' + (model._isValid ? 'valid' : 'invalid'), model, result.invalidAttrs);
-	                    });
-
-	                    // Return any error messages to Backbone, unless the forceUpdate flag is set.
-	                    // Then we do not return anything and fools Backbone to believe the validation was
-	                    // a success. That way Backbone will update the model regardless.
-	                    if (!opt.forceUpdate && _.intersection(_.keys(result.invalidAttrs), _.keys(changedAttrs)).length > 0) {
-	                        return result.invalidAttrs;
-	                    }
-	                }
-	            };
-	        };
-
-	        // Helper to mix in validation on a model. Stores the view in the associated views array.
-	        var bindModel = function(view, model, options) {
-	            if (model.associatedViews) {
-	                model.associatedViews.push(view);
-	            } else {
-	                model.associatedViews = [view];
-	            }
-	            _.extend(model, mixin(view, options));
-	        };
-
-	        // Removes view from associated views of the model or the methods
-	        // added to a model if no view or single view provided
-	        var unbindModel = function(model, view) {
-	            if (view && model.associatedViews && model.associatedViews.length > 1){
-	                model.associatedViews = _.without(model.associatedViews, view);
-	            } else {
-	                delete model.validate;
-	                delete model.preValidate;
-	                delete model.isValid;
-	                delete model.associatedViews;
-	            }
-	        };
-
-	        // Mix in validation on a model whenever a model is
-	        // added to a collection
-	        var collectionAdd = function(model) {
-	            bindModel(this.view, model, this.options);
-	        };
-
-	        // Remove validation from a model whenever a model is
-	        // removed from a collection
-	        var collectionRemove = function(model) {
-	            unbindModel(model);
-	        };
-
-	        // Returns the public methods on Backbone.Validation
-	        return {
-
-	            // Current version of the library
-	            version: '0.11.3',
-
-	            // Called to configure the default options
-	            configure: function(options) {
-	                _.extend(defaultOptions, options);
-	            },
-
-	            // Hooks up validation on a view with a model
-	            // or collection
-	            bind: function(view, options) {
-	                options = _.extend({}, defaultOptions, defaultCallbacks, options);
-
-	                var model = options.model || view.model,
-	                    collection = options.collection || view.collection;
-
-	                if(typeof model === 'undefined' && typeof collection === 'undefined'){
-	                    throw 'Before you execute the binding your view must have a model or a collection.\n' +
-	                    'See http://thedersen.com/projects/backbone-validation/#using-form-model-validation for more information.';
-	                }
-
-	                if(model) {
-	                    bindModel(view, model, options);
-	                }
-	                else if(collection) {
-	                    collection.each(function(model){
-	                        bindModel(view, model, options);
-	                    });
-	                    collection.bind('add', collectionAdd, {view: view, options: options});
-	                    collection.bind('remove', collectionRemove);
-	                }
-	            },
-
-	            // Removes validation from a view with a model
-	            // or collection
-	            unbind: function(view, options) {
-	                options = _.extend({}, options);
-	                var model = options.model || view.model,
-	                    collection = options.collection || view.collection;
-
-	                if(model) {
-	                    unbindModel(model, view);
-	                }
-	                else if(collection) {
-	                    collection.each(function(model){
-	                        unbindModel(model, view);
-	                    });
-	                    collection.unbind('add', collectionAdd);
-	                    collection.unbind('remove', collectionRemove);
-	                }
-	            },
-
-	            // Used to extend the Backbone.Model.prototype
-	            // with validation
-	            mixin: mixin(null, defaultOptions)
-	        };
-	    }());
-
-
-	    // Callbacks
-	    // ---------
-
-	    var defaultCallbacks = Validation.callbacks = {
-
-	        // Gets called when a previously invalid field in the
-	        // view becomes valid. Removes any error message.
-	        // Should be overridden with custom functionality.
-	        valid: function(view, attr, selector) {
-	            view.$('[' + selector + '~="' + attr + '"]')
-	                .removeClass('invalid')
-	                .removeAttr('data-error');
-	        },
-
-	        // Gets called when a field in the view becomes invalid.
-	        // Adds a error message.
-	        // Should be overridden with custom functionality.
-	        invalid: function(view, attr, error, selector) {
-	            view.$('[' + selector + '~="' + attr + '"]')
-	                .addClass('invalid')
-	                .attr('data-error', error);
-	        }
-	    };
-
-
-	    // Patterns
-	    // --------
-
-	    var defaultPatterns = Validation.patterns = {
-	        // Matches any digit(s) (i.e. 0-9)
-	        digits: /^\d+$/,
-
-	        // Matches any number (e.g. 100.000)
-	        number: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/,
-
-	        // Matches a valid email address (e.g. mail@example.com)
-	        email: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
-
-	        // Mathes any valid url (e.g. http://www.xample.com)
-	        url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i
-	    };
-
-
-	    // Error messages
-	    // --------------
-
-	    // Error message for the build in validators.
-	    // {x} gets swapped out with arguments form the validator.
-	    var defaultMessages = Validation.messages = {
-	        required: '{0} is required',
-	        acceptance: '{0} must be accepted',
-	        min: '{0} must be greater than or equal to {1}',
-	        max: '{0} must be less than or equal to {1}',
-	        range: '{0} must be between {1} and {2}',
-	        length: '{0} must be {1} characters',
-	        minLength: '{0} must be at least {1} characters',
-	        maxLength: '{0} must be at most {1} characters',
-	        rangeLength: '{0} must be between {1} and {2} characters',
-	        oneOf: '{0} must be one of: {1}',
-	        equalTo: '{0} must be the same as {1}',
-	        digits: '{0} must only contain digits',
-	        number: '{0} must be a number',
-	        email: '{0} must be a valid email',
-	        url: '{0} must be a valid url',
-	        inlinePattern: '{0} is invalid'
-	    };
-
-	    // Label formatters
-	    // ----------------
-
-	    // Label formatters are used to convert the attribute name
-	    // to a more human friendly label when using the built in
-	    // error messages.
-	    // Configure which one to use with a call to
-	    //
-	    //     Backbone.Validation.configure({
-	    //       labelFormatter: 'label'
-	    //     });
-	    var defaultLabelFormatters = Validation.labelFormatters = {
-
-	        // Returns the attribute name with applying any formatting
-	        none: function(attrName) {
-	            return attrName;
-	        },
-
-	        // Converts attributeName or attribute_name to Attribute name
-	        sentenceCase: function(attrName) {
-	            return attrName.replace(/(?:^\w|[A-Z]|\b\w)/g, function(match, index) {
-	                return index === 0 ? match.toUpperCase() : ' ' + match.toLowerCase();
-	            }).replace(/_/g, ' ');
-	        },
-
-	        // Looks for a label configured on the model and returns it
-	        //
-	        //      var Model = Backbone.Model.extend({
-	        //        validation: {
-	        //          someAttribute: {
-	        //            required: true
-	        //          }
-	        //        },
-	        //
-	        //        labels: {
-	        //          someAttribute: 'Custom label'
-	        //        }
-	        //      });
-	        label: function(attrName, model) {
-	            return (model.labels && model.labels[attrName]) || defaultLabelFormatters.sentenceCase(attrName, model);
-	        }
-	    };
-
-	    // AttributeLoaders
-
-	    var defaultAttributeLoaders = Validation.attributeLoaders = {
-	        inputNames: function (view) {
-	            var attrs = [];
-	            if (view) {
-	                view.$('form [name]').each(function () {
-	                    if (/^(?:input|select|textarea)$/i.test(this.nodeName) && this.name &&
-	                        this.type !== 'submit' && attrs.indexOf(this.name) === -1) {
-	                        attrs.push(this.name);
-	                    }
-	                });
-	            }
-	            return attrs;
-	        }
-	    };
-
-
-	    // Built in validators
-	    // -------------------
-
-	    var defaultValidators = Validation.validators = (function(){
-	        // Use native trim when defined
-	        var trim = String.prototype.trim ?
-	            function(text) {
-	                return text === null ? '' : String.prototype.trim.call(text);
-	            } :
-	            function(text) {
-	                var trimLeft = /^\s+/,
-	                    trimRight = /\s+$/;
-
-	                return text === null ? '' : text.toString().replace(trimLeft, '').replace(trimRight, '');
-	            };
-
-	        // Determines whether or not a value is a number
-	        var isNumber = function(value){
-	            return _.isNumber(value) || (_.isString(value) && value.match(defaultPatterns.number));
-	        };
-
-	        // Determines whether or not a value is empty
-	        var hasValue = function(value) {
-	            return !(_.isNull(value) || _.isUndefined(value) || (_.isString(value) && trim(value) === '') || (_.isArray(value) && _.isEmpty(value)));
-	        };
-
-	        return {
-	            // Function validator
-	            // Lets you implement a custom function used for validation
-	            fn: function(value, attr, fn, model, computed) {
-	                if(_.isString(fn)){
-	                    fn = model[fn];
-	                }
-	                return fn.call(model, value, attr, computed);
-	            },
-
-	            // Required validator
-	            // Validates if the attribute is required or not
-	            // This can be specified as either a boolean value or a function that returns a boolean value
-	            required: function(value, attr, required, model, computed) {
-	                var isRequired = _.isFunction(required) ? required.call(model, value, attr, computed) : required;
-	                if(!isRequired && !hasValue(value)) {
-	                    return false; // overrides all other validators
-	                }
-	                if (isRequired && !hasValue(value)) {
-	                    return this.format(defaultMessages.required, this.formatLabel(attr, model));
-	                }
-	            },
-
-	            // Acceptance validator
-	            // Validates that something has to be accepted, e.g. terms of use
-	            // `true` or 'true' are valid
-	            acceptance: function(value, attr, accept, model) {
-	                if(value !== 'true' && (!_.isBoolean(value) || value === false)) {
-	                    return this.format(defaultMessages.acceptance, this.formatLabel(attr, model));
-	                }
-	            },
-
-	            // Min validator
-	            // Validates that the value has to be a number and equal to or greater than
-	            // the min value specified
-	            min: function(value, attr, minValue, model) {
-	                if (!isNumber(value) || value < minValue) {
-	                    return this.format(defaultMessages.min, this.formatLabel(attr, model), minValue);
-	                }
-	            },
-
-	            // Max validator
-	            // Validates that the value has to be a number and equal to or less than
-	            // the max value specified
-	            max: function(value, attr, maxValue, model) {
-	                if (!isNumber(value) || value > maxValue) {
-	                    return this.format(defaultMessages.max, this.formatLabel(attr, model), maxValue);
-	                }
-	            },
-
-	            // Range validator
-	            // Validates that the value has to be a number and equal to or between
-	            // the two numbers specified
-	            range: function(value, attr, range, model) {
-	                if(!isNumber(value) || value < range[0] || value > range[1]) {
-	                    return this.format(defaultMessages.range, this.formatLabel(attr, model), range[0], range[1]);
-	                }
-	            },
-
-	            // Length validator
-	            // Validates that the value has to be a string with length equal to
-	            // the length value specified
-	            length: function(value, attr, length, model) {
-	                if (!_.isString(value) || value.length !== length) {
-	                    return this.format(defaultMessages.length, this.formatLabel(attr, model), length);
-	                }
-	            },
-
-	            // Min length validator
-	            // Validates that the value has to be a string with length equal to or greater than
-	            // the min length value specified
-	            minLength: function(value, attr, minLength, model) {
-	                if (!_.isString(value) || value.length < minLength) {
-	                    return this.format(defaultMessages.minLength, this.formatLabel(attr, model), minLength);
-	                }
-	            },
-
-	            // Max length validator
-	            // Validates that the value has to be a string with length equal to or less than
-	            // the max length value specified
-	            maxLength: function(value, attr, maxLength, model) {
-	                if (!_.isString(value) || value.length > maxLength) {
-	                    return this.format(defaultMessages.maxLength, this.formatLabel(attr, model), maxLength);
-	                }
-	            },
-
-	            // Range length validator
-	            // Validates that the value has to be a string and equal to or between
-	            // the two numbers specified
-	            rangeLength: function(value, attr, range, model) {
-	                if (!_.isString(value) || value.length < range[0] || value.length > range[1]) {
-	                    return this.format(defaultMessages.rangeLength, this.formatLabel(attr, model), range[0], range[1]);
-	                }
-	            },
-
-	            // One of validator
-	            // Validates that the value has to be equal to one of the elements in
-	            // the specified array. Case sensitive matching
-	            oneOf: function(value, attr, values, model) {
-	                if(!_.include(values, value)){
-	                    return this.format(defaultMessages.oneOf, this.formatLabel(attr, model), values.join(', '));
-	                }
-	            },
-
-	            // Equal to validator
-	            // Validates that the value has to be equal to the value of the attribute
-	            // with the name specified
-	            equalTo: function(value, attr, equalTo, model, computed) {
-	                if(value !== computed[equalTo]) {
-	                    return this.format(defaultMessages.equalTo, this.formatLabel(attr, model), this.formatLabel(equalTo, model));
-	                }
-	            },
-
-	            // Pattern validator
-	            // Validates that the value has to match the pattern specified.
-	            // Can be a regular expression or the name of one of the built in patterns
-	            pattern: function(value, attr, pattern, model) {
-	                if (!hasValue(value) || !value.toString().match(defaultPatterns[pattern] || pattern)) {
-	                    return this.format(defaultMessages[pattern] || defaultMessages.inlinePattern, this.formatLabel(attr, model), pattern);
-	                }
-	            }
-	        };
-	    }());
-
-	    // Set the correct context for all validators
-	    // when used from within a method validator
-	    _.each(defaultValidators, function(validator, key){
-	        defaultValidators[key] = _.bind(defaultValidators[key], _.extend({}, formatFunctions, defaultValidators));
-	    });
-
-	    return Validation;
-	}(_));
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Model,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.url = 'api/login';
-
-	  Model.prototype.defaults = {
-	    email: '',
-	    password: ''
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	exports.Model = Model;
-
-	exports.View = __webpack_require__(31);
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Marionette, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(32);
-
-	__webpack_require__(19);
-
-	__webpack_require__(29);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    signup: '#index-tab-signup'
-	  };
-
-	  View.prototype.bindings = {
-	    '#index-login-email': 'email',
-	    '#index-login-password': 'password'
-	  };
-
-	  View.prototype.events = {
-	    'click @ui.signup': function() {
-	      this.rootChannel.request('signup');
-	    },
-	    'submit': function(event) {
-	      event.preventDefault();
-	      return this.model.save({}, {
-	        success: (function(_this) {
-	          return function(model) {
-	            _this.rootChannel.request('home');
-	          };
-	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
-	      });
-	    }
-	  };
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.onRender = function() {
-	    this.model.set({
-	      email: 'admin',
-	      password: '1234'
-	    });
-	    this.stickit();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-login-email\" placeholder=\"Email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-login-password\" placeholder=\"Password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -61143,11 +60147,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(34);
+	exports.View = __webpack_require__(29);
 
 
 /***/ },
-/* 34 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -61158,7 +60162,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(35);
+	viewTemplate = __webpack_require__(30);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -61220,7 +60224,7 @@
 
 
 /***/ },
-/* 35 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -61234,87 +60238,7 @@
 	}
 
 /***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Marionette, Model, View, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	viewTemplate = __webpack_require__(37);
-
-	__webpack_require__(19);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.urlRoot = '/api/profile';
-
-	  Model.prototype.defaults = {
-	    firstname: '',
-	    lastname: '',
-	    username: '',
-	    email: ''
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.bindings = {
-	    '#profile-username': 'username',
-	    '#profile-firstname': 'firstname',
-	    '#profile-lastname': 'lastname',
-	    '#profile-email': 'email',
-	    '#profile-password': 'password'
-	  };
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	exports.Model = Model;
-
-	exports.View = View;
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Profile</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"profile-username\" class=\"col-sm-2 control-label\">Username</label><div class=\"col-sm-10\"><input id=\"profile-username\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-firstname\" class=\"col-sm-2 control-label\">First Name</label><div class=\"col-sm-10\"><input id=\"profile-firstname\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-lastname\" class=\"col-sm-2 control-label\">Last Name</label><div class=\"col-sm-10\"><input id=\"profile-lastname\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"profile-email\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"profile-password\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Update</button></div></div></form></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 38 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Marionette, Model, TableView, View, _, viewTemplate,
@@ -61327,9 +60251,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	TableView = __webpack_require__(39);
+	TableView = __webpack_require__(32);
 
-	viewTemplate = __webpack_require__(45);
+	viewTemplate = __webpack_require__(38);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -61419,7 +60343,7 @@
 
 
 /***/ },
-/* 39 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -61428,19 +60352,19 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	nullTemplate = __webpack_require__(41);
+	nullTemplate = __webpack_require__(34);
 
-	itemTemplate = __webpack_require__(42);
+	itemTemplate = __webpack_require__(35);
 
-	viewTemplate = __webpack_require__(43);
+	viewTemplate = __webpack_require__(36);
 
-	__webpack_require__(44);
+	__webpack_require__(37);
 
 	__webpack_require__(19);
 
@@ -61515,7 +60439,7 @@
 
 
 /***/ },
-/* 40 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -65209,7 +64133,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ },
-/* 41 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65223,7 +64147,7 @@
 	}
 
 /***/ },
-/* 42 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65237,7 +64161,7 @@
 	}
 
 /***/ },
-/* 43 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -65251,7 +64175,7 @@
 	}
 
 /***/ },
-/* 44 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -66895,7 +65819,7 @@
 
 
 /***/ },
-/* 45 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -66909,14 +65833,14 @@
 	}
 
 /***/ },
-/* 46 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports.Master = __webpack_require__(47);
+	module.exports.Master = __webpack_require__(40);
 
 
 /***/ },
-/* 47 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, InputView, Marionette, Model, TableView, View, viewTemplate,
@@ -66927,11 +65851,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	InputView = __webpack_require__(48);
+	InputView = __webpack_require__(41);
 
-	TableView = __webpack_require__(51);
+	TableView = __webpack_require__(44);
 
-	viewTemplate = __webpack_require__(55);
+	viewTemplate = __webpack_require__(48);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -67018,7 +65942,7 @@
 
 
 /***/ },
-/* 48 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, _, viewTemplate,
@@ -67031,11 +65955,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(49);
+	Data = __webpack_require__(42);
 
-	viewTemplate = __webpack_require__(50);
+	viewTemplate = __webpack_require__(43);
 
-	__webpack_require__(44);
+	__webpack_require__(37);
 
 	__webpack_require__(19);
 
@@ -67113,7 +66037,7 @@
 
 
 /***/ },
-/* 49 */
+/* 42 */
 /***/ function(module, exports) {
 
 	var Muscles, Types;
@@ -67192,7 +66116,7 @@
 
 
 /***/ },
-/* 50 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67206,7 +66130,7 @@
 	}
 
 /***/ },
-/* 51 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Data, ItemView, Marionette, Model, View, _, itemTemplate, moment, viewTemplate,
@@ -67215,21 +66139,21 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(49);
+	Data = __webpack_require__(42);
 
-	itemTemplate = __webpack_require__(52);
+	itemTemplate = __webpack_require__(45);
 
-	viewTemplate = __webpack_require__(53);
+	viewTemplate = __webpack_require__(46);
 
 	__webpack_require__(19);
 
-	__webpack_require__(54);
+	__webpack_require__(47);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -67394,7 +66318,7 @@
 
 
 /***/ },
-/* 52 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67408,7 +66332,7 @@
 	}
 
 /***/ },
-/* 53 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -67422,7 +66346,7 @@
 	}
 
 /***/ },
-/* 54 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -68757,7 +67681,7 @@
 
 
 /***/ },
-/* 55 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -68771,18 +67695,18 @@
 	}
 
 /***/ },
-/* 56 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports.Master = __webpack_require__(57);
+	module.exports.Master = __webpack_require__(50);
 
-	module.exports.Detail = __webpack_require__(76);
+	module.exports.Detail = __webpack_require__(69);
 
-	module.exports.Log = __webpack_require__(88);
+	module.exports.Log = __webpack_require__(81);
 
 
 /***/ },
-/* 57 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Add, Backbone, Collection, FilterView, Marionette, Model, PaginateView, Table, View, viewTemplate,
@@ -68793,19 +67717,19 @@
 
 	Marionette = __webpack_require__(10);
 
-	Add = __webpack_require__(58);
+	Add = __webpack_require__(51);
 
-	Table = __webpack_require__(65);
+	Table = __webpack_require__(58);
 
-	FilterView = __webpack_require__(70);
+	FilterView = __webpack_require__(63);
 
-	PaginateView = __webpack_require__(72);
+	PaginateView = __webpack_require__(65);
 
-	viewTemplate = __webpack_require__(75);
+	viewTemplate = __webpack_require__(68);
 
-	__webpack_require__(54);
+	__webpack_require__(47);
 
-	__webpack_require__(74);
+	__webpack_require__(67);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -68929,7 +67853,7 @@
 
 
 /***/ },
-/* 58 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, viewTemplate,
@@ -68940,19 +67864,19 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(59);
+	Data = __webpack_require__(52);
 
-	viewTemplate = __webpack_require__(60);
+	viewTemplate = __webpack_require__(53);
 
-	__webpack_require__(61);
+	__webpack_require__(54);
 
-	__webpack_require__(62);
+	__webpack_require__(55);
 
-	__webpack_require__(63);
+	__webpack_require__(56);
 
 	__webpack_require__(19);
 
-	__webpack_require__(64);
+	__webpack_require__(57);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -69072,7 +67996,7 @@
 
 
 /***/ },
-/* 59 */
+/* 52 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -69133,7 +68057,7 @@
 
 
 /***/ },
-/* 60 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -69147,7 +68071,7 @@
 	}
 
 /***/ },
-/* 61 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -69850,7 +68774,7 @@
 
 
 /***/ },
-/* 62 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -72008,7 +70932,7 @@
 
 
 /***/ },
-/* 63 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -73199,7 +72123,7 @@
 
 
 /***/ },
-/* 64 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -73549,7 +72473,7 @@
 
 
 /***/ },
-/* 65 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Data, ItemView, Marionette, NullView, Pageable, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -73558,23 +72482,23 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Pageable = __webpack_require__(66);
+	Pageable = __webpack_require__(59);
 
-	Data = __webpack_require__(59);
+	Data = __webpack_require__(52);
 
-	nullTemplate = __webpack_require__(67);
+	nullTemplate = __webpack_require__(60);
 
-	itemTemplate = __webpack_require__(68);
+	itemTemplate = __webpack_require__(61);
 
-	viewTemplate = __webpack_require__(69);
+	viewTemplate = __webpack_require__(62);
 
-	__webpack_require__(44);
+	__webpack_require__(37);
 
 	__webpack_require__(19);
 
@@ -73726,7 +72650,7 @@
 
 
 /***/ },
-/* 66 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Behavior, Marionette,
@@ -73791,7 +72715,7 @@
 
 
 /***/ },
-/* 67 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73805,7 +72729,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73819,7 +72743,7 @@
 	}
 
 /***/ },
-/* 69 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73833,7 +72757,7 @@
 	}
 
 /***/ },
-/* 70 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Data, Marionette, View, viewTemplate,
@@ -73843,9 +72767,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(59);
+	Data = __webpack_require__(52);
 
-	viewTemplate = __webpack_require__(71);
+	viewTemplate = __webpack_require__(64);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -73902,7 +72826,7 @@
 
 
 /***/ },
-/* 71 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -73916,7 +72840,7 @@
 	}
 
 /***/ },
-/* 72 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, viewTemplate,
@@ -73925,9 +72849,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(73);
+	viewTemplate = __webpack_require__(66);
 
-	__webpack_require__(74);
+	__webpack_require__(67);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74003,7 +72927,7 @@
 
 
 /***/ },
-/* 73 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74017,7 +72941,7 @@
 	}
 
 /***/ },
-/* 74 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -74212,7 +73136,7 @@
 
 
 /***/ },
-/* 75 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74226,30 +73150,30 @@
 	}
 
 /***/ },
-/* 76 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, DateView, Marionette, Modal, Model, PaginateView, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Modal = __webpack_require__(77);
+	Modal = __webpack_require__(70);
 
-	DateView = __webpack_require__(79);
+	DateView = __webpack_require__(72);
 
-	Table = __webpack_require__(81);
+	Table = __webpack_require__(74);
 
-	PaginateView = __webpack_require__(85);
+	PaginateView = __webpack_require__(78);
 
-	viewTemplate = __webpack_require__(87);
+	viewTemplate = __webpack_require__(80);
 
-	__webpack_require__(62);
+	__webpack_require__(55);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74381,7 +73305,7 @@
 
 
 /***/ },
-/* 77 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, _, moment, viewTemplate,
@@ -74390,23 +73314,23 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(78);
+	viewTemplate = __webpack_require__(71);
 
-	__webpack_require__(61);
+	__webpack_require__(54);
 
-	__webpack_require__(62);
+	__webpack_require__(55);
 
-	__webpack_require__(63);
+	__webpack_require__(56);
 
 	__webpack_require__(19);
 
-	__webpack_require__(64);
+	__webpack_require__(57);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74547,7 +73471,7 @@
 
 
 /***/ },
-/* 78 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74561,20 +73485,20 @@
 	}
 
 /***/ },
-/* 79 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(80);
+	viewTemplate = __webpack_require__(73);
 
-	__webpack_require__(62);
+	__webpack_require__(55);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74631,7 +73555,7 @@
 
 
 /***/ },
-/* 80 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74645,7 +73569,7 @@
 	}
 
 /***/ },
-/* 81 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, ItemView, Marionette, Model, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -74654,19 +73578,19 @@
 
 	_ = __webpack_require__(3);
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	nullTemplate = __webpack_require__(82);
+	nullTemplate = __webpack_require__(75);
 
-	itemTemplate = __webpack_require__(83);
+	itemTemplate = __webpack_require__(76);
 
-	viewTemplate = __webpack_require__(84);
+	viewTemplate = __webpack_require__(77);
 
-	__webpack_require__(44);
+	__webpack_require__(37);
 
 	__webpack_require__(19);
 
@@ -74787,7 +73711,7 @@
 
 
 /***/ },
-/* 82 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74801,7 +73725,7 @@
 	}
 
 /***/ },
-/* 83 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74815,7 +73739,7 @@
 	}
 
 /***/ },
-/* 84 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74829,7 +73753,7 @@
 	}
 
 /***/ },
-/* 85 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, viewTemplate,
@@ -74838,9 +73762,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(86);
+	viewTemplate = __webpack_require__(79);
 
-	__webpack_require__(74);
+	__webpack_require__(67);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74916,7 +73840,7 @@
 
 
 /***/ },
-/* 86 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74930,7 +73854,7 @@
 	}
 
 /***/ },
-/* 87 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74944,24 +73868,24 @@
 	}
 
 /***/ },
-/* 88 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(89);
+	GraphView = __webpack_require__(82);
 
-	TableView = __webpack_require__(91);
+	TableView = __webpack_require__(84);
 
-	viewTemplate = __webpack_require__(93);
+	viewTemplate = __webpack_require__(86);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75050,7 +73974,7 @@
 
 
 /***/ },
-/* 89 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
@@ -75065,7 +73989,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(90);
+	viewTemplate = __webpack_require__(83);
 
 	seriesData = function(models) {
 	  var i, len, model, series;
@@ -75163,7 +74087,7 @@
 
 
 /***/ },
-/* 90 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75177,22 +74101,22 @@
 	}
 
 /***/ },
-/* 91 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(59);
+	Data = __webpack_require__(52);
 
-	viewTemplate = __webpack_require__(92);
+	viewTemplate = __webpack_require__(85);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -75248,7 +74172,7 @@
 
 
 /***/ },
-/* 92 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75262,7 +74186,7 @@
 	}
 
 /***/ },
-/* 93 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75276,24 +74200,24 @@
 	}
 
 /***/ },
-/* 94 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(95);
+	GraphView = __webpack_require__(88);
 
-	Table = __webpack_require__(97);
+	Table = __webpack_require__(90);
 
-	viewTemplate = __webpack_require__(100);
+	viewTemplate = __webpack_require__(93);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75412,7 +74336,7 @@
 
 
 /***/ },
-/* 95 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
@@ -75425,7 +74349,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(96);
+	viewTemplate = __webpack_require__(89);
 
 	seriesRepData = function(model) {
 	  return {
@@ -75518,7 +74442,7 @@
 
 
 /***/ },
-/* 96 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75532,22 +74456,22 @@
 	}
 
 /***/ },
-/* 97 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	moment = __webpack_require__(40);
+	moment = __webpack_require__(33);
 
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(98);
+	Data = __webpack_require__(91);
 
-	viewTemplate = __webpack_require__(99);
+	viewTemplate = __webpack_require__(92);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75676,7 +74600,7 @@
 
 
 /***/ },
-/* 98 */
+/* 91 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -75737,7 +74661,7 @@
 
 
 /***/ },
-/* 99 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75751,7 +74675,7 @@
 	}
 
 /***/ },
-/* 100 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75765,7 +74689,1176 @@
 	}
 
 /***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Login, Marionette, Profile, Router, Signup, _, async,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	async = __webpack_require__(25);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Signup = __webpack_require__(95);
+
+	Login = __webpack_require__(99);
+
+	Profile = __webpack_require__(102);
+
+	Router = (function(superClass) {
+	  extend(Router, superClass);
+
+	  function Router() {
+	    Router.__super__.constructor.apply(this, arguments);
+	    this.navChannel = Backbone.Radio.channel('nav');
+	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.rootView = this.rootChannel.request('rootview');
+	    this.rootChannel.reply({
+	      'index': (function(_this) {
+	        return function() {
+	          _this.navigate('');
+	          _this.signup();
+	        };
+	      })(this),
+	      'signup': (function(_this) {
+	        return function() {
+	          _this.navigate('signup', {
+	            trigger: true
+	          });
+	          _this.signup();
+	        };
+	      })(this),
+	      'login': (function(_this) {
+	        return function() {
+	          _this.navigate('login', {
+	            trigger: true
+	          });
+	          _this.login();
+	        };
+	      })(this),
+	      'logout': (function(_this) {
+	        return function() {
+	          _this.navigate('');
+	          _this.signup();
+	        };
+	      })(this),
+	      'profile': (function(_this) {
+	        return function() {
+	          _this.navigate('profile', {
+	            trigger: true
+	          });
+	          _this.profile();
+	        };
+	      })(this)
+	    });
+	  }
+
+	  Router.prototype.routes = {
+	    '': 'signup',
+	    '/': 'signup',
+	    'signup': 'signup',
+	    'login': 'login',
+	    'profile': 'profile'
+	  };
+
+	  Router.prototype.index = function() {
+	    this.navChannel.request('nav:index');
+	    console.log('no index page, redirect to signup');
+	  };
+
+	  Router.prototype.signup = function() {
+	    this.navChannel.request('nav:index');
+	    this.rootView.content.show(new Signup.View({
+	      model: new Signup.Model()
+	    }));
+	  };
+
+	  Router.prototype.login = function() {
+	    this.navChannel.request('nav:index');
+	    this.rootView.content.show(new Login.View({
+	      model: new Login.Model()
+	    }));
+	  };
+
+	  Router.prototype.profile = function() {
+	    var model;
+	    this.navChannel.request('nav:main');
+	    model = new Profile.Model();
+	    model.fetch({
+	      success: (function(_this) {
+	        return function(model) {
+	          _this.rootView.content.show(new Profile.View({
+	            model: model
+	          }));
+	        };
+	      })(this),
+	      error: function(err) {
+	        console.log('error', arguments);
+	      }
+	    });
+	  };
+
+	  return Router;
+
+	})(Marionette.AppRouter);
+
+	module.exports = Router;
+
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = 'api/signup';
+
+	  Model.prototype.defaults = {
+	    firstname: '',
+	    lastname: '',
+	    email: '',
+	    password: ''
+	  };
+
+	  Model.prototype.validation = {
+	    firstname: {
+	      required: true
+	    }
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	exports.Model = Model;
+
+	exports.View = __webpack_require__(96);
+
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(97);
+
+	__webpack_require__(19);
+
+	__webpack_require__(98);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    login: '#index-tab-login',
+	    submit: '#index-signup-submit'
+	  };
+
+	  View.prototype.bindings = {
+	    '#index-signup-firstname': 'firstname',
+	    '#index-signup-lastname': 'lastname',
+	    '#index-signup-email': 'email',
+	    '#index-signup-password': 'password'
+	  };
+
+	  View.prototype.events = {
+	    'click @ui.login': function() {
+	      this.rootChannel.request('login');
+	    },
+	    'submit': function(event) {
+	      event.preventDefault();
+	      this.model.save({}, {
+	        success: (function(_this) {
+	          return function() {
+	            _this.rootChannel.request('home');
+	          };
+	        })(this),
+	        error: function() {
+	          console.log('fail');
+	        }
+	      });
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.initialize = function() {
+	    Backbone.Validation.bind(this, this.model);
+	    this.model.validate();
+	  };
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*** IMPORTS FROM imports-loader ***/
+	var Backbone = __webpack_require__(8);
+
+	// Backbone.Validation v0.11.5
+	//
+	// Copyright (c) 2011-2015 Thomas Pedersen
+	// Distributed under MIT License
+	//
+	// Documentation and full license available at:
+	// http://thedersen.com/projects/backbone-validation
+
+	Backbone.Validation = (function(_){
+	    'use strict';
+
+	    // Default options
+	    // ---------------
+
+	    var defaultOptions = {
+	        forceUpdate: false,
+	        selector: 'name',
+	        labelFormatter: 'sentenceCase',
+	        valid: Function.prototype,
+	        invalid: Function.prototype
+	    };
+
+
+	    // Helper functions
+	    // ----------------
+
+	    // Formatting functions used for formatting error messages
+	    var formatFunctions = {
+	        // Uses the configured label formatter to format the attribute name
+	        // to make it more readable for the user
+	        formatLabel: function(attrName, model) {
+	            return defaultLabelFormatters[defaultOptions.labelFormatter](attrName, model);
+	        },
+
+	        // Replaces nummeric placeholders like {0} in a string with arguments
+	        // passed to the function
+	        format: function() {
+	            var args = Array.prototype.slice.call(arguments),
+	                text = args.shift();
+	            return text.replace(/\{(\d+)\}/g, function(match, number) {
+	                return typeof args[number] !== 'undefined' ? args[number] : match;
+	            });
+	        }
+	    };
+
+	    // Flattens an object
+	    // eg:
+	    //
+	    //     var o = {
+	    //       owner: {
+	    //         name: 'Backbone',
+	    //         address: {
+	    //           street: 'Street',
+	    //           zip: 1234
+	    //         }
+	    //       }
+	    //     };
+	    //
+	    // becomes:
+	    //
+	    //     var o = {
+	    //       'owner': {
+	    //         name: 'Backbone',
+	    //         address: {
+	    //           street: 'Street',
+	    //           zip: 1234
+	    //         }
+	    //       },
+	    //       'owner.name': 'Backbone',
+	    //       'owner.address': {
+	    //         street: 'Street',
+	    //         zip: 1234
+	    //       },
+	    //       'owner.address.street': 'Street',
+	    //       'owner.address.zip': 1234
+	    //     };
+	    // This may seem redundant, but it allows for maximum flexibility
+	    // in validation rules.
+	    var flatten = function (obj, into, prefix) {
+	        into = into || {};
+	        prefix = prefix || '';
+
+	        _.each(obj, function(val, key) {
+	            if(obj.hasOwnProperty(key)) {
+	                if (!!val && _.isArray(val)) {
+	                    _.forEach(val, function(v, k) {
+	                        flatten(v, into, prefix + key + '.' + k + '.');
+	                        into[prefix + key + '.' + k] = v;
+	                    });
+	                } else if (!!val && typeof val === 'object' && val.constructor === Object) {
+	                    flatten(val, into, prefix + key + '.');
+	                }
+
+	                // Register the current level object as well
+	                into[prefix + key] = val;
+	            }
+	        });
+
+	        return into;
+	    };
+
+	    // Validation
+	    // ----------
+
+	    var Validation = (function(){
+
+	        // Returns an object with undefined properties for all
+	        // attributes on the model that has defined one or more
+	        // validation rules.
+	        var getValidatedAttrs = function(model, attrs) {
+	            attrs = attrs || _.keys(_.result(model, 'validation') || {});
+	            return _.reduce(attrs, function(memo, key) {
+	                memo[key] = void 0;
+	                return memo;
+	            }, {});
+	        };
+
+	        // Returns an array with attributes passed through options
+	        var getOptionsAttrs = function(options, view) {
+	            var attrs = options.attributes;
+	            if (_.isFunction(attrs)) {
+	                attrs = attrs(view);
+	            } else if (_.isString(attrs) && (_.isFunction(defaultAttributeLoaders[attrs]))) {
+	                attrs = defaultAttributeLoaders[attrs](view);
+	            }
+	            if (_.isArray(attrs)) {
+	                return attrs;
+	            }
+	        };
+
+
+	        // Looks on the model for validations for a specified
+	        // attribute. Returns an array of any validators defined,
+	        // or an empty array if none is defined.
+	        var getValidators = function(model, attr) {
+	            var attrValidationSet = model.validation ? _.result(model, 'validation')[attr] || {} : {};
+
+	            // If the validator is a function or a string, wrap it in a function validator
+	            if (_.isFunction(attrValidationSet) || _.isString(attrValidationSet)) {
+	                attrValidationSet = {
+	                    fn: attrValidationSet
+	                };
+	            }
+
+	            // Stick the validator object into an array
+	            if(!_.isArray(attrValidationSet)) {
+	                attrValidationSet = [attrValidationSet];
+	            }
+
+	            // Reduces the array of validators into a new array with objects
+	            // with a validation method to call, the value to validate against
+	            // and the specified error message, if any
+	            return _.reduce(attrValidationSet, function(memo, attrValidation) {
+	                _.each(_.without(_.keys(attrValidation), 'msg'), function(validator) {
+	                    memo.push({
+	                        fn: defaultValidators[validator],
+	                        val: attrValidation[validator],
+	                        msg: attrValidation.msg
+	                    });
+	                });
+	                return memo;
+	            }, []);
+	        };
+
+	        // Validates an attribute against all validators defined
+	        // for that attribute. If one or more errors are found,
+	        // the first error message is returned.
+	        // If the attribute is valid, an empty string is returned.
+	        var validateAttr = function(model, attr, value, computed) {
+	            // Reduces the array of validators to an error message by
+	            // applying all the validators and returning the first error
+	            // message, if any.
+	            return _.reduce(getValidators(model, attr), function(memo, validator){
+	                // Pass the format functions plus the default
+	                // validators as the context to the validator
+	                var ctx = _.extend({}, formatFunctions, defaultValidators),
+	                    result = validator.fn.call(ctx, value, attr, validator.val, model, computed);
+
+	                if(result === false || memo === false) {
+	                    return false;
+	                }
+	                if (result && !memo) {
+	                    return _.result(validator, 'msg') || result;
+	                }
+	                return memo;
+	            }, '');
+	        };
+
+	        // Loops through the model's attributes and validates the specified attrs.
+	        // Returns and object containing names of invalid attributes
+	        // as well as error messages.
+	        var validateModel = function(model, attrs, validatedAttrs) {
+	            var error,
+	                invalidAttrs = {},
+	                isValid = true,
+	                computed = _.clone(attrs);
+
+	            _.each(validatedAttrs, function(val, attr) {
+	                error = validateAttr(model, attr, val, computed);
+	                if (error) {
+	                    invalidAttrs[attr] = error;
+	                    isValid = false;
+	                }
+	            });
+
+	            return {
+	                invalidAttrs: invalidAttrs,
+	                isValid: isValid
+	            };
+	        };
+
+	        // Contains the methods that are mixed in on the model when binding
+	        var mixin = function(view, options) {
+	            return {
+
+	                // Check whether or not a value, or a hash of values
+	                // passes validation without updating the model
+	                preValidate: function(attr, value) {
+	                    var self = this,
+	                        result = {},
+	                        error;
+
+	                    if(_.isObject(attr)){
+	                        _.each(attr, function(value, key) {
+	                            error = self.preValidate(key, value);
+	                            if(error){
+	                                result[key] = error;
+	                            }
+	                        });
+
+	                        return _.isEmpty(result) ? undefined : result;
+	                    }
+	                    else {
+	                        return validateAttr(this, attr, value, _.extend({}, this.attributes));
+	                    }
+	                },
+
+	                // Check to see if an attribute, an array of attributes or the
+	                // entire model is valid. Passing true will force a validation
+	                // of the model.
+	                isValid: function(option) {
+	                    var flattened, attrs, error, invalidAttrs;
+
+	                    option = option || getOptionsAttrs(options, view);
+
+	                    if(_.isString(option)){
+	                        attrs = [option];
+	                    } else if(_.isArray(option)) {
+	                        attrs = option;
+	                    }
+	                    if (attrs) {
+	                        flattened = flatten(this.attributes);
+	                        //Loop through all associated views
+	                        _.each(this.associatedViews, function(view) {
+	                            _.each(attrs, function (attr) {
+	                                error = validateAttr(this, attr, flattened[attr], _.extend({}, this.attributes));
+	                                if (error) {
+	                                    options.invalid(view, attr, error, options.selector);
+	                                    invalidAttrs = invalidAttrs || {};
+	                                    invalidAttrs[attr] = error;
+	                                } else {
+	                                    options.valid(view, attr, options.selector);
+	                                }
+	                            }, this);
+	                        }, this);
+	                    }
+
+	                    if(option === true) {
+	                        invalidAttrs = this.validate();
+	                    }
+	                    if (invalidAttrs) {
+	                        this.trigger('invalid', this, invalidAttrs, {validationError: invalidAttrs});
+	                    }
+	                    return attrs ? !invalidAttrs : this.validation ? this._isValid : true;
+	                },
+
+	                // This is called by Backbone when it needs to perform validation.
+	                // You can call it manually without any parameters to validate the
+	                // entire model.
+	                validate: function(attrs, setOptions){
+	                    var model = this,
+	                        validateAll = !attrs,
+	                        opt = _.extend({}, options, setOptions),
+	                        validatedAttrs = getValidatedAttrs(model, getOptionsAttrs(options, view)),
+	                        allAttrs = _.extend({}, validatedAttrs, model.attributes, attrs),
+	                        flattened = flatten(allAttrs),
+	                        changedAttrs = attrs ? flatten(attrs) : flattened,
+	                        result = validateModel(model, allAttrs, _.pick(flattened, _.keys(validatedAttrs)));
+
+	                    model._isValid = result.isValid;
+
+	                    //After validation is performed, loop through all associated views
+	                    _.each(model.associatedViews, function(view){
+
+	                        // After validation is performed, loop through all validated and changed attributes
+	                        // and call the valid and invalid callbacks so the view is updated.
+	                        _.each(validatedAttrs, function(val, attr){
+	                            var invalid = result.invalidAttrs.hasOwnProperty(attr),
+	                                changed = changedAttrs.hasOwnProperty(attr);
+
+	                            if(!invalid){
+	                                opt.valid(view, attr, opt.selector);
+	                            }
+	                            if(invalid && (changed || validateAll)){
+	                                opt.invalid(view, attr, result.invalidAttrs[attr], opt.selector);
+	                            }
+	                        });
+	                    });
+
+	                    // Trigger validated events.
+	                    // Need to defer this so the model is actually updated before
+	                    // the event is triggered.
+	                    _.defer(function() {
+	                        model.trigger('validated', model._isValid, model, result.invalidAttrs);
+	                        model.trigger('validated:' + (model._isValid ? 'valid' : 'invalid'), model, result.invalidAttrs);
+	                    });
+
+	                    // Return any error messages to Backbone, unless the forceUpdate flag is set.
+	                    // Then we do not return anything and fools Backbone to believe the validation was
+	                    // a success. That way Backbone will update the model regardless.
+	                    if (!opt.forceUpdate && _.intersection(_.keys(result.invalidAttrs), _.keys(changedAttrs)).length > 0) {
+	                        return result.invalidAttrs;
+	                    }
+	                }
+	            };
+	        };
+
+	        // Helper to mix in validation on a model. Stores the view in the associated views array.
+	        var bindModel = function(view, model, options) {
+	            if (model.associatedViews) {
+	                model.associatedViews.push(view);
+	            } else {
+	                model.associatedViews = [view];
+	            }
+	            _.extend(model, mixin(view, options));
+	        };
+
+	        // Removes view from associated views of the model or the methods
+	        // added to a model if no view or single view provided
+	        var unbindModel = function(model, view) {
+	            if (view && model.associatedViews && model.associatedViews.length > 1){
+	                model.associatedViews = _.without(model.associatedViews, view);
+	            } else {
+	                delete model.validate;
+	                delete model.preValidate;
+	                delete model.isValid;
+	                delete model.associatedViews;
+	            }
+	        };
+
+	        // Mix in validation on a model whenever a model is
+	        // added to a collection
+	        var collectionAdd = function(model) {
+	            bindModel(this.view, model, this.options);
+	        };
+
+	        // Remove validation from a model whenever a model is
+	        // removed from a collection
+	        var collectionRemove = function(model) {
+	            unbindModel(model);
+	        };
+
+	        // Returns the public methods on Backbone.Validation
+	        return {
+
+	            // Current version of the library
+	            version: '0.11.3',
+
+	            // Called to configure the default options
+	            configure: function(options) {
+	                _.extend(defaultOptions, options);
+	            },
+
+	            // Hooks up validation on a view with a model
+	            // or collection
+	            bind: function(view, options) {
+	                options = _.extend({}, defaultOptions, defaultCallbacks, options);
+
+	                var model = options.model || view.model,
+	                    collection = options.collection || view.collection;
+
+	                if(typeof model === 'undefined' && typeof collection === 'undefined'){
+	                    throw 'Before you execute the binding your view must have a model or a collection.\n' +
+	                    'See http://thedersen.com/projects/backbone-validation/#using-form-model-validation for more information.';
+	                }
+
+	                if(model) {
+	                    bindModel(view, model, options);
+	                }
+	                else if(collection) {
+	                    collection.each(function(model){
+	                        bindModel(view, model, options);
+	                    });
+	                    collection.bind('add', collectionAdd, {view: view, options: options});
+	                    collection.bind('remove', collectionRemove);
+	                }
+	            },
+
+	            // Removes validation from a view with a model
+	            // or collection
+	            unbind: function(view, options) {
+	                options = _.extend({}, options);
+	                var model = options.model || view.model,
+	                    collection = options.collection || view.collection;
+
+	                if(model) {
+	                    unbindModel(model, view);
+	                }
+	                else if(collection) {
+	                    collection.each(function(model){
+	                        unbindModel(model, view);
+	                    });
+	                    collection.unbind('add', collectionAdd);
+	                    collection.unbind('remove', collectionRemove);
+	                }
+	            },
+
+	            // Used to extend the Backbone.Model.prototype
+	            // with validation
+	            mixin: mixin(null, defaultOptions)
+	        };
+	    }());
+
+
+	    // Callbacks
+	    // ---------
+
+	    var defaultCallbacks = Validation.callbacks = {
+
+	        // Gets called when a previously invalid field in the
+	        // view becomes valid. Removes any error message.
+	        // Should be overridden with custom functionality.
+	        valid: function(view, attr, selector) {
+	            view.$('[' + selector + '~="' + attr + '"]')
+	                .removeClass('invalid')
+	                .removeAttr('data-error');
+	        },
+
+	        // Gets called when a field in the view becomes invalid.
+	        // Adds a error message.
+	        // Should be overridden with custom functionality.
+	        invalid: function(view, attr, error, selector) {
+	            view.$('[' + selector + '~="' + attr + '"]')
+	                .addClass('invalid')
+	                .attr('data-error', error);
+	        }
+	    };
+
+
+	    // Patterns
+	    // --------
+
+	    var defaultPatterns = Validation.patterns = {
+	        // Matches any digit(s) (i.e. 0-9)
+	        digits: /^\d+$/,
+
+	        // Matches any number (e.g. 100.000)
+	        number: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/,
+
+	        // Matches a valid email address (e.g. mail@example.com)
+	        email: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i,
+
+	        // Mathes any valid url (e.g. http://www.xample.com)
+	        url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i
+	    };
+
+
+	    // Error messages
+	    // --------------
+
+	    // Error message for the build in validators.
+	    // {x} gets swapped out with arguments form the validator.
+	    var defaultMessages = Validation.messages = {
+	        required: '{0} is required',
+	        acceptance: '{0} must be accepted',
+	        min: '{0} must be greater than or equal to {1}',
+	        max: '{0} must be less than or equal to {1}',
+	        range: '{0} must be between {1} and {2}',
+	        length: '{0} must be {1} characters',
+	        minLength: '{0} must be at least {1} characters',
+	        maxLength: '{0} must be at most {1} characters',
+	        rangeLength: '{0} must be between {1} and {2} characters',
+	        oneOf: '{0} must be one of: {1}',
+	        equalTo: '{0} must be the same as {1}',
+	        digits: '{0} must only contain digits',
+	        number: '{0} must be a number',
+	        email: '{0} must be a valid email',
+	        url: '{0} must be a valid url',
+	        inlinePattern: '{0} is invalid'
+	    };
+
+	    // Label formatters
+	    // ----------------
+
+	    // Label formatters are used to convert the attribute name
+	    // to a more human friendly label when using the built in
+	    // error messages.
+	    // Configure which one to use with a call to
+	    //
+	    //     Backbone.Validation.configure({
+	    //       labelFormatter: 'label'
+	    //     });
+	    var defaultLabelFormatters = Validation.labelFormatters = {
+
+	        // Returns the attribute name with applying any formatting
+	        none: function(attrName) {
+	            return attrName;
+	        },
+
+	        // Converts attributeName or attribute_name to Attribute name
+	        sentenceCase: function(attrName) {
+	            return attrName.replace(/(?:^\w|[A-Z]|\b\w)/g, function(match, index) {
+	                return index === 0 ? match.toUpperCase() : ' ' + match.toLowerCase();
+	            }).replace(/_/g, ' ');
+	        },
+
+	        // Looks for a label configured on the model and returns it
+	        //
+	        //      var Model = Backbone.Model.extend({
+	        //        validation: {
+	        //          someAttribute: {
+	        //            required: true
+	        //          }
+	        //        },
+	        //
+	        //        labels: {
+	        //          someAttribute: 'Custom label'
+	        //        }
+	        //      });
+	        label: function(attrName, model) {
+	            return (model.labels && model.labels[attrName]) || defaultLabelFormatters.sentenceCase(attrName, model);
+	        }
+	    };
+
+	    // AttributeLoaders
+
+	    var defaultAttributeLoaders = Validation.attributeLoaders = {
+	        inputNames: function (view) {
+	            var attrs = [];
+	            if (view) {
+	                view.$('form [name]').each(function () {
+	                    if (/^(?:input|select|textarea)$/i.test(this.nodeName) && this.name &&
+	                        this.type !== 'submit' && attrs.indexOf(this.name) === -1) {
+	                        attrs.push(this.name);
+	                    }
+	                });
+	            }
+	            return attrs;
+	        }
+	    };
+
+
+	    // Built in validators
+	    // -------------------
+
+	    var defaultValidators = Validation.validators = (function(){
+	        // Use native trim when defined
+	        var trim = String.prototype.trim ?
+	            function(text) {
+	                return text === null ? '' : String.prototype.trim.call(text);
+	            } :
+	            function(text) {
+	                var trimLeft = /^\s+/,
+	                    trimRight = /\s+$/;
+
+	                return text === null ? '' : text.toString().replace(trimLeft, '').replace(trimRight, '');
+	            };
+
+	        // Determines whether or not a value is a number
+	        var isNumber = function(value){
+	            return _.isNumber(value) || (_.isString(value) && value.match(defaultPatterns.number));
+	        };
+
+	        // Determines whether or not a value is empty
+	        var hasValue = function(value) {
+	            return !(_.isNull(value) || _.isUndefined(value) || (_.isString(value) && trim(value) === '') || (_.isArray(value) && _.isEmpty(value)));
+	        };
+
+	        return {
+	            // Function validator
+	            // Lets you implement a custom function used for validation
+	            fn: function(value, attr, fn, model, computed) {
+	                if(_.isString(fn)){
+	                    fn = model[fn];
+	                }
+	                return fn.call(model, value, attr, computed);
+	            },
+
+	            // Required validator
+	            // Validates if the attribute is required or not
+	            // This can be specified as either a boolean value or a function that returns a boolean value
+	            required: function(value, attr, required, model, computed) {
+	                var isRequired = _.isFunction(required) ? required.call(model, value, attr, computed) : required;
+	                if(!isRequired && !hasValue(value)) {
+	                    return false; // overrides all other validators
+	                }
+	                if (isRequired && !hasValue(value)) {
+	                    return this.format(defaultMessages.required, this.formatLabel(attr, model));
+	                }
+	            },
+
+	            // Acceptance validator
+	            // Validates that something has to be accepted, e.g. terms of use
+	            // `true` or 'true' are valid
+	            acceptance: function(value, attr, accept, model) {
+	                if(value !== 'true' && (!_.isBoolean(value) || value === false)) {
+	                    return this.format(defaultMessages.acceptance, this.formatLabel(attr, model));
+	                }
+	            },
+
+	            // Min validator
+	            // Validates that the value has to be a number and equal to or greater than
+	            // the min value specified
+	            min: function(value, attr, minValue, model) {
+	                if (!isNumber(value) || value < minValue) {
+	                    return this.format(defaultMessages.min, this.formatLabel(attr, model), minValue);
+	                }
+	            },
+
+	            // Max validator
+	            // Validates that the value has to be a number and equal to or less than
+	            // the max value specified
+	            max: function(value, attr, maxValue, model) {
+	                if (!isNumber(value) || value > maxValue) {
+	                    return this.format(defaultMessages.max, this.formatLabel(attr, model), maxValue);
+	                }
+	            },
+
+	            // Range validator
+	            // Validates that the value has to be a number and equal to or between
+	            // the two numbers specified
+	            range: function(value, attr, range, model) {
+	                if(!isNumber(value) || value < range[0] || value > range[1]) {
+	                    return this.format(defaultMessages.range, this.formatLabel(attr, model), range[0], range[1]);
+	                }
+	            },
+
+	            // Length validator
+	            // Validates that the value has to be a string with length equal to
+	            // the length value specified
+	            length: function(value, attr, length, model) {
+	                if (!_.isString(value) || value.length !== length) {
+	                    return this.format(defaultMessages.length, this.formatLabel(attr, model), length);
+	                }
+	            },
+
+	            // Min length validator
+	            // Validates that the value has to be a string with length equal to or greater than
+	            // the min length value specified
+	            minLength: function(value, attr, minLength, model) {
+	                if (!_.isString(value) || value.length < minLength) {
+	                    return this.format(defaultMessages.minLength, this.formatLabel(attr, model), minLength);
+	                }
+	            },
+
+	            // Max length validator
+	            // Validates that the value has to be a string with length equal to or less than
+	            // the max length value specified
+	            maxLength: function(value, attr, maxLength, model) {
+	                if (!_.isString(value) || value.length > maxLength) {
+	                    return this.format(defaultMessages.maxLength, this.formatLabel(attr, model), maxLength);
+	                }
+	            },
+
+	            // Range length validator
+	            // Validates that the value has to be a string and equal to or between
+	            // the two numbers specified
+	            rangeLength: function(value, attr, range, model) {
+	                if (!_.isString(value) || value.length < range[0] || value.length > range[1]) {
+	                    return this.format(defaultMessages.rangeLength, this.formatLabel(attr, model), range[0], range[1]);
+	                }
+	            },
+
+	            // One of validator
+	            // Validates that the value has to be equal to one of the elements in
+	            // the specified array. Case sensitive matching
+	            oneOf: function(value, attr, values, model) {
+	                if(!_.include(values, value)){
+	                    return this.format(defaultMessages.oneOf, this.formatLabel(attr, model), values.join(', '));
+	                }
+	            },
+
+	            // Equal to validator
+	            // Validates that the value has to be equal to the value of the attribute
+	            // with the name specified
+	            equalTo: function(value, attr, equalTo, model, computed) {
+	                if(value !== computed[equalTo]) {
+	                    return this.format(defaultMessages.equalTo, this.formatLabel(attr, model), this.formatLabel(equalTo, model));
+	                }
+	            },
+
+	            // Pattern validator
+	            // Validates that the value has to match the pattern specified.
+	            // Can be a regular expression or the name of one of the built in patterns
+	            pattern: function(value, attr, pattern, model) {
+	                if (!hasValue(value) || !value.toString().match(defaultPatterns[pattern] || pattern)) {
+	                    return this.format(defaultMessages[pattern] || defaultMessages.inlinePattern, this.formatLabel(attr, model), pattern);
+	                }
+	            }
+	        };
+	    }());
+
+	    // Set the correct context for all validators
+	    // when used from within a method validator
+	    _.each(defaultValidators, function(validator, key){
+	        defaultValidators[key] = _.bind(defaultValidators[key], _.extend({}, formatFunctions, defaultValidators));
+	    });
+
+	    return Validation;
+	}(_));
+
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Model,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.url = 'api/login';
+
+	  Model.prototype.defaults = {
+	    email: '',
+	    password: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	exports.Model = Model;
+
+	exports.View = __webpack_require__(100);
+
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(101);
+
+	__webpack_require__(19);
+
+	__webpack_require__(98);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    signup: '#index-tab-signup'
+	  };
+
+	  View.prototype.bindings = {
+	    '#index-login-email': 'email',
+	    '#index-login-password': 'password'
+	  };
+
+	  View.prototype.events = {
+	    'click @ui.signup': function() {
+	      this.rootChannel.request('signup');
+	    },
+	    'submit': function(event) {
+	      event.preventDefault();
+	      return this.model.save({}, {
+	        success: (function(_this) {
+	          return function(model) {
+	            _this.rootChannel.request('home');
+	          };
+	        })(this),
+	        error: function() {
+	          console.log('fail');
+	        }
+	      });
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.model.set({
+	      email: 'admin',
+	      password: '1234'
+	    });
+	    this.stickit();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
 /* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-login-email\" placeholder=\"Email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-login-password\" placeholder=\"Password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 102 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Marionette, Model, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(103);
+
+	__webpack_require__(19);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.urlRoot = '/api/profile';
+
+	  Model.prototype.defaults = {
+	    firstname: '',
+	    lastname: '',
+	    username: '',
+	    email: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.bindings = {
+	    '#profile-username': 'username',
+	    '#profile-firstname': 'firstname',
+	    '#profile-lastname': 'lastname',
+	    '#profile-email': 'email',
+	    '#profile-password': 'password'
+	  };
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	exports.Model = Model;
+
+	exports.View = View;
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Profile</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"profile-username\" class=\"col-sm-2 control-label\">Username</label><div class=\"col-sm-10\"><input id=\"profile-username\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-firstname\" class=\"col-sm-2 control-label\">First Name</label><div class=\"col-sm-10\"><input id=\"profile-firstname\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-lastname\" class=\"col-sm-2 control-label\">Last Name</label><div class=\"col-sm-10\"><input id=\"profile-lastname\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"profile-email\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"profile-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"profile-password\" input=\"text\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-cloud-upload\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Update</button></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75857,7 +75950,7 @@
 
 
 /***/ },
-/* 102 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

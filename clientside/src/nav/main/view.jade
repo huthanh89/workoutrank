@@ -15,19 +15,19 @@
             .collapse.navbar-collapse
                 ul.nav.navbar-nav.navbar-right
                     li.nav-divider-vertical.hidden-xs
-                    li.nav-home.nav-home-tip.hidden-xs
+                    li.hidden-xs#nav-home
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-home
                     li.nav-divider-vertical.hidden-xs
-                    li.nav-strength.nav-strength-tip.hidden-xs
+                    li.hidden-xs#nav-strength
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-shield
                     li.nav-divider-vertical.hidden-xs
-                    li.nav-log.nav-log-tip.hidden-xs
+                    li.hidden-xs#nav-log
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-area-chart
                     li.nav-divider-vertical.hidden-xs
-                    li.nav-stat.nav-stat-tip.hidden-xs
+                    li.hidden-xs#nav-stat
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-line-chart
                     li.nav-divider-vertical.hidden-xs
@@ -36,35 +36,33 @@
                             b#nav-username USERNAME
                             .caret
                         ul.dropdown-menu(role="menu")
-                            li.nav-profile
+                            li#nav-profile
                                 a
                                     i.fa.fa-fw.fa-lg.fa-user
                                     = ' '
-                                    | My Profile
-                            li.nav-setting
+                                    | Profile
+                            li#nav-setting
                                 a
                                     i.fa.fa-fw.fa-lg.fa-cog
                                     = ' '
                                     | Settings
                             li.divider
-                            li.nav-help
+                            li#nav-about
                                 a
-                                    i.fa.fa-fw.fa-lg.fa-question
+                                    i.fa.fa-fw.fa-lg.fa-info
                                     = ' '
-                                    | Help
-                            li.nav-report
+                                    | About Us
+                            li#nav-report
                                 a
                                     i.fa.fa-fw.fa-lg.fa-ambulance
                                     = ' '
                                     | Report a Problem
                             li.divider
-                            li.nav-signout
+                            li#nav-logout
                                 a
                                     i.fa.fa-fw.fa-lg.fa-sign-out
                                     = ' '
-                                    | Sign Out
-
-
+                                    | Log Out
 
             #nav-collapse-menu.collapse.navbar-collapse
                 ul.visible-xs.list-group

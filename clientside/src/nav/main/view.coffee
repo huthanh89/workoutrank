@@ -25,24 +25,16 @@ class View extends Marionette.ItemView
 
   ui:
 
-    brand:       '#navbar-brand'
-    home:        '.nav-home'
-    strength:    '.nav-strength'
-    log:         '.nav-log'
-    stat:        '.nav-stat'
-
-    homeTip:     '.nav-home-tip'
-    strengthTip: '.nav-strength-tip'
-    logTip:      '.nav-log-tip'
-    statTip:     '.nav-stat-tip'
-
-    profile:     '.nav-profile'
-    setting:     '.nav-setting'
-    help:        '.nav-help'
-    report:      '.nav-report'
-    signout:     '.nav-signout'
-
-    menu:        '#my-menu'
+    brand:    '#navbar-brand'
+    home:     '#nav-home'
+    strength: '#nav-strength'
+    log:      '#nav-log'
+    stat:     '#nav-stat'
+    profile:  '#nav-profile'
+    setting:  '#nav-setting'
+    about:    '#nav-about'
+    report:   '#nav-report'
+    logout:   '#nav-logout'
 
   bindings:
     '#nav-username':
@@ -83,7 +75,7 @@ class View extends Marionette.ItemView
       @channel.request 'setting'
       return
 
-    'click @ui.help': ->
+    'click @ui.about': ->
       @channel.request 'help'
       return
 
@@ -91,8 +83,8 @@ class View extends Marionette.ItemView
       @channel.request 'report'
       return
 
-    'click @ui.signout': ->
-      @channel.request 'signout'
+    'click @ui.logout': ->
+      @channel.request 'logout'
       return
 
   constructor: ->
@@ -101,19 +93,19 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.homeTip.tooltip
+    @ui.home.tooltip
       title:     'Home'
       placement: 'bottom'
 
-    @ui.strengthTip.tooltip
+    @ui.strength.tooltip
       title:     'Workout'
       placement: 'bottom'
 
-    @ui.logTip.tooltip
+    @ui.log.tooltip
       title:     'Logs'
       placement: 'bottom'
 
-    @ui.statTip.tooltip
+    @ui.stat.tooltip
       title:     'Stats'
       placement: 'bottom'
 

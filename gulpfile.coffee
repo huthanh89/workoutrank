@@ -294,7 +294,8 @@ gulp.task 'compile:css', [
   'less'
   'css'
   'csslint'
-]
+], ->
+  livereload.reload()
 
 gulp.task 'compile:client', [
   'scripts'

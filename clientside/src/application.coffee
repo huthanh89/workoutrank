@@ -8,7 +8,9 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
 ShortcutView = require './shortcut/view'
-Router       = require './router/router'
+MessageView  = require './message/view'
+MainRouter   = require './routers/main/router'
+UserRouter   = require './routers/user/router'
 
 #-------------------------------------------------------------------------------
 # User
@@ -30,9 +32,10 @@ class User extends Backbone.Model
 class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
-    header:   '.header'
-    shortcut: '.shortcut'
-    content:  '.content'
+    header:   '#header'
+    shortcut: '#shortcut-container'
+    message:  '#message-container'
+    content:  '#content'
 
 #-------------------------------------------------------------------------------
 # Create Application.
@@ -79,12 +82,18 @@ class Application extends Marionette.Application
 
         rootView.showChildView 'shortcut', new ShortcutView()
 
+        rootView.showChildView 'message', new MessageView()
+
         return
 
 
     # All router must be initialized before backbone.history starts to work.
 
-    new Router
+    new MainRouter
+      mode:          'auto'
+      trailingSlash: 'ignore'
+
+    new UserRouter
       mode:          'auto'
       trailingSlash: 'ignore'
 

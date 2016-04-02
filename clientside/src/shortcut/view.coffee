@@ -25,33 +25,17 @@ class View extends Marionette.ItemView
 
   ui:
 
-    home:        '#shortcut-home'
-    strength:    '#shortcut-strength'
-    logs:         '#shortcut-logs'
-    summary:     '#shortcut-summary'
-
-    homeTip:     '.shortcut-home-tip'
-    strengthTip: '.shortcut-strength-tip'
-    logTip:      '.shortcut-log-tip'
-    statTip:     '.shortcut-stat-tip'
-
-    profile:     '.shortcut-profile'
-    setting:     '.shortcut-setting'
-    help:        '.shortcut-help'
-    report:      '.shortcut-report'
-    signout:     '.shortcut-signout'
-
-    menu:        '#my-menu'
+    home:     '#shortcut-home'
+    strength: '#shortcut-strength'
+    logs:     '#shortcut-logs'
+    summary:  '#shortcut-summary'
+    profile:  '.shortcut-profile'
+    setting:  '.shortcut-setting'
+    help:     '.shortcut-help'
+    report:   '.shortcut-report'
+    signout:  '.shortcut-signout'
 
   events:
-
-    #Open menu.
-
-    'click @ui.brand': (event)->
-      # Prevent change where a change is added to url.
-      event.preventDefault()
-      $("#my-menu").trigger("open.mm")
-      return
 
     'click @ui.home': ->
       @channel.request 'home'
