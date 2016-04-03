@@ -52,7 +52,7 @@ exports.post = (req, res) ->
 
       else
 
-        req.session = null
+        req.session.user = null
         return callback null
 
   ], (err, user) ->

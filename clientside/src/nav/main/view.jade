@@ -15,19 +15,19 @@
             .collapse.navbar-collapse
                 ul.nav.navbar-nav.navbar-right
                     li.nav-divider-vertical.hidden-xs
-                    li.hidden-xs#nav-home
+                    li.hidden-xs.nav-home.nav-home-tip
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-home
                     li.nav-divider-vertical.hidden-xs
-                    li.hidden-xs#nav-strength
+                    li.hidden-xs.nav-strengths.nav-strengths-tip
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-shield
                     li.nav-divider-vertical.hidden-xs
-                    li.hidden-xs#nav-log
+                    li.hidden-xs.nav-logs.nav-logs-tip
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-area-chart
                     li.nav-divider-vertical.hidden-xs
-                    li.hidden-xs#nav-stat
+                    li.hidden-xs.nav-summary.nav-summary-tip
                         a
                             i.nav-icon.fa.fa-fw.fa-2x.fa-line-chart
                     li.nav-divider-vertical.hidden-xs
@@ -36,29 +36,29 @@
                             b#nav-username USERNAME
                             .caret
                         ul.dropdown-menu(role="menu")
-                            li#nav-profile
+                            li.nav-profile
                                 a
                                     i.fa.fa-fw.fa-lg.fa-user
                                     = ' '
                                     | Profile
-                            li#nav-setting
+                            li.nav-setting
                                 a
                                     i.fa.fa-fw.fa-lg.fa-cog
                                     = ' '
                                     | Settings
                             li.divider
-                            li#nav-about
+                            li.nav-about
                                 a
                                     i.fa.fa-fw.fa-lg.fa-info
                                     = ' '
                                     | About Us
-                            li#nav-report
+                            li.nav-report
                                 a
                                     i.fa.fa-fw.fa-lg.fa-ambulance
                                     = ' '
                                     | Report a Problem
                             li.divider
-                            li#nav-logout
+                            li.nav-logout
                                 a
                                     i.fa.fa-fw.fa-lg.fa-sign-out
                                     = ' '
@@ -71,11 +71,11 @@
                         span
                             = ' '
                             | Home
-                    li.list-group-item.nav-stat
+                    li.list-group-item.nav-summary
                         i.nav-icon.fa.fa-fw.fa-lg.fa-line-chart
                         span
                             = ' '
-                            | Personal Record
+                            | Summary
                     li.list-group-item.nav-strength
                         i.nav-icon.fa.fa-fw.fa-lg.fa-shield
                         span
@@ -90,11 +90,11 @@
                         i.fa.fa-fw.fa-lg.fa-user
                         = ' '
                         | My Profile
-                    li.list-group-item
+                    li.list-group-item.nav-setting
                         i.fa.fa-fw.fa-lg.fa-cog
                         = ' '
                         | Settings
-                    li.list-group-item
+                    li.list-group-item.nav-logout
                         i.fa.fa-fw.fa-lg.fa-sign-out
                         = ' '
                         | Sign Out

@@ -53,8 +53,6 @@ class Application extends Marionette.Application
 
     user = new User()
 
-    user.fetch()
-
     # Start channels.
 
     rootView = new RootView()
@@ -83,9 +81,15 @@ class Application extends Marionette.Application
         return
 
       'nav:main': ->
-        rootView.showChildView 'header', new Nav.Main
-          model: user
-        rootView.showChildView 'shortcut', new ShortcutView()
+        user.fetch
+          success: (model) ->
+            rootView.showChildView 'header', new Nav.Main
+              model: user
+            rootView.showChildView 'shortcut', new ShortcutView()
+            return
+          error: (model, response) ->
+            rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+            return
         return
 
     # All router must be initialized before backbone.history starts to work.

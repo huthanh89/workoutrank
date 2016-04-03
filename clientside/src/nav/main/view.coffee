@@ -2,8 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
 $            = require 'jquery'
+_            = require 'lodash'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
@@ -25,16 +25,20 @@ class View extends Marionette.ItemView
 
   ui:
 
-    brand:    '#navbar-brand'
-    home:     '#nav-home'
-    strength: '#nav-strength'
-    log:      '#nav-log'
-    stat:     '#nav-stat'
-    profile:  '#nav-profile'
-    setting:  '#nav-setting'
-    about:    '#nav-about'
-    report:   '#nav-report'
-    logout:   '#nav-logout'
+    home:        '.nav-home'
+    strengths:   '.nav-strengths'
+    logs:        '.nav-logs'
+    summary:     '.nav-summary'
+    profile:     '.nav-profile'
+    setting:     '.nav-setting'
+    about:       '.nav-about'
+    report:      '.nav-report'
+    logout:      '.nav-logout'
+
+    homeTip:     '.nav-home-tip'
+    strengthTip: '.nav-strengths-tip'
+    logTip:      '.nav-logs-tip'
+    summaryTip:  '.nav-summary-tip'
 
   bindings:
     '#nav-username':
@@ -43,28 +47,20 @@ class View extends Marionette.ItemView
 
   events:
 
-    #Open menu.
-
-    'click @ui.brand': (event)->
-      # Prevent change where a change is added to url.
-      event.preventDefault()
-      $("#my-menu").trigger("open.mm")
-      return
-
     'click @ui.home': ->
       @channel.request 'home'
       return
 
-    'click @ui.strength': ->
+    'click @ui.strengths': ->
       @channel.request 'strength'
       return
 
-    'click @ui.log': ->
+    'click @ui.logs': ->
       @channel.request 'log'
       return
 
-    'click @ui.stat': ->
-      @channel.request 'stat'
+    'click @ui.summary': ->
+      @channel.request 'summary'
       return
 
     'click @ui.profile': ->
@@ -93,20 +89,20 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.home.tooltip
+    @ui.homeTip.tooltip
       title:     'Home'
       placement: 'bottom'
 
-    @ui.strength.tooltip
-      title:     'Workout'
+    @ui.strengthTip.tooltip
+      title:     'Workouts'
       placement: 'bottom'
 
-    @ui.log.tooltip
+    @ui.logTip.tooltip
       title:     'Logs'
       placement: 'bottom'
 
-    @ui.stat.tooltip
-      title:     'Stats'
+    @ui.summaryTip.tooltip
+      title:     'Summary'
       placement: 'bottom'
 
     @stickit()

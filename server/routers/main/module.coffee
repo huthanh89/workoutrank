@@ -31,7 +31,7 @@ router.get '/home',              index
 router.get '/exercise',          index
 router.get '/exercise/:type',    index
 router.get '/cardio',            index
-router.get '/stat',              index
+router.get '/summary',           index
 router.get '/strength',          index
 router.get '/strength/:sid',     index
 router.get '/strength/:sid/log', index

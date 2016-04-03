@@ -49492,7 +49492,6 @@
 	    var googleAnalytics, navChannel, rootChannel, rootView, user, userChannel;
 	    googleAnalytics = new GA();
 	    user = new User();
-	    user.fetch();
 	    rootView = new RootView();
 	    userChannel = Backbone.Radio.channel('user');
 	    rootChannel = Backbone.Radio.channel('root');
@@ -49518,10 +49517,17 @@
 	        rootView.showChildView('header', new Nav.Index());
 	      },
 	      'nav:main': function() {
-	        rootView.showChildView('header', new Nav.Main({
-	          model: user
-	        }));
-	        rootView.showChildView('shortcut', new ShortcutView());
+	        user.fetch({
+	          success: function(model) {
+	            rootView.showChildView('header', new Nav.Main({
+	              model: user
+	            }));
+	            rootView.showChildView('shortcut', new ShortcutView());
+	          },
+	          error: function(model, response) {
+	            rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	          }
+	        });
 	      }
 	    });
 	    new MainRouter({
@@ -57192,9 +57198,9 @@
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	_ = __webpack_require__(3);
-
 	$ = __webpack_require__(2);
+
+	_ = __webpack_require__(3);
 
 	Backbone = __webpack_require__(8);
 
@@ -57212,16 +57218,19 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    brand: '#navbar-brand',
-	    home: '#nav-home',
-	    strength: '#nav-strength',
-	    log: '#nav-log',
-	    stat: '#nav-stat',
-	    profile: '#nav-profile',
-	    setting: '#nav-setting',
-	    about: '#nav-about',
-	    report: '#nav-report',
-	    logout: '#nav-logout'
+	    home: '.nav-home',
+	    strengths: '.nav-strengths',
+	    logs: '.nav-logs',
+	    summary: '.nav-summary',
+	    profile: '.nav-profile',
+	    setting: '.nav-setting',
+	    about: '.nav-about',
+	    report: '.nav-report',
+	    logout: '.nav-logout',
+	    homeTip: '.nav-home-tip',
+	    strengthTip: '.nav-strengths-tip',
+	    logTip: '.nav-logs-tip',
+	    summaryTip: '.nav-summary-tip'
 	  };
 
 	  View.prototype.bindings = {
@@ -57234,21 +57243,17 @@
 	  };
 
 	  View.prototype.events = {
-	    'click @ui.brand': function(event) {
-	      event.preventDefault();
-	      $("#my-menu").trigger("open.mm");
-	    },
 	    'click @ui.home': function() {
 	      this.channel.request('home');
 	    },
-	    'click @ui.strength': function() {
+	    'click @ui.strengths': function() {
 	      this.channel.request('strength');
 	    },
-	    'click @ui.log': function() {
+	    'click @ui.logs': function() {
 	      this.channel.request('log');
 	    },
-	    'click @ui.stat': function() {
-	      this.channel.request('stat');
+	    'click @ui.summary': function() {
+	      this.channel.request('summary');
 	    },
 	    'click @ui.profile': function() {
 	      this.channel.request('profile');
@@ -57273,20 +57278,20 @@
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.ui.home.tooltip({
+	    this.ui.homeTip.tooltip({
 	      title: 'Home',
 	      placement: 'bottom'
 	    });
-	    this.ui.strength.tooltip({
-	      title: 'Workout',
+	    this.ui.strengthTip.tooltip({
+	      title: 'Workouts',
 	      placement: 'bottom'
 	    });
-	    this.ui.log.tooltip({
+	    this.ui.logTip.tooltip({
 	      title: 'Logs',
 	      placement: 'bottom'
 	    });
-	    this.ui.stat.tooltip({
-	      title: 'Stats',
+	    this.ui.summaryTip.tooltip({
+	      title: 'Summary',
 	      placement: 'bottom'
 	    });
 	    this.stickit();
@@ -57655,7 +57660,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\"><i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"navbar-brand\">WR</span></a><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-home\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-strength\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-log\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li id=\"nav-stat\" class=\"hidden-xs\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li id=\"nav-profile\"><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Profile</a></li><li id=\"nav-setting\"><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li id=\"nav-about\"><a><i class=\"fa fa-fw fa-lg fa-info\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "About Us</a></li><li id=\"nav-report\"><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li id=\"nav-logout\"><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-stat\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Personal Record</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div>");;return buf.join("");
+	buf.push("<div class=\"col-xs-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\"><i class=\"fa fa-lg fa-navicon\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"navbar-brand\">WR</span></a><button type=\"button\" data-toggle=\"collapse\" data-target=\"#nav-collapse-menu\" class=\"navbar-toggle collapsed\"><span class=\"sr-only\">Toggle navigation</span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span><span class=\"icon-bar\"></span></button></div><div class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-right\"><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"hidden-xs nav-home nav-home-tip\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-home\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"hidden-xs nav-strengths nav-strengths-tip\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-shield\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"hidden-xs nav-logs nav-logs-tip\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-area-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"hidden-xs nav-summary nav-summary-tip\"><a><i class=\"nav-icon fa fa-fw fa-2x fa-line-chart\"></i></a></li><li class=\"nav-divider-vertical hidden-xs\"></li><li class=\"dropdown\"><a data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" class=\"dropdown-toggle\"><b id=\"nav-username\">USERNAME</b><div class=\"caret\"></div></a><ul role=\"menu\" class=\"dropdown-menu\"><li class=\"nav-profile\"><a><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Profile</a></li><li class=\"nav-setting\"><a><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</a></li><li class=\"divider\"></li><li class=\"nav-about\"><a><i class=\"fa fa-fw fa-lg fa-info\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "About Us</a></li><li class=\"nav-report\"><a><i class=\"fa fa-fw fa-lg fa-ambulance\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Report a Problem</a></li><li class=\"divider\"></li><li class=\"nav-logout\"><a><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log Out</a></li></ul></li></ul></div><div id=\"nav-collapse-menu\" class=\"collapse navbar-collapse\"><ul class=\"visible-xs list-group\"><li class=\"list-group-item nav-home\"><i class=\"nav-icon fa fa-fw fa-lg fa-home\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></li><li class=\"list-group-item nav-summary\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Summary</span></li><li class=\"list-group-item nav-strength\"><i class=\"nav-icon fa fa-fw fa-lg fa-shield\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></li><li class=\"list-group-item nav-log\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Log</span></li><li class=\"list-group-item\"><i class=\"fa fa-fw fa-lg fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Profile</li><li class=\"list-group-item nav-setting\"><i class=\"fa fa-fw fa-lg fa-cog\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Settings</li><li class=\"list-group-item nav-logout\"><i class=\"fa fa-fw fa-lg fa-sign-out\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Out</li></ul></div></div></nav></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -58598,12 +58603,12 @@
 	          _this.strengthLog(exerciseID);
 	        };
 	      })(this),
-	      'stat': (function(_this) {
+	      'summary': (function(_this) {
 	        return function() {
-	          _this.navigate('stat', {
+	          _this.navigate('summary', {
 	            trigger: true
 	          });
-	          _this.stat();
+	          _this.summary();
 	        };
 	      })(this),
 	      'schedule': (function(_this) {
@@ -58639,7 +58644,7 @@
 	    'strength/': 'strength',
 	    'strength/:sid/': 'strengthDetail',
 	    'strength/:sid/log': 'strengthLog',
-	    'stat': 'stat',
+	    'summary': 'summary',
 	    'schedule': 'schdeule',
 	    'log': 'log',
 	    'multiplayer': 'multiplayer'
@@ -58657,9 +58662,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -58677,9 +58684,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function(err) {
-	        console.log('error', arguments);
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -58699,7 +58708,7 @@
 	          success: function(strength) {
 	            return callback(null, strength);
 	          },
-	          error: function(err) {
+	          error: function(model, error) {
 	            return callback(err);
 	          }
 	        });
@@ -58712,15 +58721,15 @@
 	          success: function(collection) {
 	            return callback(null, strength, collection);
 	          },
-	          error: function(err) {
-	            return callback(err);
+	          error: function(model, error) {
+	            return callback(error);
 	          }
 	        });
 	      }
 	    ], (function(_this) {
-	      return function(err, strength, collection) {
-	        if (err) {
-	          console.log('Error:', err);
+	      return function(error, strength, collection) {
+	        if (error) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + error.responseText);
 	        }
 	        _this.rootView.content.show(new View({
 	          model: strength,
@@ -58748,9 +58757,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -58768,13 +58779,15 @@
 	          }));
 	        };
 	      })(this),
-	      error: function() {
-	        console.log('error');
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
-	  Router.prototype.stat = function() {
+	  Router.prototype.summary = function() {
 	    var collection;
 	    this.navChannel.request('nav:main');
 	    collection = new Stat.Collection();
@@ -58786,9 +58799,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function(err) {
-	        console.log(err);
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -58810,9 +58825,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function(err) {
-	        console.log(err);
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -64158,7 +64175,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td colspan=\"3\"><span class=\"lead\">No workout stats available.</span></td>");;return buf.join("");
+	buf.push("<td colspan=\"5\"><span class=\"lead\">No workout stats available.</span></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -74812,9 +74829,11 @@
 	          }));
 	        };
 	      })(this),
-	      error: function(err) {
-	        console.log('error', arguments);
-	      }
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
 	    });
 	  };
 
@@ -75738,7 +75757,7 @@
 	        })(this),
 	        error: (function(_this) {
 	          return function(model, response) {
-	            _this.rootChannel.request('message', 'danger', response.responseText);
+	            _this.rootChannel.request('message', 'danger', "Failed: " + response.responseText);
 	          };
 	        })(this)
 	      });

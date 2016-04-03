@@ -13,34 +13,6 @@ mongoose = require('mongoose')
 User = mongoose.model('user')
 
 #-------------------------------------------------------------------------------
-# Get
-#-------------------------------------------------------------------------------
-
-exports.get = (req, res) ->
-
-  async.waterfall [
-
-    (callback) ->
-
-      User.findOne
-        email: 'admin'
-      , exec (err, user) ->
-        return callback err if err
-        return callback null, user
-
-      return
-
-  ], (err, entry) ->
-
-    console.log 'error', err if err
-
-    res.json entry
-
-    return
-
-  return
-
-#-------------------------------------------------------------------------------
 # Post
 #-------------------------------------------------------------------------------
 
@@ -66,6 +38,8 @@ exports.post = (req, res) ->
   ], (err, user) ->
 
     console.log err if err
+
+    req.session.user = user
 
     res
     .status 201

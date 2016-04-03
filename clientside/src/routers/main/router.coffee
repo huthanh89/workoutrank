@@ -60,9 +60,9 @@ class Router extends Marionette.AppRouter
         @strengthLog(exerciseID)
         return
 
-      'stat': =>
-        @navigate('stat', trigger: true)
-        @stat()
+      'summary': =>
+        @navigate('summary', trigger: true)
+        @summary()
         return
 
       'schedule': =>
@@ -91,7 +91,7 @@ class Router extends Marionette.AppRouter
     'strength/':         'strength'
     'strength/:sid/':    'strengthDetail'
     'strength/:sid/log': 'strengthLog'
-    'stat':              'stat'
+    'summary':           'summary'
     'schedule':          'schdeule'
     'log':               'log'
     'multiplayer':       'multiplayer'
@@ -109,8 +109,8 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new Home.View
           model: model
         return
-      error: ->
-        console.log 'error'
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
@@ -128,8 +128,8 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new View
           collection: collection
         return
-      error: (err) ->
-        console.log 'error', arguments
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
@@ -150,7 +150,7 @@ class Router extends Marionette.AppRouter
 
         strength.fetch
           success: (strength) -> callback null, strength
-          error: (err) -> callback err
+          error: (model, error) -> callback err
 
         return
 
@@ -161,13 +161,14 @@ class Router extends Marionette.AppRouter
 
         logs.fetch
           success: (collection) -> callback null, strength, collection
-          error: (err) -> callback err
+          error: (model, error) -> callback error
 
         return
 
-    ], (err, strength, collection) =>
+    ], (error, strength, collection) =>
 
-      console.log 'Error:', err if err
+      if error
+        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
 
       @rootView.content.show new View
         model:      strength
@@ -194,8 +195,8 @@ class Router extends Marionette.AppRouter
           model:      model
           strengthID: strengthID
         return
-      error: ->
-        console.log 'error'
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
@@ -210,12 +211,12 @@ class Router extends Marionette.AppRouter
           collection: collection
           model: model
         return
-      error: ->
-        console.log 'error'
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
-  stat: ->
+  summary: ->
     @navChannel.request('nav:main')
 
     collection = new Stat.Collection()
@@ -225,8 +226,8 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new Stat.View
           collection: collection
         return
-      error: (err) ->
-        console.log err
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
 
     return
@@ -247,8 +248,8 @@ class Router extends Marionette.AppRouter
           collection: collection
           model:      new Log.Model()
         return
-      error: (err) ->
-        console.log err
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
 
     return

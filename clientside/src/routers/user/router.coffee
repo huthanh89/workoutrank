@@ -96,8 +96,8 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new Profile.View
           model: model
         return
-      error: (err) ->
-        console.log 'error', arguments
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
 
     return
