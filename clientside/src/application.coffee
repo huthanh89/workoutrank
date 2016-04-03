@@ -78,6 +78,7 @@ class Application extends Marionette.Application
 
       'nav:index': ->
         rootView.showChildView 'header', new Nav.Index()
+        rootView.getRegion('shortcut').empty()
         return
 
       'nav:main': ->

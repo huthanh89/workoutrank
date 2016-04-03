@@ -49515,6 +49515,7 @@
 	    navChannel.reply({
 	      'nav:index': function() {
 	        rootView.showChildView('header', new Nav.Index());
+	        rootView.getRegion('shortcut').empty();
 	      },
 	      'nav:main': function() {
 	        user.fetch({
