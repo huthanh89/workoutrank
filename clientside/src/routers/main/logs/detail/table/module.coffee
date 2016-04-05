@@ -5,7 +5,7 @@
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Data         = require '../data/module'
+Data         = require '../../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------

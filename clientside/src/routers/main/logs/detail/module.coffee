@@ -29,11 +29,14 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  url: '/api/logs'
+  constructor: (models, options) ->
+    super
+    @url = "/api/strengths/#{options._id}/log"
 
   model: Model
 
   parse: (response) ->
+
     result = []
 
     grouped = _.groupBy response, (record) -> record.exercise
@@ -54,12 +57,12 @@ class Collection extends Backbone.Collection
           y: record.rep
 
       result.push
-        exerciseID: exercise
-        name:       records[0].name
-        weightData: weightData
-        repData:    repData
-        muscle:     records[0].muscle
-        user:       records[0].user
+        exerciseID:   exercise
+        name:         records[0].name
+        weightData: _.sortBy weightData, (point) -> point.x
+        repData:    _.sortBy repData, (point) -> point.x
+        muscle:       records[0].muscle
+        user:         records[0].user
 
     return result
 
@@ -89,6 +92,7 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
+
     @showChildView 'graph', new GraphView
       collection: @collection
 

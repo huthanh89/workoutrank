@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(103);
+	__webpack_require__(114);
 
-	__webpack_require__(104);
+	__webpack_require__(115);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -49440,7 +49440,7 @@
 
 	MainRouter = __webpack_require__(24);
 
-	UserRouter = __webpack_require__(94);
+	UserRouter = __webpack_require__(105);
 
 	User = (function(superClass) {
 	  extend(User, superClass);
@@ -57251,7 +57251,7 @@
 	      this.channel.request('strength');
 	    },
 	    'click @ui.logs': function() {
-	      this.channel.request('log');
+	      this.channel.request('logs');
 	    },
 	    'click @ui.summary': function() {
 	      this.channel.request('summary');
@@ -58521,14 +58521,14 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"message\" class=\"alert\"><a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"close\">×</a><span id=\"message-type\">asd</span></div>");;return buf.join("");
+	buf.push("<div id=\"message\" class=\"alert\"><a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"close\">×</a><span id=\"message-type\"></span></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Exercise, Home, Log, Marionette, Router, Stat, Strength, _, async,
+	var Backbone, Exercise, Home, Logs, Marionette, Router, Strength, Summary, _, async,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -58542,13 +58542,13 @@
 
 	Home = __webpack_require__(28);
 
-	Stat = __webpack_require__(31);
+	Summary = __webpack_require__(31);
 
 	Exercise = __webpack_require__(39);
 
 	Strength = __webpack_require__(49);
 
-	Log = __webpack_require__(87);
+	Logs = __webpack_require__(87);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -58620,12 +58620,20 @@
 	          _this.schedule();
 	        };
 	      })(this),
-	      'log': (function(_this) {
+	      'logs': (function(_this) {
 	        return function() {
-	          _this.navigate('log', {
+	          _this.navigate('logs', {
 	            trigger: true
 	          });
-	          _this.log();
+	          _this.logs();
+	        };
+	      })(this),
+	      'log:detail': (function(_this) {
+	        return function(exerciseID) {
+	          _this.navigate("log/" + exerciseID, {
+	            trigger: true
+	          });
+	          _this.logDetail(exerciseID);
 	        };
 	      })(this),
 	      'multiplayer': (function(_this) {
@@ -58646,8 +58654,9 @@
 	    'strength/:sid/': 'strengthDetail',
 	    'strength/:sid/log': 'strengthLog',
 	    'summary': 'summary',
-	    'schedule': 'schdeule',
-	    'log': 'log',
+	    'schedule': 'schedule',
+	    'logs': 'logs',
+	    'log/:lid/': 'logDetail',
 	    'multiplayer': 'multiplayer'
 	  };
 
@@ -58744,8 +58753,8 @@
 	  Router.prototype.strengthLog = function(strengthID) {
 	    var Model, View, model;
 	    this.navChannel.request('nav:main');
-	    View = Strength.Log.View;
-	    Model = Strength.Log.Model;
+	    View = Strength.Logs.View;
+	    Model = Strength.Logs.Model;
 	    model = new Model({}, {
 	      id: strengthID
 	    });
@@ -58791,11 +58800,11 @@
 	  Router.prototype.summary = function() {
 	    var collection;
 	    this.navChannel.request('nav:main');
-	    collection = new Stat.Collection();
+	    collection = new Summary.Collection();
 	    collection.fetch({
 	      success: (function(_this) {
 	        return function(collection) {
-	          _this.rootView.content.show(new Stat.View({
+	          _this.rootView.content.show(new Summary.View({
 	            collection: collection
 	          }));
 	        };
@@ -58813,16 +58822,39 @@
 	    this.rootView.content.show(new Profile.View());
 	  };
 
-	  Router.prototype.log = function() {
-	    var collection;
+	  Router.prototype.logs = function() {
+	    var View, collection;
 	    this.navChannel.request('nav:main');
-	    collection = new Log.Collection();
+	    collection = new Strength.Master.Collection();
+	    View = Logs.Master.View;
 	    collection.fetch({
 	      success: (function(_this) {
 	        return function(collection) {
-	          _this.rootView.content.show(new Log.View({
+	          _this.rootView.content.show(new View({
+	            collection: collection
+	          }));
+	        };
+	      })(this),
+	      error: (function(_this) {
+	        return function(model, response) {
+	          _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	        };
+	      })(this)
+	    });
+	  };
+
+	  Router.prototype.logDetail = function(exerciseID) {
+	    var collection;
+	    this.navChannel.request('nav:main');
+	    collection = new Logs.Detail.Collection([], {
+	      _id: exerciseID
+	    });
+	    collection.fetch({
+	      success: (function(_this) {
+	        return function(collection) {
+	          _this.rootView.content.show(new Logs.Detail.View({
 	            collection: collection,
-	            model: new Log.Model()
+	            model: new Logs.Detail.Model()
 	          }));
 	        };
 	      })(this),
@@ -60223,17 +60255,17 @@
 	    'click #home-exercise-balance': function() {
 	      this.rootChannel.request('exercise:detail', 'balance');
 	    },
-	    'click #home-log': function() {
-	      this.rootChannel.request('log');
+	    'click #home-logs': function() {
+	      this.rootChannel.request('logs');
 	    },
-	    'click #home-stat': function() {
-	      this.rootChannel.request('stat');
+	    'click #home-summary': function() {
+	      this.rootChannel.request('summary');
 	    },
 	    'click #home-schedule': function() {
 	      this.rootChannel.request('schedule');
 	    },
-	    'click #home-log': function() {
-	      this.rootChannel.request('log');
+	    'click #home-logs': function() {
+	      this.rootChannel.request('logs');
 	    },
 	    'click #home-multiplayer': function() {
 	      this.rootChannel.request('multiplayer');
@@ -60267,7 +60299,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-stat\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "View Stats</b></span></li><li id=\"home-exercise\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-heartbeat\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercises</b></span><span id=\"home-exercise-count\" class=\"badge badge-color\">0</span></li><li id=\"home-log\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Logs</b></span><span id=\"home-log-count\" class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-summary\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-line-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "View Stats</b></span></li><li id=\"home-exercise\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-heartbeat\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Exercises</b></span><span id=\"home-exercise-count\" class=\"badge badge-color\">0</span></li><li id=\"home-logs\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Logs</b></span><span id=\"home-log-count\" class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -74236,6 +74268,607 @@
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports.Master = __webpack_require__(88);
+
+	module.exports.Detail = __webpack_require__(99);
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, FilterView, Marionette, Model, PaginateView, Table, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Table = __webpack_require__(89);
+
+	FilterView = __webpack_require__(94);
+
+	PaginateView = __webpack_require__(96);
+
+	viewTemplate = __webpack_require__(98);
+
+	__webpack_require__(47);
+
+	__webpack_require__(67);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.idAttribute = '_id';
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    date: new Date(),
+	    muscle: 0
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.regions = {
+	    modal: '#strength-modal-view',
+	    filter: '#strength-filter-view',
+	    table: '#strength-table-view',
+	    page: '#strength-paginate-view'
+	  };
+
+	  View.prototype.events = {
+	    'click #strength-back': function() {
+	      this.rootChannel.request('home');
+	    }
+	  };
+
+	  View.prototype.modelEvents = {
+	    'change:muscle': function(model, value) {
+	      this.filterCollection(value);
+	    }
+	  };
+
+	  View.prototype.collectionEvents = {
+	    update: function() {
+	      this.getChildView('filter').filterCollection();
+	    }
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.pageableCollection = new Table.Collection(this.collection.models);
+	    this.channel = Backbone.Radio.channel('channel');
+	    this.channel.reply({
+	      'add': (function(_this) {
+	        return function() {
+	          _this.addWorkout();
+	        };
+	      })(this)
+	    });
+	  }
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('filter', new FilterView({
+	      collection: this.collection,
+	      pageableCollection: this.pageableCollection
+	    }));
+	    this.showChildView('table', new Table.View({
+	      collection: this.pageableCollection,
+	      channel: this.channel
+	    }));
+	    this.showChildView('page', new PaginateView({
+	      collection: this.pageableCollection
+	    }));
+	  };
+
+	  View.prototype.onBeforeDestroy = function() {
+	    this.channel.reset();
+	  };
+
+	  return View;
+
+	})(Marionette.LayoutView);
+
+	module.exports.Model = Model;
+
+	module.exports.View = View;
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, Data, ItemView, Marionette, NullView, Pageable, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	moment = __webpack_require__(33);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Pageable = __webpack_require__(59);
+
+	Data = __webpack_require__(90);
+
+	nullTemplate = __webpack_require__(91);
+
+	itemTemplate = __webpack_require__(92);
+
+	viewTemplate = __webpack_require__(93);
+
+	__webpack_require__(37);
+
+	__webpack_require__(19);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = '/api/strengths';
+
+	  Collection.prototype.mode = 'client';
+
+	  Collection.prototype.state = {
+	    currentPage: 1,
+	    pageSize: 10
+	  };
+
+	  Collection.prototype.comparator = function(item) {
+	    return -item.get('date');
+	  };
+
+	  return Collection;
+
+	})(Backbone.PageableCollection);
+
+	NullView = (function(superClass) {
+	  extend(NullView, superClass);
+
+	  NullView.prototype.tagName = 'tr';
+
+	  NullView.prototype.template = nullTemplate;
+
+	  function NullView(options) {
+	    NullView.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'channel');
+	  }
+
+	  NullView.prototype.events = {
+	    click: function() {
+	      return this.channel.request('add');
+	    }
+	  };
+
+	  return NullView;
+
+	})(Marionette.ItemView);
+
+	ItemView = (function(superClass) {
+	  extend(ItemView, superClass);
+
+	  ItemView.prototype.tagName = 'tr';
+
+	  ItemView.prototype.template = itemTemplate;
+
+	  ItemView.prototype.bindings = {
+	    '.strength-table-td-name': 'name',
+	    '.strength-table-td-muscle': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    },
+	    '.strength-table-td-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('ddd MM/DD hh:MM A');
+	      }
+	    }
+	  };
+
+	  ItemView.prototype.events = {
+	    'click td:not(:first-child)': function() {
+	      this.rootChannel.request('log:detail', this.model.id);
+	    },
+	    'click .strength-table-td-remove': function() {
+	      this.model.destroy({
+	        wait: true
+	      });
+	    }
+	  };
+
+	  function ItemView() {
+	    ItemView.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  ItemView.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  ItemView.prototype.onBeforeDestroy = function() {
+	    this.unstickit();
+	  };
+
+	  return ItemView;
+
+	})(Marionette.ItemView);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.childViewContainer = 'tbody';
+
+	  View.prototype.emptyView = NullView;
+
+	  View.prototype.childView = ItemView;
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    name: '#strength-name',
+	    muscle: '#strength-muscle',
+	    first: '#strength-table-first',
+	    prev: '#strength-table-prev',
+	    next: '#strength-table-next',
+	    last: '#strength-table-last',
+	    currentPage: '#strength-table-currentpage',
+	    lastPage: '#strength-table-lastpage'
+	  };
+
+	  View.prototype.behaviors = {
+	    Pageable: {
+	      behaviorClass: Pageable
+	    }
+	  };
+
+	  function View(options) {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'channel');
+	  }
+
+	  View.prototype.childViewOptions = function() {
+	    return {
+	      channel: this.channel
+	    };
+	  };
+
+	  return View;
+
+	})(Marionette.CompositeView);
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports) {
+
+	var Muscles;
+
+	Muscles = [
+	  {
+	    value: 0,
+	    label: 'Abdominals'
+	  }, {
+	    value: 1,
+	    label: 'Arms'
+	  }, {
+	    value: 2,
+	    label: 'Back'
+	  }, {
+	    value: 3,
+	    label: 'Biceps'
+	  }, {
+	    value: 4,
+	    label: 'Calves'
+	  }, {
+	    value: 5,
+	    label: 'Chest'
+	  }, {
+	    value: 6,
+	    label: 'Forearms'
+	  }, {
+	    value: 7,
+	    label: 'Glutes'
+	  }, {
+	    value: 8,
+	    label: 'Hamstrings'
+	  }, {
+	    value: 9,
+	    label: 'Lats'
+	  }, {
+	    value: 10,
+	    label: 'Legs'
+	  }, {
+	    value: 11,
+	    label: 'Neck'
+	  }, {
+	    value: 12,
+	    label: 'Quadriceps'
+	  }, {
+	    value: 13,
+	    label: 'Shoulders'
+	  }, {
+	    value: 14,
+	    label: 'Traps'
+	  }, {
+	    value: 15,
+	    label: 'Triceps'
+	  }
+	];
+
+	exports.Muscles = Muscles;
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td colspan=\"4\" id=\"strength-table-null\"><span class=\"lead\">Add a new workout.</span></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover table-bordered\"><thead><tr><td><b>Name</b></td><td><b>Lastest</b></td><td><b>Muscle</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Data, Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty,
+	  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+	Marionette = __webpack_require__(10);
+
+	Data = __webpack_require__(90);
+
+	viewTemplate = __webpack_require__(95);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    muscle: '#strength-filter-muscle'
+	  };
+
+	  function View(options) {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'pageableCollection');
+	    this.muscles = [];
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.ui.muscle.multiselect({
+	      enableFiltering: true,
+	      maxHeight: 300,
+	      buttonClass: 'btn btn-info',
+	      onChange: (function(_this) {
+	        return function() {
+	          _this.muscles = _this.ui.muscle.val() || [];
+	          return _this.filterCollection();
+	        };
+	      })(this)
+	    }).multiselect('dataprovider', Data.Muscles);
+	  };
+
+	  View.prototype.filterCollection = function() {
+	    var models;
+	    models = this.collection.models;
+	    if (this.muscles.length > 0) {
+	      models = this.collection.filter((function(_this) {
+	        return function(model) {
+	          var ref;
+	          return ref = model.get('muscle').toString(), indexOf.call(_this.muscles, ref) >= 0;
+	        };
+	      })(this));
+	    }
+	    this.pageableCollection.fullCollection.reset(models);
+	  };
+
+	  View.prototype.onBeforeDestroy = function() {
+	    this.ui.muscle.multiselect('destroy');
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"col-xs-12\"><select id=\"strength-filter-muscle\" multiple=\"multiple\" class=\"form-control\"></select></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(97);
+
+	__webpack_require__(67);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    list: '#strength-paginate-list'
+	  };
+
+	  View.prototype.collectionEvents = {
+	    reset: function() {
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.events = {
+	    'click li': function(event) {
+	      var id, page, target;
+	      target = $(event.currentTarget);
+	      if (target.hasClass('disabled')) {
+	        return;
+	      }
+	      id = target.attr('id');
+	      if (id === 'prev') {
+	        if (this.collection.hasPreviousPage()) {
+	          this.collection.getPreviousPage();
+	        }
+	      } else if (id === 'next') {
+	        if (this.collection.hasNextPage()) {
+	          this.collection.getNextPage();
+	        }
+	      } else {
+	        page = parseInt(target.attr('id'));
+	        this.collection.getPage(page);
+	      }
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.updateList();
+	  };
+
+	  View.prototype.updateList = function() {
+	    var currentPage, firstPage, i, lastPage, page, ref, ref1, state;
+	    this.ui.list.empty();
+	    state = this.collection.state;
+	    currentPage = state.currentPage;
+	    firstPage = state.firstPage;
+	    lastPage = state.lastPage;
+	    this.ui.list.append('<li id="prev" class="pagination-prev"><a>Prev</a></li>');
+	    for (page = i = ref = firstPage, ref1 = lastPage; ref <= ref1 ? i <= ref1 : i >= ref1; page = ref <= ref1 ? ++i : --i) {
+	      if (page === currentPage) {
+	        this.ui.list.append('<li class="active" id=' + page + ("><a>" + page + "</a></li>"));
+	      } else {
+	        this.ui.list.append('<li id=' + page + ("><a>" + page + "</a></li>"));
+	      }
+	    }
+	    this.ui.list.append('<li  id="next" class="pagination-next"><a>Next</a></li>');
+	    this.ui.list.rPage();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"pull-right\"><div class=\"col-xs-12\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Logs</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
@@ -74246,11 +74879,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(88);
+	GraphView = __webpack_require__(100);
 
-	Table = __webpack_require__(90);
+	Table = __webpack_require__(102);
 
-	viewTemplate = __webpack_require__(93);
+	viewTemplate = __webpack_require__(104);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74275,11 +74908,10 @@
 	Collection = (function(superClass) {
 	  extend(Collection, superClass);
 
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
+	  function Collection(models, options) {
+	    Collection.__super__.constructor.apply(this, arguments);
+	    this.url = "/api/strengths/" + options._id + "/log";
 	  }
-
-	  Collection.prototype.url = '/api/logs';
 
 	  Collection.prototype.model = Model;
 
@@ -74308,8 +74940,12 @@
 	      result.push({
 	        exerciseID: exercise,
 	        name: records[0].name,
-	        weightData: weightData,
-	        repData: repData,
+	        weightData: _.sortBy(weightData, function(point) {
+	          return point.x;
+	        }),
+	        repData: _.sortBy(repData, function(point) {
+	          return point.x;
+	        }),
 	        muscle: records[0].muscle,
 	        user: records[0].user
 	      });
@@ -74369,7 +75005,7 @@
 
 
 /***/ },
-/* 88 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
@@ -74382,7 +75018,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(89);
+	viewTemplate = __webpack_require__(101);
 
 	seriesRepData = function(model) {
 	  return {
@@ -74475,7 +75111,7 @@
 
 
 /***/ },
-/* 89 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74489,7 +75125,7 @@
 	}
 
 /***/ },
-/* 90 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
@@ -74502,9 +75138,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(91);
+	Data = __webpack_require__(90);
 
-	viewTemplate = __webpack_require__(92);
+	viewTemplate = __webpack_require__(103);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -74633,68 +75269,7 @@
 
 
 /***/ },
-/* 91 */
-/***/ function(module, exports) {
-
-	var Muscles;
-
-	Muscles = [
-	  {
-	    value: 0,
-	    label: 'Abdominals'
-	  }, {
-	    value: 1,
-	    label: 'Arms'
-	  }, {
-	    value: 2,
-	    label: 'Back'
-	  }, {
-	    value: 3,
-	    label: 'Biceps'
-	  }, {
-	    value: 4,
-	    label: 'Calves'
-	  }, {
-	    value: 5,
-	    label: 'Chest'
-	  }, {
-	    value: 6,
-	    label: 'Forearms'
-	  }, {
-	    value: 7,
-	    label: 'Glutes'
-	  }, {
-	    value: 8,
-	    label: 'Hamstrings'
-	  }, {
-	    value: 9,
-	    label: 'Lats'
-	  }, {
-	    value: 10,
-	    label: 'Legs'
-	  }, {
-	    value: 11,
-	    label: 'Neck'
-	  }, {
-	    value: 12,
-	    label: 'Quadriceps'
-	  }, {
-	    value: 13,
-	    label: 'Shoulders'
-	  }, {
-	    value: 14,
-	    label: 'Traps'
-	  }, {
-	    value: 15,
-	    label: 'Triceps'
-	  }
-	];
-
-	exports.Muscles = Muscles;
-
-
-/***/ },
-/* 92 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74708,7 +75283,7 @@
 	}
 
 /***/ },
-/* 93 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74722,7 +75297,7 @@
 	}
 
 /***/ },
-/* 94 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Login, Marionette, Profile, Router, Signup, _, async,
@@ -74737,11 +75312,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	Signup = __webpack_require__(95);
+	Signup = __webpack_require__(106);
 
-	Login = __webpack_require__(99);
+	Login = __webpack_require__(110);
 
-	Profile = __webpack_require__(101);
+	Profile = __webpack_require__(112);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -74846,7 +75421,7 @@
 
 
 /***/ },
-/* 95 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -74868,7 +75443,8 @@
 	    firstname: '',
 	    lastname: '',
 	    email: '',
-	    password: ''
+	    password: '',
+	    captcha: ''
 	  };
 
 	  Model.prototype.validation = {
@@ -74883,11 +75459,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(96);
+	exports.View = __webpack_require__(107);
 
 
 /***/ },
-/* 96 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -74898,11 +75474,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(97);
+	viewTemplate = __webpack_require__(108);
 
 	__webpack_require__(19);
 
-	__webpack_require__(98);
+	__webpack_require__(109);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74910,6 +75486,7 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
+	    form: '#signup-form',
 	    login: '#index-tab-login',
 	    submit: '#index-signup-submit'
 	  };
@@ -74925,17 +75502,24 @@
 	    'click @ui.login': function() {
 	      this.rootChannel.request('login');
 	    },
-	    'submit': function(event) {
+	    submit: function(event) {
+	      var captcha, ref;
 	      event.preventDefault();
+	      captcha = (ref = _.find(this.ui.form.serializeArray(), {
+	        name: 'g-recaptcha-response'
+	      })) != null ? ref.value : void 0;
+	      this.model.set('captcha', captcha);
 	      this.model.save({}, {
 	        success: (function(_this) {
 	          return function() {
 	            _this.rootChannel.request('home');
 	          };
 	        })(this),
-	        error: function() {
-	          console.log('fail');
-	        }
+	        error: (function(_this) {
+	          return function(model, response) {
+	            _this.rootChannel.request('message', 'danger', "Error: " + response.responseText);
+	          };
+	        })(this)
 	      });
 	    }
 	  };
@@ -74962,7 +75546,7 @@
 
 
 /***/ },
-/* 97 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74972,11 +75556,11 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a href=\"#index-tab-signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\"><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a href=\"#index-tab-login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\"><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form id=\"signup-form\" class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"signup-captcha\" class=\"col-sm-2 control-label\">Captcha</label><div class=\"col-sm-10\"><div id=\"signup-captcha\" data-sitekey=\"6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527\" class=\"g-recaptcha\"></div></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
-/* 98 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75695,7 +76279,7 @@
 
 
 /***/ },
-/* 99 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -75706,11 +76290,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(100);
+	viewTemplate = __webpack_require__(111);
 
 	__webpack_require__(19);
 
-	__webpack_require__(98);
+	__webpack_require__(109);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75788,7 +76372,7 @@
 
 
 /***/ },
-/* 100 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75802,7 +76386,7 @@
 	}
 
 /***/ },
-/* 101 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -75813,7 +76397,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(102);
+	viewTemplate = __webpack_require__(113);
 
 	__webpack_require__(19);
 
@@ -75868,7 +76452,7 @@
 
 
 /***/ },
-/* 102 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75882,7 +76466,7 @@
 	}
 
 /***/ },
-/* 103 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -75974,7 +76558,7 @@
 
 
 /***/ },
-/* 104 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

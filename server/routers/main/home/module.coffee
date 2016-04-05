@@ -48,7 +48,9 @@ module.get = (req, res, next) ->
 
     console.log 'ERROR', err if err
 
-    return res.json
+    return res
+    .status 200
+    .json
       exerciseCount: exerciseCount
       logCount:      logCount
 

@@ -15,7 +15,7 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   bindings:
-    '#home-log-count': 'logCount'
+    '#home-log-count':      'logCount'
     '#home-exercise-count': 'exerciseCount'
 
   events:
@@ -40,20 +40,20 @@ class View extends Marionette.ItemView
       @rootChannel.request('exercise:detail', 'balance')
       return
 
-    'click #home-log': ->
-      @rootChannel.request('log')
+    'click #home-logs': ->
+      @rootChannel.request('logs')
       return
 
-    'click #home-stat': ->
-      @rootChannel.request('stat')
+    'click #home-summary': ->
+      @rootChannel.request('summary')
       return
 
     'click #home-schedule': ->
       @rootChannel.request('schedule')
       return
 
-    'click #home-log': ->
-      @rootChannel.request('log')
+    'click #home-logs': ->
+      @rootChannel.request('logs')
       return
 
     'click #home-multiplayer': ->

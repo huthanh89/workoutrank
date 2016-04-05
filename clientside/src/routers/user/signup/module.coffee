@@ -17,6 +17,7 @@ class Model extends Backbone.Model
     lastname:  ''
     email:     ''
     password:  ''
+    captcha:   ''
 
   validation:
     firstname:

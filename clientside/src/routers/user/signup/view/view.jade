@@ -18,7 +18,7 @@ br
             #index-tab-pane-signup.tab-pane.active(role='tabpanel')
                 .row
                     .col-sm-12
-                        form.form-horizontal
+                        form.form-horizontal#signup-form
                             .form-group
                                 label.col-sm-2.control-label(for='index-signup-firstname') First name
                                 .col-sm-10
@@ -35,6 +35,10 @@ br
                                 label.col-sm-2.control-label(for='index-signup-password') Password
                                 .col-sm-10
                                     input.form-control#index-signup-password(placeholder='Password', name='password', required)
+                            .form-group
+                                label.col-sm-2.control-label(for='signup-captcha') Captcha
+                                .col-sm-10
+                                    .g-recaptcha#signup-captcha(data-sitekey="6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527")
                             .form-group
                                 .col-sm-12
                                     button.btn.btn-success.pull-right#index-signup-submit(type="submit")

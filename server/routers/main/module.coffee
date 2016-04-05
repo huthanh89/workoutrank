@@ -36,7 +36,8 @@ router.get '/strength',          index
 router.get '/strength/:sid',     index
 router.get '/strength/:sid/log', index
 router.get '/schedule',          index
-router.get '/log',               index
+router.get '/logs',              index
+router.get '/log/:lid',          index
 router.get '/multiplayer',       index
 
 #-------------------------------------------------------------------------------
@@ -77,7 +78,7 @@ router.delete '/api/strengths/:sid', Strength.delete
 # Strength Logs
 #-------------------------------------------------------------------------------
 
-# Get all slogs from a user.
+# Get all slogs.
 router.get '/api/slogs', SLog.list
 
 # Post a new slog record.

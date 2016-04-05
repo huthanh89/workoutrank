@@ -7,10 +7,10 @@ async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Home       = require './home/module'
-Stat       = require './stat/module'
+Summary    = require './summary/module'
 Exercise   = require './exercise/module'
 Strength   = require './strength/module'
-Log        = require './log/module'
+Logs       = require './logs/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -70,9 +70,14 @@ class Router extends Marionette.AppRouter
         @schedule()
         return
 
-      'log': =>
-        @navigate('log', trigger: true)
-        @log()
+      'logs': =>
+        @navigate('logs', trigger: true)
+        @logs()
+        return
+
+      'log:detail': (exerciseID) =>
+        @navigate("log/#{exerciseID}", trigger: true)
+        @logDetail(exerciseID)
         return
 
       'multiplayer': =>
@@ -92,8 +97,9 @@ class Router extends Marionette.AppRouter
     'strength/:sid/':    'strengthDetail'
     'strength/:sid/log': 'strengthLog'
     'summary':           'summary'
-    'schedule':          'schdeule'
-    'log':               'log'
+    'schedule':          'schedule'
+    'logs':              'logs'
+    'log/:lid/':         'logDetail'
     'multiplayer':       'multiplayer'
 
   # Api for Route handling.
@@ -183,8 +189,8 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View  = Strength.Log.View
-    Model = Strength.Log.Model
+    View  = Strength.Logs.View
+    Model = Strength.Logs.Model
 
     model = new Model {},
       id: strengthID
@@ -219,11 +225,11 @@ class Router extends Marionette.AppRouter
   summary: ->
     @navChannel.request('nav:main')
 
-    collection = new Stat.Collection()
+    collection = new Summary.Collection()
 
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Stat.View
+        @rootView.content.show new Summary.View
           collection: collection
         return
       error: (model, response) =>
@@ -237,16 +243,34 @@ class Router extends Marionette.AppRouter
     @rootView.content.show new Profile.View()
     return
 
-  log: ->
+  logs: ->
     @navChannel.request('nav:main')
 
-    collection = new Log.Collection()
+    collection = new Strength.Master.Collection()
+
+    View = Logs.Master.View
 
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Log.View
+        @rootView.content.show new View
           collection: collection
-          model:      new Log.Model()
+        return
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+        return
+    return
+
+  logDetail: (exerciseID) ->
+    @navChannel.request('nav:main')
+
+    collection = new Logs.Detail.Collection [],
+      _id: exerciseID
+
+     collection.fetch
+      success: (collection) =>
+        @rootView.content.show new Logs.Detail.View
+          collection: collection
+          model:      new Logs.Detail.Model()
         return
       error: (model, response) =>
         @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"

@@ -56,7 +56,7 @@ class View extends Marionette.ItemView
       return
 
     'click @ui.logs': ->
-      @channel.request 'log'
+      @channel.request 'logs'
       return
 
     'click @ui.summary': ->

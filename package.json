@@ -35,6 +35,8 @@
     "lodash": "*",
     "rand-token": "*",
     "connect-mongo": "*",
+    "request": "*",
+    "request-ip": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

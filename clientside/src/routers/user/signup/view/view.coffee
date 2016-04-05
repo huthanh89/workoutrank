@@ -22,6 +22,7 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
+    form:   '#signup-form'
     login:  '#index-tab-login'
     submit: '#index-signup-submit'
 
@@ -37,14 +38,19 @@ class View extends Marionette.ItemView
       @rootChannel.request('login')
       return
 
-    'submit': (event) ->
+    submit: (event) ->
       event.preventDefault()
+
+      captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
+
+      @model.set 'captcha', captcha
+
       @model.save {},
         success: =>
           @rootChannel.request('home')
           return
-        error: ->
-          console.log 'fail'
+        error: (model, response) =>
+          @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
           return
       return
 
