@@ -74,12 +74,7 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'strength:log', @strengthID
       return
 
-    'click #strength-detail-add': ->
-      @showChildView 'modal', new Modal.View
-        collection: @collection
-        model:      new Modal.Model _.omit(@model.attributes, '_id')
-        date:       @model.get('date')
-      return
+    'click #strength-detail-add': 'addWorkout'
 
   collectionEvents:
     'sync update': 'updatePageableCollection'
@@ -96,6 +91,13 @@ class View extends Marionette.LayoutView
       .omit '_id'
       .value()
 
+    @channel = Backbone.Radio.channel('channel')
+
+    @channel.reply
+      'add': =>
+        @addWorkout()
+        return
+
     @pageableCollection = new Table.Collection @collection.models
 
     # When date is changed, update pageable collection.
@@ -103,17 +105,6 @@ class View extends Marionette.LayoutView
     @listenTo @model, 'change:date', =>
       @updatePageableCollection()
       return
-
-  updatePageableCollection: ->
-
-    models = @collection.filter (model) =>
-      dateA = moment(model.get('date')).startOf('day')
-      dateB = moment(@model.get('date')).startOf('day')
-      return dateA.isSame(dateB)
-
-    @pageableCollection.fullCollection.reset models
-
-    return
 
   onRender: ->
     @stickit()
@@ -126,12 +117,31 @@ class View extends Marionette.LayoutView
 
     @showChildView 'table', new Table.View
         collection: @pageableCollection
+        channel:    @channel
 
     @showChildView 'page', new PaginateView
       collection: @pageableCollection
 
     return
 
+  addWorkout: ->
+    @showChildView 'modal', new Modal.View
+      collection: @collection
+      model:      new Modal.Model _.omit(@model.attributes, '_id')
+      date:       @model.get('date')
+    return
+
+  updatePageableCollection: ->
+    models = @collection.filter (model) =>
+      dateA = moment(model.get('date')).startOf('day')
+      dateB = moment(@model.get('date')).startOf('day')
+      return dateA.isSame(dateB)
+    @pageableCollection.fullCollection.reset models
+    return
+
+  onBeforeDestroy: ->
+    @channel.reset()
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

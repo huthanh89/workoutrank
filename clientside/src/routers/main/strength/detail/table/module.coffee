@@ -49,6 +49,15 @@ class NullView extends Marionette.ItemView
   tagName: 'tr'
   template: nullTemplate
 
+  events:
+    'click': ->
+      @channel.request 'add'
+      return
+
+  constructor: (options) ->
+    super
+    @mergeOptions options, 'channel'
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -70,13 +79,20 @@ class ItemView extends Marionette.ItemView
     '.strength-table-td-weight': 'weight'
 
   events:
+
+    'click td:not(:first)': ->
+      @rootChannel.request 'log:detail', @model.get('exercise')
+      return
+
     'click .strength-table-td-remove': ->
-
       @model.urlRoot = '/api/slogs'
-
       @model.destroy
         wait: true
       return
+
+  constructor: (options) ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()
@@ -96,9 +112,14 @@ class View extends Marionette.CompositeView
 
   template: viewTemplate
 
-  constructor: ->
+  constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'channel'
+
+  childViewOptions: ->
+    return {
+      channel: @channel
+    }
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(114);
+	__webpack_require__(108);
 
-	__webpack_require__(115);
+	__webpack_require__(109);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -49440,7 +49440,7 @@
 
 	MainRouter = __webpack_require__(24);
 
-	UserRouter = __webpack_require__(105);
+	UserRouter = __webpack_require__(99);
 
 	User = (function(superClass) {
 	  extend(User, superClass);
@@ -58548,7 +58548,7 @@
 
 	Strength = __webpack_require__(49);
 
-	Logs = __webpack_require__(87);
+	Logs = __webpack_require__(81);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -67767,8 +67767,6 @@
 
 	module.exports.Detail = __webpack_require__(69);
 
-	module.exports.Log = __webpack_require__(81);
-
 
 /***/ },
 /* 50 */
@@ -72901,7 +72899,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"col-xs-12\"><select id=\"strength-filter-muscle\" multiple=\"multiple\" class=\"form-control\"></select></div>");;return buf.join("");
+	buf.push("<select id=\"strength-filter-muscle\" multiple=\"multiple\" class=\"form-control\"></select>");;return buf.join("");
 	}
 
 /***/ },
@@ -73211,7 +73209,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73299,13 +73297,7 @@
 	    'click #strength-log': function() {
 	      this.rootChannel.request('strength:log', this.strengthID);
 	    },
-	    'click #strength-detail-add': function() {
-	      this.showChildView('modal', new Modal.View({
-	        collection: this.collection,
-	        model: new Modal.Model(_.omit(this.model.attributes, '_id')),
-	        date: this.model.get('date')
-	      }));
-	    }
+	    'click #strength-detail-add': 'addWorkout'
 	  };
 
 	  View.prototype.collectionEvents = {
@@ -73321,6 +73313,14 @@
 	      date: new Date(),
 	      exercise: this.model.get('_id')
 	    }).omit('_id').value();
+	    this.channel = Backbone.Radio.channel('channel');
+	    this.channel.reply({
+	      'add': (function(_this) {
+	        return function() {
+	          _this.addWorkout();
+	        };
+	      })(this)
+	    });
 	    this.pageableCollection = new Table.Collection(this.collection.models);
 	    this.listenTo(this.model, 'change:date', (function(_this) {
 	      return function() {
@@ -73328,6 +73328,31 @@
 	      };
 	    })(this));
 	  }
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('date', new DateView({
+	      model: this.model
+	    }));
+	    this.showChildView('table', new Table.View({
+	      collection: this.pageableCollection,
+	      channel: this.channel
+	    }));
+	    this.showChildView('page', new PaginateView({
+	      collection: this.pageableCollection
+	    }));
+	  };
+
+	  View.prototype.addWorkout = function() {
+	    this.showChildView('modal', new Modal.View({
+	      collection: this.collection,
+	      model: new Modal.Model(_.omit(this.model.attributes, '_id')),
+	      date: this.model.get('date')
+	    }));
+	  };
 
 	  View.prototype.updatePageableCollection = function() {
 	    var models;
@@ -73342,20 +73367,8 @@
 	    this.pageableCollection.fullCollection.reset(models);
 	  };
 
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.showChildView('date', new DateView({
-	      model: this.model
-	    }));
-	    this.showChildView('table', new Table.View({
-	      collection: this.pageableCollection
-	    }));
-	    this.showChildView('page', new PaginateView({
-	      collection: this.pageableCollection
-	    }));
+	  View.prototype.onBeforeDestroy = function() {
+	    this.channel.reset();
 	  };
 
 	  return View;
@@ -73412,8 +73425,8 @@
 	    date: new Date(),
 	    name: '',
 	    exercise: '',
-	    rep: 0,
-	    weight: 0,
+	    rep: 1,
+	    weight: 1,
 	    muscle: 0,
 	    note: ''
 	  };
@@ -73455,6 +73468,9 @@
 	  };
 
 	  View.prototype.events = {
+	    'shown.bs.modal': function() {
+	      this.ui.weight.focus();
+	    },
 	    'click #strength-modal-exercise': function() {
 	      this.rootChannel.request('exercise');
 	    },
@@ -73495,13 +73511,13 @@
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
 	      min: 1,
-	      max: 20
+	      max: 99999
 	    });
 	    this.ui.weight.TouchSpin({
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
 	      min: 1,
-	      max: 20
+	      max: 9999
 	    });
 	    this.ui.date.datepicker({
 	      todayBtn: 'linked',
@@ -73546,7 +73562,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-weight\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-rep\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Add a new session</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Weight</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-weight\" type=\"number\" placeholder=\"0\" class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label class=\"control-label\">Reps</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-rep\" type=\"number\" placeholder=\"0\" class=\"form-control\"></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" type=\"text\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div style=\"color:white;\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><textarea id=\"strength-modal-note\" class=\"form-control\"></textarea></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73697,13 +73713,20 @@
 	NullView = (function(superClass) {
 	  extend(NullView, superClass);
 
-	  function NullView() {
-	    return NullView.__super__.constructor.apply(this, arguments);
-	  }
-
 	  NullView.prototype.tagName = 'tr';
 
 	  NullView.prototype.template = nullTemplate;
+
+	  NullView.prototype.events = {
+	    'click': function() {
+	      this.channel.request('add');
+	    }
+	  };
+
+	  function NullView(options) {
+	    NullView.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'channel');
+	  }
 
 	  return NullView;
 
@@ -73711,10 +73734,6 @@
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
-
-	  function ItemView() {
-	    return ItemView.__super__.constructor.apply(this, arguments);
-	  }
 
 	  ItemView.prototype.tagName = 'tr';
 
@@ -73732,6 +73751,9 @@
 	  };
 
 	  ItemView.prototype.events = {
+	    'click td:not(:first)': function() {
+	      this.rootChannel.request('log:detail', this.model.get('exercise'));
+	    },
 	    'click .strength-table-td-remove': function() {
 	      this.model.urlRoot = '/api/slogs';
 	      this.model.destroy({
@@ -73739,6 +73761,11 @@
 	      });
 	    }
 	  };
+
+	  function ItemView(options) {
+	    ItemView.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
 
 	  ItemView.prototype.onRender = function() {
 	    this.stickit();
@@ -73759,10 +73786,16 @@
 
 	  View.prototype.template = viewTemplate;
 
-	  function View() {
+	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.mergeOptions(options, 'channel');
 	  }
+
+	  View.prototype.childViewOptions = function() {
+	    return {
+	      channel: this.channel
+	    };
+	  };
 
 	  return View;
 
@@ -73814,7 +73847,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Time</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td class=\"col-xs-1\"></td><td><b>Time</b></td><td><b>Reps</b></td><td><b>Weight</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73929,352 +73962,20 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-child\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span></span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
 /* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, GraphView, Marionette, Model, TableView, View, moment, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
+	module.exports.Master = __webpack_require__(82);
 
-	moment = __webpack_require__(33);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	GraphView = __webpack_require__(82);
-
-	TableView = __webpack_require__(84);
-
-	viewTemplate = __webpack_require__(86);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model(attributes, options) {
-	    Model.__super__.constructor.apply(this, arguments);
-	    this.url = "/api/strength/" + options.id + "/log";
-	  }
-
-	  Model.prototype.parse = function(response) {
-	    var i, key, len, record, ref, result, serie, series;
-	    series = {};
-	    ref = response.log;
-	    for (i = 0, len = ref.length; i < len; i++) {
-	      record = ref[i];
-	      _.each(record.session, function(session, index) {
-	        if (series[session.index] === void 0) {
-	          series[session.index] = [];
-	        }
-	        series[session.index].push({
-	          x: moment(record.date).valueOf(),
-	          y: session.weight
-	        });
-	      });
-	    }
-	    result = [];
-	    for (key in series) {
-	      serie = series[key];
-	      result.push({
-	        index: key,
-	        name: "SET" + key,
-	        data: serie || []
-	      });
-	    }
-	    response.log = result;
-	    return response;
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.regions = {
-	    graph: '#strength-log-graph-view',
-	    table: '#strength-log-table-view'
-	  };
-
-	  View.prototype.events = {
-	    'click #strength-log-back': function() {
-	      this.rootChannel.request('strength:detail', this.strengthID);
-	    }
-	  };
-
-	  function View(options) {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.mergeOptions(options, 'strengthID');
-	  }
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.showChildView('graph', new GraphView({
-	      collection: new Backbone.Collection(this.model.get('log')),
-	      model: this.model
-	    }));
-	    this.showChildView('table', new TableView({
-	      model: this.model
-	    }));
-	  };
-
-	  return View;
-
-	})(Marionette.LayoutView);
-
-	module.exports.Model = Model;
-
-	module.exports.View = View;
+	module.exports.Detail = __webpack_require__(93);
 
 
 /***/ },
 /* 82 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $, Backbone, Highstock, Marionette, View, seriesData, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	$ = __webpack_require__(2);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	Highstock = __webpack_require__(5);
-
-	viewTemplate = __webpack_require__(83);
-
-	seriesData = function(models) {
-	  var i, len, model, series;
-	  series = [];
-	  for (i = 0, len = models.length; i < len; i++) {
-	    model = models[i];
-	    series.push(model);
-	  }
-	  return series;
-	};
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    chart: '#strength-log-graph-ui'
-	  };
-
-	  function View(options) {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.onRender = function() {
-	    this.chart = new Highstock.StockChart({
-	      chart: {
-	        type: 'areaspline',
-	        renderTo: this.ui.chart[0]
-	      },
-	      title: {
-	        text: this.model.get('name').toUpperCase(),
-	        style: {
-	          fontWeight: 'bold'
-	        }
-	      },
-	      plotOptions: {
-	        areaspline: {
-	          fillOpacity: 0.3,
-	          lineWidth: 3
-	        },
-	        series: {
-	          marker: {
-	            radius: 2,
-	            enabled: true
-	          }
-	        }
-	      },
-	      xAxis: {
-	        lineWidth: 2,
-	        title: {
-	          text: 'Time',
-	          style: {
-	            fontWeight: 600,
-	            fontSize: '12px'
-	          }
-	        }
-	      },
-	      yAxis: [
-	        {
-	          lineWidth: 2,
-	          opposite: false,
-	          title: {
-	            text: 'Weight',
-	            style: {
-	              fontWeight: 600,
-	              fontSize: '12px'
-	            }
-	          }
-	        }
-	      ],
-	      series: seriesData(this.model.get('log')),
-	      legend: {
-	        enabled: true,
-	        borderWidth: 2
-	      },
-	      credits: {
-	        enabled: false
-	      }
-	    });
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.model.set('max', this.chart.yAxis[0].dataMax);
-	    this.model.set('min', this.chart.yAxis[0].dataMin);
-	    this.chart.reflow();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div id=\"strength-log-graph-ui\"></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Data, Marionette, View, moment, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	moment = __webpack_require__(33);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	Data = __webpack_require__(52);
-
-	viewTemplate = __webpack_require__(85);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.bindings = {
-	    '#strength-log-table-name': 'name',
-	    '#strength-log-table-max': {
-	      observe: 'max',
-	      onGet: function(value) {
-	        return value + ' lb';
-	      }
-	    },
-	    '#strength-log-table-min': {
-	      observe: 'min',
-	      onGet: function(value) {
-	        return value + ' lb';
-	      }
-	    },
-	    '#strength-log-table-avg': 'avg',
-	    '#strength-log-table-target': {
-	      observe: 'muscle',
-	      onGet: function(value) {
-	        return _.find(Data.Muscles, {
-	          value: value
-	        }).label;
-	      }
-	    },
-	    '#strength-log-table-date': {
-	      observe: 'date',
-	      onGet: function(value) {
-	        return moment(value).format('YYYY-MM-DD');
-	      }
-	    }
-	  };
-
-	  function View(options) {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.mergeOptions(options, 'title');
-	  }
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  return View;
-
-	})(Marionette.ItemView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"strength-log-table-name\"></td></tr><tr><td>Max</td><td id=\"strength-log-table-max\"></td></tr><tr><td>Min</td><td id=\"strength-log-table-min\"></td></tr><tr><td>Target</td><td id=\"strength-log-table-target\"></td></tr><tr><td>Started</td><td id=\"strength-log-table-date\"></td></tr></tbody></table></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><button id=\"strength-log-back\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-arrow-left\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-file-text-o\"></i></button></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log</span></div></div><br><div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-log-graph-view\"></div></div></div><hr><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-log-table-view\"></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports.Master = __webpack_require__(88);
-
-	module.exports.Detail = __webpack_require__(99);
-
-
-/***/ },
-/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, FilterView, Marionette, Model, PaginateView, Table, View, viewTemplate,
@@ -74285,13 +73986,13 @@
 
 	Marionette = __webpack_require__(10);
 
-	Table = __webpack_require__(89);
+	Table = __webpack_require__(83);
 
-	FilterView = __webpack_require__(94);
+	FilterView = __webpack_require__(88);
 
-	PaginateView = __webpack_require__(96);
+	PaginateView = __webpack_require__(90);
 
-	viewTemplate = __webpack_require__(98);
+	viewTemplate = __webpack_require__(92);
 
 	__webpack_require__(47);
 
@@ -74388,7 +74089,7 @@
 
 
 /***/ },
-/* 89 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, Data, ItemView, Marionette, NullView, Pageable, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
@@ -74405,13 +74106,13 @@
 
 	Pageable = __webpack_require__(59);
 
-	Data = __webpack_require__(90);
+	Data = __webpack_require__(84);
 
-	nullTemplate = __webpack_require__(91);
+	nullTemplate = __webpack_require__(85);
 
-	itemTemplate = __webpack_require__(92);
+	itemTemplate = __webpack_require__(86);
 
-	viewTemplate = __webpack_require__(93);
+	viewTemplate = __webpack_require__(87);
 
 	__webpack_require__(37);
 
@@ -74565,7 +74266,7 @@
 
 
 /***/ },
-/* 90 */
+/* 84 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -74626,7 +74327,7 @@
 
 
 /***/ },
-/* 91 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74640,7 +74341,7 @@
 	}
 
 /***/ },
-/* 92 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74654,7 +74355,7 @@
 	}
 
 /***/ },
-/* 93 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74668,7 +74369,7 @@
 	}
 
 /***/ },
-/* 94 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Data, Marionette, View, viewTemplate,
@@ -74678,9 +74379,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(90);
+	Data = __webpack_require__(84);
 
-	viewTemplate = __webpack_require__(95);
+	viewTemplate = __webpack_require__(89);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -74737,7 +74438,7 @@
 
 
 /***/ },
-/* 95 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74751,7 +74452,7 @@
 	}
 
 /***/ },
-/* 96 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Marionette, View, viewTemplate,
@@ -74760,7 +74461,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(97);
+	viewTemplate = __webpack_require__(91);
 
 	__webpack_require__(67);
 
@@ -74838,7 +74539,7 @@
 
 
 /***/ },
-/* 97 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74852,7 +74553,7 @@
 	}
 
 /***/ },
-/* 98 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -74866,7 +74567,7 @@
 	}
 
 /***/ },
-/* 99 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
@@ -74879,11 +74580,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(100);
+	GraphView = __webpack_require__(94);
 
-	Table = __webpack_require__(102);
+	Table = __webpack_require__(96);
 
-	viewTemplate = __webpack_require__(104);
+	viewTemplate = __webpack_require__(98);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75005,7 +74706,7 @@
 
 
 /***/ },
-/* 100 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Highstock, Marionette, View, seriesRepData, seriesWeightData, viewTemplate,
@@ -75018,7 +74719,7 @@
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(101);
+	viewTemplate = __webpack_require__(95);
 
 	seriesRepData = function(model) {
 	  return {
@@ -75111,7 +74812,7 @@
 
 
 /***/ },
-/* 101 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75125,7 +74826,7 @@
 	}
 
 /***/ },
-/* 102 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
@@ -75138,9 +74839,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(90);
+	Data = __webpack_require__(84);
 
-	viewTemplate = __webpack_require__(103);
+	viewTemplate = __webpack_require__(97);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -75269,7 +74970,7 @@
 
 
 /***/ },
-/* 103 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75283,7 +74984,7 @@
 	}
 
 /***/ },
-/* 104 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75297,7 +74998,7 @@
 	}
 
 /***/ },
-/* 105 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Login, Marionette, Profile, Router, Signup, _, async,
@@ -75312,11 +75013,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	Signup = __webpack_require__(106);
+	Signup = __webpack_require__(100);
 
-	Login = __webpack_require__(110);
+	Login = __webpack_require__(104);
 
-	Profile = __webpack_require__(112);
+	Profile = __webpack_require__(106);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -75421,7 +75122,7 @@
 
 
 /***/ },
-/* 106 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -75459,11 +75160,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(107);
+	exports.View = __webpack_require__(101);
 
 
 /***/ },
-/* 107 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -75474,11 +75175,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(108);
+	viewTemplate = __webpack_require__(102);
 
 	__webpack_require__(19);
 
-	__webpack_require__(109);
+	__webpack_require__(103);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -75546,7 +75247,7 @@
 
 
 /***/ },
-/* 108 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -75560,7 +75261,7 @@
 	}
 
 /***/ },
-/* 109 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -76279,7 +75980,7 @@
 
 
 /***/ },
-/* 110 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -76290,11 +75991,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(111);
+	viewTemplate = __webpack_require__(105);
 
 	__webpack_require__(19);
 
-	__webpack_require__(109);
+	__webpack_require__(103);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -76372,7 +76073,7 @@
 
 
 /***/ },
-/* 111 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -76386,7 +76087,7 @@
 	}
 
 /***/ },
-/* 112 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -76397,7 +76098,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(113);
+	viewTemplate = __webpack_require__(107);
 
 	__webpack_require__(19);
 
@@ -76452,7 +76153,7 @@
 
 
 /***/ },
-/* 113 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -76466,7 +76167,7 @@
 	}
 
 /***/ },
-/* 114 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -76558,7 +76259,7 @@
 
 
 /***/ },
-/* 115 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/

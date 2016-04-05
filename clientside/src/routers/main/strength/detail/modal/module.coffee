@@ -32,8 +32,8 @@ class Model extends Backbone.Model
     date:     new Date()
     name:     ''
     exercise: ''
-    rep:      0
-    weight:   0
+    rep:      1
+    weight:   1
     muscle:   0
     note:     ''
 
@@ -68,6 +68,10 @@ class View extends Marionette.ItemView
     '#strength-modal-note': 'note'
 
   events:
+
+    'shown.bs.modal': ->
+      @ui.weight.focus()
+      return
 
     'click #strength-modal-exercise': ->
       @rootChannel.request('exercise')
@@ -110,13 +114,13 @@ class View extends Marionette.ItemView
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1
-      max:              20
+      max:              99999
 
     @ui.weight.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1
-      max:              20
+      max:              9999
 
     @ui.date.datepicker
       todayBtn:      'linked'
