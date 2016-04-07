@@ -73209,7 +73209,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workout</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-shield\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Strength Workouts</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73616,10 +73616,11 @@
 	  View.prototype.onRender = function() {
 	    this.ui.date.datepicker({
 	      todayBtn: 'linked',
-	      todayHighlight: true
+	      todayHighlight: true,
+	      format: 'D mm/dd/yyyy'
 	    }).on('changeDate', (function(_this) {
 	      return function() {
-	        _this.model.set('date', new Date(_this.ui.date.val()));
+	        _this.model.set('date', moment(new Date(_this.ui.date.val())));
 	      };
 	    })(this)).datepicker('setDate', new Date());
 	  };
@@ -73646,7 +73647,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"input-group\"><span class=\"input-group-btn\"><button id=\"strength-date-prev\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-arrow-left\"></i></button></span><input id=\"strength-date-datepicker\" type=\"text\" readonly class=\"form-control\"><span class=\"input-group-btn\"><button id=\"strength-date-next\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-arrow-right\"></i></button></span></div>");;return buf.join("");
+	buf.push("<div class=\"input-group\"><span class=\"input-group-btn\"><button id=\"strength-date-prev\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-caret-left\"></i></button></span><input id=\"strength-date-datepicker\" type=\"text\" readonly class=\"form-control\"><span class=\"input-group-btn\"><button id=\"strength-date-next\" class=\"btn btn-default date-navigate-btn\"><i class=\"fa fa-lg fa-caret-right\"></i></button></span></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73819,7 +73820,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td colspan=\"4\"><span class=\"lead\">No workout session on this date.</span></td>");;return buf.join("");
+	buf.push("<td colspan=\"4\" style=\"text-align:center;\"><span class=\"lead\">No entry on this date.</span></td>");;return buf.join("");
 	}
 
 /***/ },

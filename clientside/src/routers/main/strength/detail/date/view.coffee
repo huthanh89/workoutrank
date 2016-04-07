@@ -46,8 +46,9 @@ class View extends Marionette.ItemView
     @ui.date.datepicker
       todayBtn:      'linked'
       todayHighlight: true
+      format: 'D mm/dd/yyyy'
     .on 'changeDate', =>
-      @model.set('date', new Date(@ui.date.val()))
+      @model.set('date', moment(new Date(@ui.date.val())))
       return
     .datepicker('setDate', new Date())
 

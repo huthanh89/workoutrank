@@ -165,6 +165,11 @@ Strength
 #strength-back {
   min-width: 70px;
 }
+#strength-date-datepicker {
+  font-weight: 600;
+  font-size: 19px;
+  text-align: center;
+}
 #strength-modal-date {
   cursor: pointer;
 }
