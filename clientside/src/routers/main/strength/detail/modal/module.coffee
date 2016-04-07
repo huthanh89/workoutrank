@@ -104,11 +104,14 @@ class View extends Marionette.ItemView
 
       return
 
-  constructor: ->
+  constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @model.set('date', new Date(options.date))
 
   onRender: ->
+
+    date = @model.get('date')
 
     @ui.rep.TouchSpin
       buttondown_class: 'btn btn-info'
@@ -128,12 +131,12 @@ class View extends Marionette.ItemView
     .on 'changeDate', =>
       @model.set('date', new Date(@ui.date.val()))
       return
-    .datepicker('setDate', new Date())
+    .datepicker('setDate', date)
 
     @ui.time
     .timepicker
       template: 'dropdown'
-    .timepicker('setTime', moment().format('HH:mm:ss'))
+    .timepicker('setTime', moment(date).format('HH:mm:ss'))
 
     @stickit()
 

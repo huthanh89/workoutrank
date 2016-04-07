@@ -95,7 +95,8 @@ class View extends Marionette.LayoutView
 
     @channel.reply
       'add': =>
-        @addWorkout()
+        @addWorkout
+          date: @model.get('date')
         return
 
     @pageableCollection = new Table.Collection @collection.models

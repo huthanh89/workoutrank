@@ -73317,7 +73317,9 @@
 	    this.channel.reply({
 	      'add': (function(_this) {
 	        return function() {
-	          _this.addWorkout();
+	          _this.addWorkout({
+	            date: _this.model.get('date')
+	          });
 	        };
 	      })(this)
 	    });
@@ -73501,12 +73503,15 @@
 	    }
 	  };
 
-	  function View() {
+	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.model.set('date', new Date(options.date));
 	  }
 
 	  View.prototype.onRender = function() {
+	    var date;
+	    date = this.model.get('date');
 	    this.ui.rep.TouchSpin({
 	      buttondown_class: 'btn btn-info',
 	      buttonup_class: 'btn btn-info',
@@ -73526,10 +73531,10 @@
 	      return function() {
 	        _this.model.set('date', new Date(_this.ui.date.val()));
 	      };
-	    })(this)).datepicker('setDate', new Date());
+	    })(this)).datepicker('setDate', date);
 	    this.ui.time.timepicker({
 	      template: 'dropdown'
-	    }).timepicker('setTime', moment().format('HH:mm:ss'));
+	    }).timepicker('setTime', moment(date).format('HH:mm:ss'));
 	    this.stickit();
 	    this.ui.dialog.modal();
 	  };
