@@ -2,24 +2,14 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_            = require 'lodash'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Table        = require './table/module'
-FilterView   = require './filter/view'
-PaginateView = require './paginate/view'
+TableView    = require './table/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Plugins
-#-------------------------------------------------------------------------------
-
-require 'backbone.paginator'
-require 'bootstrap.paginate'
-
-#-------------------------------------------------------------------------------
 # Model
-#   Keeps current state data of the page.
-#   Here we maintain what muscle type is being chosen.
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
@@ -27,9 +17,41 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    name:    ''
-    date:    new Date()
-    muscle:  0
+    name:  ''
+    max:   0
+    avg:   0
+    count: 0
+    date:  ''
+
+#-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.Collection
+
+  url:  'api/logs'
+
+  model: Model
+
+  parse: (response) ->
+
+    result = []
+
+    grouped = _.groupBy response, (record) -> record.exercise
+
+    for exerciseID, records of grouped
+      pr      = _.max records, (record) -> record.weight
+      weights = _.map(records, (record) -> record.weight)
+
+      result.push
+        _id:   exerciseID
+        name:  records[0].name
+        date:  pr.date
+        max:   pr.weight
+        avg:   Math.round(_.mean(weights)) / 100
+        count: records.length
+
+    return result
 
 #-------------------------------------------------------------------------------
 # View
@@ -40,61 +62,19 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    modal:  '#strength-modal-view'
-    filter: '#strength-filter-view'
-    table:  '#strength-table-view'
-    page:   '#strength-paginate-view'
-
-  events:
-    'click #strength-back': ->
-      @rootChannel.request 'home'
-      return
-
-  modelEvents:
-    'change:muscle': (model, value) ->
-      @filterCollection(value)
-      return
-
-  collectionEvents:
-    update: ->
-      @getChildView('filter').filterCollection()
-      return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
-    @pageableCollection = new Table.Collection @collection.models
-    @channel = Backbone.Radio.channel('channel')
-
-    @channel.reply
-      'add': =>
-        @addWorkout()
-        return
+    table: '#logs-table-view'
 
   onShow: ->
-
-    @showChildView 'filter', new FilterView
-      collection:         @collection
-      pageableCollection: @pageableCollection
-
-    @showChildView 'table', new Table.View
-      collection: @pageableCollection
-      channel:    @channel
-
-    @showChildView 'page', new PaginateView
-      collection: @pageableCollection
-
-    return
-
-  onBeforeDestroy: ->
-    @channel.reset()
+    @showChildView 'table', new TableView
+      collection: @collection
     return
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Model = Model
-module.exports.View  = View
+exports.Model      = Model
+exports.Collection = Collection
+exports.View       = View
 
 #-------------------------------------------------------------------------------

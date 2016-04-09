@@ -27,7 +27,7 @@ class View extends Marionette.ItemView
     @ui.muscle.multiselect
       enableFiltering: true
       maxHeight:       300
-      buttonClass:    'btn btn-info'
+      buttonClass:    'btn btn-info logs-master-filter-btn'
 
       # Filter pageable collection on change.
 

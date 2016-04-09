@@ -156,7 +156,6 @@ gulp.task 'scripts', (callback) ->
         async:                 'scripts/async.js'
         highcharts:            'scripts/highcharts.js'
         highstock:             'scripts/highstock.js'
-
         bootstrap:             'scripts/bootstrap.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
         jquery:                'scripts/jquery.js'

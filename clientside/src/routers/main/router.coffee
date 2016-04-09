@@ -45,7 +45,7 @@ class Router extends Marionette.AppRouter
         @rootChannel.request "#{type}"
         return
 
-      'strength': =>
+      'strengths': =>
         @navigate('strength', trigger: true)
         @strength()
         return
@@ -246,7 +246,7 @@ class Router extends Marionette.AppRouter
   logs: ->
     @navChannel.request('nav:main')
 
-    collection = new Strength.Master.Collection()
+    collection = new Logs.Master.Collection()
 
     View = Logs.Master.View
 

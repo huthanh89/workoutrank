@@ -2,18 +2,9 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
-_            = require 'lodash'
 Backbone     = require 'backbone'
-Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
-
-#-------------------------------------------------------------------------------
-# Plugins
-#-------------------------------------------------------------------------------
-
-require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
 # View
@@ -25,15 +16,10 @@ class View extends Marionette.ItemView
 
   ui:
 
-    home:     '#shortcut-home'
-    strength: '#shortcut-strength'
-    logs:     '#shortcut-logs'
-    summary:  '#shortcut-summary'
-    profile:  '.shortcut-profile'
-    setting:  '.shortcut-setting'
-    help:     '.shortcut-help'
-    report:   '.shortcut-report'
-    signout:  '.shortcut-signout'
+    home:      '#shortcut-home'
+    strengths: '#shortcut-strengths'
+    logs:      '#shortcut-logs'
+    summary:   '#shortcut-summary'
 
   events:
 
@@ -41,16 +27,16 @@ class View extends Marionette.ItemView
       @channel.request 'home'
       return
 
-    'click @ui.strength': ->
-      @channel.request 'strength'
+    'click @ui.strengths': ->
+      @channel.request 'strengths'
       return
 
     'click @ui.logs': ->
-      @channel.request 'log'
+      @channel.request 'logs'
       return
 
     'click @ui.summary': ->
-      @channel.request 'stat'
+      @channel.request 'summary'
       return
 
     'click @ui.profile': ->

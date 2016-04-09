@@ -20,44 +20,12 @@ class View extends Marionette.ItemView
 
   events:
 
-    'click #home-exercise': ->
-      @rootChannel.request('strength')
-      return
-
-    'click #home-exercise-strength': ->
-      @rootChannel.request('exercise:detail', 'strength')
-      return
-
-    'click #home-exercise-endurance': ->
-      @rootChannel.request('exercise:detail', 'endurance')
-      return
-
-    'click #home-exercise-flexibility': ->
-      @rootChannel.request('exercise:detail', 'flexibility')
-      return
-
-    'click #home-exercise-balance': ->
-      @rootChannel.request('exercise:detail', 'balance')
+    'click #home-strengths': ->
+      @rootChannel.request('strengths')
       return
 
     'click #home-logs': ->
       @rootChannel.request('logs')
-      return
-
-    'click #home-summary': ->
-      @rootChannel.request('summary')
-      return
-
-    'click #home-schedule': ->
-      @rootChannel.request('schedule')
-      return
-
-    'click #home-logs': ->
-      @rootChannel.request('logs')
-      return
-
-    'click #home-multiplayer': ->
-      @rootChannel.request('multiplayer')
       return
 
   constructor: ->
