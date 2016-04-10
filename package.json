@@ -35,7 +35,6 @@
     "lodash": "*",
     "rand-token": "*",
     "connect-mongo": "*",
-    "request": "*",
     "request-ip": "*",
     "passport-remember-me": "*"
   },
@@ -55,6 +54,8 @@
     "jade-loader": "*",
     "pm2": "*",
     "gulp-minify": "*",
+    "gulp-size": "*",
+    "gulp-notify": "*",
     "gulp-cssnano": "*"
   }
 }

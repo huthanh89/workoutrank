@@ -27,6 +27,11 @@ less       = require 'gulp-less'
 livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
 
+# Utilities
+
+size       = require 'gulp-size'
+notify     = require 'gulp-notify'
+
 #-------------------------------------------------------------------------------
 # Gulp Utility Plugins
 #-------------------------------------------------------------------------------
@@ -39,10 +44,6 @@ _ref         = require('gulp-util')
 log          = _ref.log
 colors       = _ref.colors
 PluginError  = _ref.PluginError
-
-###############################################################################
-# -- TASKS --
-###############################################################################
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -68,7 +69,10 @@ gulp.task 'minify-css', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'coffeelint', ->
-  gulp.src('./clientside/**/*.coffee')
+  gulp.src([
+    './server/**/*.coffee'
+    './clientside/**/*.coffee'
+  ])
     .pipe(coffeelint())
     .pipe(coffeelint.reporter('coffeelint-stylish'))
   return
@@ -97,7 +101,8 @@ gulp.task 'scripts', (callback) ->
   options =
 
     entry: [
-      './clientside/src/entry.coffee' ]
+      './clientside/src/entry.coffee'
+    ]
 
     output:
       path:     './static'
@@ -128,7 +133,6 @@ gulp.task 'scripts', (callback) ->
       ,
         test: /backbone.modal-bundled/
         loader: "imports?marionette=marionette"
-
       ]
 
     # Absolute path is used and not relative path.
@@ -136,7 +140,7 @@ gulp.task 'scripts', (callback) ->
 
     resolveLoader: {
       root: path.join(__dirname, 'node_modules')
-    },
+    }
 
     resolve:
       root: './clientside'
@@ -179,13 +183,14 @@ gulp.task 'scripts', (callback) ->
   webpack options, (err, stats) ->
     if err
       throw new PluginError('webpack', err)
-    log '[webpack]', stats.toString(colors: true)
+    #log '[webpack]', stats.toString(colors: true)
     callback()
     return
   return
 
 #-------------------------------------------------------------------------------
 # Compile CSS
+#
 #   Compile style.css and move to public folder.
 #   Be sure to compile our css last so our css will have
 #   priority over the others.
@@ -212,12 +217,16 @@ gulp.task 'css', ->
 
     './clientside/styles/application.css'
 
-  ]).pipe(concat('style.css')).pipe gulp.dest('./static/')
+  ])
+  .pipe(concat('style.css'))
+  .pipe gulp.dest('./static/')
 
   return
 
 #-------------------------------------------------------------------------------
 # Compile Less
+#
+#   Less to css.
 #-------------------------------------------------------------------------------
 
 gulp.task 'less', ->
@@ -230,7 +239,8 @@ gulp.task 'less', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'fonts', ->
-  gulp.src([ './src/fonts/*' ]).pipe gulp.dest('./public/fonts/')
+  gulp.src([ './src/fonts/*' ])
+  .pipe gulp.dest('./public/fonts/')
   return
 
 #-------------------------------------------------------------------------------
@@ -257,10 +267,18 @@ gulp.task 'nodemon', ->
 gulp.task 'watch', ->
 
   # Start livereload server at default port.
-  livereload.listen start: true
+
+  livereload.listen
+    start: true
 
   # Watch for change and re compile.
-  gulp.watch './clientside/styles/**', [ 'compile:css']
+
+  gulp.watch './server/**', ['compile:server']
+
+  gulp.watch [
+    './clientside/styles/less/**'
+  ], [ 'compile:css']
+
   gulp.watch './clientside/src/**', [ 'compile:client']
 
   # When compiling if finish, reload browser's page.
@@ -294,21 +312,22 @@ gulp.task 'compile:css', [
   'less'
   'css'
   'csslint'
-]
-#, ->
-#  livereload.reload()
+], ->
+  livereload.reload()
 
 gulp.task 'compile:client', [
   'scripts'
-  'less'
-  'css'
-  'csslint'
   'coffeelint'
+], ->
+  livereload.reload()
+
+gulp.task 'compile:server', [
 ], ->
   livereload.reload()
 
 gulp.task 'production', [
   'compile:client'
+  'compile:css'
   'minify'
 ]
 
@@ -317,7 +336,14 @@ gulp.task 'production', [
 gulp.task 'default', [
   'nodemon'
   'compile:client'
+  'compile:css'
   'watch'
-]
+], ->
+  gulp.src('./static/bundle.js')
+  .pipe(
+    size
+      title: '----- bundle.js -----'
+  )
+  return
 
 #-------------------------------------------------------------------------------

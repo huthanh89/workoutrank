@@ -45,7 +45,8 @@ exports.post = (req, res, next) ->
       , (error, response, body) ->
           return callback error if error
           body = JSON.parse(body)
-          return callback 'Failed reCaptcha validation.' if body.success is false
+          if body.success is false
+            return callback 'Failed reCaptcha validation.'
           return callback null
 
       return

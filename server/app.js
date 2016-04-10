@@ -103,6 +103,7 @@ app.use('/strength', express.static(path.join(__dirname, '../static')));
 app.use('/strength/:sid', express.static(path.join(__dirname, '../static')));
 app.use('/log', express.static(path.join(__dirname, '../static')));
 app.use('/log/:lid', express.static(path.join(__dirname, '../static')));
+
 // Define all routers.
 // Can only require routes after express was initialized.
 
@@ -116,8 +117,11 @@ app.use('/', routers.userRouter);
 // catch 404 and forward to error handler
 
 app.use(function(err, req, res, next) {
-    console.log('<<<<<<LAST', err);
-    var err = new Error('Not Found, Server Ended.');
+    res.render('error', {error:err});
+});
+
+app.use(function(err, req, res, next) {
+    err = new Error('Not Found, Server Ended.');
     err.status = 404;
     next(err);
 });
