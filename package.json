@@ -55,7 +55,7 @@
     "pm2": "*",
     "gulp-minify": "*",
     "gulp-size": "*",
-    "gulp-notify": "*",
+    "gulp-recess": "*",
     "gulp-cssnano": "*"
   }
 }

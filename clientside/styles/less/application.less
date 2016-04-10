@@ -32,9 +32,9 @@ Content
 }
 
 #content {
-  border:           double 3px lightgrey;
   min-height:       250px;
   background-color: white;
+  border:           double 3px lightgrey;
 }
 
 // Change margin if viewport gets smaller.
@@ -91,9 +91,9 @@ Shortcut
 -----------------------------------------------------------------------------*/
 
 .shortcut-btn{
-  margin: 0 7px;
   width:  45px;
   height: 35px;
+  margin: 0 7px;
 }
 
 /*-----------------------------------------------------------------------------
@@ -101,9 +101,9 @@ Footer
 -----------------------------------------------------------------------------*/
 
 #footer {
-  text-align: center;
-  margin-top: 20px;
   padding:    0 0 0;
+  margin-top: 20px;
+  text-align: center;
 }
 
 /*-----------------------------------------------------------------------------
@@ -123,8 +123,8 @@ Top Nav Bar
 .nav-divider-vertical {
   height:       50px;
   margin:       0 4px;
-  border-left:  3px solid #F2F2F2;
   border-right: 3px solid #FFF;
+  border-left:  3px solid #F2F2F2;
 }
 
 // Collapsible menu
@@ -148,8 +148,8 @@ Left Sliding Menu
 -----------------------------------------------------------------------------*/
 
 .my-menu {
-  box-shadow: none;
   z-index:    2000;
+  box-shadow: none;
 }
 
 /*-----------------------------------------------------------------------------
@@ -158,11 +158,11 @@ Multiselect
 
 .multiselect-button {
   color:            black;
-  background-color: white;
-  box-shadow:       none;
   text-align:       left;
+  background-color: white;
   border:           solid 1px lightgray;
   border-radius:    4px;
+  box-shadow:       none;
 }
 
 /*-----------------------------------------------------------------------------
@@ -210,8 +210,8 @@ Strength
 }
 
 #strength-date-datepicker{
-  font-weight: 600;
   font-size:   19px;
+  font-weight: 600;
   text-align:  center;
 }
 
@@ -243,9 +243,9 @@ Strength
 
 #strength-paginate-list {
   width:           100%;
-  list-style-type: none;
   margin:          auto;
   white-space:     nowrap;
+  list-style-type: none;
 }
 
 #strength-table tbody tr:hover {
@@ -289,10 +289,10 @@ Custom classes
 -----------------------------------------------------------------------------*/
 
 .locder-icon {
+  z-index:   1000;
+  font-size: 250px;
   color:     #FFFFFF;
   color:     rgba(0, 0, 0, 0.3);
-  font-size: 250px;
-  z-index:   1000;
 }
 
 .page-header {
@@ -305,9 +305,7 @@ Custom classes
 }
 
 .noselect {
-  -webkit-touch-callout: none;
   -webkit-user-select:   none;
-  -khtml-user-select:    none;
   -moz-user-select:      none;
   -ms-user-select:       none;
   user-select:           none;
@@ -328,7 +326,7 @@ Bootstrap workarounds
 
 // Bootstrap time picker work around to show on top of modal
 
-.bootstrap-timepicker-widget.dropdown-menu {
+.bootstrap-timepicker-widget .dropdown-menu {
   z-index: 1050!important;
 }
 
