@@ -25,12 +25,14 @@ Secret = '6LeGeBwTAAAAAJB1zR16oRVEPdZ-tYuOB2g9gY-0'
 # Post
 #-------------------------------------------------------------------------------
 
-exports.post = (req, res) ->
+exports.post = (req, res, next) ->
 
   async.waterfall [
 
 
     (callback) ->
+      return callback null
+      ###
 
       clientIp = requestIp.getClientIp(req)
 
@@ -48,6 +50,8 @@ exports.post = (req, res) ->
 
       return
 
+###
+
     (callback) ->
 
       User.create
@@ -58,6 +62,9 @@ exports.post = (req, res) ->
         email:     req.body.email
         password:  req.body.password
       , (err, user) ->
+        console.log err
+        console.log err.code
+        console.log err.message
         return callback err if err
         return callback null, user
 
@@ -65,6 +72,9 @@ exports.post = (req, res) ->
 
   ], (error, user) ->
 
+    next('bob')
+
+    ###
     if error
 
       # Send 400 status code for bad request.
@@ -82,6 +92,8 @@ exports.post = (req, res) ->
       return res
       .status 201
       .json user
+
+###
 
   return
 

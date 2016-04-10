@@ -112,10 +112,12 @@ app.use('/', routers.indexRouter);
 app.use('/', routers.mainRouter);
 app.use('/', routers.userRouter);
 
+// If next was called in router then an error occured.
 // catch 404 and forward to error handler
 
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+app.use(function(err, req, res, next) {
+    console.log('<<<<<<LAST', err);
+    var err = new Error('Not Found, Server Ended.');
     err.status = 404;
     next(err);
 });

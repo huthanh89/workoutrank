@@ -15,10 +15,14 @@ UserSchema = new mongoose.Schema
     type: Date
   firstname:
     type: String
+  username:
+    type: String
   lastname:
     type: String
   email:
     type: String
+    index:
+      unique: true
   password:
     type: String
 ,

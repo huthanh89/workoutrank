@@ -1,1 +1,17 @@
-span HELLO WORLD
+head
+    title WorkoutRank
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
+    link(type="text/css", rel='stylesheet', href='style.css')
+block content
+body
+    #header
+    #shortcut-container
+    #message-container
+    #content
+        span ERROR CODE:
+        | #{error.status}
+        p #{error.title}
+        p #{error.body}
+    #footer
+        hr
+        span (c) 2016 WorkoutRank. All rights reserved.
