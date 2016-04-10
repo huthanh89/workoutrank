@@ -74815,7 +74815,8 @@
 	  View.prototype.ui = {
 	    form: '#signup-form',
 	    login: '#index-tab-login',
-	    submit: '#index-signup-submit'
+	    submit: '#index-signup-submit',
+	    spinner: '#signup-spinner'
 	  };
 
 	  View.prototype.bindings = {
@@ -74866,12 +74867,15 @@
 	  };
 
 	  View.prototype.onShow = function() {
-	    setTimeout(function() {
-	      window.grecaptcha.render('signup-recaptcha', {
-	        'sitekey': '6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527',
-	        'theme': 'light'
-	      });
-	    }, 3000);
+	    setTimeout((function(_this) {
+	      return function() {
+	        _this.ui.spinner.hide();
+	        window.grecaptcha.render('signup-recaptcha', {
+	          'sitekey': '6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527',
+	          'theme': 'light'
+	        });
+	      };
+	    })(this), 3000);
 	  };
 
 	  return View;
@@ -74892,7 +74896,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form id=\"signup-form\" class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"signup-recaptcha\" class=\"col-sm-2 control-label\">Captcha</label><div class=\"col-sm-10\"><div id=\"signup-recaptcha\"></div></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\" class=\"active\"><a><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\"><a><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-signup\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form id=\"signup-form\" class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-signup-firstname\" class=\"col-sm-2 control-label\">First name</label><div class=\"col-sm-10\"><input id=\"index-signup-firstname\" placeholder=\"First name\" name=\"firstname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-lastname\" class=\"col-sm-2 control-label\">Last name</label><div class=\"col-sm-10\"><input id=\"index-signup-lastname\" placeholder=\"Last Name\" name=\"lastname\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-signup-email\" placeholder=\"Email\" name=\"email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-signup-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-signup-password\" placeholder=\"Password\" name=\"password\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"signup-recaptcha\" class=\"col-sm-2 control-label\">Captcha</label><div class=\"col-sm-10\"><i id=\"signup-spinner\" class=\"fa fa-2x fa-spinner fa-spin\"></i><div id=\"signup-recaptcha\"></div></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button id=\"index-signup-submit\" type=\"submit\" class=\"btn btn-success pull-right\"><i class=\"fa fa-user\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Sign Up</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

@@ -22,9 +22,10 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    form:   '#signup-form'
-    login:  '#index-tab-login'
-    submit: '#index-signup-submit'
+    form:    '#signup-form'
+    login:   '#index-tab-login'
+    submit:  '#index-signup-submit'
+    spinner: '#signup-spinner'
 
   bindings:
     '#index-signup-firstname': 'firstname'
@@ -52,6 +53,7 @@ class View extends Marionette.ItemView
         error: (model, response) =>
           @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
           return
+
       return
 
   constructor: ->
@@ -70,7 +72,8 @@ class View extends Marionette.ItemView
     return
 
   onShow: ->
-    setTimeout ->
+    setTimeout =>
+      @ui.spinner.hide()
       window.grecaptcha.render 'signup-recaptcha',
         'sitekey' : '6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527',
         'theme' : 'light'
