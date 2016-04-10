@@ -7,10 +7,10 @@ br
         // Nav tabs
         ul.nav.nav-tabs(role='tablist')
             li.active#index-tab-signup(role='presentation')
-                a(href='#index-tab-signup', aria-controls='signup', role='tab', data-toggle='tab')
+                a
                     b Sign Up
             li#index-tab-login(role='presentation')
-                a(href='#index-tab-login', aria-controls='login', role='tab', data-toggle='tab')
+                a
                     b Login
         br
         // Tab panes
@@ -36,9 +36,9 @@ br
                                 .col-sm-10
                                     input.form-control#index-signup-password(placeholder='Password', name='password', required)
                             .form-group
-                                label.col-sm-2.control-label(for='signup-captcha') Captcha
+                                label.col-sm-2.control-label(for='signup-recaptcha') Captcha
                                 .col-sm-10
-                                    .g-recaptcha#signup-captcha(data-sitekey="6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527")
+                                    #signup-recaptcha
                             .form-group
                                 .col-sm-12
                                     button.btn.btn-success.pull-right#index-signup-submit(type="submit")

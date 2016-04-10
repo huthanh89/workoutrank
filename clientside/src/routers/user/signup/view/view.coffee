@@ -63,11 +63,19 @@ class View extends Marionette.ItemView
   initialize: ->
     Backbone.Validation.bind(@, @model)
     @model.validate()
-
     return
 
   onRender: ->
     @stickit()
+    return
+
+  onShow: ->
+    setTimeout ->
+      window.grecaptcha.render 'signup-recaptcha',
+        'sitekey' : '6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527',
+        'theme' : 'light'
+      return
+    , 3000
     return
 
 #-------------------------------------------------------------------------------

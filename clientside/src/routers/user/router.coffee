@@ -25,7 +25,7 @@ class Router extends Marionette.AppRouter
     # Replies for menu navigation.
     # Change the url path with @navigate('url path')
     # before being sent to route handler.
-    # When changing url, set trigger true to trigger onRoute()
+    # When changing url, set trigger true to trigger onRoute() call.
 
     @rootChannel.reply
 
@@ -61,7 +61,6 @@ class Router extends Marionette.AppRouter
 
   routes:
     '':                  'signup'
-    '/':                 'signup'
     'signup':            'signup'
     'login':             'login'
     'profile':           'profile'

@@ -42,7 +42,7 @@ class View extends Marionette.ItemView
 
   events:
     'click @ui.signup': ->
-      @rootChannel.request('signup')
+      @rootChannel.request('index')
       return
 
     'submit': (event) ->
