@@ -2,7 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Err   = require '../error'
+Err     = require '../error'
 express = require 'express'
 router  = express.Router()
 
@@ -25,14 +25,6 @@ index = (req, res, next) ->
 router.get '/',       index
 router.get '/signup', index
 router.get '/login',  index
-
-###
-router.use (req, res, next) ->
-  error = new Err.Forbidden()
-  next(error)
-  return
-
-###
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.

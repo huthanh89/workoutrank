@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 moment    = require 'moment'
+Err       = require '../../error'
 async     = require 'async'
 request   = require 'request'
 requestIp = require 'request-ip'
@@ -29,10 +30,7 @@ exports.post = (req, res, next) ->
 
   async.waterfall [
 
-
     (callback) ->
-      return callback null
-      ###
 
       clientIp = requestIp.getClientIp(req)
 
@@ -46,12 +44,11 @@ exports.post = (req, res, next) ->
           return callback error if error
           body = JSON.parse(body)
           if body.success is false
-            return callback 'Failed reCaptcha validation.'
+            return callback new Err.BadRequest
+              text: 'Failed reCaptcha validation.'
           return callback null
 
       return
-
-###
 
     (callback) ->
 
@@ -63,26 +60,25 @@ exports.post = (req, res, next) ->
         email:     req.body.email
         password:  req.body.password
       , (err, user) ->
-        console.log err
-        console.log err.code
-        console.log err.message
+
+        if err?.code is 11000
+          return callback new Err.BadRequest
+            text: 'Username has been taken'
+
         return callback err if err
         return callback null, user
 
       return
 
-  ], (error, user) ->
+  ], (err, user) ->
 
-    next('bob')
+    if err
 
-    ###
-    if error
-
-      # Send 400 status code for bad request.
+      # Response error status and text.
 
       return res
-      .status 400
-      .json error
+      .status err.status
+      .json   err.text
 
     else
 
@@ -92,9 +88,7 @@ exports.post = (req, res, next) ->
 
       return res
       .status 201
-      .json user
-
-###
+      .json   user
 
   return
 

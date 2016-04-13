@@ -51,6 +51,8 @@ class View extends Marionette.ItemView
           @rootChannel.request('home')
           return
         error: (model, response) =>
+          console.log 'response', response, response.responseText
+
           @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
           return
 
