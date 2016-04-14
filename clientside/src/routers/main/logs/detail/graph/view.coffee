@@ -4,30 +4,66 @@
 
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+Highcharts   = require 'highcharts'
 Highstock    = require 'highstock'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Given an index, return a HighChart color.
+#-------------------------------------------------------------------------------
+
+getColor = (index) ->
+  colors = Highcharts.getOptions().colors
+  return colors[index % colors.length]
 
 #-------------------------------------------------------------------------------
 # Series Rep Data
 #-------------------------------------------------------------------------------
 
-seriesRepData = (model) ->
+seriesRepData = (model, index) ->
+
+  color = getColor(index)
+
   return {
     name: 'Reps'
     yAxis: 0
-    data: model.get('repData')
+    data:  model.get('repData')
+    type: 'column'
+    color: color
   }
 
 #-------------------------------------------------------------------------------
 # Series Weight Data
 #-------------------------------------------------------------------------------
 
-seriesWeightData = (model) ->
+seriesWeightData = (model, index) ->
+
+  color = getColor(index)
+
   return {
     name: 'Weight'
     yAxis: 1
     data: model.get('weightData')
+    type: 'areaspline'
+    color: color
+    fillColor:
+      linearGradient:
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 1
+      stops : [
+        [ 0, color],
+        [.9, Highcharts.Color(color).setOpacity(0).get('rgba')]
+      ]
+    threshold: null
   }
+
+#-------------------------------------------------------------------------------
+# Given a collection, return max weight in collection.
+#-------------------------------------------------------------------------------
+
+getMax = (data) -> _.maxBy(data, (record) -> record.y).y
 
 #-------------------------------------------------------------------------------
 # View
@@ -44,6 +80,9 @@ class View extends Marionette.ItemView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
+    @repIndex    = Math.ceil(Math.random() * (100 - 50) + 50)
+    @weightIndex = Math.ceil(Math.random() * (50 - 1) + 1)
+
   onRender: ->
 
     model = @collection.at(0)
@@ -51,8 +90,8 @@ class View extends Marionette.ItemView
     @chart = new Highstock.StockChart
 
       chart:
-        type:     'column'
         renderTo: @ui.chart[0]
+        height:   500
 
       title:
         text: model.get('name').toUpperCase()
@@ -75,12 +114,28 @@ class View extends Marionette.ItemView
       yAxis: [
         lineWidth: 1
         opposite:  false
+        title:
+          text: 'Rep'
+          style:
+            fontWeight: 'bold'
+            fontSize:    14
+            'letter-spacing': 2
       ,
         lineWidth: 1
         opposite:  true
+        title:
+          text: 'Weight'
+          style:
+            fontWeight: 'bold'
+            fontSize:    14
+            'letter-spacing': 2
       ]
 
-      series: [seriesWeightData(model), seriesRepData(model)]
+      series: [
+        seriesWeightData(model, @weightIndex)
+      ,
+        seriesRepData(model, @repIndex)
+      ]
 
       legend:
         enabled:     true
@@ -88,6 +143,21 @@ class View extends Marionette.ItemView
 
       credits:
         enabled: false
+
+    @chart.yAxis[1].addPlotLine
+      value: getMax(model.get('weightData'))
+      width: 3
+      color: getColor(@weightIndex)
+      dashStyle: 'shortdash'
+      zIndex: 5
+      label:
+        text: 'Record'
+        float: true
+        align: 'right'
+        x: 0
+        style:
+          fontWeight: 'bold'
+          color: getColor(@weightIndex)
 
     return
 
