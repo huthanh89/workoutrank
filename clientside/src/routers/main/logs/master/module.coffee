@@ -37,7 +37,7 @@ class Collection extends Backbone.Collection
 
     result = []
 
-    grouped = _.groupBy response, (record) -> record.exercise
+    grouped = _.groupBy(response, (record) -> record.exercise)
 
     for exerciseID, records of grouped
       pr      = _.max records, (record) -> record.weight

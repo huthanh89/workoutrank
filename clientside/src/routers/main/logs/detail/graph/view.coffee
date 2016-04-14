@@ -60,10 +60,39 @@ seriesWeightData = (model, index) ->
   }
 
 #-------------------------------------------------------------------------------
+# Given a collection, return average weight in collection.
+#-------------------------------------------------------------------------------
+
+getMean = (data) -> _.mean(_.map(data, (record) -> record.y))
+
+#-------------------------------------------------------------------------------
 # Given a collection, return max weight in collection.
 #-------------------------------------------------------------------------------
 
 getMax = (data) -> _.maxBy(data, (record) -> record.y).y
+
+#-------------------------------------------------------------------------------
+# Return plot line options for y axis.
+#-------------------------------------------------------------------------------
+
+plotLine = (title, value, color, opposite) ->
+  return {
+    value:      value
+    width:      2
+    #color:      color
+    color:      'grey'
+    dashStyle: 'shortdash'
+    zIndex:     5
+    label:
+      text:  title
+      float: true
+      align: if opposite then 'right' else 'left'
+      x:     -2
+      style:
+        fontWeight: 'bold'
+#        color:       color
+        color:      'grey'
+  }
 
 #-------------------------------------------------------------------------------
 # View
@@ -126,8 +155,8 @@ class View extends Marionette.ItemView
         title:
           text: 'Weight'
           style:
-            fontWeight: 'bold'
-            fontSize:    14
+            fontWeight:      'bold'
+            fontSize:         14
             'letter-spacing': 2
       ]
 
@@ -144,20 +173,20 @@ class View extends Marionette.ItemView
       credits:
         enabled: false
 
-    @chart.yAxis[1].addPlotLine
-      value: getMax(model.get('weightData'))
-      width: 3
-      color: getColor(@weightIndex)
-      dashStyle: 'shortdash'
-      zIndex: 5
-      label:
-        text: 'Record'
-        float: true
-        align: 'right'
-        x: 0
-        style:
-          fontWeight: 'bold'
-          color: getColor(@weightIndex)
+    ###
+    # Draw rep plot lines on chart.
+
+    mean  = getMean(model.get('repData'))
+    color = getColor(@repIndex)
+    @chart.yAxis[1].addPlotLine plotLine('Average Rep', mean, color, false)
+
+###
+
+    # Draw weight plot lines on chart.
+
+    mean  = _.round(getMean(model.get('weightData')), 0)
+    color = getColor(@weightIndex)
+    @chart.yAxis[1].addPlotLine plotLine("Avg Weight: #{mean}", mean, color, true)
 
     return
 
