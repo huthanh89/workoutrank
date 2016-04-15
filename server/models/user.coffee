@@ -23,7 +23,15 @@ UserSchema = new mongoose.Schema
     type: String
     index:
       unique: true
-  password:
+  username:
+    type: String
+  algorithm:
+    type: String
+  rounds:
+    type: Number
+  salt:
+    type: String
+  key:
     type: String
 ,
   collection: 'user'

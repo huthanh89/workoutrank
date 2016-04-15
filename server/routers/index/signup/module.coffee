@@ -2,12 +2,13 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-moment    = require 'moment'
 Err       = require '../../error'
+moment    = require 'moment'
 async     = require 'async'
 request   = require 'request'
 requestIp = require 'request-ip'
 mongoose  = require 'mongoose'
+crypto    = require 'crypto'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -20,7 +21,7 @@ User = mongoose.model('user')
 #   Recaptcha secret used to check if captcha response from client is correct.
 #-------------------------------------------------------------------------------
 
-Secret = '6LeGeBwTAAAAAJB1zR16oRVEPdZ-tYuOB2g9gY-0'
+RecaptchaSecret = '6LeGeBwTAAAAAJB1zR16oRVEPdZ-tYuOB2g9gY-0'
 
 #-------------------------------------------------------------------------------
 # Post
@@ -37,7 +38,7 @@ exports.post = (req, res, next) ->
       request.post
         url: 'https://www.google.com/recaptcha/api/siteverify'
         formData:
-          secret:   Secret
+          secret:   RecaptchaSecret
           remoteIP: clientIp
           response: req.body.captcha
       , (error, response, body) ->
@@ -47,10 +48,23 @@ exports.post = (req, res, next) ->
             return callback new Err.BadRequest
               text: 'Failed reCaptcha validation.'
           return callback null
-
       return
 
     (callback) ->
+
+      salt = crypto.randomBytes(32)
+
+      return callback null, salt.toString('hex')
+
+    (salt, callback) ->
+
+      crypto.pbkdf2 req.body.password, salt.toString('hex'), 10000, 32, 'sha512', (err, key) =>
+        console.log err if err
+        return callback null, salt, key.toString('hex')
+
+      return
+
+    (salt, key, callback) ->
 
       User.create
         created:   moment()
@@ -58,7 +72,11 @@ exports.post = (req, res, next) ->
         firstname: req.body.firstname
         lastname:  req.body.lastname
         email:     req.body.email
-        password:  req.body.password
+        username:  req.body.username
+        salt:      salt
+        key:       key
+        algorithm: 'sha512'
+        rounds:    10000
       , (err, user) ->
 
         if err?.code is 11000
@@ -76,7 +94,7 @@ exports.post = (req, res, next) ->
 
       # Response error status and text.
 
-      return res
+      res
       .status err.status
       .json   err.text
 

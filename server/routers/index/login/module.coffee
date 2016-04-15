@@ -2,10 +2,12 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+Err       = require '../../error'
 moment    = require 'moment'
 async     = require 'async'
 mongoose  = require 'mongoose'
 randtoken = require 'rand-token'
+crypto    = require 'crypto'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -21,14 +23,32 @@ exports.post = (req, res) ->
 
   async.waterfall [
 
+
     (callback) ->
 
       User.findOne
-        email:    req.body.email
-        password: req.body.password
+        email: req.body.email
       .exec (err, user) ->
         return callback err if err
+
+        if user is null
+          return callback new Err.BadRequest
+            text: 'User could not be found.'
+
         return callback null, user
+
+      return
+
+    (user, callback) ->
+
+      crypto.pbkdf2 req.body.password, user.salt, user.rounds, 32, user.algorithm, (err, key) =>
+        if err
+          return callback new Err.BadRequest(text: 'Could not look up username / password.')
+        if user.key is key.toString('hex')
+          return callback null, user
+        else
+          return callback new Err.BadRequest
+            text: 'Invalid username or password.'
 
       return
 
@@ -57,16 +77,19 @@ exports.post = (req, res) ->
 
   ], (err, user) ->
 
-    console.log 'error', err if err
+    if err
 
-    if user
+      # Response error status and text.
+
+      res
+      .status err.status
+      .json   err.text
+
+    else
+
       res
       .status 201
       .json user
-
-    else
-      res.send 'Not Authenticated'
-      res.end()
 
   return
 
