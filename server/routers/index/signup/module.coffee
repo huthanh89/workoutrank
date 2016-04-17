@@ -58,7 +58,10 @@ exports.post = (req, res, next) ->
 
     (salt, callback) ->
 
-      crypto.pbkdf2 req.body.password, salt.toString('hex'), 10000, 32, 'sha512', (err, key) =>
+      password = req.body.password
+      salt     = salt.toString('hex')
+
+      crypto.pbkdf2 password, salt, 10000, 32, 'sha512', (err, key) ->
         console.log err if err
         return callback null, salt, key.toString('hex')
 

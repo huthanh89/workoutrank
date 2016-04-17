@@ -57880,7 +57880,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"p1\" data-role=\"page\"></div><div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" href=\"#\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
+	buf.push("<div id=\"p1\" data-role=\"page\"></div><div class=\"col-sm-12\"><nav class=\"navbar navbar-default navbar-fixed-top\"><div class=\"container-fluid\"><div class=\"navbar-header\"><span id=\"index-navbar-brand\" class=\"navbar-brand\">App</span></div></div></nav></div>");;return buf.join("");
 	}
 
 /***/ },

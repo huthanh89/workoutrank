@@ -41,9 +41,14 @@ exports.post = (req, res) ->
 
     (user, callback) ->
 
-      crypto.pbkdf2 req.body.password, user.salt, user.rounds, 32, user.algorithm, (err, key) =>
+      password = req.body.password
+      salt     = user.salt
+      algoritm = user.algorithm
+
+      crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
         if err
-          return callback new Err.BadRequest(text: 'Could not look up username / password.')
+          return callback new Err.BadRequest
+            text: 'Could not look up username / password.'
         if user.key is key.toString('hex')
           return callback null, user
         else
