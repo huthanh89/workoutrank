@@ -1,9 +1,9 @@
 .row
     .col-xs-12
-        table.table.table-condensed.table-hover
+        table.table.table-condensed.table-hover.slog-detail-table
             thead
                 tr
-                    td.col-xs-4
+                    td.col-xs-4(colspan='2')
                         b Weight
             tbody
                 tr
@@ -17,10 +17,10 @@
                     td#log-table-weight-min
 .row
     .col-xs-12
-        table.table.table-condensed.table-hover
+        table.table.table-condensed.table-hover.slog-detail-table
             thead
                 tr
-                    td.col-xs-4
+                    td.col-xs-4(colspan='2')
                         b Reps
             tbody
                 tr
@@ -32,15 +32,12 @@
                 tr
                     td Min
                     td#log-table-rep-min
-                tr
-                    td Started
-                    td#log-table-date
 .row
     .col-xs-12
-        table.table.table-condensed.table-hover
+        table.table.table-condensed.table-hover.slog-detail-table
             thead
                 tr
-                    td.col-xs-4
+                    td.col-xs-4(colspan='2')
                         b Summary
             tbody
                 tr
@@ -49,3 +46,6 @@
                 tr
                     td Muscle
                     td#log-table-muscle
+                tr
+                    td Started
+                    td#log-table-date

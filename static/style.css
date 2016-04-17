@@ -11640,6 +11640,17 @@ Logs
 .logs-master-filter-btn {
   width: 200px;
 }
+.slog-detail-table {
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+}
+.slog-detail-table thead tr:nth-child(1) {
+  background-color: gainsboro;
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+}
 /*-----------------------------------------------------------------------------
 Custom classes
 -----------------------------------------------------------------------------*/
