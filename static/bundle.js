@@ -95041,15 +95041,15 @@
 	  };
 
 	  View.prototype.min = function(values) {
-	    return _.min(values);
+	    return _.round(_.min(values), 2);
 	  };
 
 	  View.prototype.max = function(values) {
-	    return _.max(values);
+	    return _.round(_.max(values), 2);
 	  };
 
 	  View.prototype.avg = function(values) {
-	    return _.mean(values);
+	    return _.round(_.mean(values), 2);
 	  };
 
 	  return View;
@@ -95133,7 +95133,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Stats</b></td></tr></thead><tbody><tr><td>Max Weight</td><td id=\"log-table-weight-max\"></td></tr><tr><td>Avg Weight</td><td id=\"log-table-weight-avg\"></td></tr><tr><td>Min Weight</td><td id=\"log-table-weight-min\"></td></tr><tr><td>Max Rep</td><td id=\"log-table-rep-max\"></td></tr><tr><td>Avg Rep</td><td id=\"log-table-rep-avg\"></td></tr><tr><td>Min Rep</td><td id=\"log-table-rep-min\"></td></tr><tr><td>Started</td><td id=\"log-table-date\"></td></tr></tbody></table></div></div><div class=\"row\"><div class=\"col-sm-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td colspan=\"2\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"log-table-name\"></td></tr><tr><td>Muscle</td><td id=\"log-table-muscle\"></td></tr></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-4\"><b>Weight</b></td></tr></thead><tbody><tr><td>Max</td><td id=\"log-table-weight-max\"></td></tr><tr><td>Avg</td><td id=\"log-table-weight-avg\"></td></tr><tr><td>Min</td><td id=\"log-table-weight-min\"></td></tr></tbody></table></div></div><div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-4\"><b>Reps</b></td></tr></thead><tbody><tr><td>Max</td><td id=\"log-table-rep-max\"></td></tr><tr><td>Avg</td><td id=\"log-table-rep-avg\"></td></tr><tr><td>Min</td><td id=\"log-table-rep-min\"></td></tr><tr><td>Started</td><td id=\"log-table-date\"></td></tr></tbody></table></div></div><div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-hover\"><thead><tr><td class=\"col-xs-4\"><b>Summary</b></td></tr></thead><tbody><tr><td>Name</td><td id=\"log-table-name\"></td></tr><tr><td>Muscle</td><td id=\"log-table-muscle\"></td></tr></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },

@@ -99,11 +99,11 @@ class View extends Marionette.ItemView
       avg: @avg(values)
     }
 
-  min: (values) -> _.min values
+  min: (values) -> _.round(_.min(values), 2)
 
-  max: (values) -> _.max values
+  max: (values) ->_.round(_.max(values),2)
 
-  avg: (values) -> _.mean values
+  avg: (values) -> _.round(_.mean(values), 2)
 
 #-------------------------------------------------------------------------------
 # Exports
