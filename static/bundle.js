@@ -96175,6 +96175,12 @@
 	    password: ''
 	  };
 
+	  Model.prototype.validation = {
+	    email: {
+	      required: true
+	    }
+	  };
+
 	  return Model;
 
 	})(Backbone.Model);
@@ -96185,12 +96191,19 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    signup: '#index-tab-signup'
+	    form: '#login-form',
+	    signup: '#tab-signup'
 	  };
 
 	  View.prototype.bindings = {
-	    '#index-login-email': 'email',
-	    '#index-login-password': 'password'
+	    '#login-email': 'email',
+	    '#login-password': 'password'
+	  };
+
+	  View.prototype.modelEvents = {
+	    'change sync': function() {
+	      this.ui.form.validator();
+	    }
 	  };
 
 	  View.prototype.events = {
@@ -96199,7 +96212,7 @@
 	    },
 	    'submit': function(event) {
 	      event.preventDefault();
-	      return this.model.save({}, {
+	      this.model.save({}, {
 	        success: (function(_this) {
 	          return function(model) {
 	            _this.rootChannel.request('home');
@@ -96220,9 +96233,8 @@
 	  }
 
 	  View.prototype.onRender = function() {
-	    this.model.set({
-	      email: 'admin',
-	      password: '1234'
+	    Backbone.Validation.bind(this, {
+	      model: this.model
 	    });
 	    this.stickit();
 	  };
@@ -96247,7 +96259,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome!</span></div></div><div class=\"row\"><div class=\"col-sm-12\"><span>Track your workout progress and compare personal records.</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"index-tab-signup\" role=\"presentation\"><a><b>Sign Up</b></a></li><li id=\"index-tab-login\" role=\"presentation\" class=\"active\"><a><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"index-tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form class=\"form-horizontal\"><div class=\"form-group\"><label for=\"index-login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"index-login-email\" placeholder=\"Email\" required class=\"form-control\"></div></div><div class=\"form-group\"><label for=\"index-login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"index-login-password\" placeholder=\"Password\" required class=\"form-control\"></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead\">Welcome!</span></div></div><div class=\"row\"><div class=\"col-sm-12\"><span>Track your workout progress and compare personal records.</span></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li id=\"tab-signup\" role=\"presentation\"><a><b>Sign Up</b></a></li><li id=\"tab-login\" role=\"presentation\" class=\"active\"><a><b>Login</b></a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><div id=\"tab-pane-login\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"row\"><div class=\"col-sm-12\"><form id=\"login-form\" data-toggle=\"validator\" class=\"form-horizontal\"><div class=\"form-group\"><label for=\"login-email\" class=\"col-sm-2 control-label\">Email</label><div class=\"col-sm-10\"><input id=\"login-email\" type=\"email\" placeholder=\"Email\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div class=\"form-group\"><label for=\"login-password\" class=\"col-sm-2 control-label\">Password</label><div class=\"col-sm-10\"><input id=\"login-password\" type=\"text\" placeholder=\"Password\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div><div class=\"form-group\"><div class=\"col-sm-12\"><button class=\"btn btn-primary pull-right\"><i class=\"fa fa-sign-in\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Log In</button></div></div></form></div></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

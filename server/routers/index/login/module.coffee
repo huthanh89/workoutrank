@@ -2,11 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+Validate  = require '../../validate'
 Err       = require '../../error'
 moment    = require 'moment'
 async     = require 'async'
 mongoose  = require 'mongoose'
-randtoken = require 'rand-token'
 crypto    = require 'crypto'
 
 #-------------------------------------------------------------------------------
@@ -19,10 +19,19 @@ User = mongoose.model('user')
 # Post
 #-------------------------------------------------------------------------------
 
+schema =
+  email:
+    type: 'email'
+  password:
+    type: 'string'
+
 exports.post = (req, res) ->
 
   async.waterfall [
 
+    (callback) ->
+
+      return Validate.isValid(req.body, schema, callback)
 
     (callback) ->
 
@@ -43,7 +52,7 @@ exports.post = (req, res) ->
 
       password = req.body.password
       salt     = user.salt
-      algoritm = user.algorithm
+      algorithm = user.algorithm
 
       crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
         if err

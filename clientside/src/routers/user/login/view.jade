@@ -9,27 +9,29 @@ br
     .col-sm-12
         // Nav tabs
         ul.nav.nav-tabs(role='tablist')
-            li#index-tab-signup(role='presentation')
+            li#tab-signup(role='presentation')
                 a
                     b Sign Up
-            li.active#index-tab-login(role='presentation')
+            li.active#tab-login(role='presentation')
                 a
                     b Login
         br
         // Tab panes
         .tab-content
-            #index-tab-pane-login.tab-pane.active(role='tabpanel')
+            #tab-pane-login.tab-pane.active(role='tabpanel')
                 .row
                     .col-sm-12
-                        form.form-horizontal
+                        form.form-horizontal#login-form(data-toggle="validator")
                             .form-group
-                                label.col-sm-2.control-label(for='index-login-email') Email
+                                label.col-sm-2.control-label(for='login-email') Email
                                 .col-sm-10
-                                    input.form-control#index-login-email(placeholder='Email', required)
+                                    input.form-control#login-email(type='email', placeholder='Email', required)
+                                    .help-block.with-errors
                             .form-group
-                                label.col-sm-2.control-label(for='index-login-password') Password
+                                label.col-sm-2.control-label(for='login-password') Password
                                 .col-sm-10
-                                    input.form-control#index-login-password(placeholder='Password', required)
+                                    input.form-control#login-password(type="text", placeholder='Password', required)
+                                    .help-block.with-errors
                             .form-group
                                 .col-sm-12
                                     button.btn.btn-primary.pull-right

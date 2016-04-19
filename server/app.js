@@ -117,6 +117,8 @@ app.use('/', routers.userRouter);
 // catch 404 and forward to error handler
 
 app.use(function(err, req, res, next) {
+    console.log('ERROR', err);
+    console.trace();
     res.render('error', {error:err});
 });
 

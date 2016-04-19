@@ -25,6 +25,10 @@ class Model extends Backbone.Model
     email:    ''
     password: ''
 
+  validation:
+    email:
+      required: true
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -34,11 +38,17 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    signup: '#index-tab-signup'
+    form:   '#login-form'
+    signup: '#tab-signup'
 
   bindings:
-    '#index-login-email':    'email'
-    '#index-login-password': 'password'
+    '#login-email':    'email'
+    '#login-password': 'password'
+
+  modelEvents:
+    'change sync': ->
+      @ui.form.validator()
+      return
 
   events:
     'click @ui.signup': ->
@@ -55,17 +65,16 @@ class View extends Marionette.ItemView
         error: (model, response) =>
           @rootChannel.request 'message', 'danger', "Failed: #{response.responseText}"
           return
+      return
 
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
+
   onRender: ->
-
-    @model.set
-      email: 'admin'
-      password: '1234'
-
+    Backbone.Validation.bind @,
+      model: @model
     @stickit()
     return
 
