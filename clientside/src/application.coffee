@@ -7,8 +7,8 @@ GA           = require './ga'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
+Message      = require './message/module'
 ShortcutView = require './shortcut/view'
-MessageView  = require './message/view'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
 
@@ -69,9 +69,14 @@ class Application extends Marionette.Application
       'rootview': -> rootView
 
       'message': (panelType, panelText) ->
-        rootView.showChildView 'message', new MessageView
+        rootView.showChildView 'message', new Message.Info
           panelType: panelType
           panelText: panelText
+        return
+
+      'message:error': (response) ->
+        rootView.showChildView 'message', new Message.Error
+          response: response
         return
 
     navChannel.reply
