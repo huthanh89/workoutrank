@@ -8,6 +8,8 @@ Marionette   = require 'marionette'
 Modal        = require './modal/module'
 DateView     = require './date/view'
 Table        = require './table/module'
+Summary      = require './summary/module'
+ChartView    = require './chart/view'
 PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
 
@@ -56,10 +58,12 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    modal: '#strength-modal-view'
-    date:  '#strength-date-view'
-    table: '#strength-table-view'
-    page:  '#strength-paginate-view'
+    modal:   '#strength-modal-view'
+    date:    '#strength-date-view'
+    table:   '#strength-table-view'
+    page:    '#strength-paginate-view'
+    summary: '#strength-summary-view'
+    chart:   '#strength-chart-view'
 
   bindings:
     '#strength-header': 'name'
@@ -123,6 +127,12 @@ class View extends Marionette.LayoutView
     @showChildView 'page', new PaginateView
       collection: @pageableCollection
 
+    @showChildView 'summary', new Summary.View
+      model: new Summary.Model()
+      collection: @collection
+
+    @showChildView 'chart', new ChartView
+      collection: @collection
     return
 
   addWorkout: ->

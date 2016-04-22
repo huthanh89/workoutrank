@@ -69,9 +69,9 @@
 
 	window.jQuery = window.$ = __webpack_require__(2);
 
-	__webpack_require__(107);
+	__webpack_require__(111);
 
-	__webpack_require__(108);
+	__webpack_require__(112);
 
 	if (!$().modal) {
 	  console.log('bootstrap is not working.');
@@ -50390,7 +50390,7 @@
 
 	MainRouter = __webpack_require__(27);
 
-	UserRouter = __webpack_require__(98);
+	UserRouter = __webpack_require__(102);
 
 	User = (function(superClass) {
 	  extend(User, superClass);
@@ -59558,7 +59558,7 @@
 
 	Strength = __webpack_require__(52);
 
-	Logs = __webpack_require__(83);
+	Logs = __webpack_require__(88);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -74122,7 +74122,7 @@
 /* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, DateView, Marionette, Modal, Model, PaginateView, Table, View, moment, viewTemplate,
+	var Backbone, ChartView, Collection, DateView, Marionette, Modal, Model, PaginateView, Summary, Table, View, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -74138,9 +74138,13 @@
 
 	Table = __webpack_require__(76);
 
-	PaginateView = __webpack_require__(80);
+	Summary = __webpack_require__(80);
 
-	viewTemplate = __webpack_require__(82);
+	ChartView = __webpack_require__(82);
+
+	PaginateView = __webpack_require__(85);
+
+	viewTemplate = __webpack_require__(87);
 
 	__webpack_require__(58);
 
@@ -74189,7 +74193,9 @@
 	    modal: '#strength-modal-view',
 	    date: '#strength-date-view',
 	    table: '#strength-table-view',
-	    page: '#strength-paginate-view'
+	    page: '#strength-paginate-view',
+	    summary: '#strength-summary-view',
+	    chart: '#strength-chart-view'
 	  };
 
 	  View.prototype.bindings = {
@@ -74251,6 +74257,13 @@
 	    }));
 	    this.showChildView('page', new PaginateView({
 	      collection: this.pageableCollection
+	    }));
+	    this.showChildView('summary', new Summary.View({
+	      model: new Summary.Model(),
+	      collection: this.collection
+	    }));
+	    this.showChildView('chart', new ChartView({
+	      collection: this.collection
 	    }));
 	  };
 
@@ -74766,87 +74779,176 @@
 /* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Marionette, View, viewTemplate,
+	var Backbone, Data, Marionette, Model, View, moment, parseCollection, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
+	moment = __webpack_require__(36);
+
+	Backbone = __webpack_require__(8);
+
 	Marionette = __webpack_require__(10);
+
+	Data = __webpack_require__(55);
 
 	viewTemplate = __webpack_require__(81);
 
-	__webpack_require__(69);
+	parseCollection = function(collection) {
+	  var model, repData, weightData;
+	  weightData = [];
+	  repData = [];
+	  collection.each(function(model) {
+	    var x;
+	    x = moment(model.get('date')).valueOf();
+	    weightData.push({
+	      x: x,
+	      y: model.get('weight')
+	    });
+	    return repData.push({
+	      x: x,
+	      y: model.get('rep')
+	    });
+	  });
+	  model = collection.at(0);
+	  return {
+	    exerciseID: model.get('exercise'),
+	    name: model.get('name'),
+	    weightData: _.sortBy(weightData, function(point) {
+	      return point.x;
+	    }),
+	    repData: _.sortBy(repData, function(point) {
+	      return point.x;
+	    }),
+	    muscle: model.get('muscle'),
+	    user: model.get('user')
+	  };
+	};
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    exercise: '',
+	    muscle: 0,
+	    weightMin: 0,
+	    weightAvg: 0,
+	    weightMax: 0,
+	    repMin: 0,
+	    repAvg: 0,
+	    repMax: 0
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
 
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
 	  View.prototype.template = viewTemplate;
 
-	  View.prototype.ui = {
-	    list: '#strength-paginate-list'
-	  };
-
-	  View.prototype.collectionEvents = {
-	    reset: function() {
-	      this.updateList();
+	  View.prototype.bindings = {
+	    '#log-table-name': 'name',
+	    '#log-table-muscle': {
+	      observe: 'muscle',
+	      onGet: function(value) {
+	        return _.find(Data.Muscles, {
+	          value: value
+	        }).label;
+	      }
+	    },
+	    '#log-table-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('MM/DD/YY');
+	      }
+	    },
+	    '#log-table-weight-max': {
+	      observe: 'weightMax'
+	    },
+	    '#log-table-weight-min': {
+	      observe: 'weightMin'
+	    },
+	    '#log-table-weight-avg': {
+	      observe: 'weightAvg'
+	    },
+	    '#log-table-rep-max': {
+	      observe: 'repMax'
+	    },
+	    '#log-table-rep-min': {
+	      observe: 'repMin'
+	    },
+	    '#log-table-rep-avg': {
+	      observe: 'repAvg'
 	    }
 	  };
 
-	  View.prototype.events = {
-	    'click li': function(event) {
-	      var id, page, target;
-	      target = $(event.currentTarget);
-	      if (target.hasClass('disabled')) {
-	        return;
-	      }
-	      id = target.attr('id');
-	      if (id === 'prev') {
-	        if (this.collection.hasPreviousPage()) {
-	          this.collection.getPreviousPage();
-	        }
-	      } else if (id === 'next') {
-	        if (this.collection.hasNextPage()) {
-	          this.collection.getNextPage();
-	        }
-	      } else {
-	        page = parseInt(target.attr('id'));
-	        this.collection.getPage(page);
-	      }
-	      this.updateList();
-	    }
+	  function View(options) {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.mergeOptions(options, 'exerciseID');
+	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.model = new Backbone.Model(parseCollection(this.collection));
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	    this.updateModel();
 	  };
 
-	  View.prototype.onShow = function() {
-	    this.updateList();
+	  View.prototype.updateModel = function() {
+	    var model, rep, wieght;
+	    model = this.model;
+	    wieght = this.reduce(model.get('weightData'));
+	    rep = this.reduce(model.get('repData'));
+	    this.model.set({
+	      name: model.get('name'),
+	      exerciseID: model.id,
+	      muscle: model.get('muscle'),
+	      weightMin: wieght.min,
+	      weightMax: wieght.max,
+	      weightAvg: wieght.avg,
+	      repMin: rep.min,
+	      repMax: rep.max,
+	      repAvg: rep.avg
+	    });
 	  };
 
-	  View.prototype.updateList = function() {
-	    var currentPage, firstPage, i, lastPage, page, ref, ref1, state;
-	    this.ui.list.empty();
-	    state = this.collection.state;
-	    currentPage = state.currentPage;
-	    firstPage = state.firstPage;
-	    lastPage = state.lastPage;
-	    this.ui.list.append('<li id="prev" class="pagination-prev"><a>Prev</a></li>');
-	    for (page = i = ref = firstPage, ref1 = lastPage; ref <= ref1 ? i <= ref1 : i >= ref1; page = ref <= ref1 ? ++i : --i) {
-	      if (page === currentPage) {
-	        this.ui.list.append('<li class="active" id=' + page + ("><a>" + page + "</a></li>"));
-	      } else {
-	        this.ui.list.append('<li id=' + page + ("><a>" + page + "</a></li>"));
-	      }
-	    }
-	    this.ui.list.append('<li  id="next" class="pagination-next"><a>Next</a></li>');
-	    this.ui.list.rPage();
+	  View.prototype.reduce = function(records) {
+	    var values;
+	    values = _.map(records, function(record) {
+	      return record.y;
+	    });
+	    return {
+	      min: this.min(values),
+	      max: this.max(values),
+	      avg: this.avg(values)
+	    };
+	  };
+
+	  View.prototype.min = function(values) {
+	    return _.round(_.min(values), 2);
+	  };
+
+	  View.prototype.max = function(values) {
+	    return _.round(_.max(values), 2);
+	  };
+
+	  View.prototype.avg = function(values) {
+	    return _.round(_.mean(values), 2);
 	  };
 
 	  return View;
 
 	})(Marionette.ItemView);
 
-	module.exports = View;
+	module.exports.Model = Model;
+
+	module.exports.View = View;
 
 
 /***/ },
@@ -74860,306 +74962,14 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"pull-right\"><div class=\"col-xs-12\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div></div>");;return buf.join("");
+	buf.push("<table class=\"table table-condensed table-hover slog-detail-table table-striped\"><thead><tr><td class=\"col-xs-4\"></td><td class=\"col-xs-4\"><b>Weight</b></td><td class=\"col-xs-4\"><b>Reps</b></td></tr></thead><tbody><tr><td><b>Max</b></td><td id=\"log-table-weight-max\"></td><td id=\"log-table-rep-max\"></td></tr><tr><td><b>Avg</b></td><td id=\"log-table-weight-avg\"></td><td id=\"log-table-rep-avg\"></td></tr><tr><td><b>Min</b></td><td id=\"log-table-weight-min\"></td><td id=\"log-table-rep-min\"></td></tr></tbody></table>");;return buf.join("");
 	}
 
 /***/ },
 /* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-xs-6\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i>Journal (" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + ")</span></div><div class=\"col-xs-6\"><div class=\"pull-right\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-bar-chart-o\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports.Master = __webpack_require__(84);
-
-	module.exports.Detail = __webpack_require__(90);
-
-
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Collection, Marionette, Model, TableView, View, _, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	TableView = __webpack_require__(85);
-
-	viewTemplate = __webpack_require__(89);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.idAttribute = '_id';
-
-	  Model.prototype.defaults = {
-	    name: '',
-	    max: 0,
-	    avg: 0,
-	    count: 0,
-	    date: ''
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection() {
-	    return Collection.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Collection.prototype.url = 'api/logs';
-
-	  Collection.prototype.model = Model;
-
-	  Collection.prototype.parse = function(response) {
-	    var exerciseID, grouped, pr, records, result, weights;
-	    result = [];
-	    grouped = _.groupBy(response, function(record) {
-	      return record.exercise;
-	    });
-	    for (exerciseID in grouped) {
-	      records = grouped[exerciseID];
-	      pr = _.max(records, function(record) {
-	        return record.weight;
-	      });
-	      weights = _.map(records, function(record) {
-	        return record.weight;
-	      });
-	      result.push({
-	        _id: exerciseID,
-	        name: records[0].name,
-	        date: pr.date,
-	        max: pr.weight,
-	        avg: Math.round(_.mean(weights)) / 100,
-	        count: records.length
-	      });
-	    }
-	    return result;
-	  };
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  function View() {
-	    return View.__super__.constructor.apply(this, arguments);
-	  }
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.regions = {
-	    table: '#logs-table-view'
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.showChildView('table', new TableView({
-	      collection: this.collection
-	    }));
-	  };
-
-	  return View;
-
-	})(Marionette.LayoutView);
-
-	exports.Model = Model;
-
-	exports.Collection = Collection;
-
-	exports.View = View;
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	_ = __webpack_require__(3);
-
-	moment = __webpack_require__(36);
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	nullTemplate = __webpack_require__(86);
-
-	itemTemplate = __webpack_require__(87);
-
-	viewTemplate = __webpack_require__(88);
-
-	__webpack_require__(40);
-
-	__webpack_require__(18);
-
-	NullView = (function(superClass) {
-	  extend(NullView, superClass);
-
-	  function NullView() {
-	    return NullView.__super__.constructor.apply(this, arguments);
-	  }
-
-	  NullView.prototype.tagName = 'tr';
-
-	  NullView.prototype.template = nullTemplate;
-
-	  return NullView;
-
-	})(Marionette.CompositeView);
-
-	ItemView = (function(superClass) {
-	  extend(ItemView, superClass);
-
-	  ItemView.prototype.tagName = 'tr';
-
-	  ItemView.prototype.template = itemTemplate;
-
-	  ItemView.prototype.bindings = {
-	    '.logs-table-td-name': 'name',
-	    '.logs-table-td-max': 'max',
-	    '.logs-table-td-date': {
-	      observe: 'date',
-	      onGet: function(value) {
-	        return moment(value).format('MM/DD/YY');
-	      }
-	    },
-	    '.logs-table-td-avg': 'avg',
-	    '.logs-table-td-count': 'count'
-	  };
-
-	  ItemView.prototype.events = {
-	    'click': function() {
-	      this.rootChannel.request('log:detail', this.model.id);
-	    }
-	  };
-
-	  function ItemView() {
-	    ItemView.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  ItemView.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  return ItemView;
-
-	})(Marionette.CompositeView);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.childViewContainer = 'tbody';
-
-	  View.prototype.childView = ItemView;
-
-	  View.prototype.emptyView = NullView;
-
-	  View.prototype.template = viewTemplate;
-
-	  function View() {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  return View;
-
-	})(Marionette.CompositeView);
-
-	module.exports = View;
-
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<td colspan=\"5\"><span class=\"lead\">No workout logs available.</span></td>");;return buf.join("");
-	}
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<td class=\"logs-table-td-name\"></td><td class=\"logs-table-td-max\"></td><td class=\"logs-table-td-date\"></td><td class=\"logs-table-td-avg\"></td><td class=\"logs-table-td-count\"></td>");;return buf.join("");
-	}
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<br><div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Workout</b></td><td><b>P.R</b></td><td><b>Date</b></td><td><b>Avg</b></td><td><b>Entries</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(14);
-
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-folder-open\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"logs-table-view\"></div></div></div>");;return buf.join("");
-	}
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
+	var Backbone, Highcharts, Highstock, Marionette, View, chartModel, getColor, getMax, getMean, moment, plotLine, seriesRepData, seriesWeightData, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -75169,148 +74979,42 @@
 
 	Marionette = __webpack_require__(10);
 
-	GraphView = __webpack_require__(91);
-
-	Table = __webpack_require__(94);
-
-	viewTemplate = __webpack_require__(97);
-
-	Model = (function(superClass) {
-	  extend(Model, superClass);
-
-	  function Model() {
-	    return Model.__super__.constructor.apply(this, arguments);
-	  }
-
-	  Model.prototype.idAttribute = 'exerciseID';
-
-	  Model.prototype.defaults = {
-	    exerciseID: '',
-	    name: '',
-	    weightData: [],
-	    repData: []
-	  };
-
-	  return Model;
-
-	})(Backbone.Model);
-
-	Collection = (function(superClass) {
-	  extend(Collection, superClass);
-
-	  function Collection(models, options) {
-	    Collection.__super__.constructor.apply(this, arguments);
-	    this.url = "/api/strengths/" + options._id + "/log";
-	  }
-
-	  Collection.prototype.model = Model;
-
-	  Collection.prototype.parse = function(response) {
-	    var exercise, grouped, i, len, record, records, repData, result, weightData, x;
-	    result = [];
-	    grouped = _.groupBy(response, function(record) {
-	      return record.exercise;
-	    });
-	    for (exercise in grouped) {
-	      records = grouped[exercise];
-	      weightData = [];
-	      repData = [];
-	      for (i = 0, len = records.length; i < len; i++) {
-	        record = records[i];
-	        x = moment(record.date).valueOf();
-	        weightData.push({
-	          x: x,
-	          y: record.weight
-	        });
-	        repData.push({
-	          x: x,
-	          y: record.rep
-	        });
-	      }
-	      result.push({
-	        exerciseID: exercise,
-	        name: records[0].name,
-	        weightData: _.sortBy(weightData, function(point) {
-	          return point.x;
-	        }),
-	        repData: _.sortBy(repData, function(point) {
-	          return point.x;
-	        }),
-	        muscle: records[0].muscle,
-	        user: records[0].user
-	      });
-	    }
-	    return result;
-	  };
-
-	  return Collection;
-
-	})(Backbone.Collection);
-
-	View = (function(superClass) {
-	  extend(View, superClass);
-
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.regions = {
-	    graph: '#log-graph-view',
-	    table: '#log-table-view'
-	  };
-
-	  View.prototype.events = {
-	    'click #log-home': function() {
-	      this.rootChannel.request('home');
-	    }
-	  };
-
-	  function View(options) {
-	    View.__super__.constructor.apply(this, arguments);
-	    this.rootChannel = Backbone.Radio.channel('root');
-	  }
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
-
-	  View.prototype.onShow = function() {
-	    this.showChildView('graph', new GraphView({
-	      collection: this.collection
-	    }));
-	    this.showChildView('table', new Table.View({
-	      collection: this.collection,
-	      model: new Table.Model(),
-	      exerciseID: this.collection.at(0).id
-	    }));
-	  };
-
-	  return View;
-
-	})(Marionette.LayoutView);
-
-	module.exports.Model = Model;
-
-	module.exports.Collection = Collection;
-
-	module.exports.View = View;
-
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Backbone, Highcharts, Highstock, Marionette, View, getColor, getMax, getMean, plotLine, seriesRepData, seriesWeightData, viewTemplate,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Backbone = __webpack_require__(8);
-
-	Marionette = __webpack_require__(10);
-
-	Highcharts = __webpack_require__(92);
+	Highcharts = __webpack_require__(83);
 
 	Highstock = __webpack_require__(5);
 
-	viewTemplate = __webpack_require__(93);
+	viewTemplate = __webpack_require__(84);
+
+	chartModel = function(collection) {
+	  var model, repData, weightData;
+	  weightData = [];
+	  repData = [];
+	  collection.each(function(model) {
+	    var x;
+	    x = moment(model.get('date')).valueOf();
+	    weightData.push({
+	      x: x,
+	      y: model.get('weight')
+	    });
+	    return repData.push({
+	      x: x,
+	      y: model.get('rep')
+	    });
+	  });
+	  model = collection.at(0);
+	  return {
+	    exerciseID: model.get('exercise'),
+	    name: model.get('name'),
+	    weightData: _.sortBy(weightData, function(point) {
+	      return point.x;
+	    }),
+	    repData: _.sortBy(repData, function(point) {
+	      return point.x;
+	    }),
+	    muscle: model.get('muscle'),
+	    user: model.get('user')
+	  };
+	};
 
 	getColor = function(index) {
 	  var colors;
@@ -75396,23 +75100,24 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.model = new Backbone.Model(chartModel(this.collection));
 	    this.repIndex = Math.ceil(Math.random() * (100 - 50) + 50);
 	    this.weightIndex = Math.ceil(Math.random() * (50 - 1) + 1);
 	  }
 
 	  View.prototype.onRender = function() {
-	    var color, mean, model;
-	    model = this.collection.at(0);
+	    var color, mean;
 	    this.chart = new Highstock.StockChart({
 	      chart: {
 	        renderTo: this.ui.chart[0],
-	        height: 500
+	        height: 400,
+	        marginTop: 5
 	      },
-	      title: {
-	        text: model.get('name').toUpperCase(),
-	        style: {
-	          fontWeight: 'bold'
-	        }
+	      rangeSelector: {
+	        enabled: false
+	      },
+	      navigator: {
+	        top: 310
 	      },
 	      plotOptions: {
 	        areaspline: {
@@ -75432,32 +75137,23 @@
 	      yAxis: [
 	        {
 	          lineWidth: 1,
-	          opposite: false,
-	          title: {
-	            text: 'Rep',
-	            style: {
-	              fontWeight: 'bold',
-	              fontSize: 14,
-	              'letter-spacing': 2
-	            }
-	          }
+	          opposite: false
 	        }, {
 	          lineWidth: 1,
-	          opposite: true,
-	          title: {
-	            text: 'Weight',
-	            style: {
-	              fontWeight: 'bold',
-	              fontSize: 14,
-	              'letter-spacing': 2
-	            }
-	          }
+	          opposite: true
 	        }
 	      ],
-	      series: [seriesWeightData(model, this.weightIndex), seriesRepData(model, this.repIndex)],
+	      series: [seriesWeightData(this.model, this.weightIndex), seriesRepData(this.model, this.repIndex)],
 	      legend: {
+	        x: 35,
+	        y: 2,
 	        enabled: true,
-	        borderWidth: 2
+	        borderWidth: 2,
+	        layout: 'vertical',
+	        align: 'left',
+	        verticalAlign: 'top',
+	        floating: true,
+	        backgroundColor: '#FFFFFF'
 	      },
 	      credits: {
 	        enabled: false
@@ -75471,7 +75167,7 @@
 	    color = getColor(@repIndex)
 	    @chart.yAxis[1].addPlotLine plotLine('Average Rep', mean, color, false)
 	     */
-	    mean = _.round(getMean(model.get('weightData')), 0);
+	    mean = _.round(getMean(this.model.get('weightData')), 0);
 	    color = getColor(this.weightIndex);
 	    this.chart.yAxis[1].addPlotLine(plotLine("Avg Weight: " + mean, mean, color, true));
 	  };
@@ -75488,7 +75184,7 @@
 
 
 /***/ },
-/* 92 */
+/* 83 */
 /***/ function(module, exports) {
 
 	// ==ClosureCompiler==
@@ -94977,7 +94673,7 @@
 
 
 /***/ },
-/* 93 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -94991,7 +94687,746 @@
 	}
 
 /***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Marionette, View, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Marionette = __webpack_require__(10);
+
+	viewTemplate = __webpack_require__(86);
+
+	__webpack_require__(69);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    list: '#strength-paginate-list'
+	  };
+
+	  View.prototype.collectionEvents = {
+	    reset: function() {
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.events = {
+	    'click li': function(event) {
+	      var id, page, target;
+	      target = $(event.currentTarget);
+	      if (target.hasClass('disabled')) {
+	        return;
+	      }
+	      id = target.attr('id');
+	      if (id === 'prev') {
+	        if (this.collection.hasPreviousPage()) {
+	          this.collection.getPreviousPage();
+	        }
+	      } else if (id === 'next') {
+	        if (this.collection.hasNextPage()) {
+	          this.collection.getNextPage();
+	        }
+	      } else {
+	        page = parseInt(target.attr('id'));
+	        this.collection.getPage(page);
+	      }
+	      this.updateList();
+	    }
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.updateList();
+	  };
+
+	  View.prototype.updateList = function() {
+	    var currentPage, firstPage, i, lastPage, page, ref, ref1, state;
+	    this.ui.list.empty();
+	    state = this.collection.state;
+	    currentPage = state.currentPage;
+	    firstPage = state.firstPage;
+	    lastPage = state.lastPage;
+	    this.ui.list.append('<li id="prev" class="pagination-prev"><a>Prev</a></li>');
+	    for (page = i = ref = firstPage, ref1 = lastPage; ref <= ref1 ? i <= ref1 : i >= ref1; page = ref <= ref1 ? ++i : --i) {
+	      if (page === currentPage) {
+	        this.ui.list.append('<li class="active" id=' + page + ("><a>" + page + "</a></li>"));
+	      } else {
+	        this.ui.list.append('<li id=' + page + ("><a>" + page + "</a></li>"));
+	      }
+	    }
+	    this.ui.list.append('<li  id="next" class="pagination-next"><a>Next</a></li>');
+	    this.ui.list.rPage();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"pull-right\"><div class=\"col-xs-12\"><ul id=\"strength-paginate-list\" class=\"pagination noselect\"></ul></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-xs-6\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i>Journal (" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span id=\"strength-header\"></span>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + ")</span></div><div class=\"col-xs-6\"><div class=\"pull-right\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-bar-chart-o\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"strength-date-view\"></div><div id=\"strength-table-view\"></div><div id=\"strength-paginate-view\"></div><br><button id=\"strength-detail-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button><br></div><div class=\"col-sm-6\"><div id=\"strength-summary-view\"></div></div></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"strength-chart-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports.Master = __webpack_require__(89);
+
+	module.exports.Detail = __webpack_require__(95);
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, Marionette, Model, TableView, View, _, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	TableView = __webpack_require__(90);
+
+	viewTemplate = __webpack_require__(94);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.idAttribute = '_id';
+
+	  Model.prototype.defaults = {
+	    name: '',
+	    max: 0,
+	    avg: 0,
+	    count: 0,
+	    date: ''
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection() {
+	    return Collection.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Collection.prototype.url = 'api/logs';
+
+	  Collection.prototype.model = Model;
+
+	  Collection.prototype.parse = function(response) {
+	    var exerciseID, grouped, pr, records, result, weights;
+	    result = [];
+	    grouped = _.groupBy(response, function(record) {
+	      return record.exercise;
+	    });
+	    for (exerciseID in grouped) {
+	      records = grouped[exerciseID];
+	      pr = _.max(records, function(record) {
+	        return record.weight;
+	      });
+	      weights = _.map(records, function(record) {
+	        return record.weight;
+	      });
+	      result.push({
+	        _id: exerciseID,
+	        name: records[0].name,
+	        date: pr.date,
+	        max: pr.weight,
+	        avg: Math.round(_.mean(weights)) / 100,
+	        count: records.length
+	      });
+	    }
+	    return result;
+	  };
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  function View() {
+	    return View.__super__.constructor.apply(this, arguments);
+	  }
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.regions = {
+	    table: '#logs-table-view'
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('table', new TableView({
+	      collection: this.collection
+	    }));
+	  };
+
+	  return View;
+
+	})(Marionette.LayoutView);
+
+	exports.Model = Model;
+
+	exports.Collection = Collection;
+
+	exports.View = View;
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	_ = __webpack_require__(3);
+
+	moment = __webpack_require__(36);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	nullTemplate = __webpack_require__(91);
+
+	itemTemplate = __webpack_require__(92);
+
+	viewTemplate = __webpack_require__(93);
+
+	__webpack_require__(40);
+
+	__webpack_require__(18);
+
+	NullView = (function(superClass) {
+	  extend(NullView, superClass);
+
+	  function NullView() {
+	    return NullView.__super__.constructor.apply(this, arguments);
+	  }
+
+	  NullView.prototype.tagName = 'tr';
+
+	  NullView.prototype.template = nullTemplate;
+
+	  return NullView;
+
+	})(Marionette.CompositeView);
+
+	ItemView = (function(superClass) {
+	  extend(ItemView, superClass);
+
+	  ItemView.prototype.tagName = 'tr';
+
+	  ItemView.prototype.template = itemTemplate;
+
+	  ItemView.prototype.bindings = {
+	    '.logs-table-td-name': 'name',
+	    '.logs-table-td-max': 'max',
+	    '.logs-table-td-date': {
+	      observe: 'date',
+	      onGet: function(value) {
+	        return moment(value).format('MM/DD/YY');
+	      }
+	    },
+	    '.logs-table-td-avg': 'avg',
+	    '.logs-table-td-count': 'count'
+	  };
+
+	  ItemView.prototype.events = {
+	    'click': function() {
+	      this.rootChannel.request('log:detail', this.model.id);
+	    }
+	  };
+
+	  function ItemView() {
+	    ItemView.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  ItemView.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  return ItemView;
+
+	})(Marionette.CompositeView);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.childViewContainer = 'tbody';
+
+	  View.prototype.childView = ItemView;
+
+	  View.prototype.emptyView = NullView;
+
+	  View.prototype.template = viewTemplate;
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  return View;
+
+	})(Marionette.CompositeView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td colspan=\"5\"><span class=\"lead\">No workout logs available.</span></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<td class=\"logs-table-td-name\"></td><td class=\"logs-table-td-max\"></td><td class=\"logs-table-td-date\"></td><td class=\"logs-table-td-avg\"></td><td class=\"logs-table-td-count\"></td>");;return buf.join("");
+	}
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<br><div class=\"row\"><div class=\"col-xs-12\"><table class=\"table table-condensed table-bordered table-hover\"><thead><tr><td><b>Workout</b></td><td><b>P.R</b></td><td><b>Date</b></td><td><b>Avg</b></td><td><b>Entries</b></td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	}
+
+/***/ },
 /* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-folder-open\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"logs-table-view\"></div></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Collection, GraphView, Marionette, Model, Table, View, moment, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	moment = __webpack_require__(36);
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	GraphView = __webpack_require__(96);
+
+	Table = __webpack_require__(98);
+
+	viewTemplate = __webpack_require__(101);
+
+	Model = (function(superClass) {
+	  extend(Model, superClass);
+
+	  function Model() {
+	    return Model.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Model.prototype.idAttribute = 'exerciseID';
+
+	  Model.prototype.defaults = {
+	    exerciseID: '',
+	    name: '',
+	    weightData: [],
+	    repData: []
+	  };
+
+	  return Model;
+
+	})(Backbone.Model);
+
+	Collection = (function(superClass) {
+	  extend(Collection, superClass);
+
+	  function Collection(models, options) {
+	    Collection.__super__.constructor.apply(this, arguments);
+	    this.url = "/api/strengths/" + options._id + "/log";
+	  }
+
+	  Collection.prototype.model = Model;
+
+	  Collection.prototype.parse = function(response) {
+	    var exercise, grouped, i, len, record, records, repData, result, weightData, x;
+	    result = [];
+	    grouped = _.groupBy(response, function(record) {
+	      return record.exercise;
+	    });
+	    for (exercise in grouped) {
+	      records = grouped[exercise];
+	      weightData = [];
+	      repData = [];
+	      for (i = 0, len = records.length; i < len; i++) {
+	        record = records[i];
+	        x = moment(record.date).valueOf();
+	        weightData.push({
+	          x: x,
+	          y: record.weight
+	        });
+	        repData.push({
+	          x: x,
+	          y: record.rep
+	        });
+	      }
+	      result.push({
+	        exerciseID: exercise,
+	        name: records[0].name,
+	        weightData: _.sortBy(weightData, function(point) {
+	          return point.x;
+	        }),
+	        repData: _.sortBy(repData, function(point) {
+	          return point.x;
+	        }),
+	        muscle: records[0].muscle,
+	        user: records[0].user
+	      });
+	    }
+	    return result;
+	  };
+
+	  return Collection;
+
+	})(Backbone.Collection);
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.regions = {
+	    graph: '#log-graph-view',
+	    table: '#log-table-view'
+	  };
+
+	  View.prototype.events = {
+	    'click #log-home': function() {
+	      this.rootChannel.request('home');
+	    }
+	  };
+
+	  function View(options) {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	  }
+
+	  View.prototype.onRender = function() {
+	    this.stickit();
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.showChildView('graph', new GraphView({
+	      collection: this.collection
+	    }));
+	    this.showChildView('table', new Table.View({
+	      collection: this.collection,
+	      model: new Table.Model(),
+	      exerciseID: this.collection.at(0).id
+	    }));
+	  };
+
+	  return View;
+
+	})(Marionette.LayoutView);
+
+	module.exports.Model = Model;
+
+	module.exports.Collection = Collection;
+
+	module.exports.View = View;
+
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Backbone, Highcharts, Highstock, Marionette, View, getColor, getMax, getMean, plotLine, seriesRepData, seriesWeightData, viewTemplate,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Backbone = __webpack_require__(8);
+
+	Marionette = __webpack_require__(10);
+
+	Highcharts = __webpack_require__(83);
+
+	Highstock = __webpack_require__(5);
+
+	viewTemplate = __webpack_require__(97);
+
+	getColor = function(index) {
+	  var colors;
+	  colors = Highcharts.getOptions().colors;
+	  return colors[index % colors.length];
+	};
+
+	seriesRepData = function(model, index) {
+	  var color;
+	  color = getColor(index);
+	  return {
+	    name: 'Reps',
+	    yAxis: 0,
+	    data: model.get('repData'),
+	    type: 'column',
+	    color: color
+	  };
+	};
+
+	seriesWeightData = function(model, index) {
+	  var color;
+	  color = getColor(index);
+	  return {
+	    name: 'Weight',
+	    yAxis: 1,
+	    data: model.get('weightData'),
+	    type: 'areaspline',
+	    color: color,
+	    fillColor: {
+	      linearGradient: {
+	        x1: 0,
+	        y1: 0,
+	        x2: 0,
+	        y2: 1
+	      },
+	      stops: [[0, color], [.9, Highcharts.Color(color).setOpacity(0).get('rgba')]]
+	    },
+	    threshold: null
+	  };
+	};
+
+	getMean = function(data) {
+	  return _.mean(_.map(data, function(record) {
+	    return record.y;
+	  }));
+	};
+
+	getMax = function(data) {
+	  return _.maxBy(data, function(record) {
+	    return record.y;
+	  }).y;
+	};
+
+	plotLine = function(title, value, color, opposite) {
+	  return {
+	    value: value,
+	    width: 2,
+	    color: 'grey',
+	    dashStyle: 'shortdash',
+	    zIndex: 5,
+	    label: {
+	      text: title,
+	      float: true,
+	      align: opposite ? 'right' : 'left',
+	      x: -2,
+	      style: {
+	        fontWeight: 'bold',
+	        color: 'grey'
+	      }
+	    }
+	  };
+	};
+
+	View = (function(superClass) {
+	  extend(View, superClass);
+
+	  View.prototype.template = viewTemplate;
+
+	  View.prototype.ui = {
+	    chart: '#strength-log-graph-ui'
+	  };
+
+	  function View() {
+	    View.__super__.constructor.apply(this, arguments);
+	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.repIndex = Math.ceil(Math.random() * (100 - 50) + 50);
+	    this.weightIndex = Math.ceil(Math.random() * (50 - 1) + 1);
+	  }
+
+	  View.prototype.onRender = function() {
+	    var color, mean, model;
+	    model = this.collection.at(0);
+	    this.chart = new Highstock.StockChart({
+	      chart: {
+	        renderTo: this.ui.chart[0],
+	        height: 500
+	      },
+	      title: {
+	        text: model.get('name').toUpperCase(),
+	        style: {
+	          fontWeight: 'bold'
+	        }
+	      },
+	      plotOptions: {
+	        areaspline: {
+	          fillOpacity: 0.3,
+	          lineWidth: 3
+	        },
+	        series: {
+	          marker: {
+	            radius: 2,
+	            enabled: true
+	          }
+	        }
+	      },
+	      xAxis: {
+	        lineWidth: 2
+	      },
+	      yAxis: [
+	        {
+	          lineWidth: 1,
+	          opposite: false,
+	          title: {
+	            text: 'Rep',
+	            style: {
+	              fontWeight: 'bold',
+	              fontSize: 14,
+	              'letter-spacing': 2
+	            }
+	          }
+	        }, {
+	          lineWidth: 1,
+	          opposite: true,
+	          title: {
+	            text: 'Weight',
+	            style: {
+	              fontWeight: 'bold',
+	              fontSize: 14,
+	              'letter-spacing': 2
+	            }
+	          }
+	        }
+	      ],
+	      series: [seriesWeightData(model, this.weightIndex), seriesRepData(model, this.repIndex)],
+	      legend: {
+	        enabled: true,
+	        borderWidth: 2
+	      },
+	      credits: {
+	        enabled: false
+	      }
+	    });
+
+	    /*
+	     * Draw rep plot lines on chart.
+	    
+	    mean  = getMean(model.get('repData'))
+	    color = getColor(@repIndex)
+	    @chart.yAxis[1].addPlotLine plotLine('Average Rep', mean, color, false)
+	     */
+	    mean = _.round(getMean(model.get('weightData')), 0);
+	    color = getColor(this.weightIndex);
+	    this.chart.yAxis[1].addPlotLine(plotLine("Avg Weight: " + mean, mean, color, true));
+	  };
+
+	  View.prototype.onShow = function() {
+	    this.chart.reflow();
+	  };
+
+	  return View;
+
+	})(Marionette.ItemView);
+
+	module.exports = View;
+
+
+/***/ },
+/* 97 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(14);
+
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+
+	buf.push("<div id=\"strength-log-graph-ui\"></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Data, Marionette, Model, View, moment, viewTemplate,
@@ -95004,9 +95439,9 @@
 
 	Marionette = __webpack_require__(10);
 
-	Data = __webpack_require__(95);
+	Data = __webpack_require__(99);
 
-	viewTemplate = __webpack_require__(96);
+	viewTemplate = __webpack_require__(100);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -95135,7 +95570,7 @@
 
 
 /***/ },
-/* 95 */
+/* 99 */
 /***/ function(module, exports) {
 
 	var Muscles;
@@ -95196,7 +95631,7 @@
 
 
 /***/ },
-/* 96 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -95210,7 +95645,7 @@
 	}
 
 /***/ },
-/* 97 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -95224,7 +95659,7 @@
 	}
 
 /***/ },
-/* 98 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Login, Marionette, Profile, Router, Signup, _, async,
@@ -95239,11 +95674,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	Signup = __webpack_require__(99);
+	Signup = __webpack_require__(103);
 
-	Login = __webpack_require__(103);
+	Login = __webpack_require__(107);
 
-	Profile = __webpack_require__(105);
+	Profile = __webpack_require__(109);
 
 	Router = (function(superClass) {
 	  extend(Router, superClass);
@@ -95347,7 +95782,7 @@
 
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Model,
@@ -95385,11 +95820,11 @@
 
 	exports.Model = Model;
 
-	exports.View = __webpack_require__(100);
+	exports.View = __webpack_require__(104);
 
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, View, viewTemplate,
@@ -95400,11 +95835,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(101);
+	viewTemplate = __webpack_require__(105);
 
 	__webpack_require__(18);
 
-	__webpack_require__(102);
+	__webpack_require__(106);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
@@ -95486,7 +95921,7 @@
 
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -95500,7 +95935,7 @@
 	}
 
 /***/ },
-/* 102 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -96219,7 +96654,7 @@
 
 
 /***/ },
-/* 103 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -96230,11 +96665,11 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(104);
+	viewTemplate = __webpack_require__(108);
 
 	__webpack_require__(18);
 
-	__webpack_require__(102);
+	__webpack_require__(106);
 
 	Model = (function(superClass) {
 	  extend(Model, superClass);
@@ -96324,7 +96759,7 @@
 
 
 /***/ },
-/* 104 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -96338,7 +96773,7 @@
 	}
 
 /***/ },
-/* 105 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Backbone, Marionette, Model, View, viewTemplate,
@@ -96349,7 +96784,7 @@
 
 	Marionette = __webpack_require__(10);
 
-	viewTemplate = __webpack_require__(106);
+	viewTemplate = __webpack_require__(110);
 
 	__webpack_require__(18);
 
@@ -96404,7 +96839,7 @@
 
 
 /***/ },
-/* 106 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var jade = __webpack_require__(14);
@@ -96418,7 +96853,7 @@
 	}
 
 /***/ },
-/* 107 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -96510,7 +96945,7 @@
 
 
 /***/ },
-/* 108 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
