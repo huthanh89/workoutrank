@@ -60,6 +60,9 @@ class ItemView extends Marionette.ItemView
 
   template: itemTemplate
 
+  ui:
+    remove: '.strength-table-td-remove'
+
   bindings:
 
     '.strength-table-td-name': 'name'
@@ -90,6 +93,10 @@ class ItemView extends Marionette.ItemView
     @stickit()
     return
 
+  enableRemove: (enable) ->
+    if enable then @ui.remove.removeClass('hidden') else @ui.remove.addClass('hidden')
+    return
+
   onBeforeDestroy: ->
     @unstickit()
     return
@@ -109,7 +116,8 @@ class View extends Marionette.CompositeView
   template: viewTemplate
 
   ui:
-    table: '#strength-table'
+    table:  '#strength-table'
+    header: '#strength-table-th-remove'
 
   constructor: (options) ->
     super
@@ -119,6 +127,11 @@ class View extends Marionette.CompositeView
     return {
       channel: @channel
     }
+
+  enableRemove: (enable) ->
+    @children.call 'enableRemove', enable
+    if enable then @ui.header.removeClass('hidden') else @ui.header.addClass('hidden')
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

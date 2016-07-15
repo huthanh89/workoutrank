@@ -69,6 +69,11 @@ class View extends Marionette.LayoutView
       @addWorkout()
       return
 
+    'click #strength-remove-enable': ->
+      @enableRemove = not @enableRemove
+      @getRegion('table').currentView.enableRemove @enableRemove
+      return
+
   modelEvents:
     'change:muscle': (model, value) ->
       @filterCollection(value)
@@ -83,8 +88,10 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
     @pageableCollection = new Table.Collection @collection.models
-    @channel = Backbone.Radio.channel('channel')
 
+    @enableRemove = false
+
+    @channel = Backbone.Radio.channel('channel')
     @channel.reply
       'add': =>
         @addWorkout()

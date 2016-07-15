@@ -61031,6 +61031,9 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -61285,7 +61288,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-strengths\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-book\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workouts</b></span><span id=\"home-exercise-count\" class=\"badge badge-color\">0</span></li><li id=\"home-logs\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</b></span><span id=\"home-log-count\" class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-home\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Home</span></div></div><br><div class=\"row\"><div class=\"col-lg-6 col-xs-12\"><ul id=\"home-list\" class=\"list-group\"><li id=\"home-strengths\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-book\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workout Journal</b></span><span id=\"home-exercise-count\" class=\"badge badge-color\">0</span></li><li id=\"home-logs\" class=\"list-group-item\"><i class=\"nav-icon fa fa-fw fa-lg fa-area-chart\"></i><span><b>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Summary Graph</b></span><span id=\"home-log-count\" class=\"badge badge-color\">0</span></li></ul></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -68836,6 +68839,10 @@
 	    },
 	    'click #strength-add': function() {
 	      this.addWorkout();
+	    },
+	    'click #strength-remove-enable': function() {
+	      this.enableRemove = !this.enableRemove;
+	      this.getRegion('table').currentView.enableRemove(this.enableRemove);
 	    }
 	  };
 
@@ -68855,6 +68862,7 @@
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	    this.pageableCollection = new Table.Collection(this.collection.models);
+	    this.enableRemove = false;
 	    this.channel = Backbone.Radio.channel('channel');
 	    this.channel.reply({
 	      'add': (function(_this) {
@@ -73602,6 +73610,10 @@
 
 	  ItemView.prototype.template = itemTemplate;
 
+	  ItemView.prototype.ui = {
+	    remove: '.strength-table-td-remove'
+	  };
+
 	  ItemView.prototype.bindings = {
 	    '.strength-table-td-name': 'name',
 	    '.strength-table-td-muscle': {
@@ -73640,6 +73652,14 @@
 	    this.stickit();
 	  };
 
+	  ItemView.prototype.enableRemove = function(enable) {
+	    if (enable) {
+	      this.ui.remove.removeClass('hidden');
+	    } else {
+	      this.ui.remove.addClass('hidden');
+	    }
+	  };
+
 	  ItemView.prototype.onBeforeDestroy = function() {
 	    this.unstickit();
 	  };
@@ -73660,7 +73680,8 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    table: '#strength-table'
+	    table: '#strength-table',
+	    header: '#strength-table-th-remove'
 	  };
 
 	  function View(options) {
@@ -73672,6 +73693,15 @@
 	    return {
 	      channel: this.channel
 	    };
+	  };
+
+	  View.prototype.enableRemove = function(enable) {
+	    this.children.call('enableRemove', enable);
+	    if (enable) {
+	      this.ui.header.removeClass('hidden');
+	    } else {
+	      this.ui.header.addClass('hidden');
+	    }
 	  };
 
 	  return View;
@@ -73708,7 +73738,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"strength-table-td-remove\"><i class=\"fa fa-fw fa-lg fa-times-circle\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
+	buf.push("<td class=\"strength-table-td-remove hidden\"><i style=\"color:#CC0000\" class=\"fa fa-fw fa-lg fa-trash-o\"></i></td><td class=\"strength-table-td-name\"></td><td class=\"strength-table-td-date\"></td><td class=\"strength-table-td-muscle\"></td>");;return buf.join("");
 	}
 
 /***/ },
@@ -73722,7 +73752,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table id=\"strength-table\" class=\"table table-condensed\"><thead><tr><td>Delete</td><td>Workout</td><td>Date</td><td>Muscle</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-sm-12\"><table id=\"strength-table\" class=\"table table-condensed\"><thead><tr><td id=\"strength-table-th-remove\" class=\"hidden\"></td><td>Workout</td><td>Date</td><td>Muscle</td></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -73758,8 +73788,13 @@
 	  View.prototype.onRender = function() {
 	    this.ui.muscle.multiselect({
 	      enableFiltering: true,
-	      maxHeight: 300,
+	      dropRight: true,
+	      maxHeight: 350,
 	      buttonClass: 'btn btn-info strength-filter-btn',
+	      buttonWidth: 40,
+	      templates: {
+	        button: '<span class="multiselect dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i></span>'
+	      },
 	      onChange: (function(_this) {
 	        return function() {
 	          _this.muscles = _this.ui.muscle.val() || [];
@@ -74115,7 +74150,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Workouts</span></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa fa-plus\"></i></button></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-sm-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "My Workouts</span><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div><div class=\"pull-right\"><button id=\"strength-remove-enable\" style=\"margin-right:5px;\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-cog\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-table-view\"></div></div></div><div class=\"row\"><div class=\"col-md-7\"><div id=\"strength-paginate-view\"></div></div></div><br><div class=\"row\"><div class=\"col-md-7\"><button id=\"strength-add\" class=\"btn btn-primary btn-full-width\"><i class=\"fa fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-book\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span>New Workout</span></button></div></div>");;return buf.join("");
 	}
 
 /***/ },
