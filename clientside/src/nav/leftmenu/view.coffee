@@ -61,31 +61,29 @@ class View extends Marionette.ItemView
 
     menu = $(@el)
 
-    menu.mmenu()
-
-    ###
     menu.mmenu
-
       extensions: [
-        'multiline'
-        'border-none'
+        'border-full'
+        'pagedim-black'
+        'pageshadow'
+        'theme-dark'
       ]
-      slidingSubmenus: false
-      navbars: [{
-        position: 'top'
-        title:    'My photos'
-      }]
+      offCanvas:
+        zposition: 'front'
 
-###
+      navbars: [
+        {
+          position: 'bottom'
+          content: [
+            '<a class=\'fa fa-envelope\'></a>'
+            '<a class=\'fa fa-twitter\'></a>'
+            '<a class=\'fa fa-facebook\'></a>'
+          ]
+        }
+      ]
 
     @api = menu.mmenu().data( "mmenu" )
 
-    @openMenu()
-
-    return
-
-  openMenu: ->
-    @api.open()
     return
 
 #-------------------------------------------------------------------------------

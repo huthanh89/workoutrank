@@ -57917,27 +57917,19 @@
 	  View.prototype.onShow = function() {
 	    var menu;
 	    menu = $(this.el);
-	    menu.mmenu();
-
-	    /*
-	    menu.mmenu
-	    
-	      extensions: [
-	        'multiline'
-	        'border-none'
+	    menu.mmenu({
+	      extensions: ['border-full', 'pagedim-black', 'pageshadow', 'theme-dark'],
+	      offCanvas: {
+	        zposition: 'front'
+	      },
+	      navbars: [
+	        {
+	          position: 'bottom',
+	          content: ['<a class=\'fa fa-envelope\'></a>', '<a class=\'fa fa-twitter\'></a>', '<a class=\'fa fa-facebook\'></a>']
+	        }
 	      ]
-	      slidingSubmenus: false
-	      navbars: [{
-	        position: 'top'
-	        title:    'My photos'
-	      }]
-	     */
+	    });
 	    this.api = menu.mmenu().data("mmenu");
-	    this.openMenu();
-	  };
-
-	  View.prototype.openMenu = function() {
-	    this.api.open();
 	  };
 
 	  return View;
