@@ -138,6 +138,9 @@ gulp.task 'scripts', (callback) ->
         test: /bootstrap/
         loader: "imports?jQuery=jquery"
       ,
+        test: /drawer/
+        loader: "imports?IScroll=iscroll"
+      ,
         test: /timeentry.js/
         loader: "imports?JQPlugin=JQPlugin"
       ,
@@ -176,7 +179,7 @@ gulp.task 'scripts', (callback) ->
         bootstrap:             'scripts/bootstrap.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
         jquery:                'scripts/jquery.js'
-        mmenu:                 'scripts/jquery.mmenu.min.all.js'
+        mmenu:                 'scripts/jquery.mmenu.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
         multiselect:           'scripts/jquery.bootstrap-multiselect.js'
         datepicker:            'scripts/jquery.bootstrap-datepicker.js'
@@ -217,11 +220,10 @@ gulp.task 'css', ->
     './clientside/styles/bootstrap/css/bootstrap-theme.css'
 
     './clientside/styles/css/font-awesome.css'
-    './clientside/styles/css/jquery.mmenu.all.css'
-    './clientside/styles/css/jquery.mmenu.counters.css'
-    './clientside/styles/css/jquery.mmenu.footer.css'
-    './clientside/styles/css/jquery.mmenu.header.css'
-    './clientside/styles/css/jquery.mmenu.themes.css'
+
+    './clientside/styles/css/jquery.mmenu.css'
+
+
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
     './clientside/styles/css/bootstrap-multiselect.css'
     './clientside/styles/css/bootstrap-datepicker.css'

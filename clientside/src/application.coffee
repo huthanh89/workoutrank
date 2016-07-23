@@ -33,6 +33,7 @@ class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
     header:   '#header'
+    drawer:   '#drawer'
     shortcut: '#shortcut-container'
     message:  '#message-container'
     content:  '#content'
@@ -56,6 +57,10 @@ class Application extends Marionette.Application
     # Start channels.
 
     rootView = new RootView()
+
+    # user: get user related info
+    # root: call methods at the root level(including page navigations)
+    # nav:  used to show which kind of navbar on top
 
     userChannel = Backbone.Radio.channel('user')
     rootChannel = Backbone.Radio.channel('root')
@@ -82,15 +87,25 @@ class Application extends Marionette.Application
     navChannel.reply
 
       'nav:index': ->
+
+        console.log 'index'
+
         rootView.showChildView 'header', new Nav.Index()
+
+        rootView.showChildView 'drawer', new Nav.Drawer()
+
         rootView.getRegion('shortcut').empty()
         return
 
       'nav:main': ->
         user.fetch
           success: (model) ->
+
             rootView.showChildView 'header', new Nav.Main
               model: user
+
+            rootView.showChildView 'drawer', new Nav.Drawer()
+
             rootView.showChildView 'shortcut', new ShortcutView()
             return
           error: (model, response) ->

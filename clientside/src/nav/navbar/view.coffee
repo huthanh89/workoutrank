@@ -5,6 +5,7 @@
 $            = require 'jquery'
 _            = require 'lodash'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
 
@@ -45,6 +46,10 @@ class View extends Marionette.ItemView
       onGet: (value) -> value.toString().toUpperCase()
 
   events:
+
+    'click #navbar-drawer': ->
+      Radio.channel('root').request 'drawer:open'
+      return
 
     'click @ui.home': ->
       @channel.request 'home'

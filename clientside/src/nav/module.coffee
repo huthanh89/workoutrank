@@ -2,7 +2,7 @@
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Index = require './index/view'
-exports.Main  = require './main/view'
+exports.Drawer = require './leftmenu/view'
+exports.Main   = require './navbar/view'
 
 #-------------------------------------------------------------------------------
