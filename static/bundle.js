@@ -95918,6 +95918,7 @@
 	  result = {
 	    type: 'line',
 	    yAxis: 0,
+	    shadow: true,
 	    marker: {
 	      enabled: true,
 	      symbol: 'circle',
@@ -95965,7 +95966,7 @@
 	      text: title,
 	      float: true,
 	      align: 'left',
-	      x: -2,
+	      x: 5,
 	      style: {
 	        fontWeight: 'bold',
 	        color: 'grey'
@@ -96013,7 +96014,14 @@
 	    chart = new Highstocks.StockChart({
 	      chart: {
 	        renderTo: container,
-	        height: 300
+	        height: 300,
+	        spacingBottom: 15,
+	        spacingTop: 10,
+	        spacingLeft: 10,
+	        spacingRight: 10,
+	        plotBorderColor: '#346691',
+	        plotBorderWidth: 2,
+	        panning: false
 	      },
 	      title: {
 	        text: title,
