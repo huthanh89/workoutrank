@@ -95743,7 +95743,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-folder-open\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Logs</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"logs-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graphs</span></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div id=\"logs-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -95859,11 +95859,8 @@
 	  function View(options) {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
+	    this.model = this.collection.at(0);
 	  }
-
-	  View.prototype.onRender = function() {
-	    this.stickit();
-	  };
 
 	  View.prototype.onShow = function() {
 	    this.showChildView('graph', new GraphView({
@@ -95955,7 +95952,7 @@
 	  }).y;
 	};
 
-	plotLine = function(title, value) {
+	plotLine = function(text, value) {
 	  return {
 	    value: value,
 	    width: 2,
@@ -95963,7 +95960,7 @@
 	    dashStyle: 'shortdash',
 	    zIndex: 5,
 	    label: {
-	      text: title,
+	      text: text,
 	      float: true,
 	      align: 'left',
 	      x: 5,
@@ -96009,8 +96006,9 @@
 	  }
 
 	  View.prototype.addChart = function(container, model, type) {
-	    var chart, data, mean, title;
-	    title = type === 0 ? 'Reps' : 'Weights';
+	    var chart, data, mean, name, title;
+	    name = model.get('name');
+	    title = type === 0 ? name + " (reps)" : name + " (weights)";
 	    chart = new Highstocks.StockChart({
 	      chart: {
 	        renderTo: container,
@@ -96362,7 +96360,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-6\"><span class=\"lead page-header\"><i class=\"fa fa-fw fa-lg fa-bar-chart-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Chart</span></div><div class=\"col-xs-6\"><div class=\"pull-right\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i></button></div></div></div><br><div id=\"log-graph-view\"></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"log-table-view\"></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-6\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-arrow-left\"></i></button></div><div class=\"col-xs-6\"><div class=\"pull-right\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i></button></div></div></div><br><div id=\"log-graph-view\"></div><br><div class=\"row\"><div class=\"col-sm-12\"><div id=\"log-table-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

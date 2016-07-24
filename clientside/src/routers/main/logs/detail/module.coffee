@@ -88,10 +88,7 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-
-  onRender: ->
-    @stickit()
-    return
+    @model = @collection.at(0)
 
   onShow: ->
 

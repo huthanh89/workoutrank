@@ -61,7 +61,7 @@ getMax = (data) -> _.maxBy(data, (record) -> record.y).y
 # Return plot line options for y axis.
 #-------------------------------------------------------------------------------
 
-plotLine = (title, value) ->
+plotLine = (text, value) ->
   return {
     value:      value
     width:      2
@@ -69,7 +69,7 @@ plotLine = (title, value) ->
     dashStyle: 'shortdash'
     zIndex:     5
     label:
-      text:   title
+      text:   text
       float:  true
       align: 'left'
       x:      5
@@ -112,7 +112,8 @@ class View extends Marionette.ItemView
 
   addChart: (container, model, type) ->
 
-    title = if type is 0 then 'Reps' else 'Weights'
+    name  = model.get('name')
+    title = if type is 0 then "#{name} (reps)" else "#{name} (weights)"
 
     chart = new Highstocks.StockChart
 
