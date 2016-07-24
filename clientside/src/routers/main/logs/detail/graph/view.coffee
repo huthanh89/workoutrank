@@ -21,17 +21,28 @@ getColor = (index) ->
 # Series Data
 #-------------------------------------------------------------------------------
 
-seriesData = (model, index) ->
+seriesData = (model, type) ->
 
-  color = getColor(index)
-
-  return {
-    name: 'Reps'
+  result =
+    type: 'line'
     yAxis: 0
-    data:  model.get('repData')
-    type: 'column'
-    color: color
-  }
+    marker:
+      enabled: true
+      symbol: 'circle'
+      radius:  6
+
+  if type is 0
+    return _.assign result,
+      name: 'Reps'
+      data:  model.get('repData')
+      color: getColor(0)
+  else
+    return _.assign result,
+      name: 'Weights'
+      data:  model.get('weightData')
+      color: getColor(2)
+      tooltip:
+        valueSuffix: ' lb'
 
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
@@ -49,22 +60,20 @@ getMax = (data) -> _.maxBy(data, (record) -> record.y).y
 # Return plot line options for y axis.
 #-------------------------------------------------------------------------------
 
-plotLine = (title, value, color, opposite) ->
+plotLine = (title, value) ->
   return {
     value:      value
     width:      2
-    #color:      color
-    color:      'grey'
+    color:     'grey'
     dashStyle: 'shortdash'
     zIndex:     5
     label:
-      text:  title
-      float: true
-      align: if opposite then 'right' else 'left'
+      text:   title
+      float:  true
+      align: 'left'
       x:     -2
       style:
         fontWeight: 'bold'
-#        color:       color
         color:      'grey'
   }
 
@@ -98,21 +107,23 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @repIndex    = Math.ceil(Math.random() * (100 - 50) + 50)
-    @weightIndex = Math.ceil(Math.random() * (50 - 1) + 1)
     @charts      = []
 
-  addChart: (container, series) ->
+  addChart: (container, model, type) ->
+
+    title = if type is 0 then 'Reps' else 'Weights'
+
     chart = new Highstocks.StockChart
+
       chart:
         renderTo: container
         height:   300
 
-      plotOptions:
-        series:
-          marker:
-            radius:  2
-            enabled: true
+      title:
+        text:  title
+        align: 'left'
+        margin: 0
+        x:      30
 
       rangeSelector:
         enabled: false
@@ -128,23 +139,41 @@ class View extends Marionette.ItemView
         crosshair: true
         events:
           setExtremes: syncExtremes
+
       yAxis:  [
         lineWidth: 1
         opposite:  false
         crosshair: true
-        title:
-          text: 'Rep'
-          style:
-            fontWeight: 'bold'
-            fontSize:    14
-            'letter-spacing': 2
-      ,
-        lineWidth: 1
-        opposite:  true
       ]
+
       tooltip:
         shared: false
-      series: [series]
+
+        positioner: ->
+          return {
+            x: @chart.chartWidth - @label.width - 2
+            y: 1
+          }
+#        borderWidth:      0
+#        backgroundColor: 'none'
+        pointFormat:     '{point.y}'
+#        headerFormat:    '{point.x}'
+        shadow:           false
+        style:
+          fontSize:      '18px'
+          fontWeight:    'bold'
+        valueDecimals:    0
+
+      series: [seriesData(model, type)]
+
+      credits:
+        enabled: false
+
+    # Draw weight plot lines on chart.
+
+    data = if type is 0 then model.get('repData') else model.get('weightData')
+    mean = _.round(getMean(data), 1)
+    chart.yAxis[0].addPlotLine plotLine("Average: #{mean}", mean)
 
     # Call reflow so chart will fit 100% of the width container.
 
@@ -158,18 +187,17 @@ class View extends Marionette.ItemView
 
     model = @collection.at(0)
 
-    @addChart(@ui.chartWeight[0], seriesData(model, @weightIndex))
-    @addChart(@ui.chartRep[0], seriesData(model, @repIndex))
+    @addChart(@ui.chartRep[0], model, 0)
+    @addChart(@ui.chartWeight[0], model, 1)
 
     @ui.container.bind 'mousemove touchmove touchstart', (e) =>
 
       chart = undefined
       point = undefined
       event = undefined
-      i     = 0
 
-      while i < @charts.length
-        chart = @charts[i]
+      for chart, index in @charts
+        chart = @charts[index]
         event = chart.pointer.normalize(e.originalEvent)
 
         # Find coordinates within the chart
@@ -178,12 +206,13 @@ class View extends Marionette.ItemView
         # Get the hovered point
         if point
 
-          # Draw cross hair and show tool tips.
+          # For each chart find the actual point by id then
+          # draw cross hair and tooltip.
+
           for chart in @charts
+            point = chart.get(point.x)
             chart.xAxis[0].drawCrosshair event, point
             chart.tooltip.refresh point, e
-
-        i = i + 1
 
       return
 

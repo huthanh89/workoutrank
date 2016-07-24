@@ -49,12 +49,14 @@ class Collection extends Backbone.Collection
         x = moment(record.date).valueOf()
 
         weightData.push
-          x: x
-          y: record.weight
+          id: x
+          x:  x
+          y:  record.weight
 
         repData.push
-          x: x
-          y: record.rep
+          id: x
+          x:  x
+          y:  record.rep
 
       result.push
         exerciseID:   exercise

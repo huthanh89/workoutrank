@@ -58106,12 +58106,15 @@
 	  View.prototype.events = {
 	    'click #drawer-home': function() {
 	      this.channel.request('home');
+	      this.api.close();
 	    },
 	    'click #drawer-journals': function() {
 	      this.channel.request('strengths');
+	      this.api.close();
 	    },
 	    'click #drawer-graphs': function() {
 	      this.channel.request('logs');
+	      this.api.close();
 	    }
 	  };
 
@@ -95807,10 +95810,12 @@
 	        record = records[i];
 	        x = moment(record.date).valueOf();
 	        weightData.push({
+	          id: x,
 	          x: x,
 	          y: record.weight
 	        });
 	        repData.push({
+	          id: x,
 	          x: x,
 	          y: record.rep
 	        });
@@ -95908,16 +95913,33 @@
 	  return colors[index % colors.length];
 	};
 
-	seriesData = function(model, index) {
-	  var color;
-	  color = getColor(index);
-	  return {
-	    name: 'Reps',
+	seriesData = function(model, type) {
+	  var result;
+	  result = {
+	    type: 'line',
 	    yAxis: 0,
-	    data: model.get('repData'),
-	    type: 'column',
-	    color: color
+	    marker: {
+	      enabled: true,
+	      symbol: 'circle',
+	      radius: 6
+	    }
 	  };
+	  if (type === 0) {
+	    return _.assign(result, {
+	      name: 'Reps',
+	      data: model.get('repData'),
+	      color: getColor(0)
+	    });
+	  } else {
+	    return _.assign(result, {
+	      name: 'Weights',
+	      data: model.get('weightData'),
+	      color: getColor(2),
+	      tooltip: {
+	        valueSuffix: ' lb'
+	      }
+	    });
+	  }
 	};
 
 	getMean = function(data) {
@@ -95932,7 +95954,7 @@
 	  }).y;
 	};
 
-	plotLine = function(title, value, color, opposite) {
+	plotLine = function(title, value) {
 	  return {
 	    value: value,
 	    width: 2,
@@ -95942,7 +95964,7 @@
 	    label: {
 	      text: title,
 	      float: true,
-	      align: opposite ? 'right' : 'left',
+	      align: 'left',
 	      x: -2,
 	      style: {
 	        fontWeight: 'bold',
@@ -95982,25 +96004,22 @@
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
-	    this.repIndex = Math.ceil(Math.random() * (100 - 50) + 50);
-	    this.weightIndex = Math.ceil(Math.random() * (50 - 1) + 1);
 	    this.charts = [];
 	  }
 
-	  View.prototype.addChart = function(container, series) {
-	    var chart;
+	  View.prototype.addChart = function(container, model, type) {
+	    var chart, data, mean, title;
+	    title = type === 0 ? 'Reps' : 'Weights';
 	    chart = new Highstocks.StockChart({
 	      chart: {
 	        renderTo: container,
 	        height: 300
 	      },
-	      plotOptions: {
-	        series: {
-	          marker: {
-	            radius: 2,
-	            enabled: true
-	          }
-	        }
+	      title: {
+	        text: title,
+	        align: 'left',
+	        margin: 0,
+	        x: 30
 	      },
 	      rangeSelector: {
 	        enabled: false
@@ -96022,25 +96041,33 @@
 	        {
 	          lineWidth: 1,
 	          opposite: false,
-	          crosshair: true,
-	          title: {
-	            text: 'Rep',
-	            style: {
-	              fontWeight: 'bold',
-	              fontSize: 14,
-	              'letter-spacing': 2
-	            }
-	          }
-	        }, {
-	          lineWidth: 1,
-	          opposite: true
+	          crosshair: true
 	        }
 	      ],
 	      tooltip: {
-	        shared: false
+	        shared: false,
+	        positioner: function() {
+	          return {
+	            x: this.chart.chartWidth - this.label.width - 2,
+	            y: 1
+	          };
+	        },
+	        pointFormat: '{point.y}',
+	        shadow: false,
+	        style: {
+	          fontSize: '18px',
+	          fontWeight: 'bold'
+	        },
+	        valueDecimals: 0
 	      },
-	      series: [series]
+	      series: [seriesData(model, type)],
+	      credits: {
+	        enabled: false
+	      }
 	    });
+	    data = type === 0 ? model.get('repData') : model.get('weightData');
+	    mean = _.round(getMean(data), 1);
+	    chart.yAxis[0].addPlotLine(plotLine("Average: " + mean, mean));
 	    chart.reflow();
 	    this.charts.push(chart);
 	  };
@@ -96048,28 +96075,29 @@
 	  View.prototype.onShow = function() {
 	    var model;
 	    model = this.collection.at(0);
-	    this.addChart(this.ui.chartWeight[0], seriesData(model, this.weightIndex));
-	    this.addChart(this.ui.chartRep[0], seriesData(model, this.repIndex));
+	    this.addChart(this.ui.chartRep[0], model, 0);
+	    this.addChart(this.ui.chartWeight[0], model, 1);
 	    this.ui.container.bind('mousemove touchmove touchstart', (function(_this) {
 	      return function(e) {
-	        var chart, event, i, j, len, point, ref;
+	        var chart, event, i, index, j, len, len1, point, ref, ref1;
 	        chart = void 0;
 	        point = void 0;
 	        event = void 0;
-	        i = 0;
-	        while (i < _this.charts.length) {
-	          chart = _this.charts[i];
+	        ref = _this.charts;
+	        for (index = i = 0, len = ref.length; i < len; index = ++i) {
+	          chart = ref[index];
+	          chart = _this.charts[index];
 	          event = chart.pointer.normalize(e.originalEvent);
 	          point = chart.series[0].searchPoint(event, true);
 	          if (point) {
-	            ref = _this.charts;
-	            for (j = 0, len = ref.length; j < len; j++) {
-	              chart = ref[j];
+	            ref1 = _this.charts;
+	            for (j = 0, len1 = ref1.length; j < len1; j++) {
+	              chart = ref1[j];
+	              point = chart.get(point.x);
 	              chart.xAxis[0].drawCrosshair(event, point);
 	              chart.tooltip.refresh(point, e);
 	            }
 	          }
-	          i = i + 1;
 	        }
 	      };
 	    })(this));
@@ -96093,7 +96121,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"strength-log-graph-container\"><div id=\"strength-log-graph-weight\"></div><div id=\"strength-log-graph-rep\"></div></div>");;return buf.join("");
+	buf.push("<div id=\"strength-log-graph-container\"><div id=\"strength-log-graph-rep\"></div><div id=\"strength-log-graph-weight\"></div></div>");;return buf.join("");
 	}
 
 /***/ },

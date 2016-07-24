@@ -32,14 +32,17 @@ class View extends Marionette.ItemView
   events:
     'click #drawer-home': ->
       @channel.request 'home'
+      @api.close()
       return
 
     'click #drawer-journals': ->
       @channel.request 'strengths'
+      @api.close()
       return
 
     'click #drawer-graphs': ->
       @channel.request 'logs'
+      @api.close()
       return
 
   constructor: ->
