@@ -2,10 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highcharts   = require 'highcharts'
-Highstock    = require 'highstock'
+Highstocks   = require 'highstock'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -17,10 +18,10 @@ getColor = (index) ->
   return colors[index % colors.length]
 
 #-------------------------------------------------------------------------------
-# Series Rep Data
+# Series Data
 #-------------------------------------------------------------------------------
 
-seriesRepData = (model, index) ->
+seriesData = (model, index) ->
 
   color = getColor(index)
 
@@ -30,33 +31,6 @@ seriesRepData = (model, index) ->
     data:  model.get('repData')
     type: 'column'
     color: color
-  }
-
-#-------------------------------------------------------------------------------
-# Series Weight Data
-#-------------------------------------------------------------------------------
-
-seriesWeightData = (model, index) ->
-
-  color = getColor(index)
-
-  return {
-    name: 'Weight'
-    yAxis: 1
-    data: model.get('weightData')
-    type: 'areaspline'
-    color: color
-    fillColor:
-      linearGradient:
-        x1: 0,
-        y1: 0,
-        x2: 0,
-        y2: 1
-      stops : [
-        [ 0, color],
-        [.9, Highcharts.Color(color).setOpacity(0).get('rgba')]
-      ]
-    threshold: null
   }
 
 #-------------------------------------------------------------------------------
@@ -95,6 +69,20 @@ plotLine = (title, value, color, opposite) ->
   }
 
 #-------------------------------------------------------------------------------
+# Sync chart extremes
+#-------------------------------------------------------------------------------
+
+syncExtremes = (e) ->
+  thisChart = @chart
+  if e.trigger != 'syncExtremes'
+    Highcharts.each Highcharts.charts, (chart) ->
+      if chart != thisChart
+        if chart.xAxis[0].setExtremes
+          chart.xAxis[0].setExtremes e.min, e.max, undefined, false, trigger: 'syncExtremes'
+      return
+  return
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -103,46 +91,47 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    chart: '#strength-log-graph-ui'
+    container:   '#strength-log-graph-container'
+    chartWeight: '#strength-log-graph-weight'
+    chartRep:    '#strength-log-graph-rep'
 
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-
     @repIndex    = Math.ceil(Math.random() * (100 - 50) + 50)
     @weightIndex = Math.ceil(Math.random() * (50 - 1) + 1)
+    @charts      = []
 
-  onRender: ->
-
-    model = @collection.at(0)
-
-    @chart = new Highstock.StockChart
-
+  addChart: (container, series) ->
+    chart = new Highstocks.StockChart
       chart:
-        renderTo: @ui.chart[0]
-        height:   500
-
-      title:
-        text: model.get('name').toUpperCase()
-        style:
-          fontWeight: 'bold'
+        renderTo: container
+        height:   300
 
       plotOptions:
-        areaspline:
-          fillOpacity: 0.3
-          lineWidth:   3
-
         series:
           marker:
             radius:  2
             enabled: true
 
+      rangeSelector:
+        enabled: false
+
+      navigator:
+        enabled: false
+
+      scrollbar:
+        enabled: false
+
       xAxis:
         lineWidth: 2
-
-      yAxis: [
+        crosshair: true
+        events:
+          setExtremes: syncExtremes
+      yAxis:  [
         lineWidth: 1
         opposite:  false
+        crosshair: true
         title:
           text: 'Rep'
           style:
@@ -152,48 +141,52 @@ class View extends Marionette.ItemView
       ,
         lineWidth: 1
         opposite:  true
-        title:
-          text: 'Weight'
-          style:
-            fontWeight:      'bold'
-            fontSize:         14
-            'letter-spacing': 2
       ]
+      tooltip:
+        shared: false
+      series: [series]
 
-      series: [
-        seriesWeightData(model, @weightIndex)
-      ,
-        seriesRepData(model, @repIndex)
-      ]
+    # Call reflow so chart will fit 100% of the width container.
 
-      legend:
-        enabled:     true
-        borderWidth: 2
+    chart.reflow()
 
-      credits:
-        enabled: false
-
-    ###
-    # Draw rep plot lines on chart.
-
-    mean  = getMean(model.get('repData'))
-    color = getColor(@repIndex)
-    @chart.yAxis[1].addPlotLine plotLine('Average Rep', mean, color, false)
-
-###
-
-    # Draw weight plot lines on chart.
-
-    mean  = _.round(getMean(model.get('weightData')), 0)
-    color = getColor(@weightIndex)
-    @chart.yAxis[1].addPlotLine plotLine("Avg Weight: #{mean}", mean, color, true)
+    @charts.push chart
 
     return
 
-  # Chart does not stretch the full container unless reflow is called.
-
   onShow: ->
-    @chart.reflow()
+
+    model = @collection.at(0)
+
+    @addChart(@ui.chartWeight[0], seriesData(model, @weightIndex))
+    @addChart(@ui.chartRep[0], seriesData(model, @repIndex))
+
+    @ui.container.bind 'mousemove touchmove touchstart', (e) =>
+
+      chart = undefined
+      point = undefined
+      event = undefined
+      i     = 0
+
+      while i < @charts.length
+        chart = @charts[i]
+        event = chart.pointer.normalize(e.originalEvent)
+
+        # Find coordinates within the chart
+        point = chart.series[0].searchPoint(event, true)
+
+        # Get the hovered point
+        if point
+
+          # Draw cross hair and show tool tips.
+          for chart in @charts
+            chart.xAxis[0].drawCrosshair event, point
+            chart.tooltip.refresh point, e
+
+        i = i + 1
+
+      return
+
     return
 
 #-------------------------------------------------------------------------------

@@ -2,44 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highcharts   = require 'highcharts'
 Highstock    = require 'highstock'
 viewTemplate = require './view.jade'
-
-#-------------------------------------------------------------------------------
-# Given a collection, condense the collection to a single chart model.
-#-------------------------------------------------------------------------------
-
-chartModel = (collection) ->
-
-  weightData = []
-  repData    = []
-
-  collection.each (model) ->
-
-    x = moment(model.get('date')).valueOf()
-
-    weightData.push
-      x: x
-      y: model.get('weight')
-
-    repData.push
-      x: x
-      y: model.get('rep')
-
-  model = collection.at(0)
-
-  return {
-    exerciseID:   model.get('exercise')
-    name:         model.get('name')
-    weightData: _.sortBy weightData, (point) -> point.x
-    repData:    _.sortBy repData, (point) -> point.x
-    muscle:       model.get('muscle')
-    user:         model.get('user')
-  }
 
 #-------------------------------------------------------------------------------
 # Given an index, return a HighChart color.
@@ -112,6 +79,7 @@ plotLine = (title, value, color, opposite) ->
   return {
     value:      value
     width:      2
+    #color:      color
     color:      'grey'
     dashStyle: 'shortdash'
     zIndex:     5
@@ -122,6 +90,7 @@ plotLine = (title, value, color, opposite) ->
       x:     -2
       style:
         fontWeight: 'bold'
+#        color:       color
         color:      'grey'
   }
 
@@ -139,24 +108,24 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @model       = new Backbone.Model chartModel(@collection)
+
     @repIndex    = Math.ceil(Math.random() * (100 - 50) + 50)
     @weightIndex = Math.ceil(Math.random() * (50 - 1) + 1)
 
   onRender: ->
 
+    model = @collection.at(0)
+
     @chart = new Highstock.StockChart
 
       chart:
         renderTo: @ui.chart[0]
-        height:    400
-        marginTop: 5
+        height:   500
 
-      rangeSelector:
-        enabled: false
-
-      navigator:
-        top: 310
+      title:
+        text: model.get('name').toUpperCase()
+        style:
+          fontWeight: 'bold'
 
       plotOptions:
         areaspline:
@@ -174,28 +143,32 @@ class View extends Marionette.ItemView
       yAxis: [
         lineWidth: 1
         opposite:  false
-
+        title:
+          text: 'Rep'
+          style:
+            fontWeight: 'bold'
+            fontSize:    14
+            'letter-spacing': 2
       ,
         lineWidth: 1
         opposite:  true
+        title:
+          text: 'Weight'
+          style:
+            fontWeight:      'bold'
+            fontSize:         14
+            'letter-spacing': 2
       ]
 
       series: [
-        seriesWeightData(@model, @weightIndex)
+        seriesWeightData(model, @weightIndex)
       ,
-        seriesRepData(@model, @repIndex)
+        seriesRepData(model, @repIndex)
       ]
 
       legend:
-        x:                35
-        y:                2
-        enabled:          true
-        borderWidth:      2
-        layout:          'vertical'
-        align:           'left'
-        verticalAlign:   'top'
-        floating:         true
-        backgroundColor: '#FFFFFF'
+        enabled:     true
+        borderWidth: 2
 
       credits:
         enabled: false
@@ -211,7 +184,7 @@ class View extends Marionette.ItemView
 
     # Draw weight plot lines on chart.
 
-    mean  = _.round(getMean(@model.get('weightData')), 0)
+    mean  = _.round(getMean(model.get('weightData')), 0)
     color = getColor(@weightIndex)
     @chart.yAxis[1].addPlotLine plotLine("Avg Weight: #{mean}", mean, color, true)
 
