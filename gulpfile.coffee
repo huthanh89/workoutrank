@@ -131,6 +131,7 @@ gulp.task 'scripts', (callback) ->
       ,
         test:   /\.jade$/
         loader: 'jade'
+
       ,
         test: /jquery/
         loader: "imports?jQuery=jquery"
@@ -178,6 +179,7 @@ gulp.task 'scripts', (callback) ->
         highstock:             'scripts/highstock.js'
         bootstrap:             'scripts/bootstrap.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
+
         jquery:                'scripts/jquery.js'
         mmenu:                 'scripts/jquery.mmenu.all.min.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
@@ -185,6 +187,8 @@ gulp.task 'scripts', (callback) ->
         datepicker:            'scripts/jquery.bootstrap-datepicker.js'
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
+        datatable:             'scripts/jquery.datatables.js'
+
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
         fauxserver:            'scripts/backbone-faux-server.js'
 
@@ -226,6 +230,9 @@ gulp.task 'css', ->
     './clientside/styles/css/bootstrap-multiselect.css'
     './clientside/styles/css/bootstrap-datepicker.css'
     './clientside/styles/css/jquery.timeentry.css'
+
+    './clientside/styles/css/jquery.datatables.css'
+
     './clientside/styles/css/timepicker.css'
 
     './clientside/styles/application.css'

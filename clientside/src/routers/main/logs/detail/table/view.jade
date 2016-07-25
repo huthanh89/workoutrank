@@ -1,51 +1,31 @@
 .row
     .col-xs-12
-        table.table.table-condensed.table-hover.slog-detail-table
+        table.display.responsive.no-wrap#log-table(width='100%').table-hover
             thead
                 tr
-                    td.col-xs-4(colspan='2')
+                    td
+                    td
                         b Weight
+                    td
+                        b Rep
             tbody
                 tr
-                    td Max
+                    td Maximum
                     td#log-table-weight-max
-                tr
-                    td Avg
-                    td#log-table-weight-avg
-                tr
-                    td Min
-                    td#log-table-weight-min
-.row
-    .col-xs-12
-        table.table.table-condensed.table-hover.slog-detail-table
-            thead
-                tr
-                    td.col-xs-4(colspan='2')
-                        b Reps
-            tbody
-                tr
-                    td Max
                     td#log-table-rep-max
                 tr
-                    td Avg
+                    td Average
+                    td#log-table-weight-avg
                     td#log-table-rep-avg
                 tr
-                    td Min
+                    td Minimum
+                    td#log-table-weight-min
                     td#log-table-rep-min
-.row
-    .col-xs-12
-        table.table.table-condensed.table-hover.slog-detail-table
-            thead
                 tr
-                    td.col-xs-4(colspan='2')
-                        b Summary
-            tbody
+                    td Standard Deviation
+                    td#log-table-weight-sd
+                    td#log-table-rep-sd
                 tr
-                    td Name
-                    td#log-table-name
-                tr
-                    td Muscle
-                    td#log-table-muscle
-                tr
-                    td Started
-                    td#log-table-date
+                    td Total Count
+                    td#log-table-weight-total
+                    td#log-table-rep-total

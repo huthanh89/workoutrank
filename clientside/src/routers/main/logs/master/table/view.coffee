@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
@@ -16,6 +17,7 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
+require 'datatable'
 
 #-------------------------------------------------------------------------------
 # Null View
@@ -76,9 +78,17 @@ class View extends Marionette.CompositeView
 
   template: viewTemplate
 
+  ui:
+    table: '#logs-table'
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+
+  onShow: ->
+    @ui.table.DataTable
+      scrollX: true
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

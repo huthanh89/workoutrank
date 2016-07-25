@@ -81,8 +81,8 @@ class View extends Marionette.LayoutView
     table: '#log-table-view'
 
   events:
-    'click #log-home': ->
-      @rootChannel.request 'home'
+    'click #log-back': ->
+      @rootChannel.request 'logs'
       return
 
   constructor: (options) ->

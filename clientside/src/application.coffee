@@ -88,8 +88,6 @@ class Application extends Marionette.Application
 
       'nav:index': ->
 
-        console.log 'index'
-
         rootView.showChildView 'header', new Nav.Index()
 
         rootView.showChildView 'drawer', new Nav.Drawer()
