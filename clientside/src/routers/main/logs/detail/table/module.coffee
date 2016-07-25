@@ -9,6 +9,12 @@ Data         = require '../../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Plugins
+#-------------------------------------------------------------------------------
+
+require 'datatable'
+
+#-------------------------------------------------------------------------------
 # Variance
 #-------------------------------------------------------------------------------
 
@@ -148,7 +154,7 @@ class View extends Marionette.ItemView
       max:  @max(values)
       avg:  @avg(values)
       total: values.length
-      sd:    _.round sd, 2
+      sd:  _.round sd, 2
     }
 
   min: (values) -> _.round(_.min(values), 2)

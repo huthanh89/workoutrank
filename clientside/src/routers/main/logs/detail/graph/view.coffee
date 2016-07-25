@@ -129,7 +129,7 @@ class View extends Marionette.ItemView
         panning : false
 
       title:
-        text:  title
+        text:   title
         align: 'left'
         margin: 0
         x:      30
@@ -158,6 +158,7 @@ class View extends Marionette.ItemView
       tooltip:
         shared: false
 
+        ###
         positioner: ->
           return {
             x: @chart.chartWidth - @label.width - 2
@@ -168,8 +169,9 @@ class View extends Marionette.ItemView
         pointFormat:     '{point.y}'
 #        headerFormat:    '{point.x}'
         shadow:           false
+###
         style:
-          fontSize:      '18px'
+          fontSize:      '15px'
           fontWeight:    'bold'
         valueDecimals:    0
 

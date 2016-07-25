@@ -149,14 +149,17 @@ class View extends Marionette.ItemView
 
       chart:
         renderTo: @ui.chart[0]
-        height:    400
+        height:    300
         marginTop: 5
 
       rangeSelector:
         enabled: false
 
       navigator:
-        top: 310
+        enabled: false
+
+      scrollbar:
+        enabled: false
 
       plotOptions:
         areaspline:
@@ -174,10 +177,13 @@ class View extends Marionette.ItemView
       yAxis: [
         lineWidth: 1
         opposite:  false
-
+        labels:
+          enabled: false
       ,
         lineWidth: 1
         opposite:  true
+        labels:
+          enabled: false
       ]
 
       series: [
@@ -199,21 +205,6 @@ class View extends Marionette.ItemView
 
       credits:
         enabled: false
-
-    ###
-    # Draw rep plot lines on chart.
-
-    mean  = getMean(model.get('repData'))
-    color = getColor(@repIndex)
-    @chart.yAxis[1].addPlotLine plotLine('Average Rep', mean, color, false)
-
-###
-
-    # Draw weight plot lines on chart.
-
-    mean  = _.round(getMean(@model.get('weightData')), 0)
-    color = getColor(@weightIndex)
-    @chart.yAxis[1].addPlotLine plotLine("Avg Weight: #{mean}", mean, color, true)
 
     return
 

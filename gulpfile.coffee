@@ -188,6 +188,7 @@ gulp.task 'scripts', (callback) ->
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
         datatable:             'scripts/jquery.datatables.js'
+        'datatable.editor':    'scripts/jquery.datatables.editor.js'
 
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
         fauxserver:            'scripts/backbone-faux-server.js'

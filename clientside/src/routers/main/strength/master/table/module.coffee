@@ -17,6 +17,7 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
+require 'datatable'
 
 #-------------------------------------------------------------------------------
 # Pageable Collection
@@ -127,6 +128,11 @@ class View extends Marionette.CompositeView
     return {
       channel: @channel
     }
+
+  onShow: ->
+    @ui.table.DataTable
+      scrollX:   true
+    return
 
   enableRemove: (enable) ->
     @children.call 'enableRemove', enable
