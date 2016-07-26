@@ -68,7 +68,7 @@ class View extends Marionette.LayoutView
   events:
 
     'click #strength-back': ->
-      @rootChannel.request 'strength'
+      @rootChannel.request 'strengths'
       return
 
     'click #strength-log': ->

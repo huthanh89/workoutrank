@@ -221,8 +221,8 @@ gulp.task 'css', ->
 
   gulp.src([
 
-    './clientside/styles/bootstrap/css/bootstrap.css'
-    './clientside/styles/bootstrap/css/bootstrap-theme.css'
+    './clientside/styles/css/bootstrap.css'
+    './clientside/styles/css/bootstrap-theme.css'
     './clientside/styles/css/font-awesome.css'
 
     './clientside/styles/css/jquery.mmenu.all.css'

@@ -1,28 +1,24 @@
 #strength-modal-view
 .row
     .col-xs-6
-        span.lead.page-header
-            i.fa.fa-fw.fa-lg.fa-file-text-o
-            | Journal (
-            = ' '
-            span#strength-header
-            = ' '
-            | )
+        button.btn.btn-default#strength-back
+            i.fa.fa-fw.fa-lg.fa-arrow-left
+        = ' '
+        span.lead#strength-header
     .col-xs-6
         .pull-right
+            button.btn.btn-primary#strength-detail-add
+                i.fa.fa-lg.fa-file-text-o
+                = ' '
+                i.fa.fa.fa-plus
+            = ' '
             button.btn.btn-default
-                i.fa.fa-fw.fa-lg.fa-bar-chart-o
+                i.fa.fa-fw.fa-lg.fa-area-chart
 br
 .row
     .col-sm-6
         #strength-date-view
         #strength-table-view
         #strength-paginate-view
-        br
-        button.btn.btn-primary.btn-full-width#strength-detail-add
-            i.fa.fa-lg.fa-file-text-o
-            = ' '
-            i.fa.fa.fa-plus
-        br
     .col-sm-6
         #strength-chart-view

@@ -2,26 +2,23 @@
     .col-xs-12
         #strength-modal-view
 .row
-    .col-sm-12
+    .col-xs-12
         span.lead.page-header
-            i.fa.fa-fw.fa-lg.fa-book
+            i.fa.fa-fw.fa-lg.fa-file-text-o
             = ' '
-            | My Workouts
+            | Journals
         .pull-right
             #strength-filter-view
         .pull-right
             button.btn.btn-default#strength-remove-enable(style="margin-right:5px;")
                 i.fa.fa-lg.fa-cog
+            button.btn.btn-primary#strength-add
+                i.fa.fa.fa-plus
+                = ' '
+                i.fa.fa-lg.fa-book
+                = ' '
+                span New Workout
 br
 .row
     .col-md-7
         #strength-table-view
-br
-.row
-    .col-md-7
-        button.btn.btn-primary.btn-full-width#strength-add
-            i.fa.fa.fa-plus
-            = ' '
-            i.fa.fa-lg.fa-book
-            = ' '
-            span New Workout

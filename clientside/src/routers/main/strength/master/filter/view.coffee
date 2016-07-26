@@ -25,7 +25,6 @@ class View extends Marionette.ItemView
   onRender: ->
 
     @ui.muscle.multiselect
-      enableFiltering:  true
       dropRight:        true
       maxHeight:        350
       buttonClass:     'btn btn-info strength-filter-btn'
