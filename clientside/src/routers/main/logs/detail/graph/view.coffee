@@ -119,26 +119,23 @@ class View extends Marionette.ItemView
   addChart: (container, model, type) ->
 
     name  = model.get('name')
-    title = if type is 0 then "#{name} (reps)" else "#{name} (weights)"
+    title = if type is 0 then 'Reps' else 'Weights'
 
     chart = new Highstocks.StockChart
 
       chart:
         renderTo:         container
         height:           300
-        spacingBottom:    15
-        spacingTop:       10
-        spacingLeft:      10
+        spacingBottom:    5
+        spacingTop:       0
+        spacingLeft:      -10
         spacingRight:     10
         plotBorderColor: '#b2b2b2'
         plotBorderWidth:  2
         panning : false
 
       title:
-        text:   title
-        align: 'left'
-        margin: 0
-        x:      30
+        enabled: false
 
       rangeSelector:
         enabled: false
@@ -159,23 +156,16 @@ class View extends Marionette.ItemView
         lineWidth: 1
         opposite:  false
         crosshair: true
+        title:
+          text: title
+          style:
+            fontWeight: 'bold'
+            fontSize:    14
       ]
 
       tooltip:
         shared: false
 
-        ###
-        positioner: ->
-          return {
-            x: @chart.chartWidth - @label.width - 2
-            y: 1
-          }
-#        borderWidth:      0
-#        backgroundColor: 'none'
-        pointFormat:     '{point.y}'
-#        headerFormat:    '{point.x}'
-        shadow:           false
-###
         style:
           fontSize:      '15px'
           fontWeight:    'bold'

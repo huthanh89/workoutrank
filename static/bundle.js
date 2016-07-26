@@ -110319,7 +110319,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li><a>Home</a></li><li><a>Journals</a></li><li class=\"active\"><a>Entry</a></li></ol></div></div><br><div class=\"row\"><div class=\"col-sm-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\"><div class=\"pull-right\"><button id=\"strength-detail-add\" class=\"btn btn-sm btn-primary\"><i class=\"fa fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span>Add</span></button></div><div class=\"panel-title clearfix\"><span>Title</span></div></div><div class=\"panel-body\"><div id=\"strength-date-view\"></div><div id=\"strength-table-view\"></div></div></div></div><div class=\"col-sm-6\"><div class=\"panel panel-primary\"><div class=\"panel-body\"><div id=\"strength-chart-view\"></div></div><div class=\"panel-footer clearfix\"><a class=\"pull-right\">Detail" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-o-right\"></i></a></div></div></div></div>");;return buf.join("");
+	buf.push("<div id=\"strength-modal-view\"></div><div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li><a>Home</a></li><li><a>Journals</a></li><li class=\"active\"><a>Entry</a></li></ol></div></div><div class=\"row\"><div class=\"col-sm-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\"><div class=\"pull-right\"><button id=\"strength-detail-add\" class=\"btn btn-sm btn-primary\"><i class=\"fa fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span>Add</span></button></div><div class=\"panel-title clearfix\"><span>Title</span></div></div><div class=\"panel-body\"><div id=\"strength-date-view\"></div></div><div id=\"strength-table-view\"></div></div></div><div class=\"col-sm-6\"><div class=\"panel panel-primary\"><div class=\"panel-body\"><div id=\"strength-chart-view\"></div></div><div class=\"panel-footer clearfix\"><a class=\"pull-right\">Detail" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<i class=\"fa fa-lg fa-arrow-circle-o-right\"></i></a></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -110883,24 +110883,21 @@
 	  View.prototype.addChart = function(container, model, type) {
 	    var chart, data, mean, name, title;
 	    name = model.get('name');
-	    title = type === 0 ? name + " (reps)" : name + " (weights)";
+	    title = type === 0 ? 'Reps' : 'Weights';
 	    chart = new Highstocks.StockChart({
 	      chart: {
 	        renderTo: container,
 	        height: 300,
-	        spacingBottom: 15,
-	        spacingTop: 10,
-	        spacingLeft: 10,
+	        spacingBottom: 5,
+	        spacingTop: 0,
+	        spacingLeft: -10,
 	        spacingRight: 10,
 	        plotBorderColor: '#b2b2b2',
 	        plotBorderWidth: 2,
 	        panning: false
 	      },
 	      title: {
-	        text: title,
-	        align: 'left',
-	        margin: 0,
-	        x: 30
+	        enabled: false
 	      },
 	      rangeSelector: {
 	        enabled: false
@@ -110922,24 +110919,18 @@
 	        {
 	          lineWidth: 1,
 	          opposite: false,
-	          crosshair: true
+	          crosshair: true,
+	          title: {
+	            text: title,
+	            style: {
+	              fontWeight: 'bold',
+	              fontSize: 14
+	            }
+	          }
 	        }
 	      ],
 	      tooltip: {
 	        shared: false,
-
-	        /*
-	        positioner: ->
-	          return {
-	            x: @chart.chartWidth - @label.width - 2
-	            y: 1
-	          }
-	         *        borderWidth:      0
-	         *        backgroundColor: 'none'
-	        pointFormat:     '{point.y}'
-	         *        headerFormat:    '{point.x}'
-	        shadow:           false
-	         */
 	        style: {
 	          fontSize: '15px',
 	          fontWeight: 'bold'
