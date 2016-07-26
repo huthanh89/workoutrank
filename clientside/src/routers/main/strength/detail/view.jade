@@ -17,8 +17,15 @@
 br
 .row
     .col-sm-6
-        #strength-date-view
-        #strength-table-view
-        #strength-paginate-view
+        .panel.panel-primary
+            .panel-heading Daily Entry
+            .panel-body
+                #strength-date-view
+                #strength-table-view
+                #strength-paginate-view
     .col-sm-6
-        #strength-chart-view
+        .panel.panel-info
+            .panel-heading(style="height: 40px")
+                a.pull-right Detail
+            .panel-body
+                #strength-chart-view

@@ -1,24 +1,23 @@
 .row
-    .col-xs-12
-        span.lead.page-header
-            i.fa.fa-fw.fa-lg.fa-home
-            = ' '
-            | Home
-br
-.row
-    .col-lg-6.col-xs-12
-        ul.list-group#home-list
-            li.list-group-item#home-strengths
-                i.nav-icon.fa.fa-fw.fa-lg.fa-book
-                span
-                    b
-                        = ' '
-                        | Workout Journal
-                span.badge.badge-color#home-exercise-count 0
-            li.list-group-item#home-logs
-                i.nav-icon.fa.fa-fw.fa-lg.fa-area-chart
-                span
-                    b
-                        = ' '
-                        | Summary Graph
-                span.badge.badge-color#home-log-count 0
+    .col-sm-12
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-home
+                    = ' '
+                    | Home
+            ul.list-group#home-list
+                li.list-group-item#home-strengths
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-book
+                    span
+                        b
+                            = ' '
+                            | Journals
+                    span.badge.badge-color#home-exercise-count 0
+                li.list-group-item#home-logs
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-area-chart
+                    span
+                        b
+                            = ' '
+                            | Graphs
+                    span.badge.badge-color#home-log-count 0

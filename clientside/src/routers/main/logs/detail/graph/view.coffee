@@ -21,29 +21,35 @@ getColor = (index) ->
 # Series Data
 #-------------------------------------------------------------------------------
 
-seriesData = (model, type) ->
+seriesData = (model, type, chart) ->
 
   result =
-    type:   'line'
+    type:    chart
     yAxis:   0
     shadow : true
-    marker:
-      enabled: true
-      symbol: 'circle'
-      radius:  6
 
   if type is 0
     return _.assign result,
       name: 'Reps'
       data:  model.get('repData')
-      color: getColor(0)
+      color: '#98fb98'
+      lineColor: '#6aaf6a'
+      marker:
+        enabled:    true
+        fillColor: '#6aaf6a'
+        radius:     6
   else
     return _.assign result,
       name: 'Weights'
       data:  model.get('weightData')
-      color: getColor(2)
+      color: '#b0e0e6'
       tooltip:
         valueSuffix: ' lb'
+      lineColor: '#8cb3b8'
+      marker:
+        enabled:    true
+        fillColor: '#8cb3b8'
+        radius:     6
 
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
@@ -124,7 +130,7 @@ class View extends Marionette.ItemView
         spacingTop:       10
         spacingLeft:      10
         spacingRight:     10
-        plotBorderColor: '#346691'
+        plotBorderColor: '#b2b2b2'
         plotBorderWidth:  2
         panning : false
 
@@ -175,7 +181,10 @@ class View extends Marionette.ItemView
           fontWeight:    'bold'
         valueDecimals:    0
 
-      series: [seriesData(model, type)]
+      series: [
+        seriesData(model, type, 'column')
+        seriesData(model, type, 'line')
+      ]
 
       credits:
         enabled: false

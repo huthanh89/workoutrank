@@ -2,9 +2,6 @@
 Elements
 -----------------------------------------------------------------------------*/
 
-body {
-  background-color: whitesmoke;
-}
 
 a:hover {
   cursor: pointer;
@@ -21,11 +18,6 @@ Content
   padding-bottom: 10px;
 }
 
-#shortcut {
-  height:     40px;
-  margin-top: 5px;
-}
-
 #message{
   margin-top:    10px;
   margin-bottom: 10px;
@@ -33,17 +25,12 @@ Content
 
 #content {
   min-height:       250px;
-  background-color: white;
-  border:           double 3px lightgrey;
 }
 
 // Change margin if viewport gets smaller.
 
 @media (min-width: 1200px) {
-  #shortcut{
-    margin-left:  140px;
-    margin-right: 140px;
-  }
+
   #message{
     margin-left:  150px;
     margin-right: 150px;
@@ -56,10 +43,7 @@ Content
 }
 
 @media (min-device-width: 800px) and (max-width: 1200px) {
-  #shortcut{
-    margin-left:  30px;
-    margin-right: 30px;
-  }
+
   #message{
     margin-left:  50px;
     margin-right: 50px;
@@ -72,10 +56,7 @@ Content
 }
 
 @media (max-width: 767px) {
-  #shortcut{
-    margin-left:  0;
-    margin-right: 10px;
-  }
+
   #message{
     margin-left:  10px;
     margin-right: 10px;
@@ -85,15 +66,6 @@ Content
     margin-right: 10px;
     padding: 30px 15px 30px;
   }
-}
-/*-----------------------------------------------------------------------------
-Shortcut
------------------------------------------------------------------------------*/
-
-.shortcut-btn{
-  width:  45px;
-  height: 35px;
-  margin: 0 7px;
 }
 
 /*-----------------------------------------------------------------------------
@@ -127,12 +99,6 @@ Top Nav Bar
   border-left:  3px solid #F2F2F2;
 }
 
-// Collapsible menu
-
-#nav-collapse-menu li:hover {
-  background-color: lightgrey;
-}
-
 /*-----------------------------------------------------------------------------
 Page nav
 -----------------------------------------------------------------------------*/
@@ -163,25 +129,6 @@ Multiselect
   border:           solid 1px lightgray;
   border-radius:    4px;
   box-shadow:       none;
-}
-
-/*-----------------------------------------------------------------------------
-Form
------------------------------------------------------------------------------*/
-
-.input-group-addon {
-  color:            grey;
-  background-color: whitesmoke;
-}
-
-/*-----------------------------------------------------------------------------
-Home
------------------------------------------------------------------------------*/
-
-#home-list li:hover {
-  cursor:           pointer;
-  background-color: #FFFFFF;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /*-----------------------------------------------------------------------------
@@ -220,12 +167,10 @@ Strength
 }
 
 #strength-modal-date-btn {
-  color:  white;
   cursor: pointer;
 }
 
 #strength-modal-time-btn {
-  color:  white;
   cursor: pointer;
 }
 
@@ -246,12 +191,6 @@ Strength
   margin:          auto;
   white-space:     nowrap;
   list-style-type: none;
-}
-
-#strength-table tbody tr:hover {
-  cursor:           pointer;
-  background-color: #FFFFFF;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 #strength-table thead{
@@ -282,19 +221,6 @@ Logs
 
 .logs-master-filter-btn{
   width: 200px;
-}
-
-.slog-detail-table{
-  border-color: black;
-  border-style: solid;
-  border-width: 2px;
-
-  thead tr:nth-child(1){
-    background-color: gainsboro;
-    border-color: black;
-    border-style: solid;
-    border-width: 2px;
-  }
 }
 
 /*-----------------------------------------------------------------------------
@@ -342,8 +268,6 @@ Bootstrap workarounds
 .bootstrap-timepicker-widget .dropdown-menu {
   z-index: 1050!important;
 }
-
-
 
 /*-----------------------------------------------------------------------------
                               End of Document

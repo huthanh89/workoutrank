@@ -1,24 +1,23 @@
 .row
     .col-xs-12
         #strength-modal-view
-.row
-    .col-xs-12
-        span.lead.page-header
-            i.fa.fa-fw.fa-lg.fa-file-text-o
-            = ' '
-            | Journals
-        .pull-right
-            #strength-filter-view
-        .pull-right
-            button.btn.btn-default#strength-remove-enable(style="margin-right:5px;")
-                i.fa.fa-lg.fa-cog
-            button.btn.btn-primary#strength-add
-                i.fa.fa.fa-plus
-                = ' '
-                i.fa.fa-lg.fa-book
-                = ' '
-                span New Workout
 br
 .row
-    .col-md-7
-        #strength-table-view
+    .col-sm-12
+        .panel.panel-primary
+            .panel-heading.clearfix
+                .btn-group.pull-right
+                    button.btn.btn-default#strength-remove-enable(style="margin-right:5px;")
+                        i.fa.fa-lg.fa-cog
+                    button.btn.btn-sm.btn-primary#strength-add
+                        i.fa.fa.fa-plus
+                        = ' '
+                        span New
+                .pull-right
+                    #strength-filter-view
+                h4.panel-title(style="margin-top:5px;")
+                    i.fa.fa-fw.fa-lg.fa-file-text-o
+                    = ' '
+                    | Journals
+            .panel-body
+                #strength-table-view

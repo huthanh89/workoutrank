@@ -8,7 +8,6 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
 Message      = require './message/module'
-ShortcutView = require './shortcut/view'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
 
@@ -34,7 +33,6 @@ class RootView extends Marionette.LayoutView
   regions:
     header:   '#header'
     drawer:   '#drawer'
-    shortcut: '#shortcut-container'
     message:  '#message-container'
     content:  '#content'
 
@@ -92,7 +90,6 @@ class Application extends Marionette.Application
 
         rootView.showChildView 'drawer', new Nav.Drawer()
 
-        rootView.getRegion('shortcut').empty()
         return
 
       'nav:main': ->
@@ -104,7 +101,6 @@ class Application extends Marionette.Application
 
             rootView.showChildView 'drawer', new Nav.Drawer()
 
-            rootView.showChildView 'shortcut', new ShortcutView()
             return
           error: (model, response) ->
             rootChannel.request 'message', 'danger', "Error: #{response.responseText}"

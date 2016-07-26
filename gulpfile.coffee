@@ -177,7 +177,9 @@ gulp.task 'scripts', (callback) ->
         async:                 'scripts/async.js'
         highcharts:            'scripts/highcharts.js'
         highstock:             'scripts/highstock.js'
+
         bootstrap:             'scripts/bootstrap.js'
+
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
 
         jquery:                'scripts/jquery.js'
@@ -223,6 +225,7 @@ gulp.task 'css', ->
 
     './clientside/styles/css/bootstrap.css'
     './clientside/styles/css/bootstrap-theme.css'
+    './clientside/styles/css/bootstrap.custom.css'
     './clientside/styles/css/font-awesome.css'
 
     './clientside/styles/css/jquery.mmenu.all.css'
@@ -236,8 +239,8 @@ gulp.task 'css', ->
 
     './clientside/styles/css/timepicker.css'
 
+    './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'
-
   ])
   .pipe(concat('style.css'))
   .pipe gulp.dest('./static/')
@@ -251,7 +254,7 @@ gulp.task 'css', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'less', ->
-  return gulp.src([ './clientside/styles/less/application.less' ])
+  return gulp.src([ './clientside/styles/less/*' ])
   .pipe less()
   .pipe gulp.dest('./clientside/styles/')
 
@@ -297,7 +300,7 @@ gulp.task 'watch', ->
   gulp.watch './server/**', ['compile:server']
 
   gulp.watch [
-    './clientside/styles/less/**'
+    './clientside/styles/**'
   ], [ 'compile:css']
 
   gulp.watch './clientside/src/**', [ 'compile:client']
@@ -350,6 +353,7 @@ gulp.task 'compile:css', [
   #'csslint'
   'lesslint'
 ], ->
+  console.log 'CALLED'
   livereload.reload()
 
 gulp.task 'compile:client', [
