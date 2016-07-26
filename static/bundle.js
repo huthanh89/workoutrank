@@ -110611,7 +110611,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graphs</h3></div><div class=\"panel-body\"><div id=\"logs-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li><a>Home</a></li><li class=\"active\"><a>Graphs</a></li></ol></div></div><div class=\"row\"><div class=\"col-xs-12\"><div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graphs</h3></div><div class=\"panel-body\"><div id=\"logs-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -111293,7 +111293,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-6\"><button id=\"log-back\" class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-arrow-left\"></i></button></div><div class=\"col-xs-6\"><div class=\"pull-right\"><button class=\"btn btn-default\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i></button></div></div></div><br><div class=\"row\"><div class=\"col-md-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\">Title</div><div class=\"panel-body\"><div id=\"log-graph-view\"></div></div></div></div><div class=\"col-md-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\">Summary</div><div id=\"log-table-view\"></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li><a>Home</a></li><li><a>Graphs</a></li><li class=\"active\"><a>Data</a></li></ol></div></div><div class=\"row\"><div class=\"col-md-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\">Title</div><div class=\"panel-body\"><div id=\"log-graph-view\"></div></div></div></div><div class=\"col-md-6\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\">Summary</div><div id=\"log-table-view\"></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
