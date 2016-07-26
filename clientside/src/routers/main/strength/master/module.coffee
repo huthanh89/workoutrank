@@ -7,7 +7,6 @@ Marionette   = require 'marionette'
 Add          = require './add/module'
 Table        = require './table/module'
 FilterView   = require './filter/view'
-PaginateView = require './paginate/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -58,7 +57,6 @@ class View extends Marionette.LayoutView
     modal:  '#strength-modal-view'
     filter: '#strength-filter-view'
     table:  '#strength-table-view'
-    page:   '#strength-paginate-view'
 
   events:
     'click #strength-back': ->
@@ -106,9 +104,6 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
       collection: @pageableCollection
       channel:    @channel
-
-    @showChildView 'page', new PaginateView
-      collection: @pageableCollection
 
     return
 

@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
@@ -130,6 +131,7 @@ class View extends Marionette.CompositeView
     }
 
   onShow: ->
+
     @ui.table.DataTable
       scrollX:   true
     return
