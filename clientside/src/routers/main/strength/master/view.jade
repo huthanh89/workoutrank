@@ -1,7 +1,13 @@
 .row
     .col-xs-12
         #strength-modal-view
-br
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li
+                a Home
+            li.active
+                a Journals
 .row
     .col-sm-12
         .panel.panel-primary
@@ -15,7 +21,7 @@ br
                         span New
                 .pull-right
                     #strength-filter-view
-                h4.panel-title(style="margin-top:5px;")
+                .panel-title.clearfix
                     i.fa.fa-fw.fa-lg.fa-file-text-o
                     = ' '
                     | Journals

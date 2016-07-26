@@ -225,21 +225,16 @@ gulp.task 'css', ->
 
     './clientside/styles/css/bootstrap.css'
     './clientside/styles/css/bootstrap-theme.css'
-    './clientside/styles/css/bootstrap.custom.css'
+
     './clientside/styles/css/font-awesome.css'
-
     './clientside/styles/css/jquery.mmenu.all.css'
-
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
     './clientside/styles/css/bootstrap-multiselect.css'
     './clientside/styles/css/bootstrap-datepicker.css'
     './clientside/styles/css/jquery.timeentry.css'
-
     './clientside/styles/css/jquery.datatables.css'
-
     './clientside/styles/css/timepicker.css'
 
-    './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'
   ])
   .pipe(concat('style.css'))

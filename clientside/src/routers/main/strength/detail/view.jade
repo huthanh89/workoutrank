@@ -1,31 +1,33 @@
 #strength-modal-view
 .row
-    .col-xs-6
-        button.btn.btn-default#strength-back
-            i.fa.fa-fw.fa-lg.fa-arrow-left
-        = ' '
-        span.lead#strength-header
-    .col-xs-6
-        .pull-right
-            button.btn.btn-primary#strength-detail-add
-                i.fa.fa-lg.fa-file-text-o
-                = ' '
-                i.fa.fa.fa-plus
-            = ' '
-            button.btn.btn-default
-                i.fa.fa-fw.fa-lg.fa-area-chart
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li
+                a Home
+            li
+                a Journals
+            li.active
+                a Entry
 br
 .row
     .col-sm-6
         .panel.panel-primary
-            .panel-heading Daily Entry
+            .panel-heading.clearfix
+                .pull-right
+                    button.btn.btn-sm.btn-primary#strength-detail-add
+                        i.fa.fa.fa-plus
+                        = ' '
+                        span Add
+                .panel-title.clearfix
+                    span Title
             .panel-body
                 #strength-date-view
                 #strength-table-view
-                #strength-paginate-view
     .col-sm-6
-        .panel.panel-info
-            .panel-heading(style="height: 40px")
-                a.pull-right Detail
+        .panel.panel-primary
             .panel-body
                 #strength-chart-view
+            .panel-footer.clearfix
+                a.pull-right Detail
+                    = ' '
+                    i.fa.fa-lg.fa-arrow-circle-o-right
