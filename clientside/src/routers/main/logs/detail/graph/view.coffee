@@ -10,14 +10,6 @@ Highstocks   = require 'highstock'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Given an index, return a HighChart color.
-#-------------------------------------------------------------------------------
-
-getColor = (index) ->
-  colors = Highcharts.getOptions().colors
-  return colors[index % colors.length]
-
-#-------------------------------------------------------------------------------
 # Series Data
 #-------------------------------------------------------------------------------
 
@@ -128,11 +120,11 @@ class View extends Marionette.ItemView
         height:           300
         spacingBottom:    5
         spacingTop:       0
-        spacingLeft:      -10
+        spacingLeft:     -10
         spacingRight:     10
         plotBorderColor: '#b2b2b2'
         plotBorderWidth:  2
-        panning : false
+        panning :         false
 
       title:
         enabled: false

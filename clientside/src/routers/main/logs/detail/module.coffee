@@ -10,6 +10,12 @@ Table        = require './table/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Plugins
+#-------------------------------------------------------------------------------
+
+require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
@@ -81,14 +87,25 @@ class View extends Marionette.LayoutView
     table: '#log-table-view'
 
   events:
-    'click #log-back': ->
+    'click #graph-home': ->
+      @rootChannel.request 'home'
+      return
+
+    'click #graph-graphs': ->
       @rootChannel.request 'logs'
       return
+
+  bindings:
+    '#log-title': 'name'
 
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
     @model = @collection.at(0)
+
+  onRender: ->
+    @stickit()
+    return
 
   onShow: ->
 

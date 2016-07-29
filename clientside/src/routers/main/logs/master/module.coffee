@@ -61,8 +61,17 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
+  events:
+    'click #graphs-home': ->
+      @rootChannel.request 'home'
+      return
+
   regions:
     table: '#logs-table-view'
+
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
     @showChildView 'table', new TableView

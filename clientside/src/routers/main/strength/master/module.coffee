@@ -59,7 +59,8 @@ class View extends Marionette.LayoutView
     table:  '#strength-table-view'
 
   events:
-    'click #strength-back': ->
+
+    'click #strength-home': ->
       @rootChannel.request 'home'
       return
 
