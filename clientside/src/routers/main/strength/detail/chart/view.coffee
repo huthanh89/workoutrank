@@ -117,14 +117,14 @@ class View extends Marionette.ItemView
         enabled: false
 
       plotOptions:
-        areaspline:
-          fillOpacity: 0.3
-          lineWidth:   3
-
-        series:
-          marker:
-            radius:  2
+        column:
+          stacking: 'normal'
+          dataLabels:
             enabled: true
+            color:  'white'
+            style:
+              textShadow: '0 0 3px black'
+
 
       xAxis:
         lineWidth: 2
@@ -140,15 +140,7 @@ class View extends Marionette.ItemView
       ]
 
       legend:
-        x:                25
-        y:                2
-        enabled:          true
-        borderWidth:      2
-        layout:          'vertical'
-        align:           'left'
-        verticalAlign:   'top'
-        floating:         true
-        backgroundColor: '#FFFFFF'
+        enabled: true
 
       credits:
         enabled: false

@@ -74,6 +74,9 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
+
+    console.log @collection
+
     @showChildView 'table', new TableView
       collection: @collection
     return

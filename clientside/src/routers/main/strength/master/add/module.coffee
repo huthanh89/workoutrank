@@ -40,7 +40,7 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    dialog: '.modal'
+    dialog: '#strength-modal-dialog'
     name:   '#strength-modal-name'
     muscle: '#strength-modal-muscle'
     addset: '#strength-modal-addset'
@@ -62,6 +62,7 @@ class View extends Marionette.LayoutView
   events:
 
     'shown.bs.modal': ->
+      console.log 'focus'
       @ui.name.focus()
       return
 
@@ -89,10 +90,9 @@ class View extends Marionette.LayoutView
   onRender: ->
 
     @ui.muscle.multiselect
-      enableFiltering: true
-      maxHeight:       200
-      buttonWidth:    '100%'
-      buttonClass:    'btn btn-info'
+      maxHeight:     330
+      buttonWidth:  '100%'
+      buttonClass:  'btn btn-info'
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
 

@@ -58151,6 +58151,10 @@
 	          content: ['<a class=\'fa fa-envelope\'></a>', '<a class=\'fa fa-twitter\'></a>', '<a class=\'fa fa-facebook\'></a>']
 	        }
 	      ]
+	    }, {
+	      offCanvas: {
+	        pageSelector: '#drawer'
+	      }
 	    });
 	    this.api = menu.mmenu().data("mmenu");
 	  };
@@ -70447,7 +70451,7 @@
 	  View.prototype.template = viewTemplate;
 
 	  View.prototype.ui = {
-	    dialog: '.modal',
+	    dialog: '#strength-modal-dialog',
 	    name: '#strength-modal-name',
 	    muscle: '#strength-modal-muscle',
 	    addset: '#strength-modal-addset',
@@ -70470,6 +70474,7 @@
 
 	  View.prototype.events = {
 	    'shown.bs.modal': function() {
+	      console.log('focus');
 	      this.ui.name.focus();
 	    },
 	    'click @ui.time': function() {
@@ -70496,8 +70501,7 @@
 
 	  View.prototype.onRender = function() {
 	    this.ui.muscle.multiselect({
-	      enableFiltering: true,
-	      maxHeight: 200,
+	      maxHeight: 330,
 	      buttonWidth: '100%',
 	      buttonClass: 'btn btn-info'
 	    }).multiselect('dataprovider', Data.Muscles).multiselect('select', this.model.get('muscle'));
@@ -70610,7 +70614,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div role=\"dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Create a new workout</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-muscle\" class=\"control-label\">Muscle</label></div><div class=\"col-xs-12\"><select id=\"strength-modal-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-name\" class=\"control-label\">Name</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-time-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div role=\"dialog\" id=\"strength-modal-dialog\" class=\"modal fade\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><button type=\"button\" data-dismiss=\"modal\" class=\"close\">×</button><h4 class=\"modal-title\">Create a new workout</h4></div><div class=\"modal-body\"><form id=\"strength-modal-form\" class=\"form-horizontal\"><!-- Nav tabs--><ul role=\"tablist\" class=\"nav nav-tabs\"><li role=\"presentation\" class=\"active\"><a href=\"#strength-modal-basic\" aria-controls=\"basic\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-pencil\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Basic</a></li><li role=\"presentation\"><a href=\"#strength-modal-advance\" aria-controls=\"advance\" role=\"tab\" data-toggle=\"tab\"><i class=\"fa fa-fw fa-lg fa-cogs\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Optional</a></li></ul><br><!-- Tab panes--><div class=\"tab-content\"><!-- Basic--><div id=\"strength-modal-basic\" role=\"tabpanel\" class=\"tab-pane active\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-muscle\" class=\"control-label\">Muscle</label></div><div class=\"col-xs-12\"><select id=\"strength-modal-muscle\" class=\"form-control\"></select></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-name\" class=\"control-label\">Name</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-name\" required class=\"form-control\"><div class=\"help-block with-errors\"></div></div></div></div><!-- Advance--><div id=\"strength-modal-advance\" role=\"tabpanel\" class=\"tab-pane\"><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-date\" class=\"control-label\">Date</label></div><div class=\"col-xs-12\"><div class=\"input-group date\"><input id=\"strength-modal-date\" muscle=\"text\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-date-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-calendar\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-time\" class=\"control-label\">Time</label></div><div class=\"col-xs-12\"><div class=\"input-group bootstrap-timepicker timepicker\"><input id=\"strength-modal-time\" readonly class=\"form-control input-readonly\"><div id=\"strength-modal-time-btn\" class=\"input-group-addon btn-info\"><span class=\"fa fa-fw fa-lg fa-clock-o\"></span></div></div></div></div><div class=\"form-group\"><div class=\"col-xs-12\"><label for=\"strength-modal-note\" class=\"control-label\">Note</label></div><div class=\"col-xs-12\"><input id=\"strength-modal-note\" class=\"form-control\"></div></div></div></div></form></div><div class=\"modal-footer\"><div class=\"pull-right\"><button data-dismiss=\"modal\" class=\"btn btn-default\">Cancel</button>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<button id=\"strength-modal-submit\" class=\"btn btn-primary\">Save</button></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -90590,7 +90594,7 @@
 	      buttonClass: 'btn btn-info strength-filter-btn',
 	      buttonWidth: 40,
 	      templates: {
-	        button: '<span class="multiselect dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i></span>'
+	        button: '<span class="multiselect dropdown-toggle " data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i><i class="fa fa-lg fa-caret-down"></i></span>'
 	      },
 	      onChange: (function(_this) {
 	        return function() {
@@ -90651,7 +90655,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li id=\"strength-home\"><a>Home</a></li><li id=\"strength-journals\" class=\"active\"><a>Journals</a></li></ol></div></div><div class=\"row\"><div class=\"col-sm-12\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\"><div class=\"btn-group pull-right\"><button id=\"strength-remove-enable\" style=\"margin-right:5px;\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-cog\"></i></button><button id=\"strength-add\" class=\"btn btn-sm btn-primary\"><i class=\"fa fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span>New</span></button></div><div class=\"pull-right\"><div id=\"strength-filter-view\"></div></div><div class=\"panel-title clearfix\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Journals</div></div><div class=\"panel-body\"><div id=\"strength-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><div id=\"strength-modal-view\"></div></div></div><div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li id=\"strength-home\"><a>Home</a></li><li id=\"strength-journals\" class=\"active\"><a>Journals</a></li></ol></div></div><div class=\"row\"><div class=\"col-sm-12\"><div class=\"panel panel-primary\"><div class=\"panel-heading clearfix\"><div class=\"pull-right\"><button id=\"strength-add\" class=\"btn btn-sm btn-primary\"><i class=\"fa fa fa-plus\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span>New</span></button></div><div class=\"panel-title clearfix\"><i class=\"fa fa-fw fa-lg fa-file-text-o\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Journals</div></div><div class=\"panel-body\"><div class=\"pull-right\"><div id=\"strength-filter-view\"></div>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "</div><div class=\"pull-right\"><button id=\"strength-remove-enable\" style=\"margin-right:5px;\" class=\"btn btn-default\"><i class=\"fa fa-lg fa-cog\"></i></button></div><div id=\"strength-table-view\"></div></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -91624,14 +91628,14 @@
 	        enabled: false
 	      },
 	      plotOptions: {
-	        areaspline: {
-	          fillOpacity: 0.3,
-	          lineWidth: 3
-	        },
-	        series: {
-	          marker: {
-	            radius: 2,
-	            enabled: true
+	        column: {
+	          stacking: 'normal',
+	          dataLabels: {
+	            enabled: true,
+	            color: 'white',
+	            style: {
+	              textShadow: '0 0 3px black'
+	            }
 	          }
 	        }
 	      },
@@ -91646,15 +91650,7 @@
 	      ],
 	      series: [seriesData(this.model, 0), seriesData(this.model, 1)],
 	      legend: {
-	        x: 25,
-	        y: 2,
-	        enabled: true,
-	        borderWidth: 2,
-	        layout: 'vertical',
-	        align: 'left',
-	        verticalAlign: 'top',
-	        floating: true,
-	        backgroundColor: '#FFFFFF'
+	        enabled: true
 	      },
 	      credits: {
 	        enabled: false
@@ -111481,6 +111477,7 @@
 	  }
 
 	  View.prototype.onShow = function() {
+	    console.log(this.collection);
 	    this.showChildView('table', new TableView({
 	      collection: this.collection
 	    }));

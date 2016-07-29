@@ -12,18 +12,20 @@
     .col-sm-12
         .panel.panel-primary
             .panel-heading.clearfix
-                .btn-group.pull-right
-                    button.btn.btn-default#strength-remove-enable(style="margin-right:5px;")
-                        i.fa.fa-lg.fa-cog
+                .pull-right
                     button.btn.btn-sm.btn-primary#strength-add
                         i.fa.fa.fa-plus
                         = ' '
                         span New
-                .pull-right
-                    #strength-filter-view
                 .panel-title.clearfix
                     i.fa.fa-fw.fa-lg.fa-file-text-o
                     = ' '
                     | Journals
             .panel-body
+                .pull-right
+                    #strength-filter-view
+                    = ' '
+                .pull-right
+                    button.btn.btn-default#strength-remove-enable(style="margin-right:5px;")
+                        i.fa.fa-lg.fa-cog
                 #strength-table-view

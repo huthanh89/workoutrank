@@ -84,6 +84,9 @@ class View extends Marionette.ItemView
           ]
         }
       ]
+    ,
+      offCanvas:
+        pageSelector: '#drawer'
 
     @api = menu.mmenu().data( "mmenu" )
 
