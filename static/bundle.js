@@ -58141,7 +58141,7 @@
 	    var menu;
 	    menu = $(this.el);
 	    menu.mmenu({
-	      extensions: ['border-full', 'pagedim-black', 'pageshadow', 'theme-dark'],
+	      extensions: ['border-full', 'pagedim-black', 'pageshadow'],
 	      offCanvas: {
 	        zposition: 'front'
 	      },
@@ -70474,7 +70474,6 @@
 
 	  View.prototype.events = {
 	    'shown.bs.modal': function() {
-	      console.log('focus');
 	      this.ui.name.focus();
 	    },
 	    'click @ui.time': function() {

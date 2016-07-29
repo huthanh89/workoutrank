@@ -69,8 +69,9 @@ class View extends Marionette.ItemView
         'border-full'
         'pagedim-black'
         'pageshadow'
-        'theme-dark'
+        #'theme-dark'
       ]
+
       offCanvas:
         zposition: 'front'
 

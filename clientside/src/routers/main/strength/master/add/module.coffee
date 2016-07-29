@@ -62,7 +62,6 @@ class View extends Marionette.LayoutView
   events:
 
     'shown.bs.modal': ->
-      console.log 'focus'
       @ui.name.focus()
       return
 
