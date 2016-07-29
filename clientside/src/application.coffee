@@ -8,6 +8,7 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
 Message      = require './message/module'
+IndexRouter  = require './routers/index/router'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
 
@@ -108,6 +109,10 @@ class Application extends Marionette.Application
         return
 
     # All router must be initialized before backbone.history starts to work.
+
+    new IndexRouter
+      mode:          'auto'
+      trailingSlash: 'ignore'
 
     new MainRouter
       mode:          'auto'

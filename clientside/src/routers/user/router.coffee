@@ -2,12 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_          = require 'lodash'
-async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
-Signup     = require './signup/module'
-Login      = require './login/module'
 Profile    = require './profile/module'
 
 #-------------------------------------------------------------------------------
@@ -29,26 +25,6 @@ class Router extends Marionette.AppRouter
 
     @rootChannel.reply
 
-      'index': =>
-        @navigate('')
-        @signup()
-        return
-
-      'signup': =>
-        @navigate('signup', trigger: true)
-        @signup()
-        return
-
-      'login': =>
-        @navigate('login', trigger: true)
-        @login()
-        return
-
-      'logout': =>
-        @navigate('')
-        @signup()
-        return
-
       'profile': =>
         @navigate('profile', trigger: true)
         @profile()
@@ -60,30 +36,10 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':                  'signup'
-    'signup':            'signup'
-    'login':             'login'
-    'profile':           'profile'
+    'profile': 'profile'
 
   # Api for Route handling.
   # Update Navbar and show view.
-
-  index: ->
-    @navChannel.request('nav:index')
-    console.log 'no index page, redirect to signup'
-    return
-
-  signup: ->
-    @navChannel.request('nav:index')
-    @rootView.content.show new Signup.View
-      model: new Signup.Model()
-    return
-
-  login: ->
-    @navChannel.request('nav:index')
-    @rootView.content.show new Login.View
-      model: new Login.Model()
-    return
 
   profile: ->
     @navChannel.request('nav:main')
