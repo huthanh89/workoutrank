@@ -111379,17 +111379,19 @@
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Backbone, Collection, Marionette, Model, TableView, View, _, viewTemplate,
+	var Backbone, Collection, GraphsView, Marionette, Model, View, _, moment, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
 	_ = __webpack_require__(3);
 
+	moment = __webpack_require__(44);
+
 	Backbone = __webpack_require__(8);
 
 	Marionette = __webpack_require__(10);
 
-	TableView = __webpack_require__(93);
+	GraphsView = __webpack_require__(93);
 
 	viewTemplate = __webpack_require__(97);
 
@@ -111426,26 +111428,40 @@
 	  Collection.prototype.model = Model;
 
 	  Collection.prototype.parse = function(response) {
-	    var exerciseID, grouped, pr, records, result, weights;
+	    var exercise, grouped, i, len, record, records, repData, result, weightData, x;
 	    result = [];
 	    grouped = _.groupBy(response, function(record) {
 	      return record.exercise;
 	    });
-	    for (exerciseID in grouped) {
-	      records = grouped[exerciseID];
-	      pr = _.max(records, function(record) {
-	        return record.weight;
-	      });
-	      weights = _.map(records, function(record) {
-	        return record.weight;
-	      });
+	    for (exercise in grouped) {
+	      records = grouped[exercise];
+	      weightData = [];
+	      repData = [];
+	      for (i = 0, len = records.length; i < len; i++) {
+	        record = records[i];
+	        x = moment(record.date).valueOf();
+	        weightData.push({
+	          id: x,
+	          x: x,
+	          y: record.weight
+	        });
+	        repData.push({
+	          id: x,
+	          x: x,
+	          y: record.rep
+	        });
+	      }
 	      result.push({
-	        _id: exerciseID,
+	        exerciseID: exercise,
 	        name: records[0].name,
-	        date: pr.date,
-	        max: pr.weight,
-	        avg: Math.round(_.mean(weights)) / 100,
-	        count: records.length
+	        weightData: _.sortBy(weightData, function(point) {
+	          return point.x;
+	        }),
+	        repData: _.sortBy(repData, function(point) {
+	          return point.x;
+	        }),
+	        muscle: records[0].muscle,
+	        user: records[0].user
 	      });
 	    }
 	    return result;
@@ -111467,7 +111483,7 @@
 	  };
 
 	  View.prototype.regions = {
-	    table: '#logs-table-view'
+	    graphs: '#logs-graphs-view'
 	  };
 
 	  function View() {
@@ -111476,8 +111492,7 @@
 	  }
 
 	  View.prototype.onShow = function() {
-	    console.log(this.collection);
-	    this.showChildView('table', new TableView({
+	    this.showChildView('graphs', new GraphsView({
 	      collection: this.collection
 	    }));
 	  };
@@ -111497,7 +111512,7 @@
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $, Backbone, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, viewTemplate,
+	var $, Backbone, Highcharts, Highstock, ItemView, Marionette, NullView, View, _, itemTemplate, moment, nullTemplate, seriesData, viewTemplate,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
@@ -111511,6 +111526,10 @@
 
 	Marionette = __webpack_require__(10);
 
+	Highcharts = __webpack_require__(88);
+
+	Highstock = __webpack_require__(5);
+
 	nullTemplate = __webpack_require__(94);
 
 	itemTemplate = __webpack_require__(95);
@@ -111521,7 +111540,42 @@
 
 	__webpack_require__(20);
 
-	__webpack_require__(73);
+	seriesData = function(model, type) {
+	  var result;
+	  result = {
+	    type: 'column',
+	    yAxis: 0,
+	    shadow: true
+	  };
+	  if (type === 0) {
+	    return _.assign(result, {
+	      name: 'Reps',
+	      data: model.get('repData'),
+	      color: '#98fb98',
+	      lineColor: '#6aaf6a',
+	      marker: {
+	        enabled: true,
+	        fillColor: '#6aaf6a',
+	        radius: 6
+	      }
+	    });
+	  } else {
+	    return _.assign(result, {
+	      name: 'Weights',
+	      data: model.get('weightData'),
+	      color: '#b0e0e6',
+	      tooltip: {
+	        valueSuffix: ' lb'
+	      },
+	      lineColor: '#8cb3b8',
+	      marker: {
+	        enabled: true,
+	        fillColor: '#8cb3b8',
+	        radius: 6
+	      }
+	    });
+	  }
+	};
 
 	NullView = (function(superClass) {
 	  extend(NullView, superClass);
@@ -111530,37 +111584,28 @@
 	    return NullView.__super__.constructor.apply(this, arguments);
 	  }
 
-	  NullView.prototype.tagName = 'tr';
-
 	  NullView.prototype.template = nullTemplate;
 
 	  return NullView;
 
-	})(Marionette.CompositeView);
+	})(Marionette.ItemView);
 
 	ItemView = (function(superClass) {
 	  extend(ItemView, superClass);
 
-	  ItemView.prototype.tagName = 'tr';
-
 	  ItemView.prototype.template = itemTemplate;
 
+	  ItemView.prototype.ui = {
+	    chart: '.graph-chart'
+	  };
+
 	  ItemView.prototype.bindings = {
-	    '.logs-table-td-name': 'name',
-	    '.logs-table-td-max': 'max',
-	    '.logs-table-td-date': {
-	      observe: 'date',
-	      onGet: function(value) {
-	        return moment(value).format('MM/DD/YY');
-	      }
-	    },
-	    '.logs-table-td-avg': 'avg',
-	    '.logs-table-td-count': 'count'
+	    '.graph-name': 'name'
 	  };
 
 	  ItemView.prototype.events = {
 	    'click': function() {
-	      this.rootChannel.request('log:detail', this.model.id);
+	      this.rootChannel.request('log:detail', this.model.get('exerciseID'));
 	    }
 	  };
 
@@ -111570,38 +111615,74 @@
 	  }
 
 	  ItemView.prototype.onRender = function() {
+	    this.chart = new Highstock.StockChart({
+	      chart: {
+	        renderTo: this.ui.chart[0],
+	        height: 110,
+	        marginTop: 5,
+	        spacingBottom: 0,
+	        spacingTop: 0,
+	        spacingLeft: 0,
+	        spacingRight: 0,
+	        plotBorderColor: '#b2b2b2',
+	        plotBorderWidth: 0,
+	        panning: false
+	      },
+	      rangeSelector: {
+	        enabled: false
+	      },
+	      navigator: {
+	        enabled: false
+	      },
+	      scrollbar: {
+	        enabled: false
+	      },
+	      plotOptions: {
+	        column: {
+	          stacking: 'normal'
+	        }
+	      },
+	      xAxis: {
+	        lineWidth: 2
+	      },
+	      yAxis: [
+	        {
+	          lineWidth: 0,
+	          opposite: false
+	        }
+	      ],
+	      series: [seriesData(this.model, 0), seriesData(this.model, 1)],
+	      legend: {
+	        enabled: false
+	      },
+	      credits: {
+	        enabled: false
+	      }
+	    });
 	    this.stickit();
+	  };
+
+	  ItemView.prototype.onShow = function() {
+	    this.chart.reflow();
 	  };
 
 	  return ItemView;
 
-	})(Marionette.CompositeView);
+	})(Marionette.ItemView);
 
 	View = (function(superClass) {
 	  extend(View, superClass);
-
-	  View.prototype.childViewContainer = 'tbody';
 
 	  View.prototype.childView = ItemView;
 
 	  View.prototype.emptyView = NullView;
 
-	  View.prototype.template = viewTemplate;
-
-	  View.prototype.ui = {
-	    table: '#logs-table'
-	  };
+	  View.prototype.template = _.template('');
 
 	  function View() {
 	    View.__super__.constructor.apply(this, arguments);
 	    this.rootChannel = Backbone.Radio.channel('root');
 	  }
-
-	  View.prototype.onShow = function() {
-	    this.ui.table.DataTable({
-	      scrollX: true
-	    });
-	  };
 
 	  return View;
 
@@ -111621,7 +111702,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td colspan=\"5\"><span class=\"lead\">No workout logs available.</span></td>");;return buf.join("");
+	buf.push("<span class=\"lead\">No workout logs available.</span>");;return buf.join("");
 	}
 
 /***/ },
@@ -111635,7 +111716,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<td class=\"logs-table-td-name\"></td><td class=\"logs-table-td-max\"></td><td class=\"logs-table-td-date\"></td><td class=\"logs-table-td-avg\"></td><td class=\"logs-table-td-count\"></td>");;return buf.join("");
+	buf.push("<div class=\"col-sm-3\"><div class=\"panel panel-info\"><div class=\"panel-heading clearfix\"><a class=\"pull-right\"><i class=\"fa fa-lg fa-chevron-circle-right\"></i></a><h3 class=\"panel-title\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "<span class=\"graph-name\">Graphs</span></h3></div><div class=\"panel-body\"><div class=\"graph-chart\"></div></div></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -111649,7 +111730,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<br><div class=\"row\"><div class=\"col-xs-12\"><table id=\"logs-table\" width=\"100%\" class=\"display responsive no-wrap table-hover\"><thead><tr><th><b>Workout</b></th><th><b>P.R</b></th><th><b>Date</b></th><th><b>Avg</b></th><th><b>Entries</b></th></tr></thead><tbody></tbody></table></div></div>");;return buf.join("");
+	;return buf.join("");
 	}
 
 /***/ },
@@ -111663,7 +111744,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 
-	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li id=\"graphs-home\"><a>Home</a></li><li class=\"active\"><a>Graphs</a></li></ol></div></div><div class=\"row\"><div class=\"col-xs-12\"><div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\"><i class=\"fa fa-fw fa-lg fa-area-chart\"></i>" + (jade.escape(null == (jade_interp = ' ') ? "" : jade_interp)) + "Graphs</h3></div><div class=\"panel-body\"><div id=\"logs-table-view\"></div></div></div></div></div>");;return buf.join("");
+	buf.push("<div class=\"row\"><div class=\"col-xs-12\"><ol style=\"margin-bottom: 5px;\" class=\"breadcrumb\"><li id=\"graphs-home\"><a>Home</a></li><li class=\"active\"><a>Graphs</a></li></ol></div></div><div class=\"row\"><div class=\"col-xs-12\"><div id=\"logs-graphs-view\"></div></div></div>");;return buf.join("");
 	}
 
 /***/ },

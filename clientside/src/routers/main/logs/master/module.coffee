@@ -3,9 +3,10 @@
 #-------------------------------------------------------------------------------
 
 _            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-TableView    = require './table/view'
+GraphsView   = require './graphs/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -37,19 +38,32 @@ class Collection extends Backbone.Collection
 
     result = []
 
-    grouped = _.groupBy(response, (record) -> record.exercise)
+    grouped = _.groupBy response, (record) -> record.exercise
 
-    for exerciseID, records of grouped
-      pr      = _.max records, (record) -> record.weight
-      weights = _.map(records, (record) -> record.weight)
+    for exercise, records of grouped
+      weightData = []
+      repData    = []
+
+      for record in records
+        x = moment(record.date).valueOf()
+
+        weightData.push
+          id: x
+          x:  x
+          y:  record.weight
+
+        repData.push
+          id: x
+          x:  x
+          y:  record.rep
 
       result.push
-        _id:   exerciseID
-        name:  records[0].name
-        date:  pr.date
-        max:   pr.weight
-        avg:   Math.round(_.mean(weights)) / 100
-        count: records.length
+        exerciseID:   exercise
+        name:         records[0].name
+        weightData: _.sortBy weightData, (point) -> point.x
+        repData:    _.sortBy repData, (point) -> point.x
+        muscle:       records[0].muscle
+        user:         records[0].user
 
     return result
 
@@ -67,7 +81,7 @@ class View extends Marionette.LayoutView
       return
 
   regions:
-    table: '#logs-table-view'
+    graphs: '#logs-graphs-view'
 
   constructor: ->
     super
@@ -75,9 +89,7 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
-    console.log @collection
-
-    @showChildView 'table', new TableView
+    @showChildView 'graphs', new GraphsView
       collection: @collection
     return
 
