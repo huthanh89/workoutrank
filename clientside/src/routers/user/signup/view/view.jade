@@ -1,51 +1,55 @@
 .row
     .col-sm-12
-        span.lead Welcome!
-.row
-    .col-sm-12
-        span Track your workout progress and compare personal records.
-br
-.row
-    .col-sm-12
-        // Nav tabs
-        ul.nav.nav-tabs(role='tablist')
-            li.active#index-tab-signup(role='presentation')
-                a
-                    b Sign Up
-            li#index-tab-login(role='presentation')
-                a
-                    b Login
-        br
-        // Tab panes
-        .tab-content
-            #index-tab-pane-signup.tab-pane.active(role='tabpanel')
+        .panel.panel-primary
+            .panel-heading.clearfix
                 .row
                     .col-sm-12
-                        form.form-horizontal#signup-form
-                            .form-group
-                                label.col-sm-2.control-label(for='index-signup-firstname') First name
-                                .col-sm-10
-                                    input.form-control#index-signup-firstname(placeholder='First name', name='firstname', required)
-                            .form-group
-                                label.col-sm-2.control-label(for='index-signup-lastname') Last name
-                                .col-sm-10
-                                    input.form-control#index-signup-lastname(placeholder='Last Name', name='lastname', required)
-                            .form-group
-                                label.col-sm-2.control-label(for='index-signup-email') Email
-                                .col-sm-10
-                                    input.form-control#index-signup-email(placeholder='Email', name='email', required)
-                            .form-group
-                                label.col-sm-2.control-label(for='index-signup-password') Password
-                                .col-sm-10
-                                    input.form-control#index-signup-password(placeholder='Password', name='password', required)
-                            .form-group
-                                label.col-sm-2.control-label(for='signup-recaptcha') Captcha
-                                .col-sm-10
-                                    i.fa.fa-2x.fa-spinner.fa-spin#signup-spinner
-                                    #signup-recaptcha
-                            .form-group
-                                .col-sm-12
-                                    button.btn.btn-success.pull-right#index-signup-submit(type="submit")
-                                        i.fa.fa-user
-                                        = ' '
-                                        | Sign Up
+                        span.lead Welcome!
+                .row
+                    .col-sm-12
+                        span Track your workout progress and compare personal records.
+            .panel-body
+                .row
+                    .col-sm-12
+                        // Nav tabs
+                        ul.nav.nav-tabs(role='tablist')
+                            li.active#index-tab-signup(role='presentation')
+                                a
+                                    b Sign Up
+                            li#index-tab-login(role='presentation')
+                                a
+                                    b Login
+                        br
+                        // Tab panes
+                        .tab-content
+                            #index-tab-pane-signup.tab-pane.active(role='tabpanel')
+                                .row
+                                    .col-sm-12
+                                        form.form-horizontal#signup-form
+                                            .form-group
+                                                label.col-sm-2.control-label(for='index-signup-firstname') First name
+                                                .col-sm-10
+                                                    input.form-control#index-signup-firstname(placeholder='First name', name='firstname', required)
+                                            .form-group
+                                                label.col-sm-2.control-label(for='index-signup-lastname') Last name
+                                                .col-sm-10
+                                                    input.form-control#index-signup-lastname(placeholder='Last Name', name='lastname', required)
+                                            .form-group
+                                                label.col-sm-2.control-label(for='index-signup-email') Email
+                                                .col-sm-10
+                                                    input.form-control#index-signup-email(placeholder='Email', name='email', required)
+                                            .form-group
+                                                label.col-sm-2.control-label(for='index-signup-password') Password
+                                                .col-sm-10
+                                                    input.form-control#index-signup-password(placeholder='Password', name='password', required)
+                                            .form-group
+                                                label.col-sm-2.control-label(for='signup-recaptcha') Captcha
+                                                .col-sm-10
+                                                    i.fa.fa-2x.fa-spinner.fa-spin#signup-spinner
+                                                    #signup-recaptcha
+                                            .form-group
+                                                .col-sm-12
+                                                    button.btn.btn-success.pull-right#index-signup-submit(type="submit")
+                                                        i.fa.fa-user
+                                                        = ' '
+                                                        | Sign Up
