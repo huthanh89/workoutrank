@@ -131,7 +131,9 @@ gulp.task 'scripts', (callback) ->
       ,
         test:   /\.jade$/
         loader: 'jade'
-
+      ,
+        test: /jquery/
+        loader: "imports?$=jquery"
       ,
         test: /jquery/
         loader: "imports?jQuery=jquery"
@@ -190,7 +192,6 @@ gulp.task 'scripts', (callback) ->
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
         datatable:             'scripts/jquery.datatables.js'
-        'datatable.editor':    'scripts/jquery.datatables.editor.js'
         'jquery.ui':           'scripts/jquery-ui.js'
 
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
@@ -202,6 +203,13 @@ gulp.task 'scripts', (callback) ->
         '.web.js'
         '.js'
         '.coffee'
+      ]
+
+      # XXX plugins not working to expose $
+      plugins: [
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+        })
       ]
 
   webpack options, (err, stats) ->

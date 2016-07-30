@@ -132,13 +132,16 @@ class View extends Marionette.CompositeView
 
   onShow: ->
 
-    @ui.table.DataTable
+    @table = @ui.table.DataTable
       scrollX:   true
+
     return
 
   enableRemove: (enable) ->
     @children.call 'enableRemove', enable
     if enable then @ui.header.removeClass('hidden') else @ui.header.addClass('hidden')
+
+    @table.draw()
     return
 
 #-------------------------------------------------------------------------------
