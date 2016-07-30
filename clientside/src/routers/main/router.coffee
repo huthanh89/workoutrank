@@ -36,15 +36,6 @@ class Router extends Marionette.AppRouter
         @home()
         return
 
-      'exercise': =>
-        @navigate('exercise', trigger: true)
-        @exercise()
-        return
-
-      'exercise:detail': (type) =>
-        @rootChannel.request "#{type}"
-        return
-
       'strengths': =>
         @navigate('strength', trigger: true)
         @strength()
@@ -92,7 +83,6 @@ class Router extends Marionette.AppRouter
 
   routes:
     'home':              'home'
-    'exercise':          'exercise'
     'strength/':         'strength'
     'strength/:sid/':    'strengthDetail'
     'strength/:sid/log': 'strengthLog'
@@ -200,22 +190,6 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new View
           model:      model
           strengthID: strengthID
-        return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
-        return
-    return
-
-  exercise: ->
-    @navChannel.request('nav:main')
-    collection = new Exercise.Master.Collection()
-    model = new Exercise.Master.Model()
-
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new Exercise.Master.View
-          collection: collection
-          model: model
         return
       error: (model, response) =>
         @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"

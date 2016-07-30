@@ -191,6 +191,7 @@ gulp.task 'scripts', (callback) ->
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
         datatable:             'scripts/jquery.datatables.js'
         'datatable.editor':    'scripts/jquery.datatables.editor.js'
+        'jquery.ui':           'scripts/jquery-ui.js'
 
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
         fauxserver:            'scripts/backbone-faux-server.js'
@@ -233,6 +234,7 @@ gulp.task 'css', ->
     './clientside/styles/css/bootstrap-datepicker.css'
     './clientside/styles/css/jquery.timeentry.css'
     './clientside/styles/css/jquery.datatables.css'
+    './clientside/styles/css/jquery-ui.css'
     './clientside/styles/css/timepicker.css'
 
     './clientside/styles/application.css'

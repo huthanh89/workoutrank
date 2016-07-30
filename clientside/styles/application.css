@@ -194,7 +194,7 @@ Custom classes
   user-select: none;
 }
 .date-navigate-btn {
-  height: 33px;
+  height: 38px;
 }
 .btn-full-width {
   display: block;
@@ -206,6 +206,20 @@ Bootstrap workarounds
 .bootstrap-timepicker-widget .dropdown-menu {
   z-index: 1050!important;
 }
+/*-----------------------------------------------------------------------------
+Font icons
+-----------------------------------------------------------------------------*/
+/*
+.fa-book {
+  color: brown;
+}
+.fa-area-chart {
+  color: darkseagreen;
+}
+.fa-user {
+  color: cadetblue;
+}
+*/
 /*-----------------------------------------------------------------------------
                               End of Document
 -----------------------------------------------------------------------------*/
