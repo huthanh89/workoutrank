@@ -125,8 +125,9 @@ class View extends Marionette.LayoutView
         collection: @pageableCollection
         channel:    @channel
 
-    @showChildView 'chart', new ChartView
-      collection: @collection
+    if @collection.length
+      @showChildView 'chart', new ChartView
+        collection: @collection
     return
 
   addWorkout: ->
