@@ -64,6 +64,7 @@ router.get '/api/strengths', Strength.list
 
 # Get a specific strength workout matching strength ID.
 router.get '/api/strengths/:sid', Strength.get
+router.put '/api/strengths/:sid', Strength.put
 
 # Post a new strength exercise for an user.
 router.post '/api/strengths', Strength.post

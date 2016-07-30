@@ -100,6 +100,44 @@ module.post = (req, res) ->
   return
 
 #-------------------------------------------------------------------------------
+# PUT
+#   Edit a new strength exercise.
+#-------------------------------------------------------------------------------
+
+module.put = (req, res, next) ->
+
+  async.waterfall [
+
+    (callback) ->
+
+      Strength.findById req.params.sid, (err, strength) ->
+        return callback err if err
+        return callback null, strength
+
+      return
+
+    (strength, callback) ->
+
+      strength.date    = req.body.date
+      strength.name    = req.body.name
+      strength.note    = req.body.note
+      strength.muscle  = req.body.muscle
+
+      strength.save (err, entry) ->
+        return callback err if err
+        return callback null, entry
+
+      return
+
+  ], (err, entry) ->
+
+    console.log 'ERROR', err if err
+
+    # Return json if success.
+
+    return res.json entry
+
+#-------------------------------------------------------------------------------
 # Log
 #
 #   Get a list all slogs matching that strength exercise id.

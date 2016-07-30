@@ -25,12 +25,12 @@ class View extends Marionette.ItemView
   onRender: ->
 
     @ui.muscle.multiselect
-      dropRight:        true
-      maxHeight:        350
-      buttonClass:     'btn btn-info strength-filter-btn'
-      buttonWidth:      40
+      dropRight:    false
+      maxHeight:    350
+      buttonClass: 'btn btn-default'
+      buttonWidth:  40
       templates:
-        button: '<span class="multiselect dropdown-toggle " data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i><i class="fa fa-lg fa-caret-down"></i></span>'
+        button: '<span class="multiselect dropdown-toggle " data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i></i></span>'
 
       # Filter pageable collection on change.
 

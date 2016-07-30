@@ -91,10 +91,17 @@ class View extends Marionette.LayoutView
     @enableRemove = false
 
     @channel = Backbone.Radio.channel('channel')
+
     @channel.reply
+
       'add': =>
         @addWorkout()
         return
+
+      'edit': (model) =>
+        @showChildView 'modal', new Add.View
+          model: model
+          edit: true
 
   onShow: ->
 

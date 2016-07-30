@@ -11,7 +11,6 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'touchspin'
 require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
@@ -73,17 +72,23 @@ class View extends Marionette.LayoutView
 
       @ui.form.validator('validate')
 
-      @collection.create @model.attributes,
-        wait: true
-        at:   0
-        success: =>
-          @ui.dialog.modal('hide')
-          return
+      success = =>
+        @ui.dialog.modal('hide')
+        return
 
+      if @edit
+        @model.save {},
+          success: success
+      else
+        @collection.create @model.attributes,
+          wait: true
+          at:   0
+          success: success
       return
 
-  constructor: ->
+  constructor: (options) ->
     super
+    @mergeOptions options, 'edit'
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
@@ -94,12 +99,6 @@ class View extends Marionette.LayoutView
       buttonClass:  'btn btn-info'
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
-
-    @ui.addset.TouchSpin
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
-      min:              1
-      max:              20
 
     @ui.date.datepicker
       todayBtn:      'linked'

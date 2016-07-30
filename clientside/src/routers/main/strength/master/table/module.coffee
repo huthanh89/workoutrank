@@ -63,7 +63,7 @@ class ItemView extends Marionette.ItemView
   template: itemTemplate
 
   ui:
-    remove: '.strength-table-td-remove'
+    td: '.strength-table-td'
 
   bindings:
 
@@ -78,17 +78,30 @@ class ItemView extends Marionette.ItemView
       onGet: (value) -> moment(value).format('ddd MM/DD HH:MM')
 
   events:
-    'click td:not(:first-child)': ->
+    #'click td:not(:nth-child(1))': ->
+
+    'click td:nth-child(1)': ->
+      @rootChannel.request 'strength:detail', @model.id
+      return
+    'click td:nth-child(2)': ->
+      @rootChannel.request 'strength:detail', @model.id
+      return
+    'click td:nth-child(3)': ->
       @rootChannel.request 'strength:detail', @model.id
       return
 
-    'click .strength-table-td-remove': ->
+    'click td:nth-child(4)': ->
       @model.destroy
         wait: true
       return
 
-  constructor: ->
+    'click td:nth-child(5)': ->
+      @channel.request 'edit', @model
+      return
+
+  constructor: (options) ->
     super
+    @mergeOptions options, 'channel'
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
@@ -96,7 +109,7 @@ class ItemView extends Marionette.ItemView
     return
 
   enableRemove: (enable) ->
-    if enable then @ui.remove.removeClass('hidden') else @ui.remove.addClass('hidden')
+    if enable then @ui.td.removeClass('hidden') else @ui.td.addClass('hidden')
     return
 
   onBeforeDestroy: ->
@@ -119,7 +132,7 @@ class View extends Marionette.CompositeView
 
   ui:
     table:  '#strength-table'
-    header: '#strength-table-th-remove'
+    header: '.strength-table-th'
 
   constructor: (options) ->
     super
@@ -131,10 +144,8 @@ class View extends Marionette.CompositeView
     }
 
   onShow: ->
-
     @table = @ui.table.DataTable
-      scrollX:   true
-
+      scrollX: true
     return
 
   enableRemove: (enable) ->
