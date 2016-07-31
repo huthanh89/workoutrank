@@ -24,23 +24,25 @@ seriesData = (model, type) ->
     return _.assign result,
       name:      'Reps'
       data:       model.get('repData')
-      color:     '#98fb98'
-      lineColor: '#6aaf6a'
+      color:     '#46dbd4'
+      lineColor: '#65c2bd'
+      yAxis:      0
       marker:
         enabled:    true
-        fillColor: '#6aaf6a'
+        fillColor: '#65c2bd'
         radius:     6
   else
     return _.assign result,
-      name:  'Weights'
-      data:   model.get('weightData')
-      color: '#b0e0e6'
+      name:      'Weights'
+      data:       model.get('weightData')
+      color:     '#e36e4b'
+      lineColor: '#ca816b'
+      yAxis:      1
       tooltip:
         valueSuffix: ' lb'
-      lineColor: '#8cb3b8'
       marker:
         enabled:    true
-        fillColor: '#8cb3b8'
+        fillColor: '#ca816b'
         radius:     6
 
 #-------------------------------------------------------------------------------
@@ -85,12 +87,10 @@ class View extends Marionette.ItemView
 
       plotOptions:
         column:
-          stacking: 'normal'
           dataLabels:
             enabled: true
-            color:  'white'
-            style:
-              textShadow: '0 0 3px black'
+            color:  'gray'
+
 
       xAxis:
         lineWidth: 2
@@ -98,6 +98,9 @@ class View extends Marionette.ItemView
       yAxis: [
         lineWidth: 0
         opposite:  false
+      ,
+        lineWidth: 0
+        opposite:  true
       ]
 
       series: [

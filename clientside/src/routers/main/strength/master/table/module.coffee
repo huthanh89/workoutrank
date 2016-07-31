@@ -96,7 +96,7 @@ class ItemView extends Marionette.ItemView
       return
 
     'click td:nth-child(5)': ->
-      @channel.request 'edit', @model
+      @channel.request 'edit:row', @model
       return
 
   constructor: (options) ->

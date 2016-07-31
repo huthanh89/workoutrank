@@ -85,12 +85,15 @@ class View extends Marionette.LayoutView
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
+    @rootChannel        = Backbone.Radio.channel('root')
     @pageableCollection = new Table.Collection @collection.models
+    @enableRemove       = false
+    @channel            = Backbone.Radio.channel('channel')
 
-    @enableRemove = false
+  onShow: ->
 
-    @channel = Backbone.Radio.channel('channel')
+    # XXX Not sure why channel's reply will not work if placed
+    # in constructor, so we put it here for now.
 
     @channel.reply
 
@@ -98,12 +101,10 @@ class View extends Marionette.LayoutView
         @addWorkout()
         return
 
-      'edit': (model) =>
+      'edit:row': (model) =>
         @showChildView 'modal', new Add.View
           model: model
           edit: true
-
-  onShow: ->
 
     @showChildView 'filter', new FilterView
       collection:         @collection
@@ -121,7 +122,7 @@ class View extends Marionette.LayoutView
       model:      new Add.Model()
     return
 
-  onBeforeDestroy: ->
+  onDestroy: ->
     @channel.reset()
     return
 

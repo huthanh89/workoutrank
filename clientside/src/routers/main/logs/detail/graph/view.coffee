@@ -24,23 +24,23 @@ seriesData = (model, type, chart) ->
     return _.assign result,
       name: 'Reps'
       data:  model.get('repData')
-      color: '#98fb98'
-      lineColor: '#6aaf6a'
+      color:     '#46dbd4'
+      lineColor: '#65c2bd'
       marker:
         enabled:    true
-        fillColor: '#6aaf6a'
+        fillColor: '#65c2bd'
         radius:     6
   else
     return _.assign result,
       name: 'Weights'
       data:  model.get('weightData')
-      color: '#b0e0e6'
       tooltip:
         valueSuffix: ' lb'
-      lineColor: '#8cb3b8'
+      color:     '#e36e4b'
+      lineColor: '#995d4a'
       marker:
         enabled:    true
-        fillColor: '#8cb3b8'
+        fillColor: '#995d4a'
         radius:     6
 
 #-------------------------------------------------------------------------------
@@ -48,12 +48,6 @@ seriesData = (model, type, chart) ->
 #-------------------------------------------------------------------------------
 
 getMean = (data) -> _.mean(_.map(data, (record) -> record.y))
-
-#-------------------------------------------------------------------------------
-# Given a collection, return max weight in collection.
-#-------------------------------------------------------------------------------
-
-getMax = (data) -> _.maxBy(data, (record) -> record.y).y
 
 #-------------------------------------------------------------------------------
 # Return plot line options for y axis.
@@ -154,6 +148,12 @@ class View extends Marionette.ItemView
             fontWeight: 'bold'
             fontSize:    14
       ]
+
+      plotOptions:
+        column:
+          dataLabels:
+            enabled: true
+            color:  'gray'
 
       tooltip:
         shared: false
