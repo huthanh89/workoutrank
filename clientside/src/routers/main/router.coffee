@@ -37,8 +37,8 @@ class Router extends Marionette.AppRouter
         return
 
       'strengths': =>
-        @navigate('strength', trigger: true)
-        @strength()
+        @navigate('strengths', trigger: true)
+        @strengths()
         return
 
       'strength:detail': (exerciseID) =>
@@ -77,14 +77,14 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    'home':              'home'
-    'strength/':         'strength'
-    'strength/:sid/':    'strengthDetail'
-    'summary':           'summary'
-    'schedule':          'schedule'
-    'logs':              'logs'
-    'log/:lid/':         'logDetail'
-    'multiplayer':       'multiplayer'
+    'home':           'home'
+    'strengths':      'strengths'
+    'strength/:sid/': 'strengthDetail'
+    'summary':        'summary'
+    'schedule':       'schedule'
+    'logs':           'logs'
+    'log/:lid/':      'logDetail'
+    'multiplayer':    'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -104,24 +104,44 @@ class Router extends Marionette.AppRouter
         return
     return
 
-  strength: ->
+  strengths: ->
 
     @navChannel.request('nav:main')
 
-    Collection = Strength.Master.Collection
-    View       = Strength.Master.View
 
-    collection = new Collection()
+    async.waterfall [
 
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new View
-          collection: collection
+      (callback) ->
+
+        SConfs = Strength.Master.Collection
+        sconfs = new SConfs()
+
+        sconfs.fetch
+          success: (collection) -> callback null, collection
+          error: (model, error) -> callback error
+
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+
+      (sConfs, callback) ->
+        sLogs = new Logs.Master.Collection()
+        sLogs.fetch
+          success: (collection) -> callback null, sConfs, collection
+          error: (model, error) -> callback error
         return
-    return
+
+    ], (error, sConfs, sLogs) =>
+
+      if error
+        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+
+      View = Strength.Master.View
+
+      @rootView.content.show new View
+        collection: sConfs
+        sLogs:      sLogs
+
+      return
+
 
   strengthDetail: (strengthID) ->
 
@@ -140,16 +160,16 @@ class Router extends Marionette.AppRouter
 
         strength.fetch
           success: (strength) -> callback null, strength
-          error: (model, error) -> callback err
+          error: (model, error) -> callback error
 
         return
 
       (strength, callback) ->
 
-        slogs = new SLogs [],
+        sLogs = new SLogs [],
           id: strengthID
 
-        slogs.fetch
+        sLogs.fetch
           success: (collection) -> callback null, strength, collection
           error: (model, error) -> callback error
 
