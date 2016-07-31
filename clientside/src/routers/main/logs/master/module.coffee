@@ -15,14 +15,15 @@ viewTemplate = require './view.jade'
 
 class Model extends Backbone.Model
 
-  idAttribute: '_id'
+  idAttribute: 'exerciseID'
 
   defaults:
-    name:  ''
-    max:   0
-    avg:   0
-    count: 0
-    date:  ''
+    exerciseID: ''
+    name:       ''
+    weightData: []
+    repData:    []
+    muscle:     0
+    user:       ''
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -83,14 +84,15 @@ class View extends Marionette.LayoutView
   regions:
     graphs: '#logs-graphs-view'
 
-  constructor: ->
+  constructor: (options) ->
     super
+    @mergeOptions options, 'sConfs'
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
-
     @showChildView 'graphs', new GraphsView
       collection: @collection
+      sConfs:     @sConfs
     return
 
 #-------------------------------------------------------------------------------

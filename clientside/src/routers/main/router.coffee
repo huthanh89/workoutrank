@@ -46,11 +46,6 @@ class Router extends Marionette.AppRouter
         @strengthDetail(exerciseID)
         return
 
-      'strength:log': (exerciseID) =>
-        @navigate("strength/#{exerciseID}/log", trigger: true)
-        @strengthLog(exerciseID)
-        return
-
       'summary': =>
         @navigate('summary', trigger: true)
         @summary()
@@ -85,7 +80,6 @@ class Router extends Marionette.AppRouter
     'home':              'home'
     'strength/':         'strength'
     'strength/:sid/':    'strengthDetail'
-    'strength/:sid/log': 'strengthLog'
     'summary':           'summary'
     'schedule':          'schedule'
     'logs':              'logs'
@@ -133,9 +127,9 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View       = Strength.Detail.View
-    Model      = Strength.Detail.Model
-    Collection = Strength.Detail.Collection
+    View  = Strength.Detail.View
+    Model = Strength.Detail.Model
+    SLogs = Strength.Detail.Collection
 
     async.waterfall [
 
@@ -152,10 +146,10 @@ class Router extends Marionette.AppRouter
 
       (strength, callback) ->
 
-        logs = new Collection [],
+        slogs = new SLogs [],
           id: strengthID
 
-        logs.fetch
+        slogs.fetch
           success: (collection) -> callback null, strength, collection
           error: (model, error) -> callback error
 
@@ -173,27 +167,6 @@ class Router extends Marionette.AppRouter
 
       return
 
-    return
-
-  strengthLog: (strengthID) ->
-
-    @navChannel.request('nav:main')
-
-    View  = Strength.Logs.View
-    Model = Strength.Logs.Model
-
-    model = new Model {},
-      id: strengthID
-
-    model.fetch
-      success: (model) =>
-        @rootView.content.show new View
-          model:      model
-          strengthID: strengthID
-        return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
-        return
     return
 
   summary: ->
@@ -218,21 +191,39 @@ class Router extends Marionette.AppRouter
     return
 
   logs: ->
+
     @navChannel.request('nav:main')
+    async.waterfall [
 
-    collection = new Logs.Master.Collection()
+      (callback) ->
+        sConfs = new Strength.Master.Collection()
+        sConfs.fetch
+          success: (sConfs) -> callback null, sConfs
+          error: (model, error) -> callback err
 
-    View = Logs.Master.View
-
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new View
-          collection: collection
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+
+      (sConfs, callback) ->
+
+        sLogs  = new Logs.Master.Collection()
+        sLogs.fetch
+          success: (sLogs) -> callback null, sConfs, sLogs
+          error: (model, error) -> callback error
+
         return
-    return
+
+    ], (error, sConfs, sLogs) =>
+
+      if error
+        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+
+      View = Logs.Master.View
+
+      @rootView.content.show new View
+        collection: sLogs
+        sConfs:     sConfs
+
+      return
 
   logDetail: (exerciseID) ->
     @navChannel.request('nav:main')
