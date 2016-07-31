@@ -25,10 +25,11 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    date:    new Date()
-    name:    ''
-    muscle:  0
-    note:    ''
+    date:   new Date()
+    name:   ''
+    muscle: 0
+    note:   ''
+    body:   false
 
 #-------------------------------------------------------------------------------
 # View
@@ -42,6 +43,7 @@ class View extends Marionette.LayoutView
     dialog: '#strength-modal-dialog'
     name:   '#strength-modal-name'
     muscle: '#strength-modal-muscle'
+    body:   '#strength-modal-body'
     addset: '#strength-modal-addset'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
@@ -62,10 +64,15 @@ class View extends Marionette.LayoutView
 
     'shown.bs.modal': ->
       @ui.name.focus()
+      @ui.body.prop 'checked', @model.get('body')
       return
 
     'click @ui.time': ->
       @ui.time.timepicker('showWidget')
+      return
+
+    'click @ui.body': ->
+      @model.set 'body', @ui.body.is(':checked')
       return
 
     'click @ui.submit': ->
@@ -84,6 +91,7 @@ class View extends Marionette.LayoutView
           wait: true
           at:   0
           success: success
+
       return
 
   constructor: (options) ->

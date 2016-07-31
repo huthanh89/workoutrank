@@ -17,6 +17,8 @@ StrengthSchema = new mongoose.Schema
     type: String
   muscle:
     type: Number
+  body:
+    type: Boolean
   note:
     type: String
 ,

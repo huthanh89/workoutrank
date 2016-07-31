@@ -9,6 +9,7 @@ Marionette   = require 'marionette'
 Modal        = require './modal/module'
 DateView     = require './date/view'
 Table        = require './table/module'
+Summary      = require './summary/module'
 ChartView    = require './chart/view'
 viewTemplate = require './view.jade'
 
@@ -87,9 +88,6 @@ class View extends Marionette.LayoutView
     summary: '#strength-summary-view'
     chart:   '#strength-chart-view'
 
-
-    detail:  '#strength-chart-detail'
-
   bindings:
     '#strength-title': 'name'
 
@@ -106,8 +104,6 @@ class View extends Marionette.LayoutView
     'click #strength-detail-add': ->
       @channel.request 'add'
       return
-
-    'click .strength-graph-detail': 'addWorkout'
 
     'click .strength-graph-detail': ->
       @rootChannel.request 'log:detail', @model.get('exercise')
@@ -148,7 +144,6 @@ class View extends Marionette.LayoutView
 
   onRender: ->
     @stickit()
-    @ui.detail.hide() unless @collection.length
     return
 
   onShow: ->
@@ -162,6 +157,10 @@ class View extends Marionette.LayoutView
 
     @showChildView 'chart', new ChartView
       model: @chartModel
+
+    @showChildView 'summary', new Summary.View
+      model: @model
+
     return
 
   addWorkout: ->

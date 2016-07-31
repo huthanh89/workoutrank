@@ -79,6 +79,7 @@ module.post = (req, res) ->
         name:   req.body.name
         note:   req.body.note
         muscle: req.body.muscle
+        body:   req.body.body
         user:   req.session.user._id
 
       , (err, strength) ->

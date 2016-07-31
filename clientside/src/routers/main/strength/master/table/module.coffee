@@ -21,6 +21,16 @@ require 'backbone.stickit'
 require 'datatable'
 
 #-------------------------------------------------------------------------------
+# Pageable models
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+  defaults:
+    name:   ''
+    muscle: 0
+    count:  0
+
+#-------------------------------------------------------------------------------
 # Pageable Collection
 #   Page collection to paginate table. Used specifically in client mode.
 #-------------------------------------------------------------------------------
@@ -29,11 +39,21 @@ class Collection extends Backbone.PageableCollection
 
   url:  '/api/strengths'
 
+  model: Model
+
   mode: 'client'
 
   state:
     currentPage: 1
     pageSize:    10
+
+  constructor: (models, options) ->
+    super
+    _.each models, (model) ->
+      sLog = options.sLogs.get(model.id)
+      if sLog
+        model.set('count', sLog.get('repData').length)
+      return
 
   comparator: (item) -> return -item.get('date')
 
@@ -70,6 +90,8 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-name': 'name'
 
+    '.strength-table-td-count': 'count'
+
     '.strength-table-td-muscle':
       observe: 'muscle'
       onGet: (value) -> _.find(Data.Muscles, value: value).label
@@ -98,19 +120,13 @@ class ItemView extends Marionette.ItemView
     super
     @mergeOptions options, [
       'channel'
-      'sLogs'
     ]
     @rootChannel = Backbone.Radio.channel('root')
-    @sLog = @sLogs.get(@model.id)
 
   onRender: ->
-    @ui.count.text @sLog.get('repData').length
     @stickit()
     return
 
-  enableRemove: (enable) ->
-    if enable then @ui.td.removeClass('hidden') else @ui.td.addClass('hidden')
-    return
 
   onBeforeDestroy: ->
     @unstickit()
@@ -138,25 +154,16 @@ class View extends Marionette.CompositeView
     super
     @mergeOptions options, [
       'channel'
-      'sLogs'
     ]
 
   childViewOptions: ->
     return {
       channel: @channel
-      sLogs:   @sLogs
     }
 
   onShow: ->
     @table = @ui.table.DataTable
       scrollX: true
-    return
-
-  enableRemove: (enable) ->
-    @children.call 'enableRemove', enable
-    if enable then @ui.header.removeClass('hidden') else @ui.header.addClass('hidden')
-
-    @table.draw()
     return
 
 #-------------------------------------------------------------------------------

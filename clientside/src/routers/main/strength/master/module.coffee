@@ -27,9 +27,9 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    name: ''
-    date: new Date()
-    muscle:  0
+    name:   ''
+    muscle: 0
+    count:  0
 
 #-------------------------------------------------------------------------------
 # Main Collection
@@ -68,11 +68,6 @@ class View extends Marionette.LayoutView
       @addWorkout()
       return
 
-    'click #strength-remove-enable': ->
-      @enableRemove = not @enableRemove
-      @getRegion('table').currentView.enableRemove @enableRemove
-      return
-
   modelEvents:
     'change:muscle': (model, value) ->
       @filterCollection(value)
@@ -87,9 +82,10 @@ class View extends Marionette.LayoutView
     super
     @mergeOptions options, 'sLogs'
     @rootChannel        = Backbone.Radio.channel('root')
-    @pageableCollection = new Table.Collection @collection.models
-    @enableRemove       = false
     @channel            = Backbone.Radio.channel('channel')
+
+    @pageableCollection = new Table.Collection @collection.models,
+      sLogs: @sLogs
 
   onShow: ->
 
@@ -114,7 +110,6 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
       collection: @pageableCollection
       channel:    @channel
-      sLogs:      @sLogs
 
     return
 

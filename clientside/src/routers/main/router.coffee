@@ -155,35 +155,34 @@ class Router extends Marionette.AppRouter
 
       (callback) ->
 
-        strength = new Model
+        sConf = new Model
           _id: strengthID
 
-        strength.fetch
-          success: (strength) -> callback null, strength
+        sConf.fetch
+          success: (model) -> callback null, model
           error: (model, error) -> callback error
 
         return
 
-      (strength, callback) ->
+      (sConf, callback) ->
 
         sLogs = new SLogs [],
           id: strengthID
 
         sLogs.fetch
-          success: (collection) -> callback null, strength, collection
+          success: (collection) -> callback null, sConf, collection
           error: (model, error) -> callback error
 
         return
 
-    ], (error, strength, collection) =>
+    ], (error, sConf, sLogs) =>
 
       if error
         @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
 
       @rootView.content.show new View
-        model:      strength
-        collection: collection
-        strengthID: strengthID
+        model:      sConf
+        collection: sLogs
 
       return
 
