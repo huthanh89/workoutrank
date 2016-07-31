@@ -80,11 +80,6 @@ class ItemView extends Marionette.ItemView
     '.strength-table-td-weight': 'weight'
 
   events:
-
-    'click td:not(:first)': ->
-      @rootChannel.request 'log:detail', @model.get('exercise')
-      return
-
     'click .strength-table-td-remove': ->
       @model.urlRoot = '/api/slogs'
       @model.destroy

@@ -10,38 +10,6 @@ Highstock    = require 'highstock'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Given a collection, condense the collection to a single chart model.
-#-------------------------------------------------------------------------------
-
-chartModel = (collection) ->
-
-  weightData = []
-  repData    = []
-
-  collection.each (model) ->
-
-    x = moment(model.get('date')).valueOf()
-
-    weightData.push
-      x: x
-      y: model.get('weight')
-
-    repData.push
-      x: x
-      y: model.get('rep')
-
-  model = collection.at(0)
-
-  return {
-    exerciseID:   model.get('exercise')
-    name:         model.get('name')
-    weightData: _.sortBy weightData, (point) -> point.x
-    repData:    _.sortBy repData, (point) -> point.x
-    muscle:       model.get('muscle')
-    user:         model.get('user')
-  }
-
-#-------------------------------------------------------------------------------
 # Series Data
 #-------------------------------------------------------------------------------
 
@@ -89,7 +57,6 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @model       = new Backbone.Model chartModel(@collection)
 
   onRender: ->
 
@@ -124,7 +91,6 @@ class View extends Marionette.ItemView
             color:  'white'
             style:
               textShadow: '0 0 3px black'
-
 
       xAxis:
         lineWidth: 2

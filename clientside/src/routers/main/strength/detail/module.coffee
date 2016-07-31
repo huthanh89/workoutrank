@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
@@ -37,15 +38,39 @@ class Collection extends Backbone.Collection
 
   model: Model
 
-  mode: 'client'
-
   constructor: (attributes, options) ->
     super
     @url = "/api/strengths/#{options.id}/log"
 
-  state:
-    currentPage: 1
-    pageSize:    10
+#-------------------------------------------------------------------------------
+# Given a collection, condense the collection to a single chart model.
+#-------------------------------------------------------------------------------
+
+chartModel = (model, collection) ->
+
+  weightData = []
+  repData    = []
+
+  collection.each (model) ->
+
+    x = moment(model.get('date')).valueOf()
+
+    weightData.push
+      x: x
+      y: model.get('weight')
+
+    repData.push
+      x: x
+      y: model.get('rep')
+
+  return new Backbone.Model {
+    exerciseID:   model.get('exercise')
+    name:         model.get('name')
+    weightData: _.sortBy weightData, (point) -> point.x
+    repData:    _.sortBy repData, (point) -> point.x
+    muscle:       model.get('muscle')
+    user:         model.get('user')
+  }
 
 #-------------------------------------------------------------------------------
 # View
@@ -62,8 +87,11 @@ class View extends Marionette.LayoutView
     summary: '#strength-summary-view'
     chart:   '#strength-chart-view'
 
+  ui:
+    detail:  '#strength-chart-detail'
+
   bindings:
-    '#strength-header': 'name'
+    '#strength-title': 'name'
 
   events:
 
@@ -81,6 +109,10 @@ class View extends Marionette.LayoutView
 
     'click #strength-detail-add': 'addWorkout'
 
+    'click #strength-chart-detail': ->
+      @rootChannel.request 'log:detail', @model.get('exercise')
+      return
+
   collectionEvents:
     'sync update': 'updatePageableCollection'
 
@@ -88,6 +120,8 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'strengthID'
+
+    @chartModel = chartModel(@model, @collection)
 
     attributes = _.chain @model.attributes
       .extend
@@ -114,6 +148,7 @@ class View extends Marionette.LayoutView
 
   onRender: ->
     @stickit()
+    @ui.detail.hide() unless @collection.length
     return
 
   onShow: ->
@@ -125,9 +160,8 @@ class View extends Marionette.LayoutView
         collection: @pageableCollection
         channel:    @channel
 
-    if @collection.length
-      @showChildView 'chart', new ChartView
-        collection: @collection
+    @showChildView 'chart', new ChartView
+      model: @chartModel
     return
 
   addWorkout: ->

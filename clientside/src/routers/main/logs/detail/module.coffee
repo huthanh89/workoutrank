@@ -95,6 +95,10 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'logs'
       return
 
+    'click #log-table-edit': ->
+      @rootChannel.request 'strength:detail', @model.get('exerciseID')
+      return
+
   bindings:
     '#log-title': 'name'
 
