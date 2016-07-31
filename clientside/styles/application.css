@@ -171,6 +171,20 @@ Logs
 .logs-master-filter-btn {
   width: 200px;
 }
+.log-calendar-td {
+  font-weight: bold;
+  color: #2B2922;
+  background: #ffcc66;
+  border: 1px solid black;
+}
+#log-calendar-ui {
+  text-align: center;
+}
+#log-calendar-ui .datepicker {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
 /*-----------------------------------------------------------------------------
 Custom classes
 -----------------------------------------------------------------------------*/

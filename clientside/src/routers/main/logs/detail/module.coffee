@@ -6,6 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 GraphView    = require './graph/view'
+CalendarView = require './calendar/view'
 Table        = require './table/module'
 viewTemplate = require './view.jade'
 
@@ -15,6 +16,39 @@ viewTemplate = require './view.jade'
 
 require 'backbone.stickit'
 
+#-------------------------------------------------------------------------------
+# Given a collection, condense the collection to a single chart model.
+#-------------------------------------------------------------------------------
+
+chartModel = (collection) ->
+
+  weightData = []
+  repData    = []
+
+  collection.each (model) ->
+
+    x = moment(model.get('date')).valueOf()
+
+    weightData.push
+      id: x
+      x:  x
+      y:  model.get('weight')
+
+    repData.push
+      id: x
+      x:  x
+      y:  model.get('rep')
+
+  model = collection.at(0)
+
+  return new Backbone.Model {
+    exerciseID:   model.get('exercise')
+    name:         model.get('name')
+    weightData: _.sortBy weightData, (point) -> point.x
+    repData:    _.sortBy repData, (point) -> point.x
+    muscle:       model.get('muscle')
+    user:         model.get('user')
+  }
 #-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
@@ -41,39 +75,6 @@ class Collection extends Backbone.Collection
 
   model: Model
 
-  parse: (response) ->
-
-    result = []
-
-    grouped = _.groupBy response, (record) -> record.exercise
-
-    for exercise, records of grouped
-      weightData = []
-      repData    = []
-
-      for record in records
-        x = moment(record.date).valueOf()
-
-        weightData.push
-          id: x
-          x:  x
-          y:  record.weight
-
-        repData.push
-          id: x
-          x:  x
-          y:  record.rep
-
-      result.push
-        exerciseID:   exercise
-        name:         records[0].name
-        weightData: _.sortBy weightData, (point) -> point.x
-        repData:    _.sortBy repData, (point) -> point.x
-        muscle:       records[0].muscle
-        user:         records[0].user
-
-    return result
-
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
@@ -83,8 +84,9 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    graph: '#log-graph-view'
-    table: '#log-table-view'
+    graph:    '#log-graph-view'
+    table:    '#log-table-view'
+    calendar: '#log-calendar-view'
 
   events:
     'click #graph-home': ->
@@ -105,7 +107,7 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @model = @collection.at(0)
+    @model = chartModel @collection
 
   onRender: ->
     @stickit()
@@ -113,13 +115,15 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
-    @showChildView 'graph', new GraphView
-      collection: @collection
-
     @showChildView 'table', new Table.View
-      collection: @collection
       model:      new Table.Model()
-      exerciseID: @collection.at(0).id
+      chartModel: @model
+
+    @showChildView 'graph', new GraphView
+      model: @model
+
+    @showChildView 'calendar', new CalendarView
+      model: @model
 
     return
 

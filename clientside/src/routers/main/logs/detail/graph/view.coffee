@@ -187,10 +187,8 @@ class View extends Marionette.ItemView
 
   onShow: ->
 
-    model = @collection.at(0)
-
-    @addChart(@ui.chartRep[0], model, 0)
-    @addChart(@ui.chartWeight[0], model, 1)
+    @addChart(@ui.chartRep[0], @model, 0)
+    @addChart(@ui.chartWeight[0], @model, 1)
 
     @ui.container.bind 'mousemove touchmove touchstart', (e) =>
 

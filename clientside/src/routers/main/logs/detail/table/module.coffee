@@ -105,17 +105,15 @@ class View extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'exerciseID'
+    @mergeOptions options, 'chartModel'
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()
-    @updateModel(@exerciseID)
+    @updateModel(@chartModel)
     return
 
-  updateModel: (exerciseID) ->
-    model = @collection.get(exerciseID)
-
+  updateModel: (model) ->
     wieght = @reduce model.get('weightData')
     rep    = @reduce model.get('repData')
 

@@ -179,12 +179,10 @@ gulp.task 'scripts', (callback) ->
         async:                 'scripts/async.js'
         highcharts:            'scripts/highcharts.js'
         highstock:             'scripts/highstock.js'
-
         bootstrap:             'scripts/bootstrap.js'
-
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
-
         jquery:                'scripts/jquery.js'
+        'jquery.ui':           'scripts/jquery-ui.js'
         mmenu:                 'scripts/jquery.mmenu.all.min.js'
         touchspin:             'scripts/jquery.bootstrap-touchspin.js'
         multiselect:           'scripts/jquery.bootstrap-multiselect.js'
@@ -192,7 +190,6 @@ gulp.task 'scripts', (callback) ->
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
         datatable:             'scripts/jquery.datatables.js'
-        'jquery.ui':           'scripts/jquery-ui.js'
 
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
         fauxserver:            'scripts/backbone-faux-server.js'
