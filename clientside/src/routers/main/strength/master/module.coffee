@@ -83,8 +83,9 @@ class View extends Marionette.LayoutView
       @getChildView('filter').filterCollection()
       return
 
-  constructor: ->
+  constructor: (options) ->
     super
+    @mergeOptions options, 'sLogs'
     @rootChannel        = Backbone.Radio.channel('root')
     @pageableCollection = new Table.Collection @collection.models
     @enableRemove       = false
@@ -113,6 +114,7 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
       collection: @pageableCollection
       channel:    @channel
+      sLogs:      @sLogs
 
     return
 

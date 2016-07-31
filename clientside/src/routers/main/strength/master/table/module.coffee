@@ -63,7 +63,8 @@ class ItemView extends Marionette.ItemView
   template: itemTemplate
 
   ui:
-    td: '.strength-table-td'
+    td:    '.strength-table-td'
+    count: '.strength-table-td-count'
 
   bindings:
 
@@ -73,13 +74,7 @@ class ItemView extends Marionette.ItemView
       observe: 'muscle'
       onGet: (value) -> _.find(Data.Muscles, value: value).label
 
-    '.strength-table-td-date':
-      observe: 'date'
-      onGet: (value) -> moment(value).format('ddd MM/DD HH:MM')
-
   events:
-    #'click td:not(:nth-child(1))': ->
-
     'click td:nth-child(1)': ->
       @rootChannel.request 'strength:detail', @model.id
       return
@@ -101,10 +96,15 @@ class ItemView extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+      'sLogs'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
+    @sLog = @sLogs.get(@model.id)
 
   onRender: ->
+    @ui.count.text @sLog.get('repData').length
     @stickit()
     return
 
@@ -136,11 +136,15 @@ class View extends Marionette.CompositeView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+      'sLogs'
+    ]
 
   childViewOptions: ->
     return {
       channel: @channel
+      sLogs:   @sLogs
     }
 
   onShow: ->
