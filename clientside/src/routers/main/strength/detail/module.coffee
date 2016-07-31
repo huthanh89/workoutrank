@@ -103,6 +103,10 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'strengths'
       return
 
+    'click #strength-detail-add': ->
+      @channel.request 'add'
+      return
+
     'click .strength-graph-detail': 'addWorkout'
 
     'click .strength-graph-detail': ->
