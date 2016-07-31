@@ -98,11 +98,11 @@ class View extends Marionette.ItemView
       placement: 'bottom'
 
     @ui.strengthTip.tooltip
-      title:     'Workouts'
+      title:     'Journals'
       placement: 'bottom'
 
     @ui.logTip.tooltip
-      title:     'Logs'
+      title:     'Graphs'
       placement: 'bottom'
 
     @ui.summaryTip.tooltip

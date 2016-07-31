@@ -87,7 +87,7 @@ class View extends Marionette.LayoutView
     summary: '#strength-summary-view'
     chart:   '#strength-chart-view'
 
-  ui:
+
     detail:  '#strength-chart-detail'
 
   bindings:
@@ -103,13 +103,9 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'strengths'
       return
 
-    'click #strength-log': ->
-      @rootChannel.request 'strength:log', @strengthID
-      return
+    'click .strength-graph-detail': 'addWorkout'
 
-    'click #strength-detail-add': 'addWorkout'
-
-    'click #strength-chart-detail': ->
+    'click .strength-graph-detail': ->
       @rootChannel.request 'log:detail', @model.get('exercise')
       return
 
