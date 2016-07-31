@@ -78,6 +78,21 @@ Top Nav Bar
   border-right: 1px solid #FFF;
   border-left: 1px solid #F2F2F2;
 }
+#navbar-logo {
+  position: relative;
+  width: 43px;
+  height: 43px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+#navbar-banner {
+  position: relative;
+  width: 120px;
+  height: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
 /*-----------------------------------------------------------------------------
 Page nav
 -----------------------------------------------------------------------------*/

@@ -47,6 +47,16 @@ class View extends Marionette.ItemView
 
   events:
 
+    'click #navbar-logo': ->
+      Radio.channel('root').request 'drawer:close'
+      @channel.request 'home'
+      return
+
+    'click #navbar-banner': ->
+      Radio.channel('root').request 'drawer:close'
+      @channel.request 'home'
+      return
+
     'click #navbar-drawer': ->
       Radio.channel('root').request 'drawer:open'
       return
