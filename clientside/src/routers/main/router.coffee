@@ -199,7 +199,7 @@ class Router extends Marionette.AppRouter
         sConfs = new Strength.Master.Collection()
         sConfs.fetch
           success: (sConfs) -> callback null, sConfs
-          error: (model, error) -> callback err
+          error: (model, error) -> callback error
 
         return
 
@@ -208,7 +208,7 @@ class Router extends Marionette.AppRouter
         sLogs  = new Logs.Master.Collection()
         sLogs.fetch
           success: (sLogs) -> callback null, sConfs, sLogs
-          error: (model, error) -> callback error
+          error: (collection, error) -> callback error
 
         return
 
@@ -226,6 +226,39 @@ class Router extends Marionette.AppRouter
       return
 
   logDetail: (exerciseID) ->
+
+    @navChannel.request('nav:main')
+    async.waterfall [
+
+      (callback) ->
+        sConfs = new Strength.Master.Collection()
+        sConfs.fetch
+          success: (sConfs) -> callback null, sConfs
+          error: (collection, error) -> callback error
+        return
+
+      (sConfs, callback) ->
+        sLogs = new Logs.Detail.Collection [],
+          _id: exerciseID
+        sLogs.fetch
+          success: (sLogs) -> callback null, sConfs, sLogs
+          error: (model, error) -> callback error
+        return
+
+    ], (error, sConfs, sLogs) =>
+
+      if error
+        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+
+      View = Logs.Detail.View
+
+      @rootView.content.show new View
+        collection: sLogs
+        sConf:      sConfs.get(exerciseID)
+
+      return
+
+  logDetail2: (exerciseID) ->
     @navChannel.request('nav:main')
 
     collection = new Logs.Detail.Collection [],

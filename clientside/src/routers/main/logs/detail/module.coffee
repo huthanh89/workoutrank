@@ -20,7 +20,7 @@ require 'backbone.stickit'
 # Given a collection, condense the collection to a single chart model.
 #-------------------------------------------------------------------------------
 
-chartModel = (collection) ->
+chartModel = (model, collection) ->
 
   weightData = []
   repData    = []
@@ -39,16 +39,15 @@ chartModel = (collection) ->
       x:  x
       y:  model.get('rep')
 
-  model = collection.at(0)
-
   return new Backbone.Model {
-    exerciseID:   model.get('exercise')
+    exerciseID:   model.id
     name:         model.get('name')
     weightData: _.sortBy weightData, (point) -> point.x
     repData:    _.sortBy repData, (point) -> point.x
     muscle:       model.get('muscle')
     user:         model.get('user')
   }
+
 #-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
@@ -106,8 +105,9 @@ class View extends Marionette.LayoutView
 
   constructor: (options) ->
     super
+    @mergeOptions options, 'sConf'
     @rootChannel = Backbone.Radio.channel('root')
-    @model = chartModel @collection
+    @model = chartModel(@sConf, @collection)
 
   onRender: ->
     @stickit()
