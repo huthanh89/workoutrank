@@ -243,6 +243,7 @@ gulp.task 'css', ->
     './clientside/styles/css/jquery-ui.css'
     './clientside/styles/css/timepicker.css'
 
+    './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'
   ])
   .pipe(concat('style.css'))

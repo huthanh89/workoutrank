@@ -14,7 +14,7 @@
             .panel-heading.clearfix
                 .pull-right
                     button.btn.btn-sm.btn-primary#strength-detail-add
-                        i.fa.fa.fa-plus
+                        i.fa.fa-fw.fa-plus
                         = ' '
                         span Add
                 .panel-title.clearfix
@@ -26,17 +26,14 @@
                 a.pull-right.strength-graph-detail
                     = ' '
                     i.fa.fa-lg.fa-expand
-    //.col-sm-6
-        .panel.panel-primary
-            .panel-body
-                #strength-chart-view
-            .panel-footer.clearfix
-                a.pull-right.strength-graph-detail
-                    = ' '
-                    i.fa.fa-lg.fa-expand
     .col-sm-6
         .panel.panel-info
             .panel-heading
+                .pull-right
+                    button.btn.btn-sm.btn-primary#strength-detail-edit
+                        i.fa.fa-fw.fa-pencil
+                        = ' '
+                        span Edit
                 .panel-title.clearfix
                     span Summary
             .panel-body

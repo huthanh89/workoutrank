@@ -119,10 +119,11 @@ module.put = (req, res, next) ->
 
     (strength, callback) ->
 
-      strength.date    = req.body.date
-      strength.name    = req.body.name
-      strength.note    = req.body.note
-      strength.muscle  = req.body.muscle
+      strength.date   = req.body.date
+      strength.name   = req.body.name
+      strength.note   = req.body.note
+      strength.muscle = req.body.muscle
+      strength.body   = req.body.body
 
       strength.save (err, entry) ->
         return callback err if err
