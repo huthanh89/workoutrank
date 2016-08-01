@@ -10,7 +10,6 @@ Modal        = require './modal/module'
 DateView     = require './date/view'
 Table        = require './table/module'
 Summary      = require './summary/module'
-ChartView    = require './chart/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -42,36 +41,6 @@ class Collection extends Backbone.Collection
   constructor: (attributes, options) ->
     super
     @url = "/api/strengths/#{options.id}/log"
-
-#-------------------------------------------------------------------------------
-# Given a collection, condense the collection to a single chart model.
-#-------------------------------------------------------------------------------
-
-chartModel = (model, collection) ->
-
-  weightData = []
-  repData    = []
-
-  collection.each (model) ->
-
-    x = moment(model.get('date')).valueOf()
-
-    weightData.push
-      x: x
-      y: model.get('weight')
-
-    repData.push
-      x: x
-      y: model.get('rep')
-
-  return new Backbone.Model {
-    exerciseID:   model.get('exercise')
-    name:         model.get('name')
-    weightData: _.sortBy weightData, (point) -> point.x
-    repData:    _.sortBy repData, (point) -> point.x
-    muscle:       model.get('muscle')
-    user:         model.get('user')
-  }
 
 #-------------------------------------------------------------------------------
 # View
@@ -117,8 +86,6 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'strengthID'
 
-    @chartModel = chartModel(@model, @collection)
-
     attributes = _.chain @model.attributes
       .extend
         date:     new Date()
@@ -154,9 +121,6 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
         collection: @pageableCollection
         channel:    @channel
-
-    #@showChildView 'chart', new ChartView
-    #  model: @chartModel
 
     @showChildView 'summary', new Summary.View
       model: new Summary.Model {},
