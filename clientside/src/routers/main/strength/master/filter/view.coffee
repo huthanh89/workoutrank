@@ -28,7 +28,7 @@ class View extends Marionette.ItemView
       dropRight:    true
       maxHeight:    350
       buttonClass: 'btn btn-default strength-filter-btn'
-      buttonWidth:  40
+      buttonWidth:  35
       templates:
         button: '<span class="multiselect dropdown-toggle " data-toggle="dropdown"><i class="fa fa-lg fa-caret-down"></i></i></span>'
 
