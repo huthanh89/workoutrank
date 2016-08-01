@@ -97,23 +97,8 @@ class ItemView extends Marionette.ItemView
       onGet: (value) -> _.find(Data.Muscles, value: value).label
 
   events:
-    'click td:nth-child(1)': ->
+    'click': ->
       @rootChannel.request 'strength:detail', @model.id
-      return
-    'click td:nth-child(2)': ->
-      @rootChannel.request 'strength:detail', @model.id
-      return
-    'click td:nth-child(3)': ->
-      @rootChannel.request 'strength:detail', @model.id
-      return
-
-    'click td:nth-child(4)': ->
-      @model.destroy
-        wait: true
-      return
-
-    'click td:nth-child(5)': ->
-      @channel.request 'edit:row', @model
       return
 
   constructor: (options) ->
@@ -126,7 +111,6 @@ class ItemView extends Marionette.ItemView
   onRender: ->
     @stickit()
     return
-
 
   onBeforeDestroy: ->
     @unstickit()
