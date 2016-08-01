@@ -18271,10 +18271,6 @@ body .ui-tooltip {
     }
 }
 
-.panel .panel-title.clearfix {
-  position: relative;
-  top: 5px;
-}
 
 /*-----------------------------------------------------------------------------
 Body
@@ -18467,6 +18463,9 @@ Strength
 }
 .strength-cardtable table td:first-child {
   font-weight: 600;
+}
+.strength-filter-btn {
+  height: 25px;
 }
 /*-----------------------------------------------------------------------------
 Logs
