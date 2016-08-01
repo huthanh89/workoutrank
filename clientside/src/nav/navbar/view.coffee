@@ -61,39 +61,38 @@ class View extends Marionette.ItemView
       Radio.channel('root').request 'drawer:open'
       return
 
-    'click @ui.home': ->
-      @channel.request 'home'
-      return
-
     'click @ui.strengths': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'strengths'
       return
 
     'click @ui.logs': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'logs'
       return
 
-    'click @ui.summary': ->
-      @channel.request 'summary'
-      return
-
     'click @ui.profile': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'profile'
       return
 
     'click @ui.setting': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'setting'
       return
 
     'click @ui.about': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'help'
       return
 
     'click @ui.report': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'report'
       return
 
     'click @ui.logout': ->
+      Radio.channel('root').request 'drawer:close'
       @channel.request 'logout'
       return
 

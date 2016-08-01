@@ -99,6 +99,7 @@ gulp.task 'lesslint', ->
     recess
       noIDs:               false
       strictPropertyOrder: false
+      noOverqualifying:    false
   )
   .pipe(recess.reporter())
   return
