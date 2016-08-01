@@ -6,7 +6,8 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Modal        = require './modal/module'
+Add          = require './add/module'
+Edit         = require './edit/module'
 DateView     = require './date/view'
 Table        = require './table/module'
 Summary      = require './summary/module'
@@ -74,12 +75,22 @@ class View extends Marionette.LayoutView
       @channel.request 'add'
       return
 
+    'click #strength-detail-edit': ->
+      @showChildView 'modal', new Edit.View
+        model: @model
+      return
+
     'click .strength-graph-detail': ->
       @rootChannel.request 'log:detail', @model.get('exercise')
       return
 
   collectionEvents:
     'sync update': 'updatePageableCollection'
+
+  modelEvents:
+    sync: (model) ->
+      @summaryModel.update(@model, @collection)
+      return
 
   constructor: (options) ->
     super
@@ -103,6 +114,10 @@ class View extends Marionette.LayoutView
 
     @pageableCollection = new Table.Collection @collection.models
 
+    @summaryModel = new Summary.Model {},
+      sConf: @model
+      sLogs: @collection
+
     # When date is changed, update pageable collection.
 
     @listenTo @model, 'change:date', =>
@@ -123,16 +138,14 @@ class View extends Marionette.LayoutView
         channel:    @channel
 
     @showChildView 'summary', new Summary.View
-      model: new Summary.Model {},
-        sConf: @model
-        sLogs: @collection
+      model: @summaryModel
 
     return
 
   addWorkout: ->
-    @showChildView 'modal', new Modal.View
+    @showChildView 'modal', new Add.View
       collection: @collection
-      model:      new Modal.Model _.omit(@model.attributes, '_id')
+      model:      new Add.Model _.omit(@model.attributes, '_id')
       date:       @model.get('date')
     return
 
