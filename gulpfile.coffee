@@ -97,7 +97,8 @@ gulp.task 'lesslint', ->
   gulp.src('./clientside/styles/less/application.less')
   .pipe(
     recess
-      noIDs: false
+      noIDs:               false
+      strictPropertyOrder: false
   )
   .pipe(recess.reporter())
   return

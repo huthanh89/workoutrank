@@ -155,11 +155,13 @@ class View extends Marionette.LayoutView
         collection: @pageableCollection
         channel:    @channel
 
-    @showChildView 'chart', new ChartView
-      model: @chartModel
+    #@showChildView 'chart', new ChartView
+    #  model: @chartModel
 
     @showChildView 'summary', new Summary.View
-      model: @model
+      model: new Summary.Model {},
+        sConf: @model
+        sLogs: @collection
 
     return
 

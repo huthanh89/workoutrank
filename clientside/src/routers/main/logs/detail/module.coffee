@@ -57,6 +57,7 @@ class Model extends Backbone.Model
   idAttribute: 'exerciseID'
 
   defaults:
+    date:       new Date()
     exerciseID: ''
     name:       ''
     weightData: []
@@ -68,11 +69,11 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
+  model: Model
+
   constructor: (models, options) ->
     super
     @url = "/api/strengths/#{options._id}/log"
-
-  model: Model
 
 #-------------------------------------------------------------------------------
 # View

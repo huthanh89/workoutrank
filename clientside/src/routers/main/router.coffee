@@ -147,15 +147,11 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
 
-    View  = Strength.Detail.View
-    Model = Strength.Detail.Model
-    SLogs = Strength.Detail.Collection
-
     async.waterfall [
 
       (callback) ->
 
-        sConf = new Model
+        sConf = new Strength.Detail.Model
           _id: strengthID
 
         sConf.fetch
@@ -166,7 +162,7 @@ class Router extends Marionette.AppRouter
 
       (sConf, callback) ->
 
-        sLogs = new SLogs [],
+        sLogs = new Strength.Detail.Collection [],
           id: strengthID
 
         sLogs.fetch
@@ -179,6 +175,8 @@ class Router extends Marionette.AppRouter
 
       if error
         @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+
+      View = Strength.Detail.View
 
       @rootView.content.show new View
         model:      sConf
