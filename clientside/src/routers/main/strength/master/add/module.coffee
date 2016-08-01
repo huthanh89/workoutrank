@@ -94,6 +94,13 @@ class View extends Marionette.LayoutView
 
       return
 
+    'hidden.bs.modal': ->
+      @ui.muscle.multiselect('destroy')
+      @ui.form.validator('destroy')
+      @ui.date.datepicker('destroy')
+      @ui.addset.TouchSpin('destroy')
+      return
+
   constructor: (options) ->
     super
     @mergeOptions options, 'edit'
@@ -127,13 +134,6 @@ class View extends Marionette.LayoutView
 
     @ui.dialog.modal()
 
-    return
-
-  onBeforeDestroy: ->
-    @ui.muscle.multiselect('destroy')
-    @ui.form.validator('destroy')
-    @ui.date.datepicker('destroy')
-    @ui.addset.TouchSpin('destroy')
     return
 
 #-------------------------------------------------------------------------------
