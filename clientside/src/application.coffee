@@ -4,6 +4,7 @@
 #-------------------------------------------------------------------------------
 
 GA           = require './ga'
+Toastr       = require 'toastr'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
@@ -74,14 +75,37 @@ class Application extends Marionette.Application
       'rootview': -> rootView
 
       'message': (panelType, panelText) ->
+
         rootView.showChildView 'message', new Message.Info
           panelType: panelType
           panelText: panelText
         return
 
       'message:error': (response) ->
+
+        Toastr.options =
+          closeButton:       true
+          debug:             false
+          newestOnTop:       false
+          progressBar:       true
+          positionClass:    'toast-top-full-width'
+          preventDuplicates: false
+          onclick:           null
+          showDuration:     '300'
+          hideDuration:     '1000'
+          timeOut:          '5000'
+          extendedTimeOut:  '1000'
+          showEasing:       'swing'
+          hideEasing:       'linear'
+          showMethod:       'fadeIn'
+          hideMethod:       'fadeOut'
+
+        Toastr.error(response.responseText, "Error: #{response.status}")
+
+        ###
         rootView.showChildView 'message', new Message.Error
           response: response
+###
         return
 
     navChannel.reply
