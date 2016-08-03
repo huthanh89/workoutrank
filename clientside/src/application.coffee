@@ -32,10 +32,11 @@ class User extends Backbone.Model
 class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
-    header:   '#header'
-    drawer:   '#drawer'
-    message:  '#message-container'
-    content:  '#content'
+    header:  '#header'
+    message: '#message-container'
+    content: '#content'
+    index:   '#index'
+    drawer:  '#drawer'
 
 #-------------------------------------------------------------------------------
 # Create Application.

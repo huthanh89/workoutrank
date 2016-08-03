@@ -182,6 +182,7 @@ gulp.task 'scripts', (callback) ->
         highcharts:            'scripts/highcharts.js'
         highstock:             'scripts/highstock.js'
         bootstrap:             'scripts/bootstrap.js'
+        'bootstrap-select':    'scripts/bootstrap-select.js'
         'bootstrap.validator': 'scripts/bootstrap.validator.js'
         jquery:                'scripts/jquery.js'
         'jquery.ui':           'scripts/jquery-ui.js'
@@ -192,6 +193,8 @@ gulp.task 'scripts', (callback) ->
         JQPlugin:              'scripts/jquery.plugin.js'
         timepicker:            'scripts/jquery.bootstrap-timepicker.js'
         datatable:             'scripts/jquery.datatables.js'
+
+        'bootstrap.datetimepicker': 'scripts/bootstrap-datetimepicker.min.js'
 
         'bootstrap.paginate':  'scripts/bootstrap.paginate.js'
         fauxserver:            'scripts/backbone-faux-server.js'
@@ -239,6 +242,10 @@ gulp.task 'css', ->
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
     './clientside/styles/css/bootstrap-multiselect.css'
     './clientside/styles/css/bootstrap-datepicker.css'
+
+    './clientside/styles/css/bootstrap-datetimepicker.min.css'
+
+    './clientside/styles/css/bootstrap-select.css'
     './clientside/styles/css/jquery.timeentry.css'
     './clientside/styles/css/jquery.datatables.css'
     './clientside/styles/css/jquery-ui.css'
