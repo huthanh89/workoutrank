@@ -28,8 +28,20 @@ Index Page
   border-right: 1px solid darkgrey;
   padding-right: 20px;
 }
-.index-signup-birthday {
+#index-signup-birthday {
   background: white !important;
+}
+#index-spinner-view {
+  position: fixed;
+  z-index: 15;
+  width: 100%;
+}
+#index-spinner-view .sk-cube:before {
+  background-color: #8cb4ef;
+}
+#index-spinner-view .sk-folding-cube {
+  width: 140px;
+  height: 140px;
 }
 /*-----------------------------------------------------------------------------
 Elements

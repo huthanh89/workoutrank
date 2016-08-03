@@ -250,6 +250,7 @@ gulp.task 'css', ->
     './clientside/styles/css/jquery-ui.css'
     './clientside/styles/css/timepicker.css'
     './clientside/styles/css/toastr.css'
+    './clientside/styles/css/spinkit.css'
 
     './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'
