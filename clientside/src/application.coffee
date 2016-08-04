@@ -102,10 +102,6 @@ class Application extends Marionette.Application
 
         Toastr.error(response.responseText, "Error: #{response.status}")
 
-        ###
-        rootView.showChildView 'message', new Message.Error
-          response: response
-###
         return
 
     navChannel.reply

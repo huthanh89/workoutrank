@@ -21,6 +21,18 @@
                         .col-sm-10
                             input.form-control#profile-lastname(input='text')
                     .form-group
+                        .col-xs-12
+                            label(for='index-signup-gender') Gender
+                        .col-xs-12
+                            .radio.radio-inline#index-signup-gender
+                                label
+                                    input(type='radio', name='optradio')
+                                    | Female
+                            .radio.radio-inline
+                                label
+                                    input(type='radio', name='optradio')
+                                    | Male
+                    .form-group
                         label.col-sm-2.control-label(for='profile-email') Email
                         .col-sm-10
                             input.form-control#profile-email(input='text')

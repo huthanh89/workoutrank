@@ -35,6 +35,11 @@ exports.post = (req, res, next) ->
 
       clientIp = requestIp.getClientIp(req)
 
+      console.log req.body
+
+      #XXX
+      #return callback null
+
       request.post
         url: 'https://www.google.com/recaptcha/api/siteverify'
         formData:
@@ -48,6 +53,7 @@ exports.post = (req, res, next) ->
             return callback new Err.BadRequest
               text: 'Failed reCaptcha validation.'
           return callback null
+
       return
 
     (callback) ->
@@ -76,6 +82,8 @@ exports.post = (req, res, next) ->
         lastname:  req.body.lastname
         email:     req.body.email
         username:  req.body.username
+        birthday:  req.body.birthday
+        gender:    req.body.gender
         salt:      salt
         key:       key
         algorithm: 'sha512'

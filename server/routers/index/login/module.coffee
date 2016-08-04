@@ -20,8 +20,8 @@ User = mongoose.model('user')
 #-------------------------------------------------------------------------------
 
 schema =
-  email:
-    type: 'email'
+  user:
+    type: 'string'
   password:
     type: 'string'
 
@@ -30,13 +30,12 @@ exports.post = (req, res) ->
   async.waterfall [
 
     (callback) ->
-
       return Validate.isValid(req.body, schema, callback)
 
     (callback) ->
 
       User.findOne
-        email: req.body.email
+        username: req.body.user
       .exec (err, user) ->
         return callback err if err
 

@@ -23,6 +23,10 @@ UserSchema = new mongoose.Schema
       unique: true
   username:
     type: String
+  birthday:
+    type: Date
+  gender:
+    type: Number
   algorithm:
     type: String
   rounds:
