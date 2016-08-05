@@ -23,9 +23,9 @@ class Model extends Backbone.Model
   url: 'api/signup'
 
   defaults:
-    email:     's@asdf'
-    username:  's'
-    password:  's'
+    email:     ''
+    username:  ''
+    password:  ''
     birthday:  new Date()
     captcha:   ''
 
