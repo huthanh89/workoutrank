@@ -1,0 +1,40 @@
+.row
+    .col-xs-12
+        h2 Log In
+.row
+    .col-xs-12
+        span.help-block Already have an account? Log in below.
+br
+.row
+    .col-xs-12
+        form.form-horizontal#index-login-form(data-toggle="validator")
+            .form-group
+                .col-xs-12
+                    label(for='index-login-user') Email or User Name
+                .col-xs-12
+                    input.form-control#index-login-user(type='input', placeholder='Email or Username', required)
+                    .help-block.with-errors
+                .col-xs-12
+                    p#index-login-forgot-user
+                        a Forgot ID
+            .form-group
+                .col-xs-12
+                    label(for='index-login-password') Password
+                .col-xs-12
+                    input.form-control#index-login-password(type="password", placeholder='Password', required)
+                    .help-block.with-errors
+                .col-xs-12
+                    p#index-login-forgot-password
+                        a Forgot Password
+            .form-group
+                .col-xs-12
+                    button.btn.btn-lg.btn-info.btn-block#index-login-submit
+                        i.fa.fa-fw.fa-lg.fa-sign-in
+                        = ' '
+                        | Log In
+            .form-group
+                .col-xs-6
+                    .checkbox#index-login-remember
+                        label
+                            input(type='checkbox')
+                            | Remember me

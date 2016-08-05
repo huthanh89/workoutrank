@@ -1,0 +1,73 @@
+.modal.fade(role="dialog")
+    .modal-dialog.modal-sm
+        .modal-content
+
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Add a new session
+
+            .modal-body
+                form.form-horizontal#strength-modal-form
+                    // Nav tabs
+                    ul.nav.nav-tabs(role='tablist')
+                        li.active(role='presentation')
+                            a(href='#strength-modal-basic' aria-controls='basic', role='tab', data-toggle='tab')
+                                i.fa.fa-fw.fa-lg.fa-pencil
+                                = ' '
+                                | Basic
+                        li(role='presentation')
+                            a(href='#strength-modal-advance' aria-controls='advance', role='tab', data-toggle='tab')
+                                i.fa.fa-fw.fa-lg.fa-cogs
+                                = ' '
+                                | Optional
+
+                    br
+
+                    // Tab panes
+
+                    .tab-content
+
+                        // Basic
+
+                        #strength-modal-basic.tab-pane.active(role='tabpanel')
+                            .form-group
+                                .col-xs-12
+                                    label.control-label Weight
+                                .col-xs-12
+                                    input.form-control#strength-modal-weight(type="number", placeholder=0)
+                            .form-group
+                                .col-xs-12
+                                    label.control-label Reps
+                                .col-xs-12
+                                    input.form-control#strength-modal-rep(type="number", placeholder=0)
+
+                        // Advance
+
+                        #strength-modal-advance.tab-pane(role='tabpanel')
+                            .form-group
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-date') Date
+                                .col-xs-12
+                                    .input-group.date
+                                        input.form-control.input-readonly#strength-modal-date(type="text" readonly)
+                                        .input-group-addon.btn-info(style="color:white;")#strength-modal-date-btn
+                                            span.fa.fa-fw.fa-lg.fa-calendar
+                            .form-group
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-time') Time
+                                .col-xs-12
+                                    .input-group.bootstrap-timepicker.timepicker
+                                        input.form-control.input-readonly#strength-modal-time(readonly)
+                                        .input-group-addon.btn-info(style="color:white;")
+                                            span.fa.fa-fw.fa-lg.fa-clock-o
+                            .form-group
+                                .col-xs-12
+                                    label.control-label(for='strength-modal-note') Note
+                                .col-xs-12
+                                    textarea.form-control#strength-modal-note
+
+            .modal-footer
+                .pull-right
+                    button.btn.btn-default(data-dismiss="modal") Cancel
+                    = ' '
+                    button.btn.btn-primary#strength-modal-submit Save
