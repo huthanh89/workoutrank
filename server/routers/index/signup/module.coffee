@@ -35,11 +35,6 @@ exports.post = (req, res, next) ->
 
       clientIp = requestIp.getClientIp(req)
 
-      console.log req.body
-
-      #XXX
-      #return callback null
-
       request.post
         url: 'https://www.google.com/recaptcha/api/siteverify'
         formData:

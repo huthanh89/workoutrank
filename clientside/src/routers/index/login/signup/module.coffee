@@ -23,12 +23,11 @@ class Model extends Backbone.Model
   url: 'api/signup'
 
   defaults:
-    email:     'asd@asd'
-    username:  'asdf'
-    password:  'asdf'
-    birthday:  'adfs'
-    gender:     0
-    captcha:   'asdf'
+    email:     's@asdf'
+    username:  's'
+    password:  's'
+    birthday:  new Date()
+    captcha:   ''
 
 #-------------------------------------------------------------------------------
 # View
@@ -39,6 +38,7 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
+    form:     '#index-signup-form'
     birthday: '#index-signup-birthday'
     gender:   '#index-signup-gender'
     spinner:  '#index-signup-spinner'
@@ -57,8 +57,9 @@ class View extends Marionette.ItemView
       event.preventDefault()
       @channel.request 'show:spinner'
       @model.set 'birthday', @ui.birthday.data('DateTimePicker').date()
-      console.log @model.attributes
 
+      captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
+      @model.set 'captcha', captcha
 
       @model.save {},
         success: (model) =>
@@ -66,9 +67,11 @@ class View extends Marionette.ItemView
           @rootChannel.request('home')
           return
         error: (model, response) =>
+          window.grecaptcha.reset()
           @channel.request 'hide:spinner'
           @rootChannel.request 'message:error', response
           return
+
       return
 
   constructor: (options) ->

@@ -29,6 +29,7 @@ class View extends Marionette.LayoutView
     @channel = Backbone.Radio.channel('channel')
 
     @channel.reply
+
       'show:spinner': =>
         @ui.spinner.removeClass 'hide'
         return

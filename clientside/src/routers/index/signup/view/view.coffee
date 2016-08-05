@@ -22,8 +22,7 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    form:    '#signup-form'
-    login:   '#index-tab-login'
+    form:    '#index-signup-form'
     submit:  '#index-signup-submit'
     spinner: '#signup-spinner'
 
@@ -46,6 +45,8 @@ class View extends Marionette.ItemView
 
       @model.set 'captcha', captcha
 
+      console.log @model.attributes
+      ###
       @model.save {},
         success: =>
           @rootChannel.request('home')
@@ -55,6 +56,8 @@ class View extends Marionette.ItemView
 
           @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
           return
+
+###
 
       return
 
