@@ -53,6 +53,30 @@ exports.post = (req, res, next) ->
 
     (callback) ->
 
+      User.count
+        email: req.body.email
+      , (err, count) ->
+          if count > 0
+            return callback new Err.BadRequest
+              text: 'Email has been taken. Choose a different email.'
+          else
+            return callback null
+      return
+
+    (callback) ->
+
+      User.count
+        username: req.body.username
+      , (err, count) ->
+        if count > 0
+          return callback new Err.BadRequest
+            text: 'Username has been taken. Choose a different username.'
+        else
+          return callback null
+      return
+
+    (callback) ->
+
       salt = crypto.randomBytes(32)
 
       return callback null, salt.toString('hex')
@@ -87,7 +111,7 @@ exports.post = (req, res, next) ->
 
         if err?.code is 11000
           return callback new Err.BadRequest
-            text: 'Username has been taken'
+            text: 'There was a problem. Cannot create new account.'
 
         return callback err if err
         return callback null, user

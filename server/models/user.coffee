@@ -18,11 +18,15 @@ UserSchema = new mongoose.Schema
   lastname:
     type: String
   email:
-    type: String
-    index:
-      unique: true
+    type:     String
+    unique:   true
+    required: true
+    index: true
   username:
-    type: String
+    type:     String
+    unique:   true
+    required: true
+    index: true
   birthday:
     type: Date
   gender:
