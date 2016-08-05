@@ -42,7 +42,7 @@ class View extends Marionette.ItemView
 
   bindings:
     '#nav-username':
-      observe: 'firstname'
+      observe: 'username'
       onGet: (value) -> value.toString().toUpperCase()
 
   events:
