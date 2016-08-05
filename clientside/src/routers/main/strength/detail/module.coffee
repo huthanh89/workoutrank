@@ -5,6 +5,7 @@
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
 Add          = require './add/module'
 Edit         = require './edit/module'
@@ -104,7 +105,7 @@ class View extends Marionette.LayoutView
       .omit '_id'
       .value()
 
-    @channel = Backbone.Radio.channel('channel')
+    @channel = new Radio.channel('strength:detail')
 
     @channel.reply
       'add': =>
