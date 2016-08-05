@@ -133,15 +133,6 @@ class View extends Marionette.ItemView
       repTotal:    rep.total
     return
 
-  onShow: ->
-    @ui.table.DataTable
-      scrollX:   true
-      paging:    false
-      ordering:  false
-      info:      false
-      searching: false
-    return
-
   reduce: (records) ->
 
     values = _.map(records, (record) -> record.y)

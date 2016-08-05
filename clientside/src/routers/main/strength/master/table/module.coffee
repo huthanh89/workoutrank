@@ -146,8 +146,6 @@ class View extends Marionette.CompositeView
     }
 
   onShow: ->
-    @table = @ui.table.DataTable
-      scrollX: true
     return
 
 #-------------------------------------------------------------------------------
