@@ -104,7 +104,7 @@ class View extends Marionette.ItemView
     return
 
   onBeforeDestroy: ->
-    @ui.birthday.datepicker('destroy')
+    @ui.birthday.data('DateTimePicker').destroy()
     clearTimeout(@timer)
     return
 
