@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
@@ -11,9 +12,8 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'datepicker'
-require 'timepicker'
 require 'backbone.stickit'
+require 'bootstrap.datetimepicker'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -24,7 +24,7 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    date:   new Date()
+    date:   moment()
     name:   ''
     muscle: 0
     note:   ''
@@ -45,7 +45,6 @@ class View extends Marionette.LayoutView
     body:   '#strength-modal-body'
     addset: '#strength-modal-addset'
     date:   '#strength-modal-date'
-    time:   '#strength-modal-time'
     submit: '#strength-modal-submit'
 
   bindings:
@@ -65,28 +64,29 @@ class View extends Marionette.LayoutView
       @ui.body.prop 'checked', @model.get('body')
       return
 
-    'click @ui.time': ->
-      @ui.time.timepicker('showWidget')
-      return
-
     'click @ui.body': ->
       @model.set 'body', @ui.body.is(':checked')
       return
 
     'submit': (event) ->
       event.preventDefault()
+
+      @model.set
+        date: @ui.date.data('DateTimePicker').date().format()
+
       @collection.create @model.attributes,
         wait: true
         at:   0
         success:  =>
           @ui.dialog.modal('hide')
           return
+
       return
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
-      @ui.date.datepicker('destroy')
       @ui.addset.TouchSpin('destroy')
+      @ui.date.data('DateTimePicker').destroy()
       return
 
   constructor: (options) ->
@@ -96,6 +96,8 @@ class View extends Marionette.LayoutView
 
   onRender: ->
 
+    date = moment(@model.get('date'))
+
     @ui.muscle.multiselect
       maxHeight:     330
       buttonWidth:  '100%'
@@ -103,18 +105,13 @@ class View extends Marionette.LayoutView
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
 
-    @ui.date.datepicker
-      todayBtn:      'linked'
-      todayHighlight: true
-    .on 'changeDate', =>
-      @model.set('date', new Date(@ui.date.val()))
-      return
-    .datepicker('setDate', new Date())
+    @ui.date.datetimepicker
+      inline:      true
+      sideBySide:  false
+      minDate:     moment(date).subtract(1, 'years')
+      maxDate:     moment(date).add(1, 'years')
+      defaultDate: moment(date)
 
-    @ui.time
-    .timepicker
-        template: 'dropdown'
-    .timepicker('setTime', '12:45 AM')
 
     @stickit()
 

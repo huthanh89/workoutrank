@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
@@ -11,8 +12,6 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'datepicker'
-require 'timepicker'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
@@ -24,7 +23,7 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    date:   new Date()
+    date:   moment()
     name:   ''
     muscle: 0
     note:   ''
@@ -43,9 +42,6 @@ class View extends Marionette.LayoutView
     name:   '#strength-modal-name'
     muscle: '#strength-modal-muscle'
     body:   '#strength-modal-body'
-    addset: '#strength-modal-addset'
-    date:   '#strength-modal-date'
-    time:   '#strength-modal-time'
     submit: '#strength-modal-submit'
 
   bindings:
@@ -65,10 +61,6 @@ class View extends Marionette.LayoutView
       @ui.body.prop 'checked', @model.get('body')
       return
 
-    'click @ui.time': ->
-      @ui.time.timepicker('showWidget')
-      return
-
     'click @ui.body': ->
       @model.set 'body', @ui.body.is(':checked')
       return
@@ -85,6 +77,7 @@ class View extends Marionette.LayoutView
 
     'submit': (event) ->
       event.preventDefault()
+
       @model.save {},
         success: =>
           @ui.dialog.modal('hide')
@@ -93,38 +86,25 @@ class View extends Marionette.LayoutView
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
-      @ui.date.datepicker('destroy')
-      @ui.addset.TouchSpin('destroy')
       Backbone.Radio.channel('root').request('strengths') if @redirect
       return
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'edit'
+    @mergeOptions options, [
+      'edit'
+      'summary'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
     @redirect    = false
 
   onRender: ->
-
     @ui.muscle.multiselect
       maxHeight:     330
       buttonWidth:  '100%'
-      buttonClass:  'btn btn-info'
+      buttonClass:  'btn btn-default'
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
-
-    @ui.date.datepicker
-      todayBtn:      'linked'
-      todayHighlight: true
-    .on 'changeDate', =>
-      @model.set('date', new Date(@ui.date.val()))
-      return
-    .datepicker('setDate', new Date())
-
-    @ui.time
-    .timepicker
-        template: 'dropdown'
-    .timepicker('setTime', '12:45 AM')
 
     @stickit()
 

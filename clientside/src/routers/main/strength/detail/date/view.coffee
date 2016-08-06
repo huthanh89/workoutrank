@@ -31,14 +31,14 @@ class View extends Marionette.ItemView
       currentDate = @model.get('date')
       date = moment(currentDate).subtract(1, 'days')
       @model.set('date', date)
-      @ui.date.datepicker('setDate', new Date(date.format()))
+      @ui.date.data('DateTimePicker').date date
       return
 
     'click @ui.next': ->
       currentDate = @model.get('date')
       date = moment(currentDate).add(1, 'days')
       @model.set('date', date)
-      @ui.date.datepicker('setDate', new Date(date.format()))
+      @ui.date.data('DateTimePicker').date date
       return
 
   onRender: ->

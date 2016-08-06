@@ -72,7 +72,8 @@ class View extends Marionette.LayoutView
 
     'click #strength-detail-edit': ->
       @showChildView 'modal', new Edit.View
-        model: @model
+        model:   @model
+        summary: @summaryModel
       return
 
     'click .strength-graph-detail': ->
@@ -80,7 +81,10 @@ class View extends Marionette.LayoutView
       return
 
   collectionEvents:
-    'sync update': 'updatePageableCollection'
+    'sync update': ->
+      @updatePageableCollection()
+      @summaryModel.update(@model, @collection)
+      return
 
   modelEvents:
     sync: (model) ->

@@ -53,25 +53,18 @@
                         #strength-modal-advance.tab-pane(role='tabpanel')
                             .form-group
                                 .col-xs-12
-                                    label.control-label(for='strength-modal-date') Date
+                                    label.control-label Date Started
                                 .col-xs-12
-                                    .input-group.date
-                                        input.form-control.input-readonly#strength-modal-date(type="text" readonly)
-                                        .input-group-addon.btn-info#strength-modal-date-btn
-                                            span.fa.fa-fw.fa-lg.fa-calendar
-                            .form-group
-                                .col-xs-12
-                                    label.control-label(for='strength-modal-time') Time
-                                .col-xs-12
-                                    .input-group.bootstrap-timepicker.timepicker
-                                        input.form-control.input-readonly#strength-modal-time(readonly)
-                                        .input-group-addon.btn-info#strength-modal-time-btn
-                                            span.fa.fa-fw.fa-lg.fa-clock-o
+                                    div(style='overflow:hidden;')
+                                        .form-group
+                                            .row
+                                                .col-xs-12
+                                                    #strength-modal-date
                             .form-group
                                 .col-xs-12
                                     label.control-label(for='strength-modal-note') Note
                                 .col-xs-12
-                                    input.form-control#strength-modal-note
+                                    textarea.form-control#strength-modal-note
 
                     hr
                     .form-group

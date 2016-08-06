@@ -74,10 +74,6 @@ class View extends Marionette.ItemView
       @rootChannel.request('exercise')
       return
 
-    'click #strength-modal-date-btn': ->
-
-      return
-
     'click #strength-modal-time': ->
       @ui.time.timepicker('showWidget')
       return
@@ -127,7 +123,7 @@ class View extends Marionette.ItemView
       min:              1
       max:              99999
 
-    @date = @ui.date.datetimepicker
+    @ui.date.datetimepicker
       inline:      true
       sideBySide:  false
       minDate:     moment(date).subtract(1, 'years')

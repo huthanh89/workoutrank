@@ -75,7 +75,7 @@ module.post = (req, res) ->
     (callback) ->
 
       Strength.create
-        date:   new Date()
+        date:   req.body.date
         name:   req.body.name
         note:   req.body.note
         muscle: req.body.muscle
