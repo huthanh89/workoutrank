@@ -14,7 +14,6 @@ viewTemplate = require './view.jade'
 require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
-require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -47,7 +46,6 @@ class View extends Marionette.LayoutView
     addset: '#strength-modal-addset'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
-    form:   '#strength-modal-form'
     submit: '#strength-modal-submit'
 
   bindings:
@@ -85,19 +83,16 @@ class View extends Marionette.LayoutView
           return
       return
 
-    'click @ui.submit': ->
-      @ui.form.validator('validate')
-
+    'submit': (event) ->
+      event.preventDefault()
       @model.save {},
         success: =>
           @ui.dialog.modal('hide')
           return
-
       return
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
-      @ui.form.validator('destroy')
       @ui.date.datepicker('destroy')
       @ui.addset.TouchSpin('destroy')
       Backbone.Radio.channel('root').request('strengths') if @redirect

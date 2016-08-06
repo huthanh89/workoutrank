@@ -14,7 +14,6 @@ viewTemplate = require './view.jade'
 require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
-require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -47,7 +46,6 @@ class View extends Marionette.LayoutView
     addset: '#strength-modal-addset'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
-    form:   '#strength-modal-form'
     submit: '#strength-modal-submit'
 
   bindings:
@@ -75,28 +73,18 @@ class View extends Marionette.LayoutView
       @model.set 'body', @ui.body.is(':checked')
       return
 
-    'click @ui.submit': ->
-
-      @ui.form.validator('validate')
-
-      success = =>
-        @ui.dialog.modal('hide')
-        return
-
-      if @edit
-        @model.save {},
-          success: success
-      else
-        @collection.create @model.attributes,
-          wait: true
-          at:   0
-          success: success
-
+    'submit': (event) ->
+      event.preventDefault()
+      @collection.create @model.attributes,
+        wait: true
+        at:   0
+        success:  =>
+          @ui.dialog.modal('hide')
+          return
       return
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
-      @ui.form.validator('destroy')
       @ui.date.datepicker('destroy')
       @ui.addset.TouchSpin('destroy')
       return
@@ -111,7 +99,7 @@ class View extends Marionette.LayoutView
     @ui.muscle.multiselect
       maxHeight:     330
       buttonWidth:  '100%'
-      buttonClass:  'btn btn-info'
+      buttonClass:  'btn btn-default'
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
 

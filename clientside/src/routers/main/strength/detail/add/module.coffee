@@ -16,7 +16,6 @@ require 'touchspin'
 require 'datepicker'
 require 'timepicker'
 require 'backbone.stickit'
-require 'bootstrap.validator'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -53,7 +52,6 @@ class View extends Marionette.ItemView
     submit: '#strength-modal-submit'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
-    form:   '#strength-modal-form'
 
   bindings:
 
@@ -85,8 +83,8 @@ class View extends Marionette.ItemView
       @ui.time.timepicker('showWidget')
       return
 
-    'click @ui.submit': ->
-
+    'submit': (event) ->
+      event.preventDefault()
       date = moment(new Date(@ui.date.val())).format('YYYY-MM-DD')
       time = @ui.time.val()
 
@@ -105,7 +103,6 @@ class View extends Marionette.ItemView
       return
 
     'hidden.bs.modal': ->
-      @ui.form.validator('destroy')
       @ui.date.datepicker('destroy')
       @ui.rep.TouchSpin('destroy')
       @ui.weight.TouchSpin('destroy')
