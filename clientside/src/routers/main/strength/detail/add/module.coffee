@@ -74,10 +74,6 @@ class View extends Marionette.ItemView
       @rootChannel.request('exercise')
       return
 
-    'click #strength-modal-time': ->
-      @ui.time.timepicker('showWidget')
-      return
-
     'submit': (event) ->
       event.preventDefault()
 

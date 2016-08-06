@@ -45,6 +45,11 @@ class View extends Marionette.ItemView
       @api.close()
       return
 
+    'click #drawer-calendar': ->
+      @channel.request 'calendar'
+      @api.close()
+      return
+
   constructor: ->
     super
 

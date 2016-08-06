@@ -30,15 +30,12 @@ index = (req, res, next) ->
 router.get '/home',              index
 router.get '/exercise',          index
 router.get '/exercise/:type',    index
-router.get '/cardio',            index
-router.get '/summary',           index
+router.get '/calendar',          index
 router.get '/strengths',         index
 router.get '/strength/:sid',     index
 router.get '/strength/:sid/log', index
-router.get '/schedule',          index
 router.get '/logs',              index
 router.get '/log/:lid',          index
-router.get '/multiplayer',       index
 
 #-------------------------------------------------------------------------------
 # Import Routes

@@ -7,8 +7,7 @@ async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Home       = require './home/module'
-Summary    = require './summary/module'
-Exercise   = require './exercise/module'
+Calendar   = require './calendar/module'
 Strength   = require './strength/module'
 Logs       = require './logs/module'
 
@@ -46,14 +45,9 @@ class Router extends Marionette.AppRouter
         @strengthDetail(exerciseID)
         return
 
-      'summary': =>
-        @navigate('summary', trigger: true)
-        @summary()
-        return
-
-      'schedule': =>
-        @navigate('schedule', trigger: true)
-        @schedule()
+      'calendar': =>
+        @navigate('calendar', trigger: true)
+        @calendar()
         return
 
       'logs': =>
@@ -81,7 +75,7 @@ class Router extends Marionette.AppRouter
     'strengths':      'strengths'
     'strength/:sid/': 'strengthDetail'
     'summary':        'summary'
-    'schedule':       'schedule'
+    'calendar':       'calendar'
     'logs':           'logs'
     'log/:lid/':      'logDetail'
     'multiplayer':    'multiplayer'
@@ -107,7 +101,6 @@ class Router extends Marionette.AppRouter
   strengths: ->
 
     @navChannel.request('nav:main')
-
 
     async.waterfall [
 
@@ -141,7 +134,6 @@ class Router extends Marionette.AppRouter
         sLogs:      sLogs
 
       return
-
 
   strengthDetail: (strengthID) ->
 
@@ -186,26 +178,42 @@ class Router extends Marionette.AppRouter
 
     return
 
-  summary: ->
+  calendar: ->
+
     @navChannel.request('nav:main')
+    async.waterfall [
 
-    collection = new Summary.Collection()
+      (callback) ->
+        sConfs = new Strength.Master.Collection()
+        sConfs.fetch
+          success: (sConfs) -> callback null, sConfs
+          error: (model, error) -> callback error
 
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new Summary.View
-          collection: collection
-        return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
 
-    return
+      (sConfs, callback) ->
 
-  schedule: ->
-    @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
-    return
+        sLogs  = new Logs.Master.Collection()
+        sLogs.fetch
+          success: (sLogs) -> callback null, sConfs, sLogs
+          error: (collection, error) -> callback error
+
+        return
+
+    ], (error, sConfs, sLogs) =>
+
+      if error
+        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+
+      collection = new Calendar.Collection [],
+        sLogs:  sLogs
+        sConfs: sConfs
+        parse:  true
+
+      @rootView.content.show new Calendar.View
+        collection: collection
+
+      return
 
   logs: ->
 
@@ -291,11 +299,6 @@ class Router extends Marionette.AppRouter
         @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
 
-    return
-
-  multiplayer: ->
-    @navChannel.request('nav:main')
-    @rootView.content.show new Profile.View()
     return
 
 #-------------------------------------------------------------------------------

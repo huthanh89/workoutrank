@@ -18,7 +18,6 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
-require 'datatable'
 
 #-------------------------------------------------------------------------------
 # Pageable models
@@ -35,7 +34,7 @@ class Model extends Backbone.Model
 #   Page collection to paginate table. Used specifically in client mode.
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.PageableCollection
+class Collection extends Backbone.Collection
 
   url:  '/api/strengths'
 

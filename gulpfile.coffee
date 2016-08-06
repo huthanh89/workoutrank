@@ -182,7 +182,6 @@ gulp.task 'scripts', (callback) ->
         highcharts:                 'scripts/highcharts.js'
         highstock:                  'scripts/highstock.js'
         bootstrap:                  'scripts/bootstrap.js'
-        'bootstrap-select':         'scripts/bootstrap-select.js'
         'bootstrap.validator':      'scripts/bootstrap.validator.js'
         jquery:                     'scripts/jquery.js'
         'jquery.ui':                'scripts/jquery-ui.js'
@@ -191,12 +190,10 @@ gulp.task 'scripts', (callback) ->
         multiselect:                'scripts/jquery.bootstrap-multiselect.js'
         datepicker:                 'scripts/jquery.bootstrap-datepicker.js'
         JQPlugin:                   'scripts/jquery.plugin.js'
-        timepicker:                 'scripts/jquery.bootstrap-timepicker.js'
-        datatable:                  'scripts/jquery.datatables.js'
         'bootstrap.datetimepicker': 'scripts/bootstrap-datetimepicker.min.js'
         'bootstrap.paginate':       'scripts/bootstrap.paginate.js'
-        fauxserver:                 'scripts/backbone-faux-server.js'
         toastr:                     'scripts/toastr.js'
+        fullcalendar:               'scripts/fullcalendar.js'
 
       extensions: [
         ''
@@ -235,22 +232,17 @@ gulp.task 'css', ->
 
     './clientside/styles/css/bootstrap.css'
     './clientside/styles/css/bootstrap-theme.css'
-
     './clientside/styles/css/font-awesome.css'
     './clientside/styles/css/jquery.mmenu.all.css'
     './clientside/styles/css/jquery.bootstrap-touchspin.css'
     './clientside/styles/css/bootstrap-multiselect.css'
     './clientside/styles/css/bootstrap-datepicker.css'
-
     './clientside/styles/css/bootstrap-datetimepicker.min.css'
-
-    './clientside/styles/css/bootstrap-select.css'
     './clientside/styles/css/jquery.timeentry.css'
-    './clientside/styles/css/jquery.datatables.css'
     './clientside/styles/css/jquery-ui.css'
-    './clientside/styles/css/timepicker.css'
     './clientside/styles/css/toastr.css'
     './clientside/styles/css/spinkit.css'
+    './clientside/styles/css/fullcalendar.css'
 
     './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'
