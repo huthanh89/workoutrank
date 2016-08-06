@@ -15,12 +15,6 @@ Summary      = require './summary/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Plugins
-#-------------------------------------------------------------------------------
-
-require 'datepicker'
-
-#-------------------------------------------------------------------------------
 # Model
 #   Strength model used to fetch data of that exercises
 #   such as the name and muscle type.

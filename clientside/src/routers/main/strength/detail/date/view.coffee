@@ -10,7 +10,7 @@ viewTemplate = require './view.jade'
 # Plugins
 #-------------------------------------------------------------------------------
 
-require 'datepicker'
+require 'bootstrap.datetimepicker'
 
 #-------------------------------------------------------------------------------
 # View
@@ -42,20 +42,23 @@ class View extends Marionette.ItemView
       return
 
   onRender: ->
+    @ui.date.datetimepicker
+      viewMode:   'days'
+      format:     'YYYY-MM-DD'
+      minDate:     moment().subtract(100, 'years')
+      maxDate:     moment().add(1, 'years')
+      defaultDate: moment()
+      widgetPositioning:
+        vertical: 'bottom'
+      ignoreReadonly: true
 
-    @ui.date.datepicker
-      todayBtn:      'linked'
-      todayHighlight: true
-      format: 'D mm/dd/yyyy'
-    .on 'changeDate', =>
-      @model.set('date', moment(new Date(@ui.date.val())))
+    @ui.date.on 'dp.change', =>
+      @model.set 'date', @ui.date.data('DateTimePicker').date()
       return
-    .datepicker('setDate', new Date())
-
     return
 
   onBeforeDestroy: ->
-    @ui.date.datepicker('destroy')
+    @ui.date.data('DateTimePicker').destroy()
     return
 
 #-------------------------------------------------------------------------------

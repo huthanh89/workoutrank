@@ -13,9 +13,8 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'touchspin'
-require 'datepicker'
-require 'timepicker'
 require 'backbone.stickit'
+require 'bootstrap.datetimepicker'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -28,7 +27,7 @@ class Model extends Backbone.Model
   idAttribute: '_id'
 
   defaults:
-    date:     new Date()
+    date:     moment()
     name:     ''
     exercise: ''
     rep:      1
@@ -76,7 +75,7 @@ class View extends Marionette.ItemView
       return
 
     'click #strength-modal-date-btn': ->
-      @ui.date.datepicker 'show'
+
       return
 
     'click #strength-modal-time': ->
@@ -85,11 +84,9 @@ class View extends Marionette.ItemView
 
     'submit': (event) ->
       event.preventDefault()
-      date = moment(new Date(@ui.date.val())).format('YYYY-MM-DD')
-      time = @ui.time.val()
 
       @model.set
-        date: moment(new Date("#{date} #{time}")).format()
+        date: @ui.date.data('DateTimePicker').date().format()
 
       @model.save {},
         success: (model) =>
@@ -103,9 +100,9 @@ class View extends Marionette.ItemView
       return
 
     'hidden.bs.modal': ->
-      @ui.date.datepicker('destroy')
       @ui.rep.TouchSpin('destroy')
       @ui.weight.TouchSpin('destroy')
+      @ui.date.data('DateTimePicker').destroy()
       @unstickit()
       return
 
@@ -128,20 +125,14 @@ class View extends Marionette.ItemView
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1
-      max:              9999
+      max:              99999
 
-    @ui.date.datepicker
-      todayBtn:      'linked'
-      todayHighlight: true
-    .on 'changeDate', =>
-      @model.set('date', new Date(@ui.date.val()))
-      return
-    .datepicker('setDate', date)
-
-    @ui.time
-    .timepicker
-      template: 'dropdown'
-    .timepicker('setTime', moment(date).format('HH:mm:ss'))
+    @date = @ui.date.datetimepicker
+      inline:      true
+      sideBySide:  false
+      minDate:     moment(date).subtract(1, 'years')
+      maxDate:     moment(date).add(1, 'years')
+      defaultDate: moment(date)
 
     @stickit()
 
