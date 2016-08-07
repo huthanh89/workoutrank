@@ -24,10 +24,19 @@ User = mongoose.model('user')
 RecaptchaSecret = '6LeGeBwTAAAAAJB1zR16oRVEPdZ-tYuOB2g9gY-0'
 
 #-------------------------------------------------------------------------------
+# Sanitize given string
+#-------------------------------------------------------------------------------
+
+sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
+
+#-------------------------------------------------------------------------------
 # Post
 #-------------------------------------------------------------------------------
 
 exports.post = (req, res, next) ->
+
+  email    = sanitize req.body.email
+  username = sanitize req.body.username
 
   async.waterfall [
 
@@ -54,7 +63,7 @@ exports.post = (req, res, next) ->
     (callback) ->
 
       User.count
-        email: req.body.email
+        email: email
       , (err, count) ->
           if count > 0
             return callback new Err.BadRequest
@@ -66,7 +75,7 @@ exports.post = (req, res, next) ->
     (callback) ->
 
       User.count
-        username: req.body.username
+        username: username
       , (err, count) ->
         if count > 0
           return callback new Err.BadRequest
@@ -99,8 +108,8 @@ exports.post = (req, res, next) ->
         lastlogin: moment()
         firstname: req.body.firstname
         lastname:  req.body.lastname
-        email:     req.body.email
-        username:  req.body.username
+        email:     email
+        username:  username
         birthday:  req.body.birthday
         gender:    req.body.gender
         salt:      salt

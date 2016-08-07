@@ -16,6 +16,12 @@ crypto    = require 'crypto'
 User = mongoose.model('user')
 
 #-------------------------------------------------------------------------------
+# Sanitize given string
+#-------------------------------------------------------------------------------
+
+sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
+
+#-------------------------------------------------------------------------------
 # Post
 #-------------------------------------------------------------------------------
 
@@ -35,7 +41,7 @@ exports.post = (req, res) ->
     (callback) ->
 
       User.findOne
-        username: req.body.user
+        username: sanitize req.body.user
       .exec (err, user) ->
         return callback err if err
 
