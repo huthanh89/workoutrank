@@ -30,8 +30,8 @@ class Model extends Backbone.Model
     count:  0
 
 #-------------------------------------------------------------------------------
-# Pageable Collection
-#   Page collection to paginate table. Used specifically in client mode.
+# Collection
+#   collection to paginate table. Used specifically in client mode.
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
@@ -39,8 +39,6 @@ class Collection extends Backbone.Collection
   url:  '/api/strengths'
 
   model: Model
-
-  mode: 'client'
 
   state:
     currentPage: 1

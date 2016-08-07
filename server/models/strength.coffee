@@ -19,6 +19,8 @@ StrengthSchema = new mongoose.Schema
     type: Number
   body:
     type: Boolean
+  schedule:
+    type: [Boolean]
   note:
     type: String
 ,

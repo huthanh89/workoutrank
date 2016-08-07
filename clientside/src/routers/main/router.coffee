@@ -205,13 +205,9 @@ class Router extends Marionette.AppRouter
       if error
         @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
 
-      collection = new Calendar.Collection [],
+      @rootView.content.show new Calendar.View
         sLogs:  sLogs
         sConfs: sConfs
-        parse:  true
-
-      @rootView.content.show new Calendar.View
-        collection: collection
 
       return
 

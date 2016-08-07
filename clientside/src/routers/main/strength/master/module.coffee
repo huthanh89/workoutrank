@@ -82,15 +82,7 @@ class View extends Marionette.LayoutView
     super
     @mergeOptions options, 'sLogs'
     @rootChannel        = Backbone.Radio.channel('root')
-    @channel            = Backbone.Radio.channel('channel')
-
-    @pageableCollection = new Table.Collection @collection.models,
-      sLogs: @sLogs
-
-  onShow: ->
-
-    # XXX Not sure why channel's reply will not work if placed
-    # in constructor, so we put it here for now.
+    @channel            = new Backbone.Radio.channel('strengths')
 
     @channel.reply
 
@@ -103,12 +95,16 @@ class View extends Marionette.LayoutView
           model: model
           edit: true
 
+    @tableCollection = new Table.Collection @collection.models,
+      sLogs: @sLogs
+
+  onShow: ->
     @showChildView 'filter', new FilterView
-      collection:         @collection
-      pageableCollection: @pageableCollection
+      collection:      @collection
+      tableCollection: @tableCollection
 
     @showChildView 'table', new Table.View
-      collection: @pageableCollection
+      collection: @tableCollection
       channel:    @channel
 
     return

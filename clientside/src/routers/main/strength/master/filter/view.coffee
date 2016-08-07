@@ -19,7 +19,7 @@ class View extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'pageableCollection'
+    @mergeOptions options, 'tableCollection'
     @muscles = []
 
   onRender: ->
@@ -52,7 +52,7 @@ class View extends Marionette.ItemView
       models = @collection.filter (model) =>
         return model.get('muscle').toString() in @muscles
 
-    @pageableCollection.fullCollection.reset models
+    @tableCollection.reset models
 
     return
 

@@ -81,6 +81,7 @@ module.post = (req, res) ->
         muscle: req.body.muscle
         body:   req.body.body
         user:   req.session.user._id
+        schedule: req.body.schedule
 
       , (err, strength) ->
         return callback err if err
