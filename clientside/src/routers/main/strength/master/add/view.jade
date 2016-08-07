@@ -7,29 +7,29 @@
                 h4.modal-title Create a new workout
 
             .modal-body
-                form.form-horizontal
-                    // Nav tabs
-                    ul.nav.nav-tabs(role='tablist')
-                        li.active(role='presentation')
-                            a(href='#strength-modal-basic' aria-controls='basic', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-pencil
-                                = ' '
-                                | Basic
-                        li(role='presentation')
-                            a(href='#strength-modal-advance' aria-controls='advance', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-cogs
-                                = ' '
-                                | Optional
+                // Nav tabs
+                ul.nav.nav-tabs(role='tablist')
+                    li.active(role='presentation')
+                        a(href='#strength-modal-basic' aria-controls='basic', role='tab', data-toggle='tab')
+                            i.fa.fa-fw.fa-lg.fa-pencil
+                            = ' '
+                            | Basic
+                    li(role='presentation')
+                        a(href='#strength-modal-advance' aria-controls='advance', role='tab', data-toggle='tab')
+                            i.fa.fa-fw.fa-lg.fa-cogs
+                            = ' '
+                            | Optional
 
-                    br
+                br
 
-                    // Tab panes
+                // Tab panes
 
-                    .tab-content
+                .tab-content
 
-                        // Basic
+                    // Basic
 
-                        #strength-modal-basic.tab-pane.active(role='tabpanel')
+                    #strength-modal-basic.tab-pane.active(role='tabpanel')
+                        form.form-horizontal
                             .form-group
                                 .col-xs-12
                                     label.control-label(for='strength-modal-muscle') Muscle
@@ -47,29 +47,39 @@
                                 .col-xs-12
                                     .btn-group.btn-group-justifie
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule0(type='button') S
+                                            a.btn.btn-default#strength-modal-schedule0(type='button') S
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule1(type='button') M
+                                            a.btn.btn-default#strength-modal-schedule1(type='button') M
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule2(type='button') T
+                                            a.btn.btn-default#strength-modal-schedule2(type='button') T
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule3(type='button') W
+                                            a.btn.btn-default#strength-modal-schedule3(type='button') W
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule4(type='button') T
+                                            a.btn.btn-default#strength-modal-schedule4(type='button') T
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule5(type='button') F
+                                            a.btn.btn-default#strength-modal-schedule5(type='button') F
                                         .btn-group
-                                            button.btn.btn-default#strength-modal-schedule6(type='button') S
+                                            a.btn.btn-default#strength-modal-schedule6(type='button') S
                             .form-group
                                 .col-xs-12
                                     .checkbox
                                         label
                                             input(type='checkbox')#strength-modal-body
                                             | Use body as weights
+                            hr
+                            .form-group
+                                .col-xs-12
+                                    .pull-right
+                                        button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
+                                        = ' '
+                                        button.btn.btn-primary.btn-lg#strength-modal-submit(type="submit")
+                                            i.fa.fa-fw.fa-lg.fa-save
+                                            = ' '
+                                            span save
+                    // Advance
 
-                        // Advance
-
-                        #strength-modal-advance.tab-pane(role='tabpanel')
+                    #strength-modal-advance.tab-pane(role='tabpanel')
+                        form.form-horizontal
                             .form-group
                                 .col-xs-12
                                     label.control-label Date Started
@@ -84,14 +94,3 @@
                                     label.control-label(for='strength-modal-note') Note
                                 .col-xs-12
                                     textarea.form-control#strength-modal-note
-
-                    hr
-                    .form-group
-                        .pull-right
-                            .col-xs-12
-                                button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
-                                = ' '
-                                button.btn.btn-primary.btn-lg(type="submit")
-                                    i.fa.fa-fw.fa-lg.fa-save
-                                    = ' '
-                                    span save

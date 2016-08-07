@@ -69,7 +69,6 @@ class View extends Marionette.LayoutView
   events:
 
     'shown.bs.modal': ->
-      @ui.name.focus()
       @ui.body.prop 'checked', @model.get('body')
       return
 
