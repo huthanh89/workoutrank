@@ -28,6 +28,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('logs')
       return
 
+    'click #home-calendar': ->
+      @rootChannel.request('calendar')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')

@@ -59,6 +59,15 @@ class View extends Marionette.LayoutView
   regions:
     calendar: '#calendar-view-container'
 
+  events:
+    'click #calendar-home': ->
+      @rootChannel.request 'home'
+      return
+
+  constructor: ->
+    super
+    @rootChannel = Backbone.Radio.channel('root')
+
   onShow: ->
     events = @collection.toJSON()
     @showChildView 'calendar', new EventView
