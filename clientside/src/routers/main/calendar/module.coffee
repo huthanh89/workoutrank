@@ -8,6 +8,7 @@ Highcharts   = require 'highcharts'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 EventView    = require './event/view'
+ScheduleView = require './schedule/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -67,12 +68,37 @@ class View extends Marionette.LayoutView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @channel = new Backbone.Radio.Channel('calendar')
+
+    @channel.reply
+
+      'show:events': =>
+        events = @collection.toJSON()
+        @showChildView 'calendar', new EventView
+          collection:    @collection
+          channel:       @channel
+          calendarEvents: events
+        return
+
+      'show:schedule': =>
+        events = @collection.toJSON()
+
+        events = _.map events, (event) ->
+          return _.assign event, allDay: true
+
+        @showChildView 'calendar', new ScheduleView
+          collection:    @collection
+          channel:       @channel
+          calendarEvents: events
+        return
 
   onShow: ->
-    events = @collection.toJSON()
-    @showChildView 'calendar', new EventView
-      collection:    @collection
-      calendarEvents: events
+#    @channel.request 'show:events'
+    @channel.request 'show:schedule'
+    return
+
+  onBeforeDestroy: ->
+    @channel.reset()
     return
 
 #-------------------------------------------------------------------------------

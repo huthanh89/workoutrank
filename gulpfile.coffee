@@ -111,7 +111,7 @@ gulp.task 'lesslint', ->
 #    one javascript file, bundle.js.
 #-------------------------------------------------------------------------------
 
-gulp.task 'scripts', (callback) ->
+gulp.task 'js:bundle', (callback) ->
 
   options =
 
@@ -226,7 +226,7 @@ gulp.task 'scripts', (callback) ->
 #   priority over the others.
 #-------------------------------------------------------------------------------
 
-gulp.task 'css', ->
+gulp.task 'css:concat', ->
 
   gulp.src([
 
@@ -258,7 +258,7 @@ gulp.task 'css', ->
 #   Less to css.
 #-------------------------------------------------------------------------------
 
-gulp.task 'less', ->
+gulp.task 'less:to:css', ->
   return gulp.src([ './clientside/styles/less/*' ])
   .pipe less()
   .pipe gulp.dest('./clientside/styles/')
@@ -302,20 +302,27 @@ gulp.task 'watch', ->
 
   # Watch for change and re compile.
 
-  gulp.watch './server/**', ['compile:server']
+  gulp.watch './server/**', ['page:reload']
 
   gulp.watch [
+    './clientside/styles/css/**'
     './clientside/styles/**'
   ], [ 'compile:css']
 
-  gulp.watch './clientside/src/**', [ 'compile:client']
+  gulp.watch './clientside/src/**', [ 'compile:js']
 
+  ###
   # When compiling if finish, reload browser's page.
 
   gulp.watch [
-    './static/**'
-    './views/**'
+    './static/bundle.js'
   ], livereload.reload()
+
+  gulp.watch [
+    './static/style.css'
+  ], livereload.reload()
+  
+###
 
   return
 
@@ -338,6 +345,9 @@ reportSize = ->
   gulp.src('./static/bundle.js')
   .pipe(size(title: '----- bundle.js -----'))
 
+  gulp.src('./static/bundle-min.js')
+  .pipe(size(title: '----- bundle-min.js -----'))
+
   gulp.src('./static/style.css')
   .pipe(size(title: '----- style.css -----'))
 
@@ -347,33 +357,27 @@ reportSize = ->
 # Chained tasks.
 #-------------------------------------------------------------------------------
 
+gulp.task 'compile:css', [
+  'lesslint'
+  'less:to:css'
+  'css:concat'
+], ->
+  livereload.reload()
+
+gulp.task 'compile:js', [
+  'coffeelint'
+  'js:bundle'
+], ->
+  livereload.reload()
+
 gulp.task 'minify', [
   'minify-css'
   'minify-js'
 ]
 
-gulp.task 'compile:css', [
-  'less'
-  'css'
-  #'csslint'
-  'lesslint'
-], ->
-  console.log 'CALLED'
-  livereload.reload()
-
-gulp.task 'compile:client', [
-  'scripts'
-  'coffeelint'
-], ->
-  livereload.reload()
-
-gulp.task 'compile:server', [
-], ->
-  livereload.reload()
-
 gulp.task 'production', [
-  'compile:client'
   'compile:css'
+  'compile:js'
   'minify'
 ], reportSize()
 
@@ -381,7 +385,7 @@ gulp.task 'production', [
 
 gulp.task 'default', [
   'nodemon'
-  'compile:client'
+  'compile:js'
   'compile:css'
   'watch'
 ], reportSize()

@@ -25,16 +25,34 @@ class View extends Marionette.ItemView
   ui:
     calendar: '#calendar-widget'
 
+  events:
+    'click #calendar-tab': ->
+      @channel.request 'show:schedule'
+      return
+
   constructor: (options) ->
     super
-    @mergeOptions options, 'calendarEvents'
+    @mergeOptions options, [
+      'channel'
+      'calendarEvents'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
     @calendar = @ui.calendar.fullCalendar
       height: 650
       events: @calendarEvents
+      header:
+        left:   'title'
+        center: ''
+        right:  'today prev,next'
+
     @calendar.fullCalendar('today')
+
+    return
+
+  onBeforeDestroy: ->
+    @calendar.fullCalendar 'destroy'
     return
 
 #-------------------------------------------------------------------------------
