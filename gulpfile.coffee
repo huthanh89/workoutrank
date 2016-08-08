@@ -367,7 +367,7 @@ reportGzipSize = ->
   .pipe size
     title: '----- bundle(minified).js -----'
     gzip: true
-  .pipe(gulp.dest('static'))
+  .pipe(gulp.dest('static/bungle-min.js'))
 
   gulp.src('./static/style.css')
   .pipe size
@@ -405,6 +405,7 @@ gulp.task 'minify', [
 gulp.task 'production', [
   'compile:css'
   'compile:client:js'
+  'minify'
 ], -> reportGzipSize()
 
 # Default task
