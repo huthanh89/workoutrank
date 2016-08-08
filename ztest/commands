@@ -1,0 +1,3 @@
+
+- Compile and run node
+coffee -c main.coffee && node main.js

@@ -37,6 +37,9 @@
     "connect-mongo": "*",
     "request-ip": "*",
     "validator": "*",
+    "response-time": "*",
+    "finalhandler": "*",
+    "node-statsd": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

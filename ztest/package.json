@@ -1,0 +1,17 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./main"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "coffee-script": "*",
+    "debug": "*",
+    "express": "*",
+    "gulp": "*",
+    "morgan": "*",
+    "nodemon": "*"
+  }
+}
