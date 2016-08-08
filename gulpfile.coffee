@@ -344,14 +344,17 @@ gulp.task 'page:reload', ->
 
 reportSize = ->
 
-  gulp.src('./static/bundle.js')
-  .pipe(size(title: '----- bundle.js -----'))
-
   gulp.src('./static/bundle-min.js')
-  .pipe(size(title: '----- bundle-min.js -----'))
+  .pipe size
+    title: '>>>>> bundle(minified).js <<<<<'
+    gzip: true
+  .pipe(gulp.dest('static'))
 
   gulp.src('./static/style.css')
-  .pipe(size(title: '----- style.css -----'))
+  .pipe size
+    title: '----- style.css -----'
+    gzip: true
+  .pipe(gulp.dest('static'))
 
   return
 

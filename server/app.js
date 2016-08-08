@@ -18,9 +18,9 @@ session = require('express-session');
 
 passport = require('passport');
 
-MongoStore = require('connect-mongo')(session);
-
 http = require('http');
+
+MongoStore = require('connect-mongo')(session);
 
 require('coffee-script/register');
 
