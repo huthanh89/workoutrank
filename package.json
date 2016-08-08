@@ -54,6 +54,7 @@
     "gulp-jshint": "*",
     "gulp-less": "*",
     "gulp-livereload": "*",
+    "gulp-webpack": "*",
     "gulp-nodemon": "*",
     "gulp-util": "*",
     "jade-loader": "*",

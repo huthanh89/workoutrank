@@ -30,6 +30,7 @@ nodemon    = require 'gulp-nodemon'
 
 # Utilities
 
+#webpack    = require 'gulp-webpack'
 size       = require 'gulp-size'
 coffee     = require 'gulp-coffee'
 gutil      = require 'gulp-util'
@@ -225,12 +226,16 @@ gulp.task 'js:bundle', (callback) ->
         })
       ]
 
-  webpack options, (err, stats) ->
+  webpack options, (err, stats) =>
     if err
       throw new PluginError('webpack', err)
     #log '[webpack]', stats.toString(colors: true)
-    callback()
+
+    livereload.reload()
+
+    callback null
     return
+
   return
 
 #-------------------------------------------------------------------------------
@@ -243,7 +248,7 @@ gulp.task 'js:bundle', (callback) ->
 
 gulp.task 'css:concat', ->
 
-  gulp.src([
+  return gulp.src([
 
     './clientside/styles/css/bootstrap.css'
     './clientside/styles/css/bootstrap-theme.css'
@@ -264,8 +269,7 @@ gulp.task 'css:concat', ->
   ])
   .pipe(concat('style.css'))
   .pipe gulp.dest('./static/')
-
-  return
+  .pipe(livereload())
 
 #-------------------------------------------------------------------------------
 # Compile Less
@@ -283,9 +287,8 @@ gulp.task 'less:to:css', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'fonts', ->
-  gulp.src([ './src/fonts/*' ])
+  return gulp.src([ './src/fonts/*' ])
   .pipe gulp.dest('./public/fonts/')
-  return
 
 #-------------------------------------------------------------------------------
 # Nodemon
@@ -317,24 +320,25 @@ gulp.task 'watch', ->
 
   # Watch for change and re compile.
 
-  gulp.watch './server/**', ['page:reload']
+  gulp.watch [
+    './server/**'
+  ], [
+    'compile:server:js'
+  ]
 
   gulp.watch [
-    './clientside/styles/css/**'
+    './clientside/styles/css/**',
     './clientside/styles/**'
-  ], [ 'compile:css']
+  ], [
+    'compile:css'
+  ]
 
-  gulp.watch './clientside/src/**', [ 'compile:js']
+  gulp.watch [
+    './clientside/src/**'
+  ], [
+    'compile:client:js'
+  ]
 
-  return
-
-#-------------------------------------------------------------------------------
-# PageReload
-#   Force a page reload.
-#-------------------------------------------------------------------------------
-
-gulp.task 'page:reload', ->
-  livereload.reload()
   return
 
 #-------------------------------------------------------------------------------
@@ -343,6 +347,23 @@ gulp.task 'page:reload', ->
 #-------------------------------------------------------------------------------
 
 reportSize = ->
+
+  gulp.src('./static/bundle.js')
+  .pipe size
+    title: '----- bundle.js -----'
+
+  gulp.src('./static/style.css')
+  .pipe size
+    title: '----- style.css -----'
+
+  return
+
+#-------------------------------------------------------------------------------
+# Gzip Size
+#   Report to console file sizes.
+#-------------------------------------------------------------------------------
+
+reportGzipSize = ->
 
   gulp.src('./static/bundle-min.js')
   .pipe size
@@ -363,7 +384,6 @@ reportSize = ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'compile:server:js', [
-  'coffeelint'
   'coffee:to:js:server'
 ]
 
@@ -371,15 +391,12 @@ gulp.task 'compile:css', [
   'lesslint'
   'less:to:css'
   'css:concat'
-], ->
-  livereload.reload()
+]
 
-gulp.task 'compile:js', [
-  'coffeelint'
+gulp.task 'compile:client:js', [
   'coffee:to:js:server'
   'js:bundle'
-], ->
-  livereload.reload()
+]
 
 gulp.task 'minify', [
   'minify-css'
@@ -388,17 +405,19 @@ gulp.task 'minify', [
 
 gulp.task 'production', [
   'compile:css'
-  'compile:js'
+  'compile:client:js'
   'minify'
-], reportSize()
+], reportGzipSize()
 
 # Default task
 
 gulp.task 'default', [
   'nodemon'
-  'compile:js'
+  'coffeelint'
+  'compile:client:js'
+  'compile:server:js'
   'compile:css'
   'watch'
-], reportSize()
+]
 
 #-------------------------------------------------------------------------------

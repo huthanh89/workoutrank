@@ -18,7 +18,7 @@ Highstock.setOptions
   }
 
 #-------------------------------------------------------------------------------
-# Hacks and workaround.
+# Hacks and workaround.asdf
 #
 #   Bootstrap jquery plugins expect jQuery to be on 'window' or 'this' object.
 #
