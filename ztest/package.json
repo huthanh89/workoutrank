@@ -12,7 +12,7 @@
     "express": "*",
     "http": "*",
     "node-statsd": "*",
-    "response-tim": "*",
+    "response-time": "*",
     "finalhandler": "*"
   }
 }
