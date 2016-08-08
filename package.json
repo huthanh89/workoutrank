@@ -49,6 +49,7 @@
     "eyespect": "*",
     "gulp-coffeelint": "*",
     "gulp-concat": "*",
+    "gulp-coffee": "*",
     "gulp-csslint": "*",
     "gulp-jshint": "*",
     "gulp-less": "*",

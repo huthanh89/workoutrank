@@ -31,6 +31,8 @@ nodemon    = require 'gulp-nodemon'
 # Utilities
 
 size       = require 'gulp-size'
+coffee     = require 'gulp-coffee'
+gutil      = require 'gulp-util'
 
 #-------------------------------------------------------------------------------
 # Gulp Utility Plugins
@@ -105,7 +107,20 @@ gulp.task 'lesslint', ->
   return
 
 #-------------------------------------------------------------------------------
-# Scripts
+# Server Coffee to JavaScript
+#-------------------------------------------------------------------------------
+
+gulp.task 'coffee:to:js:server', (callback) ->
+  gulp.src('./server/app.coffee')
+  .pipe(
+    coffee(bare: true)
+    .on('error', gutil.log)
+  )
+  .pipe gulp.dest('./server')
+  return
+
+#-------------------------------------------------------------------------------
+# Client JavaScripts
 #
 #  - Call webpack to bundle all our javascripts files to
 #    one javascript file, bundle.js.
@@ -311,19 +326,6 @@ gulp.task 'watch', ->
 
   gulp.watch './clientside/src/**', [ 'compile:js']
 
-  ###
-  # When compiling if finish, reload browser's page.
-
-  gulp.watch [
-    './static/bundle.js'
-  ], livereload.reload()
-
-  gulp.watch [
-    './static/style.css'
-  ], livereload.reload()
-  
-###
-
   return
 
 #-------------------------------------------------------------------------------
@@ -357,6 +359,11 @@ reportSize = ->
 # Chained tasks.
 #-------------------------------------------------------------------------------
 
+gulp.task 'compile:server:js', [
+  'coffeelint'
+  'coffee:to:js:server'
+]
+
 gulp.task 'compile:css', [
   'lesslint'
   'less:to:css'
@@ -366,6 +373,7 @@ gulp.task 'compile:css', [
 
 gulp.task 'compile:js', [
   'coffeelint'
+  'coffee:to:js:server'
   'js:bundle'
 ], ->
   livereload.reload()
