@@ -110,14 +110,13 @@ gulp.task 'lesslint', ->
 # Server Coffee to JavaScript
 #-------------------------------------------------------------------------------
 
-gulp.task 'coffee:to:js:server', (callback) ->
-  gulp.src('./server/app.coffee')
+gulp.task 'coffee:to:js:server', ->
+  return gulp.src('./server/app.coffee')
   .pipe(
     coffee(bare: true)
     .on('error', gutil.log)
   )
   .pipe gulp.dest('./server')
-  return
 
 #-------------------------------------------------------------------------------
 # Client JavaScripts
@@ -364,9 +363,9 @@ reportSize = ->
 
 reportGzipSize = ->
 
-  gulp.src('./static/bundle-min.js')
+  gulp.src('./static/bundle.js')
   .pipe size
-    title: '>>>>> bundle(minified).js <<<<<'
+    title: '----- bundle(minified).js -----'
     gzip: true
   .pipe(gulp.dest('static'))
 
@@ -377,6 +376,7 @@ reportGzipSize = ->
   .pipe(gulp.dest('static'))
 
   return
+
 
 #-------------------------------------------------------------------------------
 # Chained tasks.
@@ -405,8 +405,7 @@ gulp.task 'minify', [
 gulp.task 'production', [
   'compile:css'
   'compile:client:js'
-  'minify'
-], reportGzipSize()
+], -> reportGzipSize()
 
 # Default task
 
@@ -417,6 +416,6 @@ gulp.task 'default', [
   'compile:server:js'
   'compile:css'
   'watch'
-]
+], -> reportSize()
 
 #-------------------------------------------------------------------------------
