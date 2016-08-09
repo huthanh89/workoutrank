@@ -48,16 +48,13 @@ exports.post = (req, res) ->
 
     (callback) ->
 
-      console.log req.body
-
       User.findOne
         username: sanitize req.body.user
       .exec (err, user) ->
         return callback err if err
 
         if user is null
-          return callback new Err.BadRequest
-            text: 'User could not be found.'
+          return callback 'Username could not be found.'
 
         return callback null, user
 
@@ -71,13 +68,11 @@ exports.post = (req, res) ->
 
       crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
         if err
-          return callback new Err.BadRequest
-            text: 'Could not look up username / password.'
+          return callback 'Could not look up username / password.'
         if user.key is key.toString('hex')
           return callback null, user
         else
-          return callback new Err.BadRequest
-            text: 'Invalid username or password.'
+          return callback 'Invalid username or password.'
 
       return
 
@@ -106,13 +101,12 @@ exports.post = (req, res) ->
 
   ], (err, user) ->
 
+    # Response error status and text.
+
     if err
-
-      # Response error status and text.
-
       res
-      .status err.status
-      .json   err.text
+      .status 400
+      .json   err
 
     else
 

@@ -81,8 +81,7 @@ exports.post = (req, res, next) ->
           return callback error if error
           body = JSON.parse(body)
           if body.success is false
-            return callback new Err.BadRequest
-              text: 'Failed reCaptcha validation.'
+            return callback 'Failed reCaptcha verification.'
           return callback null
 
       return
@@ -97,8 +96,7 @@ exports.post = (req, res, next) ->
         email: email
       , (err, count) ->
           if count > 0
-            return callback new Err.BadRequest
-              text: 'Email has been taken. Choose a different email.'
+            return callback 'Email has been taken. Choose a different email.'
           else
             return callback null
       return
@@ -109,8 +107,7 @@ exports.post = (req, res, next) ->
         username: username
       , (err, count) ->
         if count > 0
-          return callback new Err.BadRequest
-            text: 'Username has been taken. Choose a different username.'
+          return callback 'Username has been taken. Choose a different username.'
         else
           return callback null
       return
@@ -127,7 +124,7 @@ exports.post = (req, res, next) ->
       salt     = salt.toString('hex')
 
       crypto.pbkdf2 password, salt, 10000, 32, 'sha512', (err, key) ->
-        console.log err if err
+        return callback 'Could not process password.'
         return callback null, salt, key.toString('hex')
 
       return
@@ -150,8 +147,7 @@ exports.post = (req, res, next) ->
       , (err, user) ->
 
         if err?.code is 11000
-          return callback new Err.BadRequest
-            text: 'There was a problem. Cannot create new account.'
+          return callback 'There was a problem. Cannot create new account.'
 
         return callback err if err
         return callback null, user
@@ -160,13 +156,12 @@ exports.post = (req, res, next) ->
 
   ], (err, user) ->
 
+    # If there was an error then response with error status and text.
+
     if err
-
-      # Response error status and text.
-
       res
-      .status err.status
-      .json   err.text
+      .status 400
+      .json   err
 
     else
 
