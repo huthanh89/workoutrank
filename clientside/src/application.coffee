@@ -91,10 +91,10 @@ class Application extends Marionette.Application
           positionClass:    'toast-top-full-width'
           preventDuplicates: false
           onclick:           null
-          showDuration:     '300'
-          hideDuration:     '1000'
-          timeOut:          '8000'
-          extendedTimeOut:  '1000'
+          showDuration:     '10000'
+          hideDuration:     '10000'
+          timeOut:          '10000'
+          extendedTimeOut:  '10000'
           showEasing:       'swing'
           hideEasing:       'linear'
           showMethod:       'fadeIn'

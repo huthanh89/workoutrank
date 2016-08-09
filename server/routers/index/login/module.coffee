@@ -29,7 +29,7 @@ schema =
   user: [
     method: 'isLength'
     options:
-      min: 4
+      min: 2
       max: 15
   ]
   password: [
@@ -67,6 +67,9 @@ exports.post = (req, res) ->
       algorithm = user.algorithm
 
       crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
+
+
+        console.log user.key, key.toString('hex')
         if err
           return callback 'Could not look up username / password.'
         if user.key is key.toString('hex')

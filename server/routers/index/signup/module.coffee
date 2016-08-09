@@ -50,7 +50,7 @@ schema =
   username: [
     method: 'isLength'
     options:
-      min: 4
+      min: 2
       max: 15
   ]
   password: [
@@ -68,6 +68,8 @@ exports.post = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
+
+      #return callback null
 
       clientIp = requestIp.getClientIp(req)
 
@@ -96,7 +98,7 @@ exports.post = (req, res, next) ->
         email: email
       , (err, count) ->
           if count > 0
-            return callback 'Email has been taken. Choose a different email.'
+            return callback 'Username / Email has been taken. Choose a different email.'
           else
             return callback null
       return
@@ -124,7 +126,7 @@ exports.post = (req, res, next) ->
       salt     = salt.toString('hex')
 
       crypto.pbkdf2 password, salt, 10000, 32, 'sha512', (err, key) ->
-        return callback 'Could not process password.'
+        return callback 'Could not process password.' if err
         return callback null, salt, key.toString('hex')
 
       return
