@@ -32,15 +32,19 @@ module.get = (req, res, next) ->
       .sort 'date'
       .lean()
       .exec (err, slogs) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slogs
 
       return
 
   ], (err, slogs) ->
 
-    console.log 'ERROR', err if err
+    # If Error occured, return error status and text.
 
+    if err
+      res
+      .status 400
+      .json   err
     return res.json slogs
 
 #-------------------------------------------------------------------------------

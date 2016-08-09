@@ -27,14 +27,17 @@ module.list = (req, res, next) ->
       SLog.find
         user: req.session.user.id
       .exec (err, slogs) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slogs
 
       return
 
   ], (err, documents) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     return res.json documents
 
@@ -52,13 +55,16 @@ module.get = (req, res, next) ->
       SLog.find
         exercise: req.params.sid
       .exec (err, slogs) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slogs
       return
 
   ], (err, documents) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     return res.json documents
 
@@ -76,7 +82,7 @@ module.post = (req, res) ->
       # Find the specific strength exercise.
 
       Strength.findById req.body.exercise, (err, strength) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strength
       return
 
@@ -87,7 +93,7 @@ module.post = (req, res) ->
       strength.date = req.body.date
 
       strength.save (err) ->
-        return callback err if err
+        return callback err.message if err
         return callback null
       return
 
@@ -105,12 +111,15 @@ module.post = (req, res) ->
         weight:   req.body.weight
         user:     req.session.user._id
       , (err, slog) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slog
 
   ], (err, slog) ->
 
-    console.log err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     res
     .status 201
@@ -132,7 +141,7 @@ module.put = (req, res, next) ->
     (callback) ->
 
       SLog.findById req.params.sid, (err, strength) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slog
 
       return
@@ -146,14 +155,17 @@ module.put = (req, res, next) ->
       slog.session = req.body.session
 
       slog.save (err, slog) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slog
 
       return
 
   ], (err, document) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     # Return json if success.
 
@@ -171,21 +183,24 @@ module.delete = (req, res, next) ->
     (callback) ->
 
       SLog.findById req.params.sid, (err, slog) ->
-        console.log 'ERROR', err if err
+        return callback err.message if err
         return callback null, slog
       return
 
     (slog, callback) ->
 
       slog.remove (err) ->
-        return callback err if err
+        return callback err.message if err
         return callback null
 
       return
 
   ], (err) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 202
+      .json   err
 
     res.sendStatus 204
 

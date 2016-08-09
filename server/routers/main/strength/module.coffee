@@ -136,7 +136,7 @@ module.post = (req, res) ->
 
   ], (err, strength) ->
 
-    # Response error status and text.
+    # If Error occured, return error status and text.
 
     if err
       res
@@ -254,7 +254,7 @@ module.delete = (req, res, next) ->
 
     if err
       res
-      .status 202
+      .status 400
       .json   err
 
     res.sendStatus 204

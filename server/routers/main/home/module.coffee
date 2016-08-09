@@ -28,7 +28,7 @@ module.get = (req, res, next) ->
       Strength.count
         user: req.session.user._id
       .exec (err, count) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, count
       return
 
@@ -39,14 +39,19 @@ module.get = (req, res, next) ->
       SLog.count
         user: req.session.user._id
       .exec (err, count) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strengthCount, count
 
       return
 
   ], (err, exerciseCount, logCount) ->
 
-    console.log 'ERROR', err if err
+    # If Error occured, return error status and text.
+
+    if err
+      res
+      .status 400
+      .json   err
 
     return res
     .status 200
