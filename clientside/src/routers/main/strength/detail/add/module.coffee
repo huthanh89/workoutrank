@@ -85,8 +85,8 @@ class View extends Marionette.ItemView
           @collection.add model.attributes
           @ui.dialog.modal('hide')
           return
-        error: ->
-          console.log 'fail'
+        error: (model, response) =>
+          @rootChannel.request 'message:error', response
           return
 
       return

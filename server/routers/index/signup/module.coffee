@@ -69,10 +69,6 @@ exports.post = (req, res, next) ->
 
     (callback) ->
 
-      console.log req.body
-
-      return callback null
-
       clientIp = requestIp.getClientIp(req)
 
       request.post

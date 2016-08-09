@@ -72,6 +72,10 @@ class View extends Marionette.LayoutView
           @redirect = true
           @ui.dialog.modal('hide')
           return
+        error: (model, response) =>
+          @rootChannel.request 'message:error', response
+          return
+
       return
 
     'submit': (event) ->
@@ -80,6 +84,9 @@ class View extends Marionette.LayoutView
       @model.save {},
         success: =>
           @ui.dialog.modal('hide')
+          return
+        error: (model, response) =>
+          @rootChannel.request 'message:error', response
           return
       return
 

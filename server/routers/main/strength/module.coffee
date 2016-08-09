@@ -5,6 +5,8 @@
 _        = require 'lodash'
 async    = require 'async'
 mongoose = require 'mongoose'
+Err      = require '../../error'
+Validate = require '../../validate'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -12,6 +14,37 @@ mongoose = require 'mongoose'
 
 Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
+
+#-------------------------------------------------------------------------------
+# Schema for POST and PUT validation
+#-------------------------------------------------------------------------------
+
+schema =
+  date: [
+    method: 'isDate'
+  ]
+  name: [
+    method: 'isLength'
+    options:
+      min: 1
+      max: 15
+  ]
+  note: [
+    method: 'isLength'
+    options:
+      min: 0
+      max: 15
+  ]
+  muscle: [
+    method: 'isInt'
+  ]
+  count: [
+    method: 'isInt'
+  ]
+  body: [
+    method: 'isBoolean'
+  ]
+  schedule: []
 
 #-------------------------------------------------------------------------------
 # List
@@ -29,13 +62,18 @@ module.list = (req, res, next) ->
       .sort(date: -1)
       .lean()
       .exec (err, strengths) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strengths
       return
 
   ], (err, strengths) ->
 
-    console.log 'ERROR', err if err
+    # Response error status and text.
+
+    if err
+      res
+      .status 400
+      .json   err
 
     return res.json strengths
 
@@ -53,13 +91,18 @@ module.get = (req, res, next) ->
       Strength.findOne
         _id: req.params.sid
       .exec (err, strength) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strength
       return
 
   ], (err, strength) ->
 
-    console.log 'ERROR', err if err
+    # Response error status and text.
+
+    if err
+      res
+      .status 400
+      .json   err
 
     return res.json strength
 
@@ -74,6 +117,10 @@ module.post = (req, res) ->
 
     (callback) ->
 
+      return Validate.isValid(req.body, schema, callback)
+
+    (callback) ->
+
       Strength.create
         date:   req.body.date
         name:   req.body.name
@@ -84,12 +131,17 @@ module.post = (req, res) ->
         schedule: req.body.schedule
 
       , (err, strength) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strength
 
   ], (err, strength) ->
 
-    console.log err if err
+    # Response error status and text.
+
+    if err
+      res
+      .status 400
+      .json   err
 
     # If success return a 201 status code and json.
 
@@ -112,8 +164,12 @@ module.put = (req, res, next) ->
 
     (callback) ->
 
+      return Validate.isValid(req.body, schema, callback)
+
+    (callback) ->
+
       Strength.findById req.params.sid, (err, strength) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, strength
 
       return
@@ -127,14 +183,17 @@ module.put = (req, res, next) ->
       strength.body   = req.body.body
 
       strength.save (err, entry) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, entry
 
       return
 
   ], (err, entry) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     # Return json if success.
 
@@ -151,19 +210,21 @@ module.log = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-
       SLog.find
         exercise: req.params.sid
       .sort(date: -1)
       .lean()
       .exec (err, slogs) ->
-        return callback err if err
+        return callback err.message if err
         return callback null, slogs
       return
 
   ], (err, slogs) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 400
+      .json   err
 
     return res.json slogs
 
@@ -177,23 +238,24 @@ module.delete = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-
       Strength.findById req.params.sid, (err, strength) ->
-        console.log 'ERROR', err if err
+        return callback err.message if err
         return callback null, strength
       return
 
     (strength, callback) ->
-
       strength.remove (err) ->
-        return callback err if err
+        return callback err.message if err
         return callback null
 
       return
 
   ], (err) ->
 
-    console.log 'ERROR', err if err
+    if err
+      res
+      .status 202
+      .json   err
 
     res.sendStatus 204
 

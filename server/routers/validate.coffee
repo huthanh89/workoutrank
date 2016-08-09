@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Err       = require './error'
 _         = require 'lodash'
 validator = require 'validator'
 
@@ -11,11 +10,12 @@ validator = require 'validator'
 #-------------------------------------------------------------------------------
 
 Methods = [
-  { method: 'isDate',   text: 'not a date format'    }
-  { method: 'isFloat',  text: 'not a decimal number' }
-  { method: 'isInt',    text: 'not a number'         }
-  { method: 'isEmail',  text: 'incorrect email format'     }
-  { method: 'isLength', text: 'incorrect length'     }
+  { method: 'isBoolean', text: 'not a boolean format'   }
+  { method: 'isDate',    text: 'not a date format'      }
+  { method: 'isFloat',   text: 'not a decimal number'   }
+  { method: 'isInt',     text: 'not a number'           }
+  { method: 'isEmail',   text: 'incorrect email format' }
+  { method: 'isLength',  text: 'incorrect length'       }
 ]
 
 #-------------------------------------------------------------------------------
@@ -36,26 +36,27 @@ isValid = (requestBody, schema, callback) ->
 
   for bodyKey, bodyValue of requestBody
 
-    # Sanitize input before proceeding.
-
-    requestBody[bodyKey] = bodyValue = sanitize(bodyValue)
-
     # Return false if req body is not in schema to validate.
 
     methods = schema[bodyKey]
 
-    if methods is undefined
-      return callback new Err.BadRequest
-        text: "#{bodyKey} - is an unknown field and is not accepted"
+    # If key is is unknown, then just skip validation on it.
+
+    return callback(null) unless methods
+
+    # Sanitize input before proceeding.
+
+    if typeof bodyValue is 'string'
+      requestBody[bodyKey] = bodyValue = sanitize(bodyValue)
+    else
+      bodyValue = bodyValue.toString()
 
     for obj in methods
 
       passed = validator[obj.method](bodyValue, obj.options)
 
       if not passed
-        return callback new Err.BadRequest
-          status:  408
-          text:   "#{bodyKey} - #{_.find(Methods, method: obj.method).text}."
+        return callback "#{bodyKey} - #{_.find(Methods, method: obj.method).text}."
 
   return callback(null)
 

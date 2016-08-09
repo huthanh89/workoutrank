@@ -94,7 +94,7 @@ class Router extends Marionette.AppRouter
           model: model
         return
       error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+        @rootChannel.request 'message:error', response
         return
     return
 
@@ -125,7 +125,7 @@ class Router extends Marionette.AppRouter
     ], (error, sConfs, sLogs) =>
 
       if error
-        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+        @rootChannel.request 'message:error', error
 
       View = Strength.Master.View
 
@@ -166,7 +166,7 @@ class Router extends Marionette.AppRouter
     ], (error, sConf, sLogs) =>
 
       if error
-        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+        @rootChannel.request 'message:error', error
 
       View = Strength.Detail.View
 
@@ -203,7 +203,7 @@ class Router extends Marionette.AppRouter
     ], (error, sConfs, sLogs) =>
 
       if error
-        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+        @rootChannel.request 'message:error', error
 
       @rootView.content.show new Calendar.View
         sLogs:  sLogs
@@ -236,7 +236,7 @@ class Router extends Marionette.AppRouter
     ], (error, sConfs, sLogs) =>
 
       if error
-        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+        @rootChannel.request 'message:error', error
 
       View = Logs.Master.View
 
@@ -269,7 +269,7 @@ class Router extends Marionette.AppRouter
     ], (error, sConfs, sLogs) =>
 
       if error
-        @rootChannel.request 'message', 'danger', "Error: #{error.responseText}"
+        @rootChannel.request 'message:error', error
 
       View = Logs.Detail.View
 
@@ -292,7 +292,7 @@ class Router extends Marionette.AppRouter
           model:      new Logs.Detail.Model()
         return
       error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+        @rootChannel.request 'message:error', response
         return
 
     return

@@ -88,6 +88,10 @@ class View extends Marionette.LayoutView
         success:  =>
           @ui.dialog.modal('hide')
           return
+        error: (model, response) =>
+          @rootChannel.request 'message:error', response
+          return
+
       return
 
     'hidden.bs.modal': ->

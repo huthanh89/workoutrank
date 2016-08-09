@@ -93,14 +93,14 @@ class Application extends Marionette.Application
           onclick:           null
           showDuration:     '300'
           hideDuration:     '1000'
-          timeOut:          '5000'
+          timeOut:          '8000'
           extendedTimeOut:  '1000'
           showEasing:       'swing'
           hideEasing:       'linear'
           showMethod:       'fadeIn'
           hideMethod:       'fadeOut'
 
-        Toastr.error(response.responseText, "Error: #{response.status}")
+        Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
         return
 
@@ -125,7 +125,7 @@ class Application extends Marionette.Application
 
             return
           error: (model, response) ->
-            rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+            rootChannel.request 'message:error', response
             return
         return
 
