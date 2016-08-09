@@ -2,13 +2,14 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Err       = require '../../error'
 moment    = require 'moment'
 async     = require 'async'
 request   = require 'request'
 requestIp = require 'request-ip'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
+Err       = require '../../error'
+Validate  = require '../../validate'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -33,6 +34,32 @@ sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
 # Post
 #-------------------------------------------------------------------------------
 
+schema =
+  captcha: []
+  birthday: [
+    method: 'isDate'
+  ]
+  email: [
+    method: 'isEmail'
+  ,
+    method: 'isLength'
+    options:
+      min: 4
+      max: 15
+  ]
+  username: [
+    method: 'isLength'
+    options:
+      min: 4
+      max: 15
+  ]
+  password: [
+    method: 'isLength'
+    options:
+      min: 4
+      max: 15
+  ]
+
 exports.post = (req, res, next) ->
 
   email    = sanitize req.body.email
@@ -41,6 +68,10 @@ exports.post = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
+
+      console.log req.body
+
+      return callback null
 
       clientIp = requestIp.getClientIp(req)
 
@@ -59,6 +90,10 @@ exports.post = (req, res, next) ->
           return callback null
 
       return
+
+    (callback) ->
+
+      return Validate.isValid(req.body, schema, callback)
 
     (callback) ->
 

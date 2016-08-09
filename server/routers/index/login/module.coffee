@@ -2,12 +2,12 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Validate  = require '../../validate'
-Err       = require '../../error'
 moment    = require 'moment'
 async     = require 'async'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
+Validate  = require '../../validate'
+Err       = require '../../error'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -26,10 +26,18 @@ sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
 #-------------------------------------------------------------------------------
 
 schema =
-  user:
-    type: 'string'
-  password:
-    type: 'string'
+  user: [
+    method: 'isLength'
+    options:
+      min: 4
+      max: 15
+  ]
+  password: [
+    method: 'isLength'
+    options:
+      min: 4
+      max: 15
+  ]
 
 exports.post = (req, res) ->
 
@@ -39,6 +47,8 @@ exports.post = (req, res) ->
       return Validate.isValid(req.body, schema, callback)
 
     (callback) ->
+
+      console.log req.body
 
       User.findOne
         username: sanitize req.body.user
