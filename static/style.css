@@ -20098,6 +20098,14 @@ Index Page
   width: 150px;
   height: 150px;
 }
+#index-recaptcha-container {
+  width: 300px;
+  height: 80px;
+}
+#index-signup-recaptcha {
+  position: absolute;
+  z-index: 9999!important;
+}
 /*-----------------------------------------------------------------------------
 Top Nav Bar
 -----------------------------------------------------------------------------*/
