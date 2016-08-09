@@ -12,27 +12,26 @@ br
                 .col-xs-12
                     label(for='index-login-user') Email or User Name
                 .col-xs-12
-                    input.form-control#index-login-user(type='input', placeholder='Email or Username' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required)
+                    input.form-control#index-login-user(type='input', placeholder='Email or Username' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="4" maxlength="15")
                     .help-block.with-errors
-                .col-xs-12
-                    p#index-login-forgot-user
-                        a Forgot ID
             .form-group
                 .col-xs-12
                     label(for='index-login-password') Password
                 .col-xs-12
-                    input.form-control#index-login-password(type="password", placeholder='Password' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required)
+                    input.form-control#index-login-password(type="password", placeholder='Password' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="4" maxlength="15")
                     .help-block.with-errors
+            .form-group
                 .col-xs-12
-                    p#index-login-forgot-password
-                        a Forgot Password
+                    p#index-login-forgot-user
+                        a Trouble logging in?
+            hr
             .form-group
                 .col-xs-12
                     button.btn.btn-lg.btn-info.btn-block#index-login-submit
                         i.fa.fa-fw.fa-lg.fa-sign-in
                         = ' '
                         | Log In
-            .form-group
+            //.form-group
                 .col-xs-12
                     .checkbox#index-login-remember
                         label

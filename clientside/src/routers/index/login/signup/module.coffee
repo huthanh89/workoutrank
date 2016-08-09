@@ -90,7 +90,7 @@ class View extends Marionette.ItemView
       minDate:  moment().subtract(100, 'years')
       maxDate:  moment()
       widgetPositioning:
-        vertical: 'bottom'
+        vertical: 'top'
       ignoreReadonly: true
 
     @timer = setTimeout =>
