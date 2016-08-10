@@ -61,6 +61,8 @@
     "gulp-shell": "*",
     "gulp-cssnano": "*",
     "jade-loader": "*",
+    "gulp-jade": "*",
+    "gulp-inject": "*",
     "pm2": "*",
     "read-file": "*",
     "run-sequence": "*",

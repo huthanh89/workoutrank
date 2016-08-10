@@ -18,6 +18,8 @@ size       = require 'gulp-size'
 coffee     = require 'gulp-coffee'
 gutil      = require 'gulp-util'
 shell      = require 'gulp-shell'
+inject     = require 'gulp-inject'
+jade       = require 'gulp-jade'
 
 # Builder
 
@@ -25,6 +27,7 @@ concat     = require 'gulp-concat'
 less       = require 'gulp-less'
 livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
+html2jade  = require 'gulp-html2jade'
 
 # Lint
 
@@ -35,6 +38,21 @@ lessLint   = require 'gulp-recess'
 
 minifyJS   = require 'gulp-minify'
 minifyCSS  = require 'gulp-cssnano'
+
+#-------------------------------------------------------------------------------
+# Config Variable
+#-------------------------------------------------------------------------------
+
+Production = false
+
+#-------------------------------------------------------------------------------
+# Javascript minify
+#-------------------------------------------------------------------------------
+
+gulp.task 'toggle:production', (callback) ->
+  DEVELOPMENT = false
+  callback
+  return
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -52,11 +70,11 @@ gulp.task 'minify-js', ->
 
 gulp.task 'minify-css', ->
   return gulp.src('./static/style.css')
-    .pipe(minifyCSS
+  .pipe(minifyCSS
       discardComments:
         removeAll: true
     )
-    .pipe(gulp.dest('static'))
+  .pipe(gulp.dest('static'))
 
 #-------------------------------------------------------------------------------
 # Coffee script Lint
@@ -385,6 +403,40 @@ gulp.task 'read:log', ->
   return
 
 #-------------------------------------------------------------------------------
+# Inject either bundle or bundle minified to index.html
+#-------------------------------------------------------------------------------
+
+gulp.task 'inject:js', ->
+
+  sources = gulp.src(['static/bundle.js'])
+  sources = gulp.src(['static/bundle-min.js']) if Production
+
+  options =
+    ignorePath: 'static'
+    addRootSlash: false
+
+  return gulp.src('static/index.html')
+  .pipe(inject(sources,options))
+  .pipe gulp.dest('./static')
+
+#-------------------------------------------------------------------------------
+# Convert index.html to useable index.jade.
+#-------------------------------------------------------------------------------
+
+gulp.task 'html:to:jade', ->
+  return gulp.src('static/index.html')
+  .pipe(html2jade())
+  .pipe(gulp.dest('static'))
+
+#-------------------------------------------------------------------------------
+# Set production variable to true.
+#-------------------------------------------------------------------------------
+
+gulp.task 'production:variable', ->
+  Production = true
+  return
+
+#-------------------------------------------------------------------------------
 # Chained tasks.
 #-------------------------------------------------------------------------------
 
@@ -408,22 +460,20 @@ gulp.task 'minify', [
   'minify-js'
 ]
 
-gulp.task 'production', [
-  'compile:css'
-  'compile:client:js'
-  'minify'
-  'shell'
-
-], ->
-  reportGzipSize()
+gulp.task 'compile:index', (callback) ->
+  runSequence 'inject:js',
+    'html:to:jade',
+    callback
   return
 
 # Production task to build and report app.
 
 gulp.task 'production', (callback) ->
-  runSequence 'compile:css',
+  runSequence 'production:variable',
+    'compile:css',
     'compile:client:js',
     'minify',
+    'compile:index',
     'shell:npm:version',
     'read:log',
     'report:size',
@@ -438,6 +488,7 @@ gulp.task 'default', (callback) ->
     'compile:client:js',
     'compile:server:js',
     'compile:css',
+    'compile:index',
     'watch',
     callback
   return

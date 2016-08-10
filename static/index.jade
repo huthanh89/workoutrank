@@ -1,15 +1,19 @@
-head
+html
+  head
     title WorkoutRank
-    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
-    link(type="text/css", rel='stylesheet', href='style.css')
-    script(type="text/javascript" src="bundle.js" charset="utf-8")
+    |     
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    |     
+    link(type='text/css', rel='stylesheet', href='style.css')
+    // inject:js
+    script(src='bundle.js')
+    // endinject
     script(src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit', async='', defer='')
-block content
-body
+  body
     #header
     #message-container
     #index
     #content
     #footer
-        span (c) 2016 WorkoutRank. All rights reserved.
+      span (c) 2016 WorkoutRank. All rights reserved.
     #drawer
