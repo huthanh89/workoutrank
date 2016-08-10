@@ -12,16 +12,12 @@ runSequence = require 'run-sequence'
 # Gulp Plugins
 #-------------------------------------------------------------------------------
 
-# Minify
+# Utilities
 
-minifyJS   = require 'gulp-minify'
-minifyCSS  = require 'gulp-cssnano'
-
-# Lint
-
-coffeelint = require 'gulp-coffeelint'
-csslint    = require 'gulp-csslint'
-recess     = require 'gulp-recess'
+size       = require 'gulp-size'
+coffee     = require 'gulp-coffee'
+gutil      = require 'gulp-util'
+shell      = require 'gulp-shell'
 
 # Builder
 
@@ -30,12 +26,15 @@ less       = require 'gulp-less'
 livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
 
-# Utilities
+# Lint
 
-size       = require 'gulp-size'
-coffee     = require 'gulp-coffee'
-gutil      = require 'gulp-util'
-shell      = require 'gulp-shell'
+coffeelint = require 'gulp-coffeelint'
+recess     = require 'gulp-recess'
+
+# Minify
+
+minifyJS   = require 'gulp-minify'
+minifyCSS  = require 'gulp-cssnano'
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -70,28 +69,15 @@ gulp.task 'coffeelint', ->
   return
 
 #-------------------------------------------------------------------------------
-# CSS Lint
-#-------------------------------------------------------------------------------
-
-gulp.task 'csslint', ->
-  gulp.src('./clientside/styles/application.css')
-    .pipe(csslint(
-      ids: false
-    ))
-    .pipe(csslint.reporter());
-  return
-
-#-------------------------------------------------------------------------------
 # Less Lint
 #-------------------------------------------------------------------------------
 
 gulp.task 'lesslint', ->
   gulp.src('./clientside/styles/less/application.less')
-  .pipe(
-    recess
-      noIDs:               false
-      strictPropertyOrder: false
-      noOverqualifying:    false
+  .pipe(recess
+    noIDs:               false
+    strictPropertyOrder: false
+    noOverqualifying:    false
   )
   .pipe(recess.reporter())
   return
@@ -440,13 +426,14 @@ gulp.task 'production', (callback) ->
 
 # Default task use for development.
 
-gulp.task 'default', [
-  'nodemon'
-  'coffeelint'
-  'compile:client:js'
-  'compile:server:js'
-  'compile:css'
-  'watch'
-]
+gulp.task 'default', (callback) ->
+  runSequence 'nodemon',
+    'coffeelint',
+    'compile:client:js',
+    'compile:server:js',
+    'compile:css',
+    'watch',
+    callback
+  return
 
 #-------------------------------------------------------------------------------
