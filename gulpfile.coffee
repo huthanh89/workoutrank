@@ -20,6 +20,7 @@ gutil      = require 'gulp-util'
 shell      = require 'gulp-shell'
 inject     = require 'gulp-inject'
 jade       = require 'gulp-jade'
+rename     = require 'gulp-rename'
 
 # Builder
 
@@ -58,8 +59,6 @@ gulp.task 'toggle:production', (callback) ->
 #-------------------------------------------------------------------------------
 # Javascript minify
 #-------------------------------------------------------------------------------
-
-rename = require('gulp-rename')
 
 gulp.task 'minify-js', ->
   gulp.src('./static/bundle.js')
@@ -131,6 +130,20 @@ gulp.task 'coffee:to:js:server', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'js:bundle', (callback) ->
+
+  webpackPlugins = [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+    })
+  ]
+
+  if Production
+    webpackPlugins.push [
+      new webpack.optimize.DedupePlugin()
+      new webpack.optimize.LimitChunkCountPlugin()
+      new webpack.optimize.OccurrenceOrderPlugin()
+      new webpack.optimize.UglifyJsPlugin()
+    ]
 
   options =
 
@@ -222,12 +235,7 @@ gulp.task 'js:bundle', (callback) ->
         '.coffee'
       ]
 
-      # XXX plugins not working to expose $
-      plugins: [
-        new webpack.ProvidePlugin({
-          $: 'jquery',
-        })
-      ]
+      plugins: webpackPlugins
 
   webpack options, (err, stats) =>
     if err
@@ -350,40 +358,17 @@ gulp.task 'watch', ->
 
 gulp.task 'report:size', (callback) ->
 
-  gulp.src('./static/bundle.js')
+  gulp.src('./static/bundle-min.js')
   .pipe size
     title: '----- bundle(minified).js -----'
-    gzip: true
-  .pipe(gulp.dest('static/bungle-min.js'))
+  .pipe(gulp.dest('static'))
 
   gulp.src('./static/style.css')
   .pipe size
     title: '----- style.css -----'
-    gzip: true
   .pipe(gulp.dest('static'))
 
   callback
-  return
-
-#-------------------------------------------------------------------------------
-# Gzip Size
-#   Report to console file sizes.
-#-------------------------------------------------------------------------------
-
-reportGzipSize = ->
-
-  gulp.src('./static/bundle.js')
-  .pipe size
-    title: '----- bundle(minified).js -----'
-    gzip: true
-  .pipe(gulp.dest('static/bungle-min.js'))
-
-  gulp.src('./static/style.css')
-  .pipe size
-    title: '----- style.css -----'
-    gzip: true
-  .pipe(gulp.dest('static'))
-
   return
 
 #-------------------------------------------------------------------------------
