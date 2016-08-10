@@ -51,15 +51,6 @@ Production = false
 # Javascript minify
 #-------------------------------------------------------------------------------
 
-gulp.task 'toggle:production', (callback) ->
-  DEVELOPMENT = false
-  callback
-  return
-
-#-------------------------------------------------------------------------------
-# Javascript minify
-#-------------------------------------------------------------------------------
-
 gulp.task 'minify-js', ->
   gulp.src('./static/bundle.js')
   .pipe(uglify())
