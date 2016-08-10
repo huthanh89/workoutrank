@@ -30,7 +30,7 @@ db.on 'open', ->
   return
 
 #--------------------------------------------------------------
-# // Create Schemas from models
+# Create Schemas from models
 #--------------------------------------------------------------
 
 require('./models/user') mongoose
@@ -120,10 +120,11 @@ app.use (err, req, res, next) ->
   return
 
 #--------------------------------------------------------------
-# Websocket Handler
+# Listen on port
 #--------------------------------------------------------------
 
 port = 5000
+
 server.listen port, ->
   console.log 'Express server listening on port %d in %s mode',
     port, app.get('env')

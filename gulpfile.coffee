@@ -2,9 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-gulp    = require 'gulp'
-webpack = require 'webpack'
-path    = require 'path'
+gulp        = require 'gulp'
+webpack     = require 'webpack'
+path        = require 'path'
+read        = require 'read-file'
+runSequence = require 'run-sequence'
 
 #-------------------------------------------------------------------------------
 # Gulp Plugins
@@ -33,19 +35,7 @@ nodemon    = require 'gulp-nodemon'
 size       = require 'gulp-size'
 coffee     = require 'gulp-coffee'
 gutil      = require 'gulp-util'
-
-#-------------------------------------------------------------------------------
-# Gulp Utility Plugins
-#-------------------------------------------------------------------------------
-
-PluginsError = undefined
-colors       = undefined
-log          = undefined
-_ref         = undefined
-_ref         = require('gulp-util')
-log          = _ref.log
-colors       = _ref.colors
-PluginError  = _ref.PluginError
+shell      = require 'gulp-shell'
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -340,20 +330,24 @@ gulp.task 'watch', ->
   return
 
 #-------------------------------------------------------------------------------
-# Size
-#   Report to console file sizes.
+# Report size
 #-------------------------------------------------------------------------------
 
-reportSize = ->
+gulp.task 'report:size', (callback) ->
 
   gulp.src('./static/bundle.js')
   .pipe size
-    title: '----- bundle.js -----'
+    title: '----- bundle(minified).js -----'
+    gzip: true
+  .pipe(gulp.dest('static/bungle-min.js'))
 
   gulp.src('./static/style.css')
   .pipe size
     title: '----- style.css -----'
+    gzip: true
+  .pipe(gulp.dest('static'))
 
+  callback
   return
 
 #-------------------------------------------------------------------------------
@@ -377,6 +371,26 @@ reportGzipSize = ->
 
   return
 
+#-------------------------------------------------------------------------------
+# Perform shell commands.
+#   Look up npm packages version.
+#-------------------------------------------------------------------------------
+
+gulp.task 'shell:npm:version', shell.task [
+    'ncu --packageFile ./package.json > console.txt'
+  ],
+    verbose: true
+    timeout: 60000
+
+#-------------------------------------------------------------------------------
+# Console out log file.
+#-------------------------------------------------------------------------------
+
+gulp.task 'read:log', ->
+  read 'console.txt', 'utf8',(err, buffer) ->
+    gutil.log gutil.colors.yellow buffer
+    return
+  return
 
 #-------------------------------------------------------------------------------
 # Chained tasks.
@@ -406,9 +420,25 @@ gulp.task 'production', [
   'compile:css'
   'compile:client:js'
   'minify'
-], -> reportGzipSize()
+  'shell'
 
-# Default task
+], ->
+  reportGzipSize()
+  return
+
+# Production task to build and report app.
+
+gulp.task 'production', (callback) ->
+  runSequence 'compile:css',
+    'compile:client:js',
+    'minify',
+    'shell:npm:version',
+    'read:log',
+    'report:size',
+    callback
+  return
+
+# Default task use for development.
 
 gulp.task 'default', [
   'nodemon'
@@ -417,6 +447,6 @@ gulp.task 'default', [
   'compile:server:js'
   'compile:css'
   'watch'
-], -> reportSize()
+]
 
 #-------------------------------------------------------------------------------

@@ -56,11 +56,15 @@
     "gulp-livereload": "*",
     "gulp-nodemon": "*",
     "gulp-util": "*",
-    "jade-loader": "*",
-    "pm2": "*",
     "gulp-minify": "*",
     "gulp-size": "*",
     "gulp-recess": "*",
-    "gulp-cssnano": "*"
+    "gulp-shell": "*",
+    "gulp-cssnano": "*",
+    "jade-loader": "*",
+    "pm2": "*",
+    "read-file": "*",
+    "run-sequence": "*",
+    "npm-check-updates": "*"
   }
 }
