@@ -60,6 +60,7 @@
     "gulp-recess": "*",
     "gulp-shell": "*",
     "gulp-cssnano": "*",
+    "gulp-rename": "*",
     "jade-loader": "*",
     "gulp-jade": "*",
     "gulp-inject": "*",

@@ -28,6 +28,7 @@ less       = require 'gulp-less'
 livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
 html2jade  = require 'gulp-html2jade'
+uglify     = require 'gulp-uglify'
 
 # Lint
 
@@ -58,10 +59,14 @@ gulp.task 'toggle:production', (callback) ->
 # Javascript minify
 #-------------------------------------------------------------------------------
 
+rename = require('gulp-rename')
+
 gulp.task 'minify-js', ->
   gulp.src('./static/bundle.js')
-    .pipe(minifyJS())
-    .pipe(gulp.dest('static'))
+  .pipe(uglify())
+  .pipe(minifyJS())
+  .pipe(rename('bundle-min.js'))
+  .pipe(gulp.dest('static'))
   return
 
 #-------------------------------------------------------------------------------
