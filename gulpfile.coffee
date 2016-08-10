@@ -128,8 +128,14 @@ gulp.task 'js:bundle', (callback) ->
     })
   ]
 
+  # XXX Not yet tested. Bundle-min.js file size still look the same.
+
   if Production
     webpackPlugins.push [
+      new webpack.DefinePlugin({
+        'process.env':
+          NODE_ENV: 'production'
+      })
       new webpack.optimize.DedupePlugin()
       new webpack.optimize.LimitChunkCountPlugin()
       new webpack.optimize.OccurrenceOrderPlugin()
