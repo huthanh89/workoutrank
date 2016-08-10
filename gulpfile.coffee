@@ -28,8 +28,8 @@ nodemon    = require 'gulp-nodemon'
 
 # Lint
 
-coffeelint = require 'gulp-coffeelint'
-recess     = require 'gulp-recess'
+coffeeLint = require 'gulp-coffeelint'
+lessLint   = require 'gulp-recess'
 
 # Minify
 
@@ -52,7 +52,10 @@ gulp.task 'minify-js', ->
 
 gulp.task 'minify-css', ->
   return gulp.src('./static/style.css')
-    .pipe(minifyCSS())
+    .pipe(minifyCSS
+      discardComments:
+        removeAll: true
+    )
     .pipe(gulp.dest('static'))
 
 #-------------------------------------------------------------------------------
@@ -64,8 +67,11 @@ gulp.task 'coffeelint', ->
     './server/**/*.coffee'
     './clientside/**/*.coffee'
   ])
-    .pipe(coffeelint())
-    .pipe(coffeelint.reporter('coffeelint-stylish'))
+  .pipe(coffeeLint null,
+    'max_line_length':
+      level: 'ignore'
+  )
+  .pipe(coffeeLint.reporter('coffeelint-stylish'))
   return
 
 #-------------------------------------------------------------------------------
@@ -74,12 +80,12 @@ gulp.task 'coffeelint', ->
 
 gulp.task 'lesslint', ->
   gulp.src('./clientside/styles/less/application.less')
-  .pipe(recess
+  .pipe(lessLint
     noIDs:               false
     strictPropertyOrder: false
     noOverqualifying:    false
   )
-  .pipe(recess.reporter())
+  .pipe(lessLint.reporter())
   return
 
 #-------------------------------------------------------------------------------
