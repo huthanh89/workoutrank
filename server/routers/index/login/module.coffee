@@ -35,8 +35,8 @@ schema =
   password: [
     method: 'isLength'
     options:
-      min: 4
-      max: 15
+      min: 1
+      max: 20
   ]
 
 exports.post = (req, res) ->
