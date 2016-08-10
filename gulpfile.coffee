@@ -466,7 +466,9 @@ gulp.task 'compile:index', (callback) ->
     callback
   return
 
+#-------------------------------------------------------------------------------
 # Production task to build and report app.
+#-------------------------------------------------------------------------------
 
 gulp.task 'production', (callback) ->
   runSequence 'production:variable',
@@ -480,7 +482,9 @@ gulp.task 'production', (callback) ->
     callback
   return
 
+#-------------------------------------------------------------------------------
 # Default task use for development.
+#-------------------------------------------------------------------------------
 
 gulp.task 'default', (callback) ->
   runSequence 'nodemon',
