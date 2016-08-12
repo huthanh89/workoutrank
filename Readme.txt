@@ -13,3 +13,8 @@ Install mongodb
 		- /data/db folder may be needed as path for mongod
 	- on windows. Go to mongodb folder and run commmand:
 		mongodb --dbpath \data\db
+
+
+kill task
+    netstat -a -o -n
+    taskkill /F /PID 28344

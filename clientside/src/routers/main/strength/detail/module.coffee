@@ -34,6 +34,8 @@ class Collection extends Backbone.Collection
 
   model: Model
 
+  comparator: 'date'
+
   constructor: (attributes, options) ->
     super
     @url = "/api/strengths/#{options.id}/log"

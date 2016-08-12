@@ -7,6 +7,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require '../data/module'
+Edit         = require './edit/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -57,9 +58,12 @@ class Collection extends Backbone.Collection
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.LayoutView
 
   template: viewTemplate
+
+  regions:
+    modal: '#calendar-modal-view'
 
   ui:
     calendar: '#calendar-widget'
@@ -67,6 +71,12 @@ class View extends Marionette.ItemView
   events:
     'click #calendar-tab': ->
       @channel.request 'show:events'
+      return
+
+    'click #calendar-edit': ->
+      @showChildView 'modal', new Edit.View
+        collection: @collection
+        model:      new Edit.Model()
       return
 
   constructor: (options) ->
@@ -88,7 +98,9 @@ class View extends Marionette.ItemView
 
     @calendar.fullCalendar('today')
     @calendar.fullCalendar('changeView', 'basicWeek')
-
+    @showChildView 'modal', new Edit.View
+      collection: @collection
+      model:      new Edit.Model()
     return
 
   onBeforeDestroy: ->

@@ -30,8 +30,8 @@ class Model extends Backbone.Model
     date:     moment()
     name:     ''
     exercise: ''
-    rep:      1
-    weight:   1
+    rep:      null
+    weight:   null
     muscle:   0
     note:     ''
 
@@ -102,6 +102,14 @@ class View extends Marionette.ItemView
     super
     @rootChannel = Backbone.Radio.channel('root')
     @model.set('date', new Date(options.date))
+
+    # If there are data, use the latest data found in collection
+    # as default values.
+
+    if @collection.length
+      latestModel = @collection.at(@collection.length - 1)
+      @model.set 'rep', latestModel.get('rep')
+      @model.set 'weight', latestModel.get('weight')
 
   onRender: ->
 

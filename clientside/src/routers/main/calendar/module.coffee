@@ -64,7 +64,8 @@ class View extends Marionette.LayoutView
         return
 
   onShow: ->
-    @channel.request 'show:events'
+#    @channel.request 'show:events'
+    @channel.request 'show:schedule'
     return
 
   onBeforeDestroy: ->
