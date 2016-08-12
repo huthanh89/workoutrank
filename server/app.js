@@ -40,6 +40,8 @@ require('./models/strength')(mongoose);
 
 require('./models/slog')(mongoose);
 
+require('./models/schedule')(mongoose);
+
 app = express();
 
 server = http.createServer(app);

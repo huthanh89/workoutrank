@@ -48,24 +48,33 @@ class View extends Marionette.LayoutView
 
       'show:schedule': =>
 
-        collection = new Schedule.Collection [],
-          sLogs:  @sLogs
-          sConfs: @sConfs
-          parse:  true
+        sheduleModel = new Schedule.Model()
+        sheduleModel.fetch
+          success: (model) =>
 
-        events = collection.toJSON()
-        events = _.map events, (event) ->
-          return _.assign event, allDay: true
+            collection = new Schedule.Collection [],
+              sLogs:   @sLogs
+              sConfs:  @sConfs
+              schedule: model
+              parse:    true
 
-        @showChildView 'calendar', new Schedule.View
-          collection:    @collection
-          channel:       @channel
-          calendarEvents: events
+            events = collection.toJSON()
+            events = _.map events, (event) ->
+              return _.assign event, allDay: true
+
+            @showChildView 'calendar', new Schedule.View
+              channel:       @channel
+              model:          model
+              calendarEvents: events
+            return
+          error: (model, response) =>
+            @rootChannel.request 'message:error', response
+            return
+
         return
 
   onShow: ->
-#    @channel.request 'show:events'
-    @channel.request 'show:schedule'
+    @channel.request 'show:events'
     return
 
   onBeforeDestroy: ->

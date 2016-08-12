@@ -7,7 +7,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require '../data/module'
-Edit         = require './edit/module'
+EditView     = require './edit/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -21,12 +21,19 @@ require 'fullcalendar'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
+
+  idAttribute: '_id'
+
+  urlRoot: '/api/schedule'
+
   defaults:
-    id:       ''
-    title:    ''
-    start:    ''
-    end:      ''
-    schedule: []
+    sunday:    []
+    monday:    []
+    tuesday:   []
+    wednesday: []
+    thursday:  []
+    friday:    []
+    saturday:  []
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -40,16 +47,26 @@ class Collection extends Backbone.Collection
 
     result = []
 
-    _.each options.sConfs.models, (model) ->
-      for state, index in model.get('schedule')
+    days = [
+      'sunday'
+      'monday'
+      'tuesday'
+      'wednesday'
+      'thursday'
+      'friday'
+      'saturday'
+    ]
 
-        if state
+    schedule = _.pick options.schedule.attributes, days
+
+    _.each options.sConfs.models, (model) ->
+      for day, index in days
+        if model.get('muscle') in schedule[day]
           result.push
             start: new Date moment().startOf('week').add(index, 'days')
             end:   new Date moment().startOf('week').add(index, 'days')
             title: model.get('name')
             color: Data.Colors[model.get('muscle') % Data.Colors.length]
-
       return
 
     return result
@@ -74,9 +91,9 @@ class View extends Marionette.LayoutView
       return
 
     'click #calendar-edit': ->
-      @showChildView 'modal', new Edit.View
-        collection: @collection
-        model:      new Edit.Model()
+      @showChildView 'modal', new EditView
+        model:   @model
+        channel: @channel
       return
 
   constructor: (options) ->
@@ -89,7 +106,7 @@ class View extends Marionette.LayoutView
 
   onShow: ->
     @calendar = @ui.calendar.fullCalendar
-      height: 650
+      height:  650
       events: @calendarEvents
       header:
         left:   ''
@@ -98,9 +115,7 @@ class View extends Marionette.LayoutView
 
     @calendar.fullCalendar('today')
     @calendar.fullCalendar('changeView', 'basicWeek')
-    @showChildView 'modal', new Edit.View
-      collection: @collection
-      model:      new Edit.Model()
+
     return
 
   onBeforeDestroy: ->

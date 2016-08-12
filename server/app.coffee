@@ -36,6 +36,7 @@ db.on 'open', ->
 require('./models/user') mongoose
 require('./models/strength') mongoose
 require('./models/slog') mongoose
+require('./models/schedule') mongoose
 
 #--------------------------------------------------------------
 # Create App

@@ -45,6 +45,7 @@ Home     = require './home/module'
 Strength = require './strength/module'
 Log      = require './log/module'
 SLog     = require './slog/module'
+Schedule = require './schedule/module'
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
@@ -97,6 +98,19 @@ router.delete '/api/slogs/:sid', SLog.delete
 
 # Get all logs.
 router.get '/api/logs', Log.get
+
+#-------------------------------------------------------------------------------
+# Schedule
+#-------------------------------------------------------------------------------
+
+# Post a new schedule record.
+router.get '/api/schedule', Schedule.get
+
+# Post a new schedule record.
+router.post '/api/schedule', Schedule.post
+
+# Edit schedules.
+router.put '/api/schedule/:sid', Schedule.put
 
 #-------------------------------------------------------------------------------
 # Exports
