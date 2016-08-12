@@ -30,7 +30,6 @@ class Model extends Backbone.Model
     muscle: 0
     note:   ''
     body:   false
-    schedule: [false, false, false, false, false, false, false]
 
 #-------------------------------------------------------------------------------
 # View
@@ -47,14 +46,6 @@ class View extends Marionette.LayoutView
     body:   '#strength-modal-body'
     date:   '#strength-modal-date'
     submit: '#strength-modal-submit'
-    btn0:   '#strength-modal-schedule0'
-    btn1:   '#strength-modal-schedule1'
-    btn2:   '#strength-modal-schedule2'
-    btn3:   '#strength-modal-schedule3'
-    btn4:   '#strength-modal-schedule4'
-    btn5:   '#strength-modal-schedule5'
-    btn6:   '#strength-modal-schedule6'
-    btn7:   '#strength-modal-schedule7'
 
   bindings:
 
@@ -98,51 +89,6 @@ class View extends Marionette.LayoutView
       @ui.muscle.multiselect('destroy')
       @ui.date.data('DateTimePicker').destroy()
       return
-
-    'click @ui.btn0': (event) ->
-      @toggleButton($(event.currentTarget), 0)
-      return
-
-    'click @ui.btn1': (event) ->
-      @toggleButton($(event.currentTarget), 1)
-      return
-
-    'click @ui.btn2': (event) ->
-      @toggleButton($(event.currentTarget), 2)
-      return
-
-    'click @ui.btn3': (event) ->
-      @toggleButton($(event.currentTarget), 3)
-      return
-
-    'click @ui.btn4': (event) ->
-      @toggleButton($(event.currentTarget), 4)
-      return
-
-    'click @ui.btn5': (event) ->
-      @toggleButton($(event.currentTarget), 5)
-      return
-
-    'click @ui.btn6': (event) ->
-      @toggleButton($(event.currentTarget), 6)
-      return
-
-    'click @ui.btn7': (event) ->
-      @toggleButton($(event.currentTarget), 7)
-      return
-
-  toggleButton: (buttonUI, btnNumber) ->
-
-    schedule = @model.get('schedule')
-    state = schedule[btnNumber]
-
-    color = if state then '#555555' else 'red'
-    buttonUI.css 'color', color
-
-    schedule[btnNumber] = not state
-    @model.set 'schedule', schedule
-
-    return
 
   constructor: (options) ->
     super
