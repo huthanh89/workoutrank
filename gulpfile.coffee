@@ -438,7 +438,7 @@ gulp.task 'production:variable', ->
 # Perform a production start with pm2
 #-------------------------------------------------------------------------------
 
-gulp.task 'shell:npm:version', shell.task [
+gulp.task 'start', shell.task [
   'pm2 start ./server/app.js && pm2 logs'
 ]
 
