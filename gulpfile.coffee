@@ -35,6 +35,7 @@ uglify     = require 'gulp-uglify'
 
 coffeeLint = require 'gulp-coffeelint'
 lessLint   = require 'gulp-recess'
+w3cjs      = require 'gulp-w3cjs'
 
 # Minify
 
@@ -76,7 +77,7 @@ gulp.task 'minify-css', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'coffeelint', ->
-  gulp.src([
+  return gulp.src([
     './server/**/*.coffee'
     './clientside/**/*.coffee'
   ])
@@ -85,21 +86,28 @@ gulp.task 'coffeelint', ->
       level: 'ignore'
   )
   .pipe(coffeeLint.reporter('coffeelint-stylish'))
-  return
 
 #-------------------------------------------------------------------------------
 # Less Lint
 #-------------------------------------------------------------------------------
 
 gulp.task 'lesslint', ->
-  gulp.src('./clientside/styles/less/application.less')
+  return gulp.src('./clientside/styles/less/application.less')
   .pipe(lessLint
     noIDs:               false
     strictPropertyOrder: false
     noOverqualifying:    false
   )
   .pipe(lessLint.reporter())
-  return
+
+#-------------------------------------------------------------------------------
+# Less Lint
+#-------------------------------------------------------------------------------
+
+gulp.task 'htmllint', ->
+  return gulp.src('static/index.html')
+  .pipe(w3cjs())
+  .pipe(w3cjs.reporter())
 
 #-------------------------------------------------------------------------------
 # Server Coffee to JavaScript
@@ -332,6 +340,7 @@ gulp.task 'watch', ->
     './server/**'
   ], [
     'compile:server:js'
+    'coffeelint'
   ]
 
   gulp.watch [
@@ -339,12 +348,14 @@ gulp.task 'watch', ->
     './clientside/styles/**'
   ], [
     'compile:css'
+    'csslint'
   ]
 
   gulp.watch [
     './clientside/src/**'
   ], [
     'compile:client:js'
+    'coffeelint'
   ]
 
   return
@@ -427,12 +438,17 @@ gulp.task 'production:variable', ->
 # Chained tasks.
 #-------------------------------------------------------------------------------
 
+gulp.task 'lint', [
+  'htmllint'
+  'coffeelint'
+  'lesslint'
+]
+
 gulp.task 'compile:server:js', [
   'coffee:to:js:server'
 ]
 
 gulp.task 'compile:css', [
-  'lesslint'
   'less:to:css'
   'css:concat'
 ]
@@ -459,6 +475,7 @@ gulp.task 'compile:index', (callback) ->
 
 gulp.task 'production', (callback) ->
   runSequence 'production:variable',
+    'lint',
     'compile:css',
     'compile:client:js',
     'minify',
@@ -475,7 +492,7 @@ gulp.task 'production', (callback) ->
 
 gulp.task 'default', (callback) ->
   runSequence 'nodemon',
-    'coffeelint',
+    'lint',
     'compile:client:js',
     'compile:server:js',
     'compile:css',

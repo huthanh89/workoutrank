@@ -285,7 +285,7 @@ class Router extends Marionette.AppRouter
     collection = new Logs.Detail.Collection [],
       _id: exerciseID
 
-     collection.fetch
+    collection.fetch
       success: (collection) =>
         @rootView.content.show new Logs.Detail.View
           collection: collection

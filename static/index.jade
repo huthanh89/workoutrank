@@ -1,19 +1,27 @@
+doctype html
 html
   head
     title WorkoutRank
+    |     
+    meta(charset='UTF-8')
     |     
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
     |     
     link(type='text/css', rel='stylesheet', href='style.css')
     // inject:js
-    script(src='bundle-min.js')
+    script(src='bundle.js')
     // endinject
     script(src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit', async='', defer='')
   body
     #header
+    |     
     #message-container
+    |     
     #index
+    |     
     #content
+    |     
     #footer
       span (c) 2016 WorkoutRank. All rights reserved.
+    |     
     #drawer

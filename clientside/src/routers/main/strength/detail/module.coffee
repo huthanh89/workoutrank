@@ -133,8 +133,8 @@ class View extends Marionette.LayoutView
       model: @model
 
     @showChildView 'table', new Table.View
-        collection: @pageableCollection
-        channel:    @channel
+      collection: @pageableCollection
+      channel:    @channel
 
     @showChildView 'summary', new Summary.View
       model: @summaryModel
