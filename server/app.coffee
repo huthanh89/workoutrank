@@ -104,7 +104,14 @@ app.use '/', routers.indexRouter
 app.use '/', routers.mainRouter
 app.use '/', routers.userRouter
 
-# If next was called in router then an error occured.
+#The 404 Route (ALWAYS Keep this as the last route)
+
+app.get '*', (req, res) ->
+  res.status 404
+  res.render('404.jade')
+  return
+
+# If an error occurred in the app, catch it in the middleware.
 # catch 404 and forward to error handler
 
 app.use (err, req, res, next) ->

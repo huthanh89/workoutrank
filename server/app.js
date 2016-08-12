@@ -86,6 +86,11 @@ app.use('/', routers.mainRouter);
 
 app.use('/', routers.userRouter);
 
+app.get('*', function(req, res) {
+  res.status(404);
+  res.render('404.jade');
+});
+
 app.use(function(err, req, res, next) {
   console.log('ERROR', err);
   console.trace();
