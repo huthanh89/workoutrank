@@ -63,6 +63,7 @@
     "gulp-jade": "*",
     "gulp-inject": "*",
     "gulp-w3cjs": "*",
+    "gulp-html2jade": "*",
     "pm2": "*",
     "read-file": "*",
     "run-sequence": "*",
