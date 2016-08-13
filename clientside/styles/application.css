@@ -210,14 +210,14 @@ Strength
 }
 .strength-filter-btn {
   height: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
-/*-----------------------------------------------------------------------------
-Logs
------------------------------------------------------------------------------*/
-.logs-master-filter-btn {
-  width: 200px;
+.strength-filter-btn i {
+  position: relative;
+  bottom: 5px;
 }
-.log-calendar-td {
+.strength-calendar-td {
   font-weight: bold;
   color: #2B2922;
   background: #ffcc66;
@@ -225,13 +225,19 @@ Logs
   margin-left: auto;
   border: 2px solid orange !important;
 }
-#log-calendar-ui {
+#strength-calendar-ui {
   text-align: center;
 }
-#log-calendar-ui .datepicker {
+#strength-calendar-ui .datepicker {
   display: block;
   margin-right: auto;
   margin-left: auto;
+}
+/*-----------------------------------------------------------------------------
+Logs
+-----------------------------------------------------------------------------*/
+.logs-master-filter-btn {
+  width: 200px;
 }
 /*-----------------------------------------------------------------------------
 Home

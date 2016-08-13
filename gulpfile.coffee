@@ -339,23 +339,23 @@ gulp.task 'watch', ->
   gulp.watch [
     './server/**'
   ], [
-    'compile:server:js'
     'coffeelint'
+    'compile:server:js'
   ]
 
   gulp.watch [
     './clientside/styles/css/**',
     './clientside/styles/**'
   ], [
+    'lesslint'
     'compile:css'
-    'csslint'
   ]
 
   gulp.watch [
     './clientside/src/**'
   ], [
-    'compile:client:js'
     'coffeelint'
+    'compile:client:js'
   ]
 
   return

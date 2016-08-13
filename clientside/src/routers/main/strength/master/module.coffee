@@ -80,9 +80,12 @@ class View extends Marionette.LayoutView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'sLogs'
-    @rootChannel        = Backbone.Radio.channel('root')
-    @channel            = new Backbone.Radio.channel('strengths')
+    @mergeOptions options, [
+      'sLogs'
+      'muscle'
+    ]
+    @rootChannel = Backbone.Radio.channel('root')
+    @channel     = new Backbone.Radio.channel('strengths')
 
     @channel.reply
 
@@ -98,14 +101,21 @@ class View extends Marionette.LayoutView
     @tableCollection = new Table.Collection @collection.models,
       sLogs: @sLogs
 
+    if @muscle?
+      models = @collection.filter (model) =>
+        return parseInt(model.get('muscle'), 10) is parseInt(@muscle, 10)
+      @tableCollection.reset models
+
   onShow: ->
     @showChildView 'filter', new FilterView
       collection:      @collection
       tableCollection: @tableCollection
+      muscle:          @muscle
 
     @showChildView 'table', new Table.View
       collection: @tableCollection
       channel:    @channel
+      muscle:     @muscle
 
     return
 

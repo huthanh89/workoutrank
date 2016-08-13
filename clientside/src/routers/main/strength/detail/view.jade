@@ -23,9 +23,16 @@
                 #strength-date-view
             #strength-table-view
             .panel-footer.clearfix
-                a.pull-right.strength-graph-detail
-                    = ' '
-                    i.fa.fa-lg.fa-expand
+                a.pull-right#strength-schedule-btn
+                    i.fa.fa-fw.fa-calendar-plus-o
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading.clearfix Calendar
+            .panel-body
+                #strength-calendar-view
+            .panel-footer.clearfix
+                a.pull-right#strength-calendar-btn
+                    i.fa.fa-fw.fa-calendar-check-o
     .col-sm-6
         .panel.panel-info
             .panel-heading
@@ -39,6 +46,5 @@
             .panel-body
                 #strength-summary-view
             .panel-footer.clearfix
-                a.pull-right.strength-graph-detail
-                    = ' '
-                    i.fa.fa-lg.fa-expand
+                a.pull-right#strength-graph-btn
+                    i.fa.fa-fw.fa-bar-chart

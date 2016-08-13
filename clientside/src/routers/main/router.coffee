@@ -8,6 +8,7 @@ Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Home       = require './home/module'
 Calendar   = require './calendar/module'
+Schedule   = require './schedule/module'
 Strength   = require './strength/module'
 Logs       = require './logs/module'
 
@@ -35,9 +36,9 @@ class Router extends Marionette.AppRouter
         @home()
         return
 
-      'strengths': =>
+      'strengths': (muscle) =>
         @navigate('strengths', trigger: true)
-        @strengths()
+        @strengths(muscle)
         return
 
       'strength:detail': (exerciseID) =>
@@ -48,6 +49,11 @@ class Router extends Marionette.AppRouter
       'calendar': =>
         @navigate('calendar', trigger: true)
         @calendar()
+        return
+
+      'schedule': =>
+        @navigate('schedule', trigger: true)
+        @schedule()
         return
 
       'logs': =>
@@ -76,6 +82,7 @@ class Router extends Marionette.AppRouter
     'strength/:sid/': 'strengthDetail'
     'summary':        'summary'
     'calendar':       'calendar'
+    'schedule':       'schedule'
     'logs':           'logs'
     'log/:lid/':      'logDetail'
     'multiplayer':    'multiplayer'
@@ -98,7 +105,7 @@ class Router extends Marionette.AppRouter
         return
     return
 
-  strengths: ->
+  strengths: (muscle) ->
 
     @navChannel.request('nav:main')
 
@@ -132,6 +139,7 @@ class Router extends Marionette.AppRouter
       @rootView.content.show new View
         collection: sConfs
         sLogs:      sLogs
+        muscle:     muscle
 
       return
 
@@ -208,6 +216,46 @@ class Router extends Marionette.AppRouter
       @rootView.content.show new Calendar.View
         sLogs:  sLogs
         sConfs: sConfs
+
+      return
+
+  schedule: ->
+
+    @navChannel.request('nav:main')
+    async.waterfall [
+
+      (callback) ->
+        sConfs = new Strength.Master.Collection()
+        sConfs.fetch
+          success: (sConfs) -> callback null, sConfs
+          error: (model, error) -> callback error
+
+        return
+
+      (sConfs, callback) ->
+        sLogs  = new Logs.Master.Collection()
+        sLogs.fetch
+          success: (sLogs) -> callback null, sConfs, sLogs
+          error: (collection, error) -> callback error
+        return
+
+      (sConfs, sLogs, callback) ->
+        model = new Schedule.Model()
+        model.fetch
+          success: (model) ->
+            return callback null, sConfs, sLogs, model
+          error: (model, error) -> callback error
+        return
+
+    ], (error, sConfs, sLogs, model) =>
+
+      if error
+        @rootChannel.request 'message:error', error
+
+      @rootView.content.show new Schedule.View
+        sLogs:  sLogs
+        sConfs: sConfs
+        model:  model
 
       return
 

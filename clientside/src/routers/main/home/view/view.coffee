@@ -32,6 +32,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('calendar')
       return
 
+    'click #home-schedule': ->
+      @rootChannel.request('schedule')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')

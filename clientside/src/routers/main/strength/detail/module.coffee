@@ -12,6 +12,7 @@ Edit         = require './edit/module'
 DateView     = require './date/view'
 Table        = require './table/module'
 Summary      = require './summary/module'
+CalendarView = require './calendar/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -49,11 +50,11 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    modal:   '#strength-modal-view'
-    date:    '#strength-date-view'
-    table:   '#strength-table-view'
-    summary: '#strength-summary-view'
-    chart:   '#strength-chart-view'
+    modal:    '#strength-modal-view'
+    date:     '#strength-date-view'
+    table:    '#strength-table-view'
+    summary:  '#strength-summary-view'
+    calendar: '#strength-calendar-view'
 
   bindings:
     '#strength-title': 'name'
@@ -78,8 +79,16 @@ class View extends Marionette.LayoutView
         summary: @summaryModel
       return
 
-    'click .strength-graph-detail': ->
+    'click #strength-graph-btn': ->
       @rootChannel.request 'log:detail', @model.get('exercise')
+      return
+
+    'click #strength-calendar-btn': ->
+      @rootChannel.request 'calendar'
+      return
+
+    'click #strength-schedule-btn': ->
+      @rootChannel.request 'schedule'
       return
 
   collectionEvents:
@@ -137,6 +146,9 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
       collection: @pageableCollection
       channel:    @channel
+
+    @showChildView 'calendar', new CalendarView
+      collection: @collection
 
     @showChildView 'summary', new Summary.View
       model: @summaryModel

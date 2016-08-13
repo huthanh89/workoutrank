@@ -19,8 +19,13 @@ class View extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'tableCollection'
+    @mergeOptions options, [
+      'tableCollection'
+      'muscle'
+    ]
+
     @muscles = []
+    @muscles.push(@muscle) if @muscle?
 
   onRender: ->
 
@@ -30,7 +35,7 @@ class View extends Marionette.ItemView
       buttonClass: 'btn btn-default strength-filter-btn'
       buttonWidth:  35
       templates:
-        button: '<span class="multiselect dropdown-toggle " data-toggle="dropdown"><i class="fa fa-lg fa-caret-down"></i></i></span>'
+        button: '<span class="multiselect dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-caret-down"></i></span>'
 
       # Filter pageable collection on change.
 
@@ -38,6 +43,7 @@ class View extends Marionette.ItemView
         @muscles = @ui.muscle.val() or []
         @filterCollection()
     .multiselect 'dataprovider', Data.Muscles
+    .multiselect 'select', @muscles
 
     return
 

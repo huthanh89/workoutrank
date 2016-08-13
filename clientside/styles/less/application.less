@@ -255,17 +255,15 @@ Strength
 
 .strength-filter-btn{
   height: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  i{
+    position: relative;
+    bottom: 5px;
+  }
 }
 
-/*-----------------------------------------------------------------------------
-Logs
------------------------------------------------------------------------------*/
-
-.logs-master-filter-btn{
-  width: 200px;
-}
-
-.log-calendar-td{
+.strength-calendar-td{
   font-weight:  bold;
   color:        #2B2922;
   background:   #ffcc66;
@@ -274,13 +272,21 @@ Logs
   border:       2px solid orange !important;
 }
 
-#log-calendar-ui{
+#strength-calendar-ui{
   text-align: center;
   .datepicker{
     display:      block;
     margin-right: auto;
     margin-left:  auto;
   }
+}
+
+/*-----------------------------------------------------------------------------
+Logs
+-----------------------------------------------------------------------------*/
+
+.logs-master-filter-btn{
+  width: 200px;
 }
 
 /*-----------------------------------------------------------------------------

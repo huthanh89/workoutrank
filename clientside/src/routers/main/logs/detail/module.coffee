@@ -6,7 +6,6 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 GraphView    = require './graph/view'
-CalendarView = require './calendar/view'
 Table        = require './table/module'
 viewTemplate = require './view.jade'
 
@@ -84,9 +83,8 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    graph:    '#log-graph-view'
-    table:    '#log-table-view'
-    calendar: '#log-calendar-view'
+    graph: '#log-graph-view'
+    table: '#log-table-view'
 
   events:
     'click #graph-home': ->
@@ -121,9 +119,6 @@ class View extends Marionette.LayoutView
       chartModel: @model
 
     @showChildView 'graph', new GraphView
-      model: @model
-
-    @showChildView 'calendar', new CalendarView
       model: @model
 
     return

@@ -7,7 +7,6 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Event        = require './event/module'
-Schedule     = require './schedule/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -24,6 +23,10 @@ class View extends Marionette.LayoutView
   events:
     'click #calendar-home': ->
       @rootChannel.request 'home'
+      return
+
+    'click .calendar-table-edit': ->
+      @rootChannel.request 'strengths'
       return
 
   constructor: (options) ->
@@ -44,33 +47,6 @@ class View extends Marionette.LayoutView
           collection:    @collection
           channel:       @channel
           calendarEvents: events
-        return
-
-      'show:schedule': =>
-
-        sheduleModel = new Schedule.Model()
-        sheduleModel.fetch
-          success: (model) =>
-
-            collection = new Schedule.Collection [],
-              sLogs:   @sLogs
-              sConfs:  @sConfs
-              schedule: model
-              parse:    true
-
-            events = collection.toJSON()
-            events = _.map events, (event) ->
-              return _.assign event, allDay: true
-
-            @showChildView 'calendar', new Schedule.View
-              channel:       @channel
-              model:          model
-              calendarEvents: events
-            return
-          error: (model, response) =>
-            @rootChannel.request 'message:error', response
-            return
-
         return
 
   onShow: ->
