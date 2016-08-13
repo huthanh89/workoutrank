@@ -28,16 +28,6 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
     @channel = Backbone.Radio.channel('channel')
 
-    @channel.reply
-
-      'show:spinner': =>
-        @ui.spinner.removeClass 'hide'
-        return
-
-      'hide:spinner': =>
-        @ui.spinner.addClass 'hide'
-        return
-
   onShow: ->
 
     @showChildView 'signup', new Signup.View

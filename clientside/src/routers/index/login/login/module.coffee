@@ -43,14 +43,14 @@ class View extends Marionette.ItemView
   events:
     'submit': (event) ->
       event.preventDefault()
-      @channel.request 'show:spinner'
+      @rootChannel.request 'spin:page:loader', true
       @model.save null,
         success: (model) =>
-          @channel.request 'hide:spinner'
+          @rootChannel.request 'spin:page:loader', false
+          @rootChannel.request 'show:'
           @rootChannel.request('home')
           return
         error: (model, response) =>
-          @channel.request 'hide:spinner'
           @rootChannel.request 'message:error', response
           return
 

@@ -55,7 +55,7 @@ class View extends Marionette.ItemView
 
     'submit': (event) ->
       event.preventDefault()
-      @channel.request 'show:spinner'
+      @rootChannel.request 'spin:page:loader', true
       @model.set 'birthday', @ui.birthday.data('DateTimePicker').date()
 
       captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
@@ -63,12 +63,11 @@ class View extends Marionette.ItemView
 
       @model.save {},
         success: (model) =>
-          @channel.request 'hide:spinner'
+          @rootChannel.request 'spin:page:loader', false
           @rootChannel.request('home')
           return
         error: (model, response) =>
           window.grecaptcha.reset()
-          @channel.request 'hide:spinner'
           @rootChannel.request 'message:error', response
           return
 
