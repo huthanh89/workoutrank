@@ -36,11 +36,11 @@ seriesData = (model, type, chart) ->
       data:  model.get('weightData')
       tooltip:
         valueSuffix: ' lb'
-      color:     '#e36e4b'
-      lineColor: '#995d4a'
+      color:     '#00ffa4'
+      lineColor: '#00B272'
       marker:
         enabled:    true
-        fillColor: '#995d4a'
+        fillColor: '#00B272'
         radius:     6
 
 #-------------------------------------------------------------------------------

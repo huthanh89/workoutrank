@@ -53,14 +53,14 @@ seriesData = (model, type) ->
     return _.assign result,
       name:      'Weights'
       data:       model.get('weightData')
-      color:     '#e36e4b'
-      lineColor: '#ca816b'
+      color:     '#00ffa4'
+      lineColor: '#00B272'
       yAxis:      1
       tooltip:
         valueSuffix: ' lb'
       marker:
         enabled:    true
-        fillColor: '#ca816b'
+        fillColor: '#00B272'
         radius:     6
 
 #-------------------------------------------------------------------------------
