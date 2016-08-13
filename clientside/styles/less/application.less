@@ -40,6 +40,7 @@ Content
     margin-right: 1%;
   }
 }
+
 /*-----------------------------------------------------------------------------
 Footer
 -----------------------------------------------------------------------------*/
@@ -52,6 +53,25 @@ Footer
   border-top: solid 2px lightgray;
   overflow: hidden;
 }
+
+#loader-page-spinner{
+  position: fixed;
+  width:    100%;
+  bottom:   -20%;
+  height: 100%;
+  z-index: 99999!important;
+  background: transparent;
+  .sk-fading-circle{
+    width: 100px;
+    height: 100px;
+  }
+  .sk-circle {
+    &:before {
+      background-color: RGB(140,180,239);
+    }
+  }
+}
+
 
 /*-----------------------------------------------------------------------------
 Index Page

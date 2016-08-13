@@ -92,11 +92,11 @@ class Router extends Marionette.AppRouter
 
   home: ->
     @navChannel.request('nav:main')
-
+    @rootChannel.request 'spin:page:loader', true
     model = new Home.Model()
-
     model.fetch
       success: (model) =>
+        @rootChannel.request 'spin:page:loader', false
         @rootView.content.show new Home.View
           model: model
         return
@@ -108,7 +108,7 @@ class Router extends Marionette.AppRouter
   strengths: (muscle) ->
 
     @navChannel.request('nav:main')
-
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -131,6 +131,7 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs) =>
 
+      @rootChannel.request 'spin:page:loader', false
       if error
         @rootChannel.request 'message:error', error
 
@@ -146,7 +147,7 @@ class Router extends Marionette.AppRouter
   strengthDetail: (strengthID) ->
 
     @navChannel.request('nav:main')
-
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -173,6 +174,8 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConf, sLogs) =>
 
+      @rootChannel.request 'spin:page:loader', false
+
       if error
         @rootChannel.request 'message:error', error
 
@@ -189,6 +192,7 @@ class Router extends Marionette.AppRouter
   calendar: ->
 
     @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -210,6 +214,8 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs) =>
 
+      @rootChannel.request 'spin:page:loader', false
+
       if error
         @rootChannel.request 'message:error', error
 
@@ -222,6 +228,7 @@ class Router extends Marionette.AppRouter
   schedule: ->
 
     @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -249,6 +256,8 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs, model) =>
 
+      @rootChannel.request 'spin:page:loader', false
+
       if error
         @rootChannel.request 'message:error', error
 
@@ -262,6 +271,7 @@ class Router extends Marionette.AppRouter
   logs: ->
 
     @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -283,6 +293,8 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs) =>
 
+      @rootChannel.request 'spin:page:loader', false
+
       if error
         @rootChannel.request 'message:error', error
 
@@ -297,6 +309,7 @@ class Router extends Marionette.AppRouter
   logDetail: (exerciseID) ->
 
     @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -316,6 +329,8 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs) =>
 
+      @rootChannel.request 'spin:page:loader', false
+
       if error
         @rootChannel.request 'message:error', error
 
@@ -326,24 +341,6 @@ class Router extends Marionette.AppRouter
         sConf:      sConfs.get(exerciseID)
 
       return
-
-  logDetail2: (exerciseID) ->
-    @navChannel.request('nav:main')
-
-    collection = new Logs.Detail.Collection [],
-      _id: exerciseID
-
-    collection.fetch
-      success: (collection) =>
-        @rootView.content.show new Logs.Detail.View
-          collection: collection
-          model:      new Logs.Detail.Model()
-        return
-      error: (model, response) =>
-        @rootChannel.request 'message:error', response
-        return
-
-    return
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -8,7 +8,7 @@ Toastr       = require 'toastr'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
-Message      = require './message/module'
+Loader       = require './loader/module'
 IndexRouter  = require './routers/index/router'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
@@ -34,7 +34,7 @@ class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
     header:  '#header'
-    message: '#message-container'
+    loader:  '#loader'
     content: '#content'
     index:   '#index'
     drawer:  '#drawer'
@@ -74,14 +74,9 @@ class Application extends Marionette.Application
 
       'rootview': -> rootView
 
-      'message': (panelType, panelText) ->
-
-        rootView.showChildView 'message', new Message.Info
-          panelType: panelType
-          panelText: panelText
-        return
-
       'message:error': (response) ->
+
+        rootChannel.request 'spin:page:loader', false
 
         Toastr.options =
           closeButton:       true
@@ -102,6 +97,11 @@ class Application extends Marionette.Application
 
         Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
+      'spin:page:loader': (enable) ->
+        if enable
+          rootView.showChildView 'loader', new Loader.View()
+        else
+          rootView.getRegion('loader').empty()
         return
 
     navChannel.reply
