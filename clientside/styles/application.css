@@ -233,6 +233,11 @@ Strength
   margin-right: auto;
   margin-left: auto;
 }
+#strength-date-datepicker {
+  z-index: 1;
+  text-align: center;
+  font-size: 18px;
+}
 /*-----------------------------------------------------------------------------
 Logs
 -----------------------------------------------------------------------------*/
