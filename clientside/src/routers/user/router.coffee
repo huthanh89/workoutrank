@@ -24,9 +24,8 @@ class Router extends Marionette.AppRouter
     # When changing url, set trigger true to trigger onRoute() call.
 
     @rootChannel.reply
-
       'profile': =>
-        @navigate('profile', trigger: true)
+        @navigate('profile')
         @profile()
         return
 

@@ -32,12 +32,12 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'home': =>
-        @navigate('home', trigger: true)
+        @navigate('home')
         @home()
         return
 
       'strengths': (muscle) =>
-        @navigate('strengths', trigger: true)
+        @navigate('strengths')
         @strengths(muscle)
         return
 
@@ -47,28 +47,23 @@ class Router extends Marionette.AppRouter
         return
 
       'calendar': =>
-        @navigate('calendar', trigger: true)
+        @navigate('calendar')
         @calendar()
         return
 
       'schedule': =>
-        @navigate('schedule', trigger: true)
+        @navigate('schedule')
         @schedule()
         return
 
       'logs': =>
-        @navigate('logs', trigger: true)
+        @navigate('logs')
         @logs()
         return
 
       'log:detail': (exerciseID) =>
-        @navigate("log/#{exerciseID}", trigger: true)
+        @navigate("log/#{exerciseID}")
         @logDetail(exerciseID)
-        return
-
-      'multiplayer': =>
-        @navigate('multiplayer', trigger: true)
-        @multiplayer()
         return
 
   # Routes used for backbone urls.
@@ -85,7 +80,6 @@ class Router extends Marionette.AppRouter
     'schedule':       'schedule'
     'logs':           'logs'
     'log/:lid/':      'logDetail'
-    'multiplayer':    'multiplayer'
 
   # Api for Route handling.
   # Update Navbar and show view.

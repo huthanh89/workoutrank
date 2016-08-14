@@ -32,12 +32,12 @@ class Router extends Marionette.AppRouter
         return
 
       'signup': =>
-        @navigate('signup', trigger: true)
+        @navigate('signup')
         @login()
         return
 
       'login': =>
-        @navigate('login', trigger: true)
+        @navigate('login')
         @login()
         return
 

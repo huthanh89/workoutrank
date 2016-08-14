@@ -107,14 +107,12 @@ class Application extends Marionette.Application
     navChannel.reply
 
       'nav:index': ->
-
         rootView.showChildView 'header', new Nav.Index()
-
         rootView.showChildView 'drawer', new Nav.Drawer()
-
         return
 
       'nav:main': ->
+
         user.fetch
           success: (model) ->
 
