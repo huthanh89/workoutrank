@@ -47,7 +47,16 @@
                                     label.control-label(for='strength-modal-note') Note
                                 .col-xs-12
                                     textarea.form-control#strength-modal-note
-
+                            hr
+                            .form-group
+                                .col-xs-12
+                                    .pull-right
+                                        button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
+                                        = ' '
+                                        button.btn.btn-primary.btn-lg#strength-modal-submit(type="submit")
+                                            i.fa.fa-fw.fa-lg.fa-save
+                                            = ' '
+                                            span save
                         // Remove
 
                         #strength-modal-remove.tab-pane(role='tabpanel')
@@ -58,13 +67,3 @@
                                         i.fa.fa-fw.fa-lg.fa-exclamation-circle
                                         = ' '
                                         span Delete
-                    hr
-                    .form-group
-                        .col-xs-12
-                            .pull-right
-                                button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
-                                = ' '
-                                button.btn.btn-primary.btn-lg#strength-modal-submit(type="submit")
-                                    i.fa.fa-fw.fa-lg.fa-save
-                                    = ' '
-                                    span save
