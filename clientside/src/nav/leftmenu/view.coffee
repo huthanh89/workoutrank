@@ -40,13 +40,18 @@ class View extends Marionette.ItemView
       @api.close()
       return
 
-    'click #drawer-graphs': ->
-      @channel.request 'logs'
+    'click #drawer-schedule': ->
+      @channel.request 'schedule'
       @api.close()
       return
 
     'click #drawer-calendar': ->
       @channel.request 'calendar'
+      @api.close()
+      return
+
+    'click #drawer-graphs': ->
+      @channel.request 'logs'
       @api.close()
       return
 

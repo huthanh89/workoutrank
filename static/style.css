@@ -20018,6 +20018,7 @@ html {
 }
 body {
   background: #F8F8FF;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   height: 100%;
