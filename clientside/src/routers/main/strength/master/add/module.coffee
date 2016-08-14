@@ -69,6 +69,7 @@ class View extends Marionette.LayoutView
 
     'submit': (event) ->
       event.preventDefault()
+      @rootChannel.request 'spin:page:loader', true
 
       @model.set
         date: @ui.date.data('DateTimePicker').date().format()
@@ -77,6 +78,7 @@ class View extends Marionette.LayoutView
         wait: true
         at:   0
         success:  =>
+          @rootChannel.request 'spin:page:loader', false
           @ui.dialog.modal('hide')
           return
         error: (model, response) =>

@@ -76,12 +76,13 @@ class View extends Marionette.ItemView
 
     'submit': (event) ->
       event.preventDefault()
-
+      @rootChannel.request 'spin:page:loader', true
       @model.set
         date: @ui.date.data('DateTimePicker').date().format()
 
       @model.save {},
         success: (model) =>
+          @rootChannel.request 'spin:page:loader', false
           @collection.add model.attributes
           @ui.dialog.modal('hide')
           return
