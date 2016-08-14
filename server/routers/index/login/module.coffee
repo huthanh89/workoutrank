@@ -48,8 +48,14 @@ exports.post = (req, res) ->
 
     (callback) ->
 
+      user = sanitize(req.body.user)
+
       User.findOne
-        username: sanitize req.body.user
+        $or: [
+          username: user
+        , email: user
+        ]
+
       .exec (err, user) ->
         return callback err if err
 

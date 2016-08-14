@@ -12,7 +12,7 @@ Loader       = require './loader/module'
 IndexRouter  = require './routers/index/router'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
-
+asdf = 'moment'
 #-------------------------------------------------------------------------------
 # User
 #-------------------------------------------------------------------------------

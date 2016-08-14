@@ -82,6 +82,8 @@ gulp.task 'coffeelint', ->
     './clientside/**/*.coffee'
   ])
   .pipe(coffeeLint null,
+    'unused_variables':
+      level: 'warn'
     'max_line_length':
       level: 'ignore'
   )
@@ -368,11 +370,13 @@ gulp.task 'report:size', (callback) ->
 
   gulp.src('./static/bundle-min.js')
   .pipe size
+    showFiles: true
     title: '----- bundle(minified).js -----'
   .pipe(gulp.dest('static'))
 
   gulp.src('./static/style.css')
   .pipe size
+    showFiles: true
     title: '----- style.css -----'
   .pipe(gulp.dest('static'))
 

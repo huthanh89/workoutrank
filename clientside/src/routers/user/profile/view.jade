@@ -1,25 +1,25 @@
 .row
     .col-sm-12
-        .panel.panel-primary
+        .panel.panel-info
             .panel-heading
                 h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-folder-open
+                    i.fa.fa-fw.fa-lg.fa-user
                     = ' '
-                    | Profile
+                    | Account
             .panel-body
                 form.form-horizontal
                     .form-group
                         label.col-sm-2.control-label(for='profile-username') Username
                         .col-sm-10
-                            input.form-control#profile-username(input='text')
+                            input.form-control#profile-username(type="text" required)
                     .form-group
                         label.col-sm-2.control-label(for='profile-firstname') First Name
                         .col-sm-10
-                            input.form-control#profile-firstname(input='text')
+                            input.form-control#profile-firstname(type="text" required)
                     .form-group
                         label.col-sm-2.control-label(for='profile-lastname') Last Name
                         .col-sm-10
-                            input.form-control#profile-lastname(input='text')
+                            input.form-control#profile-lastname(type="text" required)
                     .form-group
                         label.col-sm-2.control-label(for='index-signup-gender') Gender
                         .col-sm-10
@@ -34,11 +34,11 @@
                     .form-group
                         label.col-sm-2.control-label(for='profile-email') Email
                         .col-sm-10
-                            input.form-control#profile-email(input='text')
+                            input.form-control#profile-email(type="email" required)
                     .form-group
                         label.col-sm-2.control-label(for='profile-password') Password
                         .col-sm-10
-                            input.form-control#profile-password(input='text')
+                            input.form-control#profile-password(type="password")
                     .form-group
                         .col-sm-12
                             button.btn.btn-primary.pull-right
