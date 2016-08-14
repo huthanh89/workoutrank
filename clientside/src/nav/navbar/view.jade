@@ -7,12 +7,6 @@
                     = ' '
                 img(src='./images/logo.png')#navbar-logo
                 img(src='./images/banner.png')#navbar-banner
-                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#nav-collapse-menu")
-                    span.sr-only Toggle navigation
-                    span.icon-bar
-                    span.icon-bar
-                    span.icon-bar
-
             .collapse.navbar-collapse
                 ul.nav.navbar-nav.navbar-right
                     li.nav-divider-vertical.hidden-xs
@@ -27,14 +21,9 @@
                         ul.dropdown-menu(role="menu")
                             li.nav-profile
                                 a
-                                    i.fa.fa-fw.fa-lg.fa-folder-open
+                                    i.fa.fa-fw.fa-lg.fa-user
                                     = ' '
-                                    | Profile
-                            li.nav-setting
-                                a
-                                    i.fa.fa-fw.fa-lg.fa-cog
-                                    = ' '
-                                    | Settings
+                                    | Account
                             li.divider
                             li.nav-about
                                 a
@@ -53,17 +42,3 @@
                                     = ' '
                                     | Log Out
 
-            #nav-collapse-menu.collapse.navbar-collapse
-                ul.visible-xs.list-group
-                    li.list-group-item
-                        i.fa.fa-fw.fa-lg.fa-user
-                        = ' '
-                        | My Profile
-                    li.list-group-item.nav-setting
-                        i.fa.fa-fw.fa-lg.fa-cog
-                        = ' '
-                        | Settings
-                    li.list-group-item.nav-logout
-                        i.fa.fa-fw.fa-lg.fa-sign-out
-                        = ' '
-                        | Sign Out

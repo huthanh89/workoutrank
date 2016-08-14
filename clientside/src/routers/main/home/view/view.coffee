@@ -36,6 +36,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('schedule')
       return
 
+    'click #home-logout': ->
+      @rootChannel.request('logout')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')

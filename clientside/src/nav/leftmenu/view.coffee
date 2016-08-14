@@ -55,6 +55,11 @@ class View extends Marionette.ItemView
       @api.close()
       return
 
+    'click #drawer-logout': ->
+      @channel.request 'logout'
+      @api.close()
+      return
+
   constructor: ->
     super
 
