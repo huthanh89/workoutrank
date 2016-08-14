@@ -12,6 +12,7 @@ mongoose = require 'mongoose'
 
 Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
+Schedule = mongoose.model('schedule')
 
 #-------------------------------------------------------------------------------
 # GET
@@ -21,30 +22,48 @@ SLog     = mongoose.model('slog')
 
 module.get = (req, res, next) ->
 
+  result =
+    sConfs:    0
+    sLogs:     0
+    schedules: 0
+
   async.waterfall [
 
     (callback) ->
-
       Strength.count
         user: req.session.user._id
       .exec (err, count) ->
         return callback err.message if err
-        return callback null, count
+        result.sConfs = count
+        return callback null
       return
 
-    (strengthCount, callback) ->
-
-      # Get logs
-
+    (callback) ->
       SLog.count
         user: req.session.user._id
       .exec (err, count) ->
         return callback err.message if err
-        return callback null, strengthCount, count
-
+        result.sLogs = count
+        return callback null
       return
 
-  ], (err, exerciseCount, logCount) ->
+    (callback) ->
+      Schedule.findOne
+        user: req.session.user._id
+      .exec (err, schedule) ->
+        return callback err.message if err
+        if schedule?
+          result.schedules += schedule.sunday.length
+          result.schedules += schedule.monday.length
+          result.schedules += schedule.tuesday.length
+          result.schedules += schedule.wednesday.length
+          result.schedules += schedule.thursday.length
+          result.schedules += schedule.friday.length
+          result.schedules += schedule.saturday.length
+        return callback null
+      return
+
+  ], (err) ->
 
     # If Error occured, return error status and text.
 
@@ -55,9 +74,7 @@ module.get = (req, res, next) ->
 
     return res
     .status 200
-    .json
-      exerciseCount: exerciseCount
-      logCount:      logCount
+    .json result
 
 #-------------------------------------------------------------------------------
 # Exports

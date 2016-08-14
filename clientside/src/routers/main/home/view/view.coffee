@@ -15,8 +15,11 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   bindings:
-    '#home-log-count':      'logCount'
-    '#home-exercise-count': 'exerciseCount'
+    '#home-exercise-count': 'sLogs'
+
+    #'#home-schedule-count': 'schedules'
+    #'#home-calendar-count': 'sLogs'
+    #'#home-log-count':      'sConfs'
 
   events:
 
