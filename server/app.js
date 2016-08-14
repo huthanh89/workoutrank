@@ -61,10 +61,11 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'nerf this',
   resave: false,
   saveUninitialized: true,
   cookie: {},
+  unset: 'destroy',
   store: new MongoStore({
     mongooseConnection: mongoose.connection
   })

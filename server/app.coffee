@@ -83,10 +83,11 @@ app.use cookieParser()
 
 # Initialize session.
 app.use session(
-  secret: 'keyboard cat'
+  secret: 'nerf this'
   resave: false
   saveUninitialized: true
   cookie: {}
+  unset: 'destroy'
   store: new MongoStore(mongooseConnection: mongoose.connection))
 
 # Location of static files starting from the root or app.js.
@@ -105,7 +106,7 @@ app.use '/', routers.indexRouter
 app.use '/', routers.mainRouter
 app.use '/', routers.userRouter
 
-#The 404 Route (ALWAYS Keep this as the last route)
+#The Page not Found 404 Route (ALWAYS Keep this as the last route)
 
 app.get '*', (req, res) ->
   res.status 404

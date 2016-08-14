@@ -2,7 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-moment    = require 'moment'
+_         = require 'lodash'
 async     = require 'async'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
@@ -67,9 +67,6 @@ exports.post = (req, res) ->
       algorithm = user.algorithm
 
       crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
-
-
-        console.log user.key, key.toString('hex')
         if err
           return callback 'Could not look up username / password.'
         if user.key is key.toString('hex')
@@ -86,7 +83,11 @@ exports.post = (req, res) ->
         # If login was successful then
         # Save user data to their session.
 
-        req.session.user = user
+        req.session.user = _.pick user, [
+          'lastlogin'
+          'email'
+          'username'
+        ]
 
         # WIP Setting up a remember me.
 

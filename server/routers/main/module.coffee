@@ -10,12 +10,13 @@ router  = express.Router()
 #-------------------------------------------------------------------------------
 
 # If user does not have a session, then redirect them to the login page.
+# Put up an unauthorized page.
 
 router.use  (req, res, next) ->
   if req.session.user
     next()
   else
-    res.redirect('/login')
+    res.render('401.jade')
   return
 
 #-------------------------------------------------------------------------------
