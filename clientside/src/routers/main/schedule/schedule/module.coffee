@@ -40,8 +40,12 @@ class View extends Marionette.LayoutView
         channel: @channel
       return
 
-    'click .calendar-table-edit': ->
+    'click #schedule-table-edit': ->
       @rootChannel.request 'strengths'
+      return
+
+    'click #schedule-calendar-btn': ->
+      @rootChannel.request 'calendar'
       return
 
   constructor: (options) ->
