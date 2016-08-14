@@ -117,6 +117,9 @@ class View extends Marionette.LayoutView
       channel:    @channel
       muscle:     @muscle
 
+    if @collection.length is 0
+      @channel.request 'add'
+
     return
 
   addWorkout: ->

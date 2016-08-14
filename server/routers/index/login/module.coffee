@@ -87,6 +87,7 @@ exports.post = (req, res) ->
           'lastlogin'
           'email'
           'username'
+          '_id'
         ]
 
         # WIP Setting up a remember me.
