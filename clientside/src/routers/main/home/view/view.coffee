@@ -43,6 +43,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('logout')
       return
 
+    'click #home-account': ->
+      @rootChannel.request('account')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')

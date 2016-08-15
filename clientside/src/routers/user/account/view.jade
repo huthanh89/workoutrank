@@ -1,0 +1,48 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#account-home
+                a Home
+            li.active
+                span Account
+.row
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-user
+                    = ' '
+                    | Account
+            .panel-body
+                form.form-horizontal
+                    .form-group
+                        label.col-sm-2.control-label(for='account-firstname') First Name
+                        .col-sm-10
+                            input.form-control#account-firstname(type='text', placeholder='First Name', name='firstname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                    .form-group
+                        label.col-sm-2.control-label(for='account-lastname') Last Name
+                        .col-sm-10
+                            input.form-control#account-lastname(type='text', placeholder='Last Name', name='lastname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                    .form-group
+                        label.col-sm-2.control-label(for='index-signup-gender') Gender
+                        .col-sm-10
+                            .radio.radio-inline#index-signup-gender
+                                label
+                                    input(type='radio', name='optradio')
+                                    | Female
+                            .radio.radio-inline
+                                label
+                                    input(type='radio', name='optradio')
+                                    | Male
+                    .form-group
+                        .col-sm-12
+                            button.btn.btn-primary.pull-right
+                                i.fa.fa-cloud-upload
+                                = ' '
+                                | Update
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading
+                h3.panel-title Summary
+            .panel-body
+                #account-summary

@@ -14,21 +14,23 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/profile', index
+router.get '/account', index
 
 #-------------------------------------------------------------------------------
 # Import Routes
 #-------------------------------------------------------------------------------
 
 User    = require './user/module'
-Profile = require './profile/module'
+Account = require './account/module'
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
 router.get '/api/user', User.get
-router.get '/api/profile', Profile.get
+
+router.get '/api/account', Account.get
+router.put '/api/account/:id', Account.put
 
 #-------------------------------------------------------------------------------
 # Exports
