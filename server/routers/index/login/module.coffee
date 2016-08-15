@@ -60,7 +60,7 @@ exports.post = (req, res) ->
         return callback err if err
 
         if user is null
-          return callback 'Username could not be found.'
+          return callback 'Username / Email could not be found.'
 
         return callback null, user
 

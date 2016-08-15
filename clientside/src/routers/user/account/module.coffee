@@ -57,8 +57,6 @@ class View extends Marionette.LayoutView
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request 'show:'
-          @rootChannel.request('home')
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
