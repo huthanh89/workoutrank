@@ -46,6 +46,11 @@ class View extends Marionette.LayoutView
     '#account-password':  'password'
 
   events:
+
+    'click #account-home': ->
+      @rootChannel.request 'home'
+      return
+
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
@@ -64,7 +69,6 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
-    console.log @model
     @stickit()
     return
 
