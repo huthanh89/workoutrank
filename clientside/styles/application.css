@@ -108,7 +108,7 @@ Index landing page
 }
 @media (max-width: 767px) {
   #index-section4 #index-section4-image {
-    padding: 0;
+    padding: 20px 0;
     height: 200px;
   }
 }
@@ -119,7 +119,7 @@ Index landing page
 }
 @media (max-width: 767px) {
   #index-section4 #index-section4-text {
-    padding: 30px;
+    padding: 70px 30px;
     height: 200px;
   }
 }
@@ -138,12 +138,12 @@ Index landing page
 }
 @media (max-width: 767px) {
   #index-section5 #index-section5-image {
-    padding: 0;
+    padding: 0 0 20px 0;
     height: 200px;
   }
 }
 #index-section5 #index-section5-text {
-  padding-top: 160px;
+  padding: 150px 70px;
   font-size: 1.4em;
   color: grey;
 }
