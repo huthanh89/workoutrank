@@ -91,7 +91,8 @@ app.use session(
   store: new MongoStore(mongooseConnection: mongoose.connection))
 
 # Location of static files starting from the root or app.js.
-app.use express.static(path.join(__dirname, '../static'))
+# Cache these staic files for 24 hours in maxAge.
+app.use express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
 app.use '/strength', express.static(path.join(__dirname, '../static'))
 app.use '/strength/:sid', express.static(path.join(__dirname, '../static'))
 app.use '/log', express.static(path.join(__dirname, '../static'))

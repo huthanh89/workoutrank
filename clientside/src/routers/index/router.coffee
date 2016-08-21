@@ -29,7 +29,7 @@ class Router extends Marionette.AppRouter
 
       'index': =>
         @navigate('')
-        @login()
+        @index()
         return
 
       'signup': =>

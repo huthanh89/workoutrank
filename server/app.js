@@ -71,7 +71,9 @@ app.use(session({
   })
 }));
 
-app.use(express["static"](path.join(__dirname, '../static')));
+app.use(express["static"](path.join(__dirname, '../static'), {
+  maxAge: 86400000
+}));
 
 app.use('/strength', express["static"](path.join(__dirname, '../static')));
 

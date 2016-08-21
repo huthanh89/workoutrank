@@ -158,7 +158,7 @@ Index landing page
   position: absolute;
   width: 100%;
   text-align: center;
-  top: 45%;
+  padding-top: 250px;
 }
 #index-btn-group-top button {
   margin: 10px;
@@ -167,8 +167,8 @@ Index landing page
 }
 @media (max-width: 767px) {
   #index-btn-group-top {
-    top: 25%;
     position: relative;
+    padding: 0;
   }
 }
 #index-btn-group-bottom {

@@ -4,7 +4,6 @@
 
 _            = require 'lodash'
 $            = require 'jquery'
-Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
