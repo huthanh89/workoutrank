@@ -1,36 +1,68 @@
-.panel.panel-default
-    .panel-body
-        .row
-            .col-xs-12
-                #myCarousel.carousel.slide(data-ride='carousel')
-                    // Indicators
-                    ol.carousel-indicators
-                        li.active(data-target='#myCarousel', data-slide-to='0')
-                        li(data-target='#myCarousel', data-slide-to='1')
-                        li(data-target='#myCarousel', data-slide-to='2')
-                        li(data-target='#myCarousel', data-slide-to='3')
-                    // Wrapper for slides
-                    .carousel-inner(role='listbox')
-                        .item.active
-                            h1 Simple and easy system
-                            img(src='images/ss5.png')
-                        .item
-                            h1 Quick journal entries
-                            img(src='images/ss6.png')
-                        .item
-                            h1 Interactive graphs
-                            img(src='images/ss3.png')
-                        .item
-                            h1 Calendar lookups
-                            img(src='images/ss4.png')
-                    // Left and right controls
-                    a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
-                        span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
-                        span.sr-only Previous
-                    a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
-                        span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
-                        span.sr-only Next
-        .row
+.row
+    .col-xs-12
+        #index-section1
+            #myCarousel.carousel.slide(data-ride='carousel')
+                // Indicators
+                ol.carousel-indicators
+                    li.active(data-target='#myCarousel', data-slide-to='0')
+                    li(data-target='#myCarousel', data-slide-to='1')
+                    li(data-target='#myCarousel', data-slide-to='2')
+                // Wrapper for slides
+                .carousel-inner(role='listbox')
+                    .item.active
+                        h1 Simple to use journal and calendar
+                        img(src='images/calendar_macbook.png')
+                    .item
+                        h1 Interactive graphs for data comparisons
+                        img(src='images/graphs_blue.png')
+                    .item
+                        h1 Responsive on any screen size
+                        img(src='images/responsive_blue.png')
+                // Left and right controls
+                a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
+                    span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
+                    span.sr-only Previous
+                a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
+                    span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
+                    span.sr-only Next
+
+
+
+.row
+    .index-section2.col-lg-6
+        .col-sm-6
+            p.index-section-text Compare repetions and weights of each workouts with interactive graphs. View data summary of your personal records and statistics.
+        .col-sm-6
+            img(src='images/data_phone.png').index-section-image
+    .index-section2.col-lg-6
+        .col-sm-6
+            img(src='images/entry_phone.png').index-section-image
+        .col-sm-6
+            p.index-section-text We keep track of the last time you worked out. No need remember what you worked out last.
+
+#index-section3
+    .row
+        .col-sm-3
+            i.fa.fa-3x.fa-file-text-o
+            h3 Journals
+            p Track daily sessions quick and easily
+        .col-sm-3
+            i.fa.fa-3x.fa-bar-chart
+            h3 Graphs
+            p Interactive visual charts and data summary for each workout
+        .col-sm-3
+            i.fa.fa-3x.fa-calendar-check-o
+            h3 Calendar
+            p View logged data entries for each month
+        .col-sm-3
+            i.fa.fa-3x.fa-calendar-plus-o
+            h3 Schedule
+            p Daily reminders for which workout to do next
+
+
+
+
+        //.row
             .col-xs-12
                 #index-bnt-group
                     button.btn.btn-lg.btn-success#index-signup-btn(type="submit")
@@ -41,98 +73,3 @@
                         i.fa.fa-fw.fa-lg.fa-lock
                         = ' '
                         | Login
-.panel.panel-default
-    .panel-body
-        .row#index-icons
-            .col-sm-3
-                i.fa.fa-3x.fa-file-text-o(style="color:#b59cac")
-                h3 Journals
-                p Track daily sessions
-            .col-sm-3
-                i.fa.fa-3x.fa-bar-chart(style="color: #b8375c")
-                h3 Graphs
-                p Interactive visual charts
-            .col-sm-3
-                i.fa.fa-3x.fa-calendar(style="color: #2f837a")
-                h3 Calendar
-                p View events
-            .col-sm-3
-                i.fa.fa-3x.fa-cloud(style="color: lightblue")
-                h3 Cloud-Based
-                p Light weight application
-
-br
-br
-br
-br
-br
-br
-br
-br
-br
-br
-
-//.row
-    .col-xs-12
-        .jumbotron
-            div
-                h1 Workout Rank
-                p
-                    | Premium application to track all your workout sessions and use interactive
-                    | graphs to view your daily progression. Simple, quick and easy.
-.row
-    .col-sm-6
-        .panel.panel-success
-            .panel-heading.clearfix
-                .row
-                    .col-sm-12
-                        span.lead Welcome!
-                .row
-                    .col-sm-12
-                        span Track your workout progress.
-            .panel-body
-                .row
-                    .col-sm-12
-                        // Nav tabs
-                        ul.nav.nav-tabs(role='tablist')
-                            li.active#index-tab-signup(role='presentation')
-                                a
-                                    b Sign Up
-                            li#index-tab-login(role='presentation')
-                                a
-                                    b Login
-                        br
-                        // Tab panes
-                        .tab-content
-                            #index-tab-pane-signup.tab-pane.active(role='tabpanel')
-                                .row
-                                    .col-sm-12
-                                        form.form-horizontal#index-signup-form
-                                            .form-group
-                                                label.col-sm-2.control-label(for='index-signup-firstname') First name
-                                                .col-sm-10
-                                                    input.form-control#index-signup-firstname(placeholder='First name', name='firstname', required)
-                                            .form-group
-                                                label.col-sm-2.control-label(for='index-signup-lastname') Last name
-                                                .col-sm-10
-                                                    input.form-control#index-signup-lastname(placeholder='Last Name', name='lastname', required)
-                                            .form-group
-                                                label.col-sm-2.control-label(for='index-signup-email') Email
-                                                .col-sm-10
-                                                    input.form-control#index-signup-email(placeholder='Email', name='email', required)
-                                            .form-group
-                                                label.col-sm-2.control-label(for='index-signup-password') Password
-                                                .col-sm-10
-                                                    input.form-control#index-signup-password(placeholder='Password', name='password', required)
-                                            .form-group
-                                                label.col-sm-2.control-label(for='signup-recaptcha') Captcha
-                                                .col-sm-10
-                                                    i.fa.fa-2x.fa-spinner.fa-spin#signup-spinner
-                                                    #signup-recaptcha
-                                            .form-group
-                                                .col-sm-12
-                                                    button.btn.btn-success.pull-right#index-signup-submit(type="submit")
-                                                        i.fa.fa-user
-                                                        = ' '
-                                                        | Sign Up
-

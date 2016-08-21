@@ -3,22 +3,92 @@ Body
 -----------------------------------------------------------------------------*/
 html {
   height: 100%;
+  width: 100%;
 }
 body {
   background: #F8F8FF;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+/*-----------------------------------------------------------------------------
+#Header
+-----------------------------------------------------------------------------*/
+#header {
+  height: 50px;
+}
+/*-----------------------------------------------------------------------------
+Index landing page
+-----------------------------------------------------------------------------*/
+#index-section1 {
+  max-height: 400px;
+}
+#index-section1 .carousel-inner {
+  max-height: 400px;
+  text-align: center;
+}
+#index-section1 .carousel-inner h1 {
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  font-family: Georgia;
+  color: white;
+}
+#index-section1 .carousel-inner > .item > img {
+  margin: 0 auto;
+}
+@media (max-width: 767px) {
+  #index-section1 {
+    height: 250px;
+  }
+  #index-section1 .carousel {
+    height: 250px;
+  }
+  #index-section1 .carousel-inner h1 {
+    color: transparent;
+  }
+  #index-section1 .carousel-inner .item > img {
+    height: 250px;
+  }
+}
+.index-section2 {
+  background-color: white;
+  min-height: 400px;
+}
+.index-section2 .index-section-image {
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+}
+.index-section2 .index-section-text {
+  font-size: 1.4em;
+  color: grey;
+  padding: 15px 0;
+}
+@media (min-width: 767px) {
+  .index-section2 .index-section-text {
+    padding: 100px 20px;
+  }
+}
+#index-section3 {
+  min-height: 400px;
+  text-align: center;
+  color: grey;
+}
+#index-section3 h3 {
+  color: grey;
+}
+@media (min-width: 767px) {
+  #index-section3 {
+    padding: 130px 20px;
+  }
 }
 /*-----------------------------------------------------------------------------
 Content
 -----------------------------------------------------------------------------*/
-#content {
-  padding-top: 60px;
-  min-height: 400px;
-  height: 95%;
-}
 @media (min-width: 1200px) {
   #content {
     margin-left: 15%;
@@ -41,13 +111,13 @@ Content
 Footer
 -----------------------------------------------------------------------------*/
 #footer {
-  width: 100%;
-  height: 5%;
   text-align: center;
   background: white;
-  border-top: solid 2px lightgray;
-  overflow: hidden;
+  border-top: solid 1px lightgray;
 }
+/*-----------------------------------------------------------------------------
+Page loader
+-----------------------------------------------------------------------------*/
 #loader-page-spinner {
   position: fixed;
   width: 100%;
@@ -66,34 +136,41 @@ Footer
 /*-----------------------------------------------------------------------------
 Index Page
 -----------------------------------------------------------------------------*/
-#index-bnt-group {
-  width: 100%;
-  position: absolute;
-  bottom: 80px;
+/*
+#index-bnt-group{
+  width:      100%;
+  position:   absolute;
+  bottom:     80px;
+  text-align: center;
+  button{
+    width:  100px;
+    margin: 0 10px auto;
+  }
+}
+
+#index-icons{
   text-align: center;
 }
-#index-bnt-group button {
-  width: 100px;
-  margin: 0 10px auto;
-}
-#index-icons {
-  text-align: center;
-}
-#test {
-  border-right: 1px solid darkgrey;
+
+#index-signup-border{
+  border-right:  1px solid darkgrey;
   padding-right: 20px;
 }
-#index-signup-birthday {
+
+#index-signup-birthday{
   background: white !important;
 }
-#index-recaptcha-container {
+
+#index-recaptcha-container{
   width: 300px;
   height: 80px;
 }
-#index-signup-recaptcha {
+
+#index-signup-recaptcha{
   position: absolute;
   z-index: 9999!important;
 }
+*/
 /*-----------------------------------------------------------------------------
 Top Nav Bar
 -----------------------------------------------------------------------------*/

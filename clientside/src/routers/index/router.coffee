@@ -63,7 +63,7 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':       'login'
+    '':       'index'
     'signup': 'login'
     'login':  'login'
 
@@ -72,7 +72,8 @@ class Router extends Marionette.AppRouter
 
   index: ->
     @navChannel.request('nav:index')
-    console.log 'no index page, redirect to signup'
+    @rootView.index.show new Signup.View
+      model: new Signup.Model()
     return
 
   signup: ->
