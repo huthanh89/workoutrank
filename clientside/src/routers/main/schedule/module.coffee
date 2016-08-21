@@ -65,6 +65,7 @@ class Collection extends Backbone.Collection
             muscle: muscle
             allDay: true
             strengthID: model.id
+            completed : false
       return
 
     return result
