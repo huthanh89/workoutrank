@@ -125,7 +125,33 @@ Index landing page
 }
 #index-section5 {
   min-height: 400px;
-  background-color: white;
+  text-align: center;
+  background: white;
+}
+#index-section5 #index-section5-image {
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  padding-top: 80px;
+  padding-left: 80px;
+}
+@media (max-width: 767px) {
+  #index-section5 #index-section5-image {
+    padding: 0;
+    height: 200px;
+  }
+}
+#index-section5 #index-section5-text {
+  padding-top: 160px;
+  font-size: 1.4em;
+  color: grey;
+}
+@media (max-width: 767px) {
+  #index-section5 #index-section5-text {
+    padding: 30px;
+    height: 200px;
+  }
 }
 #index-btn-group {
   z-index: 10;
