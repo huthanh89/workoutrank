@@ -20154,28 +20154,34 @@ Index landing page
     height: 200px;
   }
 }
-#index-btn-group {
+#index-btn-group-top {
   z-index: 10;
   position: absolute;
   width: 100%;
   text-align: center;
   top: 45%;
 }
-#index-btn-group button {
+#index-btn-group-top button {
   margin: 10px;
   border-radius: 10px;
   border: 2px whitesmoke solid;
 }
 @media (max-width: 767px) {
-  #index-btn-group {
+  #index-btn-group-top {
     top: 25%;
     position: relative;
   }
 }
-#login-view-container {
-  float: none;
-  margin: 0 auto;
+#index-btn-group-bottom {
   text-align: center;
+  background: white;
+  height: 180px;
+  padding-top: 60px;
+}
+#index-btn-group-bottom button {
+  margin: 15px;
+  border-radius: 10px;
+  border: 2px whitesmoke solid;
 }
 /*-----------------------------------------------------------------------------
 Content
@@ -20225,44 +20231,32 @@ Page loader
 #loader-page-spinner .sk-circle:before {
   background-color: #8cb4ef;
 }
-/*-----------------------------------------------------------------------------
-Index Page
+/*-----------------------------------------------------------------------------1
+Login
 -----------------------------------------------------------------------------*/
-/*
-#index-bnt-group{
-  width:      100%;
-  position:   absolute;
-  bottom:     80px;
-  text-align: center;
-  button{
-    width:  100px;
-    margin: 0 10px auto;
-  }
-}
-
-#index-icons{
+#login-view-container {
+  float: none;
+  margin: 0 auto;
   text-align: center;
 }
-
-#index-signup-border{
-  border-right:  1px solid darkgrey;
-  padding-right: 20px;
+/*-----------------------------------------------------------------------------
+Signup
+-----------------------------------------------------------------------------*/
+#signup-view-container {
+  float: none;
+  margin: 0 auto;
 }
-
-#index-signup-birthday{
+#signup-birthday {
   background: white !important;
 }
-
-#index-recaptcha-container{
+#signup-recaptcha-container {
   width: 300px;
   height: 80px;
 }
-
-#index-signup-recaptcha{
+#signup-recaptcha {
   position: absolute;
   z-index: 9999!important;
 }
-*/
 /*-----------------------------------------------------------------------------
 Top Nav Bar
 -----------------------------------------------------------------------------*/

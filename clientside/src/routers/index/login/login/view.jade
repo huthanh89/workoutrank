@@ -9,7 +9,7 @@
         form.form-horizontal#login-form(data-toggle="validator")
             .form-group
                 .col-xs-12
-                    label(for='login-user') Email or User Name
+                    label(for='login-user') Email or Username
                 .col-xs-12
                     input.form-control#login-user(type='input', placeholder='Email or Username' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
                     .help-block.with-errors
@@ -26,7 +26,10 @@
             hr
             .form-group
                 .col-xs-12
-                    button.btn.btn-lg.btn-info.btn-block#login-submit
+                    button.btn.btn-lg.btn-primary.btn-block#login-submit
                         i.fa.fa-fw.fa-lg.fa-sign-in
                         = ' '
                         | Log In
+            .form-group
+                .col-xs-12#login-signup
+                    a Signup for an account

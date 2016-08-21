@@ -38,15 +38,15 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    form:     '#index-signup-form'
-    birthday: '#index-signup-birthday'
-    gender:   '#index-signup-gender'
-    spinner:  '#index-signup-spinner'
+    form:     '#signup-form'
+    birthday: '#signup-birthday'
+    gender:   '#signup-gender'
+    spinner:  '#signup-spinner'
 
   bindings:
-    '#index-signup-email':    'email'
-    '#index-signup-username': 'username'
-    '#index-signup-password': 'password'
+    '#signup-email':    'email'
+    '#signup-username': 'username'
+    '#signup-password': 'password'
 
   events:
     'click @ui.signup': ->
@@ -73,6 +73,10 @@ class View extends Marionette.ItemView
 
       return
 
+    'click #signup-login': ->
+      @rootChannel.request('login')
+      return
+
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
@@ -94,7 +98,7 @@ class View extends Marionette.ItemView
 
     @timer = setTimeout =>
       @ui.spinner.addClass 'hide'
-      window.grecaptcha.render 'index-signup-recaptcha',
+      window.grecaptcha.render 'signup-recaptcha',
         'sitekey' : '6LeGeBwTAAAAAFYqtUAHlRQxSOrNqYeugtn7Z527',
         'theme' : 'light'
       return

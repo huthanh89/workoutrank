@@ -23,11 +23,11 @@ class View extends Marionette.ItemView
 
   events:
 
-    'click #index-signup-btn': ->
+    'click .index-signup-btn': ->
       @rootChannel.request('signup')
       return
 
-    'click #index-login-btn': ->
+    'click .index-login-btn': ->
       @rootChannel.request('login')
       return
 

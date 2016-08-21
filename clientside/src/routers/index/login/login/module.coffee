@@ -41,6 +41,10 @@ class View extends Marionette.ItemView
     '#login-password': 'password'
 
   events:
+    'click #login-signup': ->
+      @rootChannel.request('signup')
+      return
+
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
