@@ -33,12 +33,12 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    form:   '#index-login-form'
-    submit: '#index-login-submit'
+    form:   '#login-form'
+    submit: '#login-submit'
 
   bindings:
-    '#index-login-user':     'user'
-    '#index-login-password': 'password'
+    '#login-user':     'user'
+    '#login-password': 'password'
 
   events:
     'submit': (event) ->

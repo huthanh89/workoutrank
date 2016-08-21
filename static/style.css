@@ -20159,7 +20159,7 @@ Index landing page
   position: absolute;
   width: 100%;
   text-align: center;
-  top: 50%;
+  top: 45%;
 }
 #index-btn-group button {
   margin: 10px;
@@ -20172,9 +20172,17 @@ Index landing page
     position: relative;
   }
 }
+#login-view-container {
+  float: none;
+  margin: 0 auto;
+  text-align: center;
+}
 /*-----------------------------------------------------------------------------
 Content
 -----------------------------------------------------------------------------*/
+#content {
+  padding-top: 10px;
+}
 @media (min-width: 1200px) {
   #content {
     margin-left: 15%;
@@ -20198,8 +20206,6 @@ Footer
 -----------------------------------------------------------------------------*/
 #footer {
   text-align: center;
-  background: white;
-  border-top: solid 1px lightgray;
 }
 /*-----------------------------------------------------------------------------
 Page loader

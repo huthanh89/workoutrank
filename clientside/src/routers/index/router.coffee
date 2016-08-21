@@ -2,10 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone   = require 'backbone'
-Marionette = require 'marionette'
-Signup     = require './signup/module'
-LoginView  = require './login/view'
+Backbone    = require 'backbone'
+Marionette  = require 'marionette'
+LandingView = require './landing/view'
+SignupView  = require './signup/view'
+LoginView   = require './login/view'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -33,7 +34,7 @@ class Router extends Marionette.AppRouter
 
       'signup': =>
         @navigate('signup')
-        @login()
+        @signup()
         return
 
       'login': =>
@@ -64,7 +65,7 @@ class Router extends Marionette.AppRouter
 
   routes:
     '':       'index'
-    'signup': 'login'
+    'signup': 'signup'
     'login':  'login'
 
   # Api for Route handling.
@@ -72,18 +73,19 @@ class Router extends Marionette.AppRouter
 
   index: ->
     @navChannel.request('nav:index')
-    @rootView.index.show new Signup.View
-      model: new Signup.Model()
+    @rootView.content.empty()
+    @rootView.index.show new LandingView()
     return
 
   signup: ->
     @navChannel.request('nav:index')
-    @rootView.content.show new Signup.View
-      model: new Signup.Model()
+    @rootView.index.empty()
+    @rootView.content.show new SignupView()
     return
 
   login: ->
     @navChannel.request('nav:index')
+    @rootView.index.empty()
     @rootView.content.show new LoginView()
     return
 
