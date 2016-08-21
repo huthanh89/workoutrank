@@ -41,12 +41,11 @@ class Collection extends Backbone.Collection
     _.each options.sLogs.models, (model) ->
       for data in model.get('repData')
         result.push
-          id:    model.id
-          start: new Date moment(data.x)
-          end:   new Date moment(data.x)
-          title: model.get('name')
-          color: Data.Colors[model.get('muscle') % Data.Colors.length]
-
+          start:   new Date moment(data.x)
+          end:     new Date moment(data.x)
+          title:   model.get('name')
+          color:   Data.Colors[model.get('muscle') % Data.Colors.length]
+          modelID: model.id
       return
 
     return result
@@ -85,7 +84,7 @@ class View extends Marionette.ItemView
         right:  'today prev,next'
 
       eventClick: (calEvent) =>
-        @rootChannel.request 'strength:detail', calEvent.id
+        @rootChannel.request 'strength:detail', calEvent.modelID
         return
 
     @calendar.fullCalendar('today')
