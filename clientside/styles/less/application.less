@@ -67,18 +67,24 @@ Index landing page
 .index-section2{
   background-color: white;
   min-height: 400px;
+  text-align: center;
+
   .index-section-image{
     max-width:  100%;
     max-height: 400px;
     width:      auto;
     height:     auto;
+    padding-top: 20px;
+    @media (max-width: 767px){
+      height: 300px;
+    }
   }
   .index-section-text{
     font-size:   1.4em;
     color:       grey;
     padding: 15px 0;
     @media (min-width: 767px){
-      padding: 100px 20px;
+      padding: 130px 20px 0;
     }
   }
 }
@@ -91,13 +97,36 @@ Index landing page
   h3{
     color: grey;
   }
+  padding: 20px 0 20px;
   @media (min-width: 767px){
     padding: 130px 20px;
   }
 }
 
 #index-section4{
-   min-height: 400px;
+  min-height:  400px;
+  text-align: center;
+  #index-section4-image{
+    max-width:   100%;
+    max-height:  300px;
+    width:       auto;
+    height:      auto;
+    padding-top: 80px;
+    padding-left: 80px;
+    @media (max-width: 767px){
+      padding: 0;
+      height: 200px;
+    }
+  }
+  #index-section4-text{
+    padding-top: 160px;
+    font-size:   1.4em;
+    color:       grey;
+    @media (max-width: 767px){
+      padding: 30px;
+      height: 200px;
+    }
+  }
 }
 
 #index-section5{
@@ -113,6 +142,8 @@ Index landing page
   top:        50%;
   button{
     margin: 10px;
+    border-radius: 10px;
+    border: 2px whitesmoke solid;
   }
   @media (max-width: 767px){
     top: 25%;
