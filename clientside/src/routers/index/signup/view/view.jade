@@ -1,3 +1,15 @@
+#index-btn-group
+    .row
+        .col-xs-12
+            #index-bnt-group
+                button.btn.btn-lg.btn-success#index-signup-btn(type="submit")
+                    i.fa.fa-fw.fa-lg.fa-user
+                    = ' '
+                    | Sign Up
+                button.btn.btn-lg.btn-primary#index-login-btn(type="submit")
+                    i.fa.fa-fw.fa-lg.fa-sign-in
+                    = ' '
+                    | Login
 .row
     .col-xs-12
         #index-section1
@@ -25,9 +37,6 @@
                 a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
                     span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
                     span.sr-only Next
-
-
-
 .row
     .index-section2.col-lg-6
         .col-sm-6
@@ -39,6 +48,11 @@
             img(src='images/entry_phone.png').index-section-image
         .col-sm-6
             p.index-section-text We keep track of the last time you worked out. No need remember what you worked out last.
+
+
+#index-section4
+
+#index-section5
 
 #index-section3
     .row
@@ -58,18 +72,3 @@
             i.fa.fa-3x.fa-calendar-plus-o
             h3 Schedule
             p Daily reminders for which workout to do next
-
-
-
-
-        //.row
-            .col-xs-12
-                #index-bnt-group
-                    button.btn.btn-lg.btn-success#index-signup-btn(type="submit")
-                        i.fa.fa-fw.fa-lg.fa-user
-                        = ' '
-                        | Sign Up
-                    button.btn.btn-lg.btn-primary#index-login-btn(type="submit")
-                        i.fa.fa-fw.fa-lg.fa-lock
-                        = ' '
-                        | Login

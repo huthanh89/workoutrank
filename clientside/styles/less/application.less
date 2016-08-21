@@ -96,6 +96,30 @@ Index landing page
   }
 }
 
+#index-section4{
+   min-height: 400px;
+}
+
+#index-section5{
+  min-height: 400px;
+  background-color: white;
+}
+
+#index-btn-group{
+  z-index:    10;
+  position:   absolute;
+  width:      100%;
+  text-align: center;
+  top:        50%;
+  button{
+    margin: 10px;
+  }
+  @media (max-width: 767px){
+    top: 25%;
+    position: relative;
+  }
+}
+
 /*-----------------------------------------------------------------------------
 Content
 -----------------------------------------------------------------------------*/
@@ -242,6 +266,11 @@ Top Nav Bar
   margin-left: 5px;
   cursor:      pointer;
 }
+
+.navbar{
+  background: white;
+}
+
 /*-----------------------------------------------------------------------------
 Page nav
 -----------------------------------------------------------------------------*/
