@@ -58,13 +58,13 @@ class View extends Marionette.LayoutView
 
   onShow: ->
     @calendar = @ui.calendar.fullCalendar
-      height:  650
-      events: @calendarEvents
+      height:      650
+      events:     @calendarEvents
+      eventOrder: 'color'
       header:
         left:   ''
         center: 'title'
         right:  ''
-
       eventClick: (calEvent) =>
         @rootChannel.request 'strength:detail', calEvent.strengthID
         return

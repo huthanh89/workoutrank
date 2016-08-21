@@ -55,13 +55,15 @@ class Collection extends Backbone.Collection
 
     _.each options.sConfs.models, (model) ->
       for day, index in days
-        if model.get('muscle') in schedule[day]
+        muscle = model.get('muscle')
+        if muscle in schedule[day]
           result.push
-            start: new Date moment().startOf('week').add(index, 'days')
-            end:   new Date moment().startOf('week').add(index, 'days')
-            title: model.get('name')
-            color: Data.Colors[model.get('muscle') % Data.Colors.length]
-            muscle: model.get('muscle')
+            start:  new Date moment().startOf('week').add(index, 'days')
+            end:    new Date moment().startOf('week').add(index, 'days')
+            title:  model.get('name')
+            color:  Data.Colors[model.get('muscle') % Data.Colors.length]
+            muscle: muscle
+            allDay: true
             strengthID: model.id
       return
 
@@ -99,8 +101,6 @@ class View extends Marionette.LayoutView
           parse:    true
 
         events = collection.toJSON()
-        events = _.map events, (event) ->
-          return _.assign event, allDay: true
 
         @showChildView 'calendar', new Schedule.View
           channel:        @channel
