@@ -90,6 +90,15 @@ app.use session(
   unset: 'destroy'
   store: new MongoStore(mongooseConnection: mongoose.connection))
 
+# Set expiration date header for images. (1 month from now)
+
+app.get '/images/*', (req, res, next) ->
+  if req.url.indexOf('/images/') == 0 or req.url.indexOf('/stylesheets/') == 0
+    res.setHeader 'Cache-Control', 'public, max-age=2592000'
+    res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
+  next()
+  return
+
 # Location of static files starting from the root or app.js.
 # Cache these staic files for 24 hours in maxAge.
 app.use express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })

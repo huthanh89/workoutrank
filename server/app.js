@@ -71,6 +71,14 @@ app.use(session({
   })
 }));
 
+app.get('/images/*', function(req, res, next) {
+  if (req.url.indexOf('/images/') === 0 || req.url.indexOf('/stylesheets/') === 0) {
+    res.setHeader('Cache-Control', 'public, max-age=2592000');
+    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
+  }
+  next();
+});
+
 app.use(express["static"](path.join(__dirname, '../static'), {
   maxAge: 86400000
 }));
