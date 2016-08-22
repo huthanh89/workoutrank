@@ -1,2 +1,3 @@
+Sitemap: http://workoutrank.com/sitemap.xml
 User-agent: *
 Disallow:
