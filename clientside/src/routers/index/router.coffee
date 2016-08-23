@@ -2,11 +2,13 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone    = require 'backbone'
-Marionette  = require 'marionette'
-LandingView = require './landing/view'
-SignupView  = require './signup/view'
-LoginView   = require './login/view'
+Backbone     = require 'backbone'
+Marionette   = require 'marionette'
+Feedback     = require './feedback/module'
+LandingView  = require './landing/view'
+SignupView   = require './signup/view'
+LoginView    = require './login/view'
+AboutView    = require './about/view'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -55,7 +57,16 @@ class Router extends Marionette.AppRouter
           error: (model, error) =>
             @rootChannel.request 'message:error', error
             return
+        return
 
+      'about': =>
+        @navigate('about')
+        @about()
+        return
+
+      'feedback': =>
+        @navigate('feedback')
+        @feedback()
         return
 
   # Routes used for backbone urls.
@@ -64,9 +75,11 @@ class Router extends Marionette.AppRouter
   # Appending "/" will suffice.
 
   routes:
-    '':       'index'
-    'signup': 'signup'
-    'login':  'login'
+    '':         'index'
+    'signup':   'signup'
+    'login':    'login'
+    'about':    'about'
+    'feedback': 'feedback'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -87,6 +100,19 @@ class Router extends Marionette.AppRouter
     @navChannel.request('nav:index')
     @rootView.index.empty()
     @rootView.content.show new LoginView()
+    return
+
+  about: ->
+    @navChannel.request('nav:index')
+    @rootView.index.empty()
+    @rootView.content.show new AboutView()
+    return
+
+  feedback: ->
+    @navChannel.request('nav:index')
+    @rootView.index.empty()
+    @rootView.content.show new Feedback.View
+      model: new Feedback.Model()
     return
 
 #-------------------------------------------------------------------------------

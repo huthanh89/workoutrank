@@ -22,8 +22,12 @@ class View extends Marionette.ItemView
 
   events:
 
-    'click #account-home': ->
-      @rootChannel.request 'home'
+    'click #footer-about': ->
+      @rootChannel.request 'about'
+      return
+
+    'click #footer-feedback': ->
+      @rootChannel.request 'feedback'
       return
 
   constructor: (options) ->

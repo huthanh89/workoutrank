@@ -1,0 +1,39 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#feedback-home
+                a Home
+            li.active
+                span Feedback
+br
+.row
+    .col-lg-6#feedback-view-container
+        form.form-horizontal
+            .form-group
+                .row
+                    .col-xs-12
+                        h4 Have a suggestion or feedback? Let us know, we want to improve our app to better cater to you!
+                            = ' '
+                            i.fa.fa-fw.fa-heart
+            .form-group
+                .row
+                    .col-xs-12
+                        label.control-label(for='feedback-title') Title
+                .row
+                    .col-xs-12
+                        input.form-control#feedback-title(placeholder="Title" type='text' required minlength="1" maxlength="25")
+            .form-group
+                .row
+                    .col-xs-12
+                        label.control-label(for='feedback-editor') Body
+                .row
+                    .col-xs-12
+                        textarea#feedback-editor(placeholder="Enter text here..." required minlength="1" maxlength="100")
+            .form-group
+                .row
+                    .col-xs-12
+                        .pull-right
+                            button.btn.btn-primary
+                                i.fa.fa-fw.fa-lg.fa-envelope-o
+                                = ' '
+                                span Send
