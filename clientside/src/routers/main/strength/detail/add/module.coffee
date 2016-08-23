@@ -34,6 +34,7 @@ class Model extends Backbone.Model
     weight:   null
     muscle:   0
     note:     ''
+    body:     false
 
 #-------------------------------------------------------------------------------
 # View
@@ -65,10 +66,6 @@ class View extends Marionette.ItemView
     '#strength-modal-note': 'note'
 
   events:
-
-    'shown.bs.modal': ->
-      @ui.weight.focus()
-      return
 
     'click #strength-modal-exercise': ->
       @rootChannel.request('exercise')
@@ -111,6 +108,11 @@ class View extends Marionette.ItemView
       latestModel = @collection.at(@collection.length - 1)
       @model.set 'rep', latestModel.get('rep')
       @model.set 'weight', latestModel.get('weight')
+
+    user = Backbone.Radio.channel('user').request 'user'
+
+    if @model.get('body')
+      @model.set('weight', user.get('weight'))
 
   onRender: ->
 
