@@ -45,14 +45,13 @@ module.get = (req, res, next) ->
 
     (user, callback) ->
 
-      user = _.pick user, [
-        '_id'
-        'email'
+      user = _.omit user, [
+        'created'
+        'salt'
+        'key'
+        'algorithm'
+        'rounds'
         'lastlogin'
-        'birthday'
-        'firstname'
-        'lastname'
-        'username'
       ]
 
       callback null, user
@@ -92,6 +91,8 @@ module.put = (req, res, next) ->
       user.username  = req.body.username
       user.firstname = req.body.firstname
       user.lastname  = req.body.lastname
+      user.weight    = req.body.weight
+      user.gender    = req.body.gender
 
       user.save (err, entry) ->
         return callback err.message if err

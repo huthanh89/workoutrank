@@ -233,6 +233,7 @@ gulp.task 'js:bundle', (callback) ->
         'bootstrap.paginate':       'scripts/bootstrap.paginate.js'
         toastr:                     'scripts/toastr.js'
         fullcalendar:               'scripts/fullcalendar.js'
+        sweetalert:                 'scripts/sweetalert.min.js'
 
       extensions: [
         ''
@@ -281,6 +282,7 @@ gulp.task 'css:concat', ->
     './clientside/styles/css/toastr.css'
     './clientside/styles/css/spinkit.css'
     './clientside/styles/css/fullcalendar.css'
+    './clientside/styles/css/sweetalert.css'
 
     './clientside/styles/bootstrap.custom.css'
     './clientside/styles/application.css'

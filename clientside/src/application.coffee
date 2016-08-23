@@ -8,11 +8,12 @@ Toastr       = require 'toastr'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
+FooterView   = require './footer/view'
 Loader       = require './loader/module'
 IndexRouter  = require './routers/index/router'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
-asdf = 'moment'
+
 #-------------------------------------------------------------------------------
 # User
 #-------------------------------------------------------------------------------
@@ -37,6 +38,7 @@ class RootView extends Marionette.LayoutView
     loader:  '#loader'
     content: '#content'
     index:   '#index'
+    footer:  '#footer'
     drawer:  '#drawer'
 
 #-------------------------------------------------------------------------------
@@ -126,6 +128,8 @@ class Application extends Marionette.Application
             rootChannel.request 'message:error', response
             return
         return
+
+    rootView.footer.show new FooterView()
 
     # All router must be initialized before backbone.history starts to work.
 

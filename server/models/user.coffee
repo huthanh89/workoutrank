@@ -30,6 +30,9 @@ UserSchema = new mongoose.Schema
   birthday:
     type: Date
     required: true
+  weight:
+    type: Number
+    required: true
   gender:
     type: Number
   algorithm:

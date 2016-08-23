@@ -12,7 +12,7 @@
                 h3.panel-title
                     i.fa.fa-fw.fa-lg.fa-user
                     = ' '
-                    | Account
+                    | Profile
             .panel-body
                 form.form-horizontal
                     .form-group
@@ -23,17 +23,21 @@
                         label.col-sm-2.control-label(for='account-lastname') Last Name
                         .col-sm-10
                             input.form-control#account-lastname(type='text', placeholder='Last Name', name='lastname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
-                    .form-group
-                        label.col-sm-2.control-label(for='index-signup-gender') Gender
+                    .form-group#account-gender
+                        label.col-sm-2.control-label(for='account-gender') Gender
                         .col-sm-10
-                            .radio.radio-inline#index-signup-gender
+                            .radio.radio-inline
                                 label
-                                    input(type='radio', name='optradio')
+                                    input(type='radio', name='optradio', value=0)
                                     | Female
                             .radio.radio-inline
                                 label
-                                    input(type='radio', name='optradio')
+                                    input(type='radio', name='optradio', value=1)
                                     | Male
+                    .form-group
+                        label.col-sm-2.control-label(for='account-weight') Body Weight
+                        .col-sm-10
+                            input.form-control#account-weight(type="number", placeholder=0 required)
                     .form-group
                         .col-sm-12
                             button.btn.btn-primary.pull-right
@@ -43,6 +47,6 @@
     .col-sm-6
         .panel.panel-info
             .panel-heading
-                h3.panel-title Summary
+                h3.panel-title Account
             .panel-body
                 #account-summary
