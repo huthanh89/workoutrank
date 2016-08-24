@@ -101,14 +101,19 @@ Index landing page
 
 #index-section3{
   min-height: 400px;
+  max-height: 400px;
   text-align: center;
   color:      grey;
+  padding: 70px 20px;
+  h2{
+    color: grey;
+  }
   h3{
     color: grey;
   }
-  padding: 20px 0 20px;
-  @media (min-width: 767px){
-    padding: 130px 20px;
+  @media (max-width: 767px){
+    padding: 10px 10px;
+    max-height: inherit;
   }
 }
 
@@ -133,7 +138,7 @@ Index landing page
     color:       grey;
     @media (max-width: 767px){
       padding: 70px 30px;
-      height: 200px;
+      height:   260px;
     }
   }
 }
@@ -291,8 +296,8 @@ Signup
 
 
 #signup-view-container{
-  float:      none;
-  margin:     0 auto;
+  float:  none;
+  margin: 0 auto;
 }
 
 #signup-birthday{
@@ -300,13 +305,19 @@ Signup
 }
 
 #signup-recaptcha-container{
-  width: 300px;
+  width:  300px;
   height: 80px;
+  @media (max-width: 767px) {
+    margin: 0 auto;
+  }
 }
 
 #signup-recaptcha{
   position: absolute;
   z-index: 9999!important;
+  @media (max-width: 767px) {
+    right: 25px;
+  }
 }
 
 /*-----------------------------------------------------------------------------
