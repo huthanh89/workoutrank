@@ -10,9 +10,10 @@ router  = express.Router()
 # Import Routes
 #-------------------------------------------------------------------------------
 
-signup = require './signup/module'
-login  = require './login/module'
-logout = require './logout/module'
+feedback = require './feedback/module'
+signup   = require './signup/module'
+login    = require './login/module'
+logout   = require './logout/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -33,9 +34,10 @@ router.get '/feedback', index
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.post '/api/signup', signup.post
-router.post '/api/login',  login.post
-router.post '/api/logout', logout.post
+router.post '/api/feedback', feedback.post
+router.post '/api/signup',   signup.post
+router.post '/api/login',    login.post
+router.post '/api/logout',   logout.post
 
 #-------------------------------------------------------------------------------
 # Exports

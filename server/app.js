@@ -42,6 +42,8 @@ require('./models/slog')(mongoose);
 
 require('./models/schedule')(mongoose);
 
+require('./models/feedback')(mongoose);
+
 app = express();
 
 server = http.createServer(app);

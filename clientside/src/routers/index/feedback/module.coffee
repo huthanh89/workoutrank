@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -34,7 +35,13 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   bindings:
-    '#feedback-text': 'text'
+    '#feedback-title':  'title'
+    '#feedback-editor': 'text'
+
+  modelEvents:
+    sync: (model) ->
+      model.clear().set(model.defaults)
+      return
 
   events:
     'click #feedback-home': ->
@@ -43,17 +50,21 @@ class View extends Marionette.ItemView
 
     'submit': (event) ->
       event.preventDefault()
+
       @rootChannel.request 'spin:page:loader', true
 
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request 'show:'
-          @rootChannel.request('home')
+          swal
+            title: 'Success'
+            text:  'Message Sent!'
+            type:  'success'
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
           return
+      return
 
   constructor: ->
     super

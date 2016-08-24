@@ -18,7 +18,7 @@ CardioSchema = new mongoose.Schema
   note:
     type: String
 ,
-  collection: 'lift'
+  collection: 'cardio'
 
 #-------------------------------------------------------------------------------
 # Model Registration
