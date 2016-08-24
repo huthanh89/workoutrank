@@ -95,6 +95,7 @@ class View extends Marionette.LayoutView
     'sync update': ->
       @updatePageableCollection()
       @summaryModel.update(@model, @collection)
+      @showCalendar()
       return
 
   modelEvents:
@@ -147,12 +148,16 @@ class View extends Marionette.LayoutView
       collection: @pageableCollection
       channel:    @channel
 
-    @showChildView 'calendar', new CalendarView
-      collection: @collection
-
     @showChildView 'summary', new Summary.View
       model: @summaryModel
 
+    @showCalendar()
+
+    return
+
+  showCalendar: ->
+    @showChildView 'calendar', new CalendarView
+      collection: @collection
     return
 
   addWorkout: ->

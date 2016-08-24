@@ -20973,6 +20973,10 @@ Index landing page
 #index-section1 .carousel-inner > .item > img {
   margin: 0 auto;
 }
+#index-section1 .carousel-control {
+  z-index: 10;
+  height: 400px;
+}
 @media (max-width: 767px) {
   #index-section1 {
     height: 250px;
@@ -20984,6 +20988,10 @@ Index landing page
     color: transparent;
   }
   #index-section1 .carousel-inner .item > img {
+    height: 250px;
+  }
+  #index-section1 .carousel-control {
+    z-index: 10;
     height: 250px;
   }
 }
