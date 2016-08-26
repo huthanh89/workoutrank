@@ -81,6 +81,12 @@ app.get('/images/*', function(req, res, next) {
   next();
 });
 
+app.get('/favicon.ico', function(req, res, next) {
+  res.setHeader('Cache-Control', 'public, max-age=2592000');
+  res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
+  next();
+});
+
 app.use(express["static"](path.join(__dirname, '../static'), {
   maxAge: 86400000
 }));

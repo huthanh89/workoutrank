@@ -100,6 +100,12 @@ app.get '/images/*', (req, res, next) ->
   next()
   return
 
+app.get '/favicon.ico', (req, res, next) ->
+  res.setHeader 'Cache-Control', 'public, max-age=2592000'
+  res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
+  next()
+  return
+
 # Location of static files starting from the root or app.js.
 # Cache these staic files for 24 hours in maxAge.
 app.use express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
