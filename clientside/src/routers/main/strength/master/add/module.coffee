@@ -88,6 +88,7 @@ class View extends Marionette.LayoutView
       return
 
     'hidden.bs.modal': ->
+      console.log 'hidden'
       @ui.muscle.multiselect('destroy')
       @ui.date.data('DateTimePicker').destroy()
       return
@@ -122,6 +123,11 @@ class View extends Marionette.LayoutView
 
     @ui.dialog.modal()
 
+    return
+
+  onBeforeDestroy: ->
+    $('.modal-backdrop').remove()
+    $('body').removeClass 'modal-open'
     return
 
 #-------------------------------------------------------------------------------

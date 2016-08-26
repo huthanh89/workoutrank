@@ -63,6 +63,7 @@ class View extends Marionette.ItemView
 
       @model.save {},
         success: (model) =>
+          window.grecaptcha.reset()
           @rootChannel.request 'spin:page:loader', false
           @rootChannel.request('home')
           return
