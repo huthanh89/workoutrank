@@ -134,6 +134,7 @@ exports.post = (req, res, next) ->
     (salt, key, callback) ->
 
       User.create
+        auth:      1
         created:   moment()
         lastlogin: moment()
         firstname: req.body.firstname

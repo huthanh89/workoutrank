@@ -11,6 +11,9 @@ mongoose = require 'mongoose'
 UserSchema = new mongoose.Schema
   created:
     type: Date
+  auth:
+    type: Number
+    required: true
   lastlogin:
     type: Date
   firstname:

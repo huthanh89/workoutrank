@@ -187,8 +187,8 @@ Index landing page
 #index-btn-group-bottom {
   text-align: center;
   background: white;
-  height: 180px;
-  padding-top: 60px;
+  height: 300px;
+  padding-top: 50px;
 }
 #index-btn-group-bottom button {
   margin: 15px;
@@ -297,7 +297,7 @@ Signup
 }
 @media (max-width: 767px) {
   #signup-recaptcha {
-    right: 25px;
+    right: 10px;
   }
 }
 /*-----------------------------------------------------------------------------
@@ -354,6 +354,7 @@ Left Sliding Menu
 -----------------------------------------------------------------------------*/
 .mm-menu {
   margin-top: 52px;
+  z-index: 9999!important;
 }
 /*-----------------------------------------------------------------------------
 Multiselect
@@ -384,9 +385,6 @@ Strength
 -----------------------------------------------------------------------------*/
 #strength-back {
   min-width: 70px;
-}
-#strength-date-next {
-  z-index: 1;
 }
 #strength-table-view tbody tr {
   cursor: pointer;
@@ -443,7 +441,6 @@ Strength
   margin-left: auto;
 }
 #strength-date-datepicker {
-  z-index: 1;
   text-align: center;
   font-size: 18px;
 }
@@ -501,20 +498,6 @@ Custom classes
   display: block;
   width: 100%;
 }
-/*-----------------------------------------------------------------------------
-Font icons
------------------------------------------------------------------------------*/
-/*
-.fa-book {
-  color: brown;
-}
-.fa-area-chart {
-  color: darkseagreen;
-}
-.fa-user {
-  color: cadetblue;
-}
-*/
 /*-----------------------------------------------------------------------------
                               End of Document
 -----------------------------------------------------------------------------*/
