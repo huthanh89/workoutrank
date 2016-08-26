@@ -96,6 +96,11 @@ class View extends Marionette.LayoutView
     .multiselect('select', @model.get(day))
     return
 
+  onBeforeDestroy: ->
+    $('.modal-backdrop').remove()
+    $('body').removeClass 'modal-open'
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

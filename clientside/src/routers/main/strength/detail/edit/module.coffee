@@ -121,6 +121,11 @@ class View extends Marionette.LayoutView
 
     return
 
+  onBeforeDestroy: ->
+    $('.modal-backdrop').remove()
+    $('body').removeClass 'modal-open'
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
