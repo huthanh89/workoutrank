@@ -75,7 +75,7 @@ class Application extends Marionette.Application
 
       auth: -> user.get('auth')
 
-      isOwner: -> user.get('auth') is 1
+      isOwner: -> parseInt(user.get('auth'), 10) is 1
 
     rootChannel.reply
 

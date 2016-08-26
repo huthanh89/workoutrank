@@ -89,13 +89,15 @@ exports.post = (req, res) ->
         # If login was successful then
         # Save user data to their session.
 
-        req.session.user = _.omit user, [
-          'created'
-          'salt'
-          'key'
-          'algorithm'
-          'rounds'
-          'lastlogin'
+        req.session.user = _.pick user, [
+          '_id'
+          'email'
+          'username'
+          'firstname'
+          'lastname'
+          'weight'
+          'gender'
+          'auth'
         ]
 
         # WIP Setting up a remember me.

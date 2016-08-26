@@ -175,6 +175,17 @@ exports.post = (req, res, next) ->
 
     else
 
+      user = _.pick user, [
+        '_id'
+        'email'
+        'username'
+        'firstname'
+        'lastname'
+        'weight'
+        'gender'
+        'auth'
+      ]
+
       req.session.user = user
 
       # Send 201 status for successful record creation.
