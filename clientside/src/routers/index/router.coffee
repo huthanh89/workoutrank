@@ -47,8 +47,9 @@ class Router extends Marionette.AppRouter
       'logout': =>
         @rootChannel.request 'spin:page:loader', true
         model = new Backbone.Model()
+
         model.save {},
-          url: 'api/logout'
+          url: '/api/logout'
           success: =>
             @rootChannel.request 'spin:page:loader', false
             @navigate('login', trigger: true)
