@@ -104,6 +104,7 @@ app.use('/', routers.userRouter);
 app.get('*', function(req, res) {
   res.status(404);
   res.render('404.jade');
+  res.end();
 });
 
 app.use(function(err, req, res, next) {

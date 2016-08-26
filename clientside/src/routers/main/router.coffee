@@ -129,12 +129,13 @@ class Router extends Marionette.AppRouter
       if error
         @rootChannel.request 'message:error', error
 
-      View = Strength.Master.View
+      else
+        View = Strength.Master.View
 
-      @rootView.content.show new View
-        collection: sConfs
-        sLogs:      sLogs
-        muscle:     muscle
+        @rootView.content.show new View
+          collection: sConfs
+          sLogs:      sLogs
+          muscle:     muscle
 
       return
 
@@ -173,11 +174,12 @@ class Router extends Marionette.AppRouter
       if error
         @rootChannel.request 'message:error', error
 
-      View = Strength.Detail.View
+      else
+        View = Strength.Detail.View
 
-      @rootView.content.show new View
-        model:      sConf
-        collection: sLogs
+        @rootView.content.show new View
+          model:      sConf
+          collection: sLogs
 
       return
 
@@ -212,10 +214,10 @@ class Router extends Marionette.AppRouter
 
       if error
         @rootChannel.request 'message:error', error
-
-      @rootView.content.show new Calendar.View
-        sLogs:  sLogs
-        sConfs: sConfs
+      else
+        @rootView.content.show new Calendar.View
+          sLogs:  sLogs
+          sConfs: sConfs
 
       return
 
@@ -254,11 +256,11 @@ class Router extends Marionette.AppRouter
 
       if error
         @rootChannel.request 'message:error', error
-
-      @rootView.content.show new Schedule.View
-        sLogs:  sLogs
-        sConfs: sConfs
-        model:  model
+      else
+        @rootView.content.show new Schedule.View
+          sLogs:  sLogs
+          sConfs: sConfs
+          model:  model
 
       return
 
@@ -291,12 +293,12 @@ class Router extends Marionette.AppRouter
 
       if error
         @rootChannel.request 'message:error', error
+      else
+        View = Logs.Master.View
 
-      View = Logs.Master.View
-
-      @rootView.content.show new View
-        collection: sLogs
-        sConfs:     sConfs
+        @rootView.content.show new View
+          collection: sLogs
+          sConfs:     sConfs
 
       return
 
@@ -327,12 +329,12 @@ class Router extends Marionette.AppRouter
 
       if error
         @rootChannel.request 'message:error', error
+      else
+        View = Logs.Detail.View
 
-      View = Logs.Detail.View
-
-      @rootView.content.show new View
-        collection: sLogs
-        sConf:      sConfs.get(exerciseID)
+        @rootView.content.show new View
+          collection: sLogs
+          sConf:      sConfs.get(exerciseID)
 
       return
 

@@ -2,8 +2,32 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_       = require 'lodash'
 express = require 'express'
 router  = express.Router()
+
+#-------------------------------------------------------------------------------
+# Path Routes.
+#   Pass index to all routes.
+#-------------------------------------------------------------------------------
+
+urls = [
+  '/home'
+  '/exercise'
+  '/exercise/:type'
+  '/calendar'
+  '/schedule'
+  '/strengths'
+  '/strength/:sid'
+  '/strength/:sid/log'
+  '/logs'
+  '/log/:lid'
+]
+
+for url in urls
+  router.get url, (req, res, next) ->
+    res.render 'index'
+    return
 
 #-------------------------------------------------------------------------------
 # Router Level Middleware
@@ -13,32 +37,12 @@ router  = express.Router()
 # Put up an unauthorized page.
 
 router.use  (req, res, next) ->
-  if req.session.user
-    next()
-  else
+  if req.url.includes('api') and _.isUndefined(req.session.user)
     res.status 401
-    res.render('401.jade')
+    res.end()
+  else
+    next()
   return
-
-#-------------------------------------------------------------------------------
-# Path Routes.
-#   Pass index to all routes.
-#-------------------------------------------------------------------------------
-
-index = (req, res, next) ->
-  res.render 'index'
-  return
-
-router.get '/home',              index
-router.get '/exercise',          index
-router.get '/exercise/:type',    index
-router.get '/calendar',          index
-router.get '/schedule',          index
-router.get '/strengths',         index
-router.get '/strength/:sid',     index
-router.get '/strength/:sid/log', index
-router.get '/logs',              index
-router.get '/log/:lid',          index
 
 #-------------------------------------------------------------------------------
 # Import Routes

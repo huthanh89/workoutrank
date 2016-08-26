@@ -18,8 +18,9 @@ exports.get = (req, res) ->
     .json req.session.user
 
   else
-    res.send 'Not Authenticated'
-    res.end()
+    res
+    .status 401
+    .end()
 
   return
 

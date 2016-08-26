@@ -8,6 +8,7 @@ Toastr       = require 'toastr'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Nav          = require './nav/module'
+ErrorView    = require './error/view'
 FooterView   = require './footer/view'
 Loader       = require './loader/module'
 IndexRouter  = require './routers/index/router'
@@ -80,24 +81,30 @@ class Application extends Marionette.Application
 
         rootChannel.request 'spin:page:loader', false
 
-        Toastr.options =
-          closeButton:       true
-          debug:             false
-          newestOnTop:       false
-          progressBar:       true
-          positionClass:    'toast-top-full-width'
-          preventDuplicates: false
-          onclick:           null
-          showDuration:     '10000'
-          hideDuration:     '10000'
-          timeOut:          '10000'
-          extendedTimeOut:  '10000'
-          showEasing:       'swing'
-          hideEasing:       'linear'
-          showMethod:       'fadeIn'
-          hideMethod:       'fadeOut'
+        if response.status is 401
 
-        Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
+          rootView.showChildView 'content', new ErrorView()
+
+        else
+
+          Toastr.options =
+            closeButton:       true
+            debug:             false
+            newestOnTop:       false
+            progressBar:       true
+            positionClass:    'toast-top-full-width'
+            preventDuplicates: false
+            onclick:           null
+            showDuration:     '10000'
+            hideDuration:     '10000'
+            timeOut:          '10000'
+            extendedTimeOut:  '10000'
+            showEasing:       'swing'
+            hideEasing:       'linear'
+            showMethod:       'fadeIn'
+            hideMethod:       'fadeOut'
+
+          Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
       'spin:page:loader': (enable) ->
         if enable
@@ -117,12 +124,9 @@ class Application extends Marionette.Application
 
         user.fetch
           success: (model) ->
-
             rootView.showChildView 'header', new Nav.Main
               model: user
-
             rootView.showChildView 'drawer', new Nav.Drawer()
-
             return
           error: (model, response) ->
             rootChannel.request 'message:error', response

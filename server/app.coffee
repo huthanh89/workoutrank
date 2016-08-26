@@ -122,6 +122,7 @@ app.use '/', routers.userRouter
 app.get '*', (req, res) ->
   res.status 404
   res.render('404.jade')
+  res.end()
   return
 
 # If an error occurred in the app, catch it in the middleware.
