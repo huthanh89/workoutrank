@@ -10,6 +10,7 @@ mongoose  = require 'mongoose'
 crypto    = require 'crypto'
 Err       = require '../../error'
 Validate  = require '../../validate'
+Data      = require './data'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -45,19 +46,19 @@ schema =
     method: 'isLength'
     options:
       min: 4
-      max: 15
+      max: 25
   ]
   username: [
     method: 'isLength'
     options:
       min: 2
-      max: 15
+      max: 25
   ]
   password: [
     method: 'isLength'
     options:
       min: 4
-      max: 15
+      max: 20
   ]
 
 exports.post = (req, res, next) ->
@@ -69,7 +70,13 @@ exports.post = (req, res, next) ->
 
     (callback) ->
 
-      #return callback null
+      for item in Data.blacklist
+        if username is item
+          return callback 'Bad username. Choose a different username'
+
+      return callback null
+
+    (callback) ->
 
       clientIp = requestIp.getClientIp(req)
 
@@ -98,7 +105,7 @@ exports.post = (req, res, next) ->
         email: email
       , (err, count) ->
           if count > 0
-            return callback 'Username / Email has been taken. Choose a different email.'
+            return callback 'Email has been taken. Choose a different email.'
           else
             return callback null
       return

@@ -35,7 +35,6 @@ UserSchema = new mongoose.Schema
     required: true
   weight:
     type: Number
-    required: true
   gender:
     type: Number
   algorithm:

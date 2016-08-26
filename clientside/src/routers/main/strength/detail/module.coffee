@@ -49,6 +49,10 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
+  ui:
+    add: '#strength-detail-add'
+    edit: '#strength-detail-edit'
+
   regions:
     modal:    '#strength-modal-view'
     date:     '#strength-date-view'
@@ -152,6 +156,9 @@ class View extends Marionette.LayoutView
       model: @summaryModel
 
     @showCalendar()
+
+    @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     return
 

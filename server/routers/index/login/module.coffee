@@ -30,7 +30,7 @@ schema =
     method: 'isLength'
     options:
       min: 2
-      max: 15
+      max: 25
   ]
   password: [
     method: 'isLength'

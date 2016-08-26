@@ -71,7 +71,11 @@ class Application extends Marionette.Application
     navChannel  = Backbone.Radio.channel('nav')
 
     userChannel.reply
-      'user': -> user
+      user: -> user
+
+      auth: -> user.get('auth')
+
+      isOwner: -> user.get('auth') is 1
 
     rootChannel.reply
 
@@ -121,6 +125,8 @@ class Application extends Marionette.Application
         return
 
       'nav:main': ->
+
+        rootView.getRegion('index').empty()
 
         user.fetch
           success: (model) ->

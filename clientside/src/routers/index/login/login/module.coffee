@@ -21,7 +21,7 @@ class Model extends Backbone.Model
   url: 'api/login'
 
   defaults:
-    user:    ''
+    user:     ''
     password: ''
 
 #-------------------------------------------------------------------------------
@@ -52,12 +52,11 @@ class View extends Marionette.ItemView
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
           @rootChannel.request 'show:'
-          @rootChannel.request('home')
+          @rootChannel.request 'home'
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
           return
-
       return
 
   constructor: (options) ->

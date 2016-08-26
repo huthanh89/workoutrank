@@ -46,6 +46,7 @@ class View extends Marionette.LayoutView
   ui:
     weight: '#account-weight'
     gender: '#account-gender'
+    submit: '#account-submit'
 
   bindings:
     '#account-firstname': 'firstname'
@@ -85,6 +86,8 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
+
+    @ui.submit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     @ui.weight.TouchSpin
       postfix:          'pounds'

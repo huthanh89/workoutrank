@@ -53,6 +53,9 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
+  ui:
+    add: '#strength-add'
+
   regions:
     modal:  '#strength-modal-view'
     filter: '#strength-filter-view'
@@ -86,6 +89,7 @@ class View extends Marionette.LayoutView
     ]
     @rootChannel = Backbone.Radio.channel('root')
     @channel     = new Backbone.Radio.channel('strengths')
+    @isOwner     =  Backbone.Radio.channel('user').request 'isOwner'
 
     @channel.reply
 
@@ -117,8 +121,10 @@ class View extends Marionette.LayoutView
       channel:    @channel
       muscle:     @muscle
 
-    if @collection.length is 0
+    if @collection.length is 0 and @isOwner
       @channel.request 'add'
+
+    @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     return
 

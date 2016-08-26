@@ -24,17 +24,18 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   regions:
-    modal: '#calendar-modal-view'
+    modal: '#schedule-modal-view'
 
   ui:
-    calendar: '#calendar-widget'
+    calendar: '#schedule-widget'
+    edit:     '#schedule-edit'
 
   events:
-    'click #calendar-tab': ->
+    'click #schedule-tab': ->
       @channel.request 'show:events'
       return
 
-    'click #calendar-edit': ->
+    'click #schedule-edit': ->
       @showChildView 'modal', new EditView
         model:   @model
         channel: @channel
@@ -71,6 +72,8 @@ class View extends Marionette.LayoutView
 
     @calendar.fullCalendar('today')
     @calendar.fullCalendar('changeView', 'basicWeek')
+
+    @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     return
 
