@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_         = require 'lodash'
 moment    = require 'moment'
 async     = require 'async'
 request   = require 'request'
