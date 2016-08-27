@@ -120,12 +120,14 @@ class Application extends Marionette.Application
     navChannel.reply
 
       'nav:index': ->
+        rootChannel.request 'drawer:close'
         rootView.showChildView 'header', new Nav.Index()
         rootView.showChildView 'drawer', new Nav.Drawer()
         return
 
       'nav:main': ->
 
+        rootChannel.request 'drawer:close'
         rootView.getRegion('index').empty()
 
         user.fetch
@@ -154,6 +156,7 @@ class Application extends Marionette.Application
     new UserRouter
       mode:          'auto'
       trailingSlash: 'ignore'
+
 
     # Event is triggered the user navigate through out a page.
 
