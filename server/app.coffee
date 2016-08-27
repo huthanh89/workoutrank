@@ -12,6 +12,7 @@ cookieParser = require('cookie-parser')
 session      = require('express-session')
 passport     = require('passport')
 http         = require('http')
+compression  = require('compression')
 MongoStore   = require('connect-mongo')(session)
 
 require 'coffee-script/register'
@@ -70,6 +71,10 @@ app.set 'view engine', 'jade'
 #--------------------------------------------------------------
 
 app.use logger('dev')
+
+# Compress all requests.
+
+app.use(compression())
 
 # Handle cookie and session before defining routes.
 # cookie parser should be used before the session.

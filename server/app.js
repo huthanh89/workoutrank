@@ -1,4 +1,4 @@
-var MongoStore, app, bodyParser, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session;
+var MongoStore, app, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session;
 
 express = require('express');
 
@@ -19,6 +19,8 @@ session = require('express-session');
 passport = require('passport');
 
 http = require('http');
+
+compression = require('compression');
 
 MongoStore = require('connect-mongo')(session);
 
@@ -53,6 +55,8 @@ app.set('views', './static');
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+
+app.use(compression());
 
 app.use(bodyParser.json());
 

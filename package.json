@@ -38,6 +38,7 @@
     "response-time": "*",
     "finalhandler": "*",
     "node-statsd": "*",
+    "compression": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {
