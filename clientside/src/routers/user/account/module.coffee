@@ -92,7 +92,7 @@ class View extends Marionette.LayoutView
     @ui.weight.TouchSpin
       postfix:          'pounds'
       buttondown_class: 'btn btn-info account-weight-btn'
-      buttonup_class:   'btn btn-info'
+      buttonup_class:   'btn btn-info account-weight-btn'
       min:              1
       max:              99999
 
