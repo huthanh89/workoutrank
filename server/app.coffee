@@ -91,6 +91,13 @@ app.use session(
   unset: 'destroy'
   store: new MongoStore(mongooseConnection: mongoose.connection))
 
+# Middle ware for all pages.
+
+app.get '*', (req, res, next) ->
+  res.setHeader 'X-XSS-Protection', '1; mode=block'
+  next()
+  return
+
 # Set expiration date header for images. (1 month from now)
 
 app.get '/images/*', (req, res, next) ->

@@ -73,6 +73,11 @@ app.use(session({
   })
 }));
 
+app.get('*', function(req, res, next) {
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 app.get('/images/*', function(req, res, next) {
   if (req.url.indexOf('/images/') === 0 || req.url.indexOf('/stylesheets/') === 0) {
     res.setHeader('Cache-Control', 'public, max-age=2592000');
