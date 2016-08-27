@@ -76,6 +76,7 @@ app.use(session({
 app.get('*', function(req, res, next) {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.removeHeader('server');
+  res.removeHeader('x-powered-by');
   next();
 });
 
