@@ -98,9 +98,7 @@ class View extends Marionette.ItemView
         {
           position: 'bottom'
           content: [
-            '<a class=\'fa fa-envelope\'></a>'
-            '<a class=\'fa fa-twitter\'></a>'
-            '<a class=\'fa fa-facebook\'></a>'
+            '<span>WorkoutRank</span>'
           ]
         }
       ]
