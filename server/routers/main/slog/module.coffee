@@ -103,8 +103,6 @@ module.post = (req, res) ->
 
       SLog.create
         date:     req.body.date
-        name:     req.body.name
-        muscle:   req.body.muscle
         exercise: req.body.exercise
         note:     req.body.note
         rep:      req.body.rep
@@ -150,7 +148,6 @@ module.put = (req, res, next) ->
 
       slog.date    = req.body.date
       slog.muscle  = req.body.muscle
-      slog.name    = req.body.name
       slog.note    = req.body.note
       slog.session = req.body.session
 

@@ -19,8 +19,7 @@ StrengthSchema = new mongoose.Schema
     type: String
     required: true
   muscle:
-    type: Number
-    required: true
+    type: [Number]
   body:
     type: Boolean
     required: true

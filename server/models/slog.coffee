@@ -12,12 +12,6 @@ SlogSchema = new mongoose.Schema
   date:
     type: Date
     required: true
-  name:
-    type: String
-    required: true
-  muscle:
-    type: Number
-    required: true
   note:
     type: String
   rep:

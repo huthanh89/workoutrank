@@ -38,13 +38,18 @@ class Collection extends Backbone.Collection
 
     result = []
 
+    sConfs = options.sConfs
+
     _.each options.sLogs.models, (model) ->
       for data in model.get('repData')
+
+        sConf = sConfs.get(model.id)
+
         result.push
           start:   new Date moment(data.x)
           end:     new Date moment(data.x)
-          title:   model.get('name')
-          color:   Data.Colors[model.get('muscle') % Data.Colors.length]
+          title:   sConf.get('name')
+          color:   Data.Colors[_.sum(sConf.get('muscle')) % Data.Colors.length]
           modelID: model.id
       return
 

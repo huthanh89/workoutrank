@@ -27,7 +27,7 @@ class Model extends Backbone.Model
   defaults:
     date:   moment()
     name:   ''
-    muscle: 0
+    muscle: []
     note:   ''
     body:   false
 
@@ -55,7 +55,7 @@ class View extends Marionette.LayoutView
 
     '#strength-modal-muscle':
       observe: 'muscle'
-      onSet: (value) -> parseInt(value)
+      onSet: (values) -> _.map values, (value) -> parseInt(value)
 
   events:
 
@@ -88,7 +88,6 @@ class View extends Marionette.LayoutView
       return
 
     'hidden.bs.modal': ->
-      console.log 'hidden'
       @ui.muscle.multiselect('destroy')
       @ui.date.data('DateTimePicker').destroy()
       return

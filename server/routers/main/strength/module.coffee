@@ -35,9 +35,6 @@ schema =
       min: 0
       max: 15
   ]
-  muscle: [
-    method: 'isInt'
-  ]
   count: [
     method: 'isInt'
   ]

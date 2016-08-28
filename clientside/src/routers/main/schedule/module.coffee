@@ -55,14 +55,14 @@ class Collection extends Backbone.Collection
 
     _.each options.sConfs.models, (model) ->
       for day, index in days
-        muscle = model.get('muscle')
-        if muscle in schedule[day]
+        muscles = model.get('muscle')
+
+        if _.intersection(muscles, schedule[day]).length > 0
           result.push
             start:  new Date moment().startOf('week').add(index, 'days')
             end:    new Date moment().startOf('week').add(index, 'days')
             title:  model.get('name')
-            color:  Data.Colors[model.get('muscle') % Data.Colors.length]
-            muscle: muscle
+            color:  Data.Colors[_.sum(muscles) % Data.Colors.length]
             allDay: true
             strengthID: model.id
             completed : false

@@ -32,7 +32,6 @@ class Model extends Backbone.Model
     exercise: ''
     rep:      null
     weight:   null
-    muscle:   0
     note:     ''
     body:     false
 

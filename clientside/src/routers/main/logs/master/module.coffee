@@ -22,7 +22,6 @@ class Model extends Backbone.Model
     name:       ''
     weightData: []
     repData:    []
-    muscle:     0
     user:       ''
 
 #-------------------------------------------------------------------------------

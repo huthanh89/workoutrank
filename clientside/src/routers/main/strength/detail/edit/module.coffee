@@ -25,7 +25,7 @@ class Model extends Backbone.Model
   defaults:
     date:   moment()
     name:   ''
-    muscle: 0
+    muscle: []
     note:   ''
     body:   false
 
@@ -52,7 +52,7 @@ class View extends Marionette.LayoutView
 
     '#strength-modal-muscle':
       observe: 'muscle'
-      onSet: (value) -> parseInt(value)
+      onSet: (values) -> _.map values, (value) -> parseInt(value)
 
   events:
 

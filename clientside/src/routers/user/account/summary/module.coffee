@@ -40,7 +40,6 @@ class View extends Marionette.LayoutView
       onGet: (value) -> moment(value).format('MM-DD-YYYY')
 
   onRender: ->
-    console.log @model
     @stickit @model
     return
 

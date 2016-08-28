@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+_            = require 'lodash'
 Marionette   = require 'marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
@@ -40,7 +41,7 @@ class View extends Marionette.ItemView
       # Filter pageable collection on change.
 
       onChange: =>
-        @muscles = @ui.muscle.val() or []
+        @muscles = _.map @ui.muscle.val(), (value) -> parseInt(value)
         @filterCollection()
     .multiselect 'dataprovider', Data.Muscles
     .multiselect 'select', @muscles
@@ -56,7 +57,7 @@ class View extends Marionette.ItemView
 
     if @muscles.length > 0
       models = @collection.filter (model) =>
-        return model.get('muscle').toString() in @muscles
+        return _.intersection(@muscles, model.get('muscle')).length > 0
 
     @tableCollection.reset models
 

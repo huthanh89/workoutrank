@@ -41,7 +41,7 @@ class Model extends Backbone.Model
 
   defaults:
     name:   ''
-    muscle: 0
+    muscle: []
     count:  0
     body:   false
     first:  new Date()
@@ -80,7 +80,13 @@ class View extends Marionette.LayoutView
 
     '#strength-summary-muscle':
       observe: 'muscle'
-      onGet: (value) -> _.find(Data.Muscles, value:value).label
+      onGet: (values) ->
+        result = []
+        for value in values
+          result.push _.find(Data.Muscles, value: value).label
+        return _.truncate result.toString(),
+          length:    20,
+          separator: ' '
 
     '#strength-summary-count': 'count'
 
