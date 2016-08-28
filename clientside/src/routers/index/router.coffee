@@ -35,12 +35,12 @@ class Router extends Marionette.AppRouter
         return
 
       'signup': =>
-        @navigate('signup')
+        @navigate('signup', trigger: true)
         @signup()
         return
 
       'login': =>
-        @navigate('login')
+        @navigate('login', trigger: true)
         @login()
         return
 
@@ -61,12 +61,12 @@ class Router extends Marionette.AppRouter
         return
 
       'about': =>
-        @navigate('about')
+        @navigate('about', trigger: true)
         @about()
         return
 
       'feedback': =>
-        @navigate('feedback')
+        @navigate('feedback', trigger: true)
         @feedback()
         return
 

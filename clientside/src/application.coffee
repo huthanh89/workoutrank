@@ -157,7 +157,6 @@ class Application extends Marionette.Application
       mode:          'auto'
       trailingSlash: 'ignore'
 
-
     # Event is triggered the user navigate through out a page.
 
     Backbone.history.on 'route', (router, route, params) ->

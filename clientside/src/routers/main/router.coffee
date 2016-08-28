@@ -32,12 +32,12 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'home': =>
-        @navigate('home')
+        @navigate('home', trigger: true)
         @home()
         return
 
       'strengths': (muscle) =>
-        @navigate('strengths')
+        @navigate('strengths', trigger:true)
         @strengths(muscle)
         return
 
@@ -47,22 +47,22 @@ class Router extends Marionette.AppRouter
         return
 
       'calendar': =>
-        @navigate('calendar')
+        @navigate('calendar', trigger: true)
         @calendar()
         return
 
       'schedule': =>
-        @navigate('schedule')
+        @navigate('schedule', trigger: true)
         @schedule()
         return
 
       'logs': =>
-        @navigate('logs')
+        @navigate('logs', trigger: true)
         @logs()
         return
 
       'log:detail': (exerciseID) =>
-        @navigate("log/#{exerciseID}")
+        @navigate("log/#{exerciseID}", trigger: true)
         @logDetail(exerciseID)
         return
 

@@ -25,7 +25,7 @@ class Router extends Marionette.AppRouter
 
     @rootChannel.reply
       'account': =>
-        @navigate('account')
+        @navigate('account', trigger: true)
         @account()
         return
 
