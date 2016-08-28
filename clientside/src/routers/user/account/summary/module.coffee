@@ -2,7 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
+moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -35,8 +35,12 @@ class View extends Marionette.LayoutView
   bindings:
     '#account-summary-email':    'email'
     '#account-summary-username': 'username'
+    '#account-summary-birthday':
+      observe: 'birthday'
+      onGet: (value) -> moment(value).format('MM-DD-YYYY')
 
   onRender: ->
+    console.log @model
     @stickit @model
     return
 

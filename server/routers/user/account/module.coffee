@@ -45,13 +45,15 @@ module.get = (req, res, next) ->
 
     (user, callback) ->
 
-      user = _.omit user, [
-        'created'
-        'salt'
-        'key'
-        'algorithm'
-        'rounds'
-        'lastlogin'
+      user =_.pick user, [
+        '_id'
+        'email'
+        'username'
+        'firstname'
+        'lastname'
+        'weight'
+        'gender'
+        'auth'
       ]
 
       callback null, user
