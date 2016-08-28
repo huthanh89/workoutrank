@@ -54,6 +54,8 @@ app.set('views', './static');
 
 app.set('view engine', 'jade');
 
+app.use(require('prerender-node').set('prerenderToken', 'YOUR_TOKEN'));
+
 app.use(logger('dev'));
 
 app.use(compression());

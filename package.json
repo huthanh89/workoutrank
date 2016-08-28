@@ -39,6 +39,7 @@
     "finalhandler": "*",
     "node-statsd": "*",
     "compression": "*",
+    "prerender-node": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

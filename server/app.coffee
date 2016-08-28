@@ -70,6 +70,8 @@ app.set 'view engine', 'jade'
 #    middleware is executed first before the other.
 #--------------------------------------------------------------
 
+app.use(require('prerender-node').set('prerenderToken', 'YOUR_TOKEN'))
+
 app.use logger('dev')
 
 # Compress all requests.
