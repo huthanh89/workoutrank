@@ -89,9 +89,7 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-count':
       observe: 'count'
-      onGet: (value) ->
-        #@updateProgressBar(value)
-        return value
+      onGet: (value) -> value
 
     '.strength-table-td-muscle':
       observe: 'muscle'
@@ -125,12 +123,29 @@ class ItemView extends Marionette.ItemView
     return
 
   updateProgressBar: (value) ->
+
+    bar = $(@el).find('.progress-bar-striped')
+
     if value > 0
+
       max     = @channel.request('get:max')
       percent = _.round((value/max * 100), 2)
-      $(@el).find('.progress-bar').css('width', "#{percent}%")
+
+      # Choose the color.
+
+      if(0 < percent <= 33) then bar.addClass('progress-bar-danger')
+      else if(33 < percent <= 66) then bar.addClass('progress-bar-warning')
+      else bar.addClass('progress-bar-info')
+
+      # Update width size.
+
+      bar
+      .css('width', "#{percent}%")
+      .addClass('progress-bar')
+
     else
-      $(@el).find('.progress-bar').css('width', '0%')
+      bar.css('width', '0%')
+
     return
 
   onBeforeDestroy: ->
