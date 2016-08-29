@@ -157,7 +157,6 @@ class View extends Marionette.LayoutView
     return
 
   onDestroy: ->
-    console.log 'destroy channel'
     @channel.reset()
     return
 
