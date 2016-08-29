@@ -100,7 +100,7 @@ class View extends Marionette.LayoutView
 
     @dateModel = new Date.Model()
 
-    @channel = new Radio.channel('weights')
+    @channel = new Radio.channel(@cid)
     @channel.reply
       'add': =>
         @addWeight
@@ -156,7 +156,8 @@ class View extends Marionette.LayoutView
     @pageableCollection.fullCollection.reset models
     return
 
-  onBeforeDestroy: ->
+  onDestroy: ->
+    console.log 'destroy channel'
     @channel.reset()
     return
 

@@ -119,7 +119,7 @@ class View extends Marionette.LayoutView
       .omit '_id'
       .value()
 
-    @channel = new Radio.channel('strength:detail')
+    @channel = new Radio.channel(@cid)
 
     @channel.reply
       'add': =>

@@ -88,7 +88,7 @@ class View extends Marionette.LayoutView
       'muscle'
     ]
     @rootChannel = Backbone.Radio.channel('root')
-    @channel     = new Backbone.Radio.channel('strengths')
+    @channel     = new Backbone.Radio.channel(@cid)
     @isOwner     =  Backbone.Radio.channel('user').request 'isOwner'
 
     @channel.reply
