@@ -17,6 +17,14 @@ require 'backbone.stickit'
 require 'bootstrap.datetimepicker'
 
 #-------------------------------------------------------------------------------
+# Given an array of models, return the latest date.
+#-------------------------------------------------------------------------------
+
+lastestWeight = (collection) ->
+  model = _.maxBy collection.models, (model) -> model.get('date')
+  return model.get('weight')
+
+#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
@@ -97,6 +105,9 @@ class View extends Marionette.ItemView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+
+    @mergeOptions options, 'wLogs'
+
     @model.set('date', new Date(options.date))
 
     # If there are data, use the latest data found in collection
@@ -109,8 +120,10 @@ class View extends Marionette.ItemView
 
     user = Backbone.Radio.channel('user').request 'user'
 
-    if @model.get('body')
-      @model.set('weight', user.get('weight'))
+    # Set to latest wLogs entry.
+
+    if @model.get('body') and @wLogs.length
+      @model.set 'weight', lastestWeight @wLogs
 
   onRender: ->
 

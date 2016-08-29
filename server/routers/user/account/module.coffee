@@ -12,6 +12,7 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 User = mongoose.model('user')
+WLog = mongoose.model('wlog')
 
 #-------------------------------------------------------------------------------
 # GET
@@ -76,13 +77,26 @@ module.put = (req, res, next) ->
       user.firstname = req.body.firstname
       user.lastname  = req.body.lastname
       user.height    = req.body.height
-      user.weight    = req.body.weight
       user.gender    = req.body.gender
 
       user.save (err, entry) ->
         return callback err.message if err
         return callback null, entry
 
+      return
+
+    (user, callback) ->
+
+      # Create a new wlog entry.
+
+      WLog.create
+        date:     moment()
+        note:     ''
+        weight:   req.body.weight
+        user:     req.session.user._id
+      , (err) ->
+        return callback err.message if err
+        return callback null, user
       return
 
   ], (err, user) ->

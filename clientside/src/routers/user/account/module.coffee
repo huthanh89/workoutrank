@@ -61,7 +61,7 @@ class View extends Marionette.LayoutView
           @rootChannel.request 'message:error', response
           return
 
-  constructor: (options) ->
+  constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 

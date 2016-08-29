@@ -110,7 +110,10 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @mergeOptions options, 'strengthID'
+    @mergeOptions options, [
+      'strengthID'
+      'wLogs'
+    ]
 
     attributes = _.chain @model.attributes
       .extend
@@ -172,6 +175,7 @@ class View extends Marionette.LayoutView
       collection: @collection
       model:      new Add.Model _.omit(@model.attributes, '_id')
       date:       @model.get('date')
+      wLogs:      @wLogs
     return
 
   updatePageableCollection: ->

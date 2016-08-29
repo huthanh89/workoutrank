@@ -174,7 +174,14 @@ class Router extends Marionette.AppRouter
 
         return
 
-    ], (error, sConf, sLogs) =>
+      (sConf, sLogs, callback) ->
+        wLogs = new Weight.Collection()
+        wLogs.fetch
+          success: (wLogs) -> callback null, sConf, sLogs, wLogs
+          error: (model, error) -> callback error
+        return
+
+    ], (error, sConf, sLogs, wLogs) =>
 
       @rootChannel.request 'spin:page:loader', false
 
@@ -187,6 +194,7 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new View
           model:      sConf
           collection: sLogs
+          wLogs:      wLogs
 
       return
 
@@ -353,7 +361,6 @@ class Router extends Marionette.AppRouter
 
       (callback) ->
         wLogs = new Weight.Collection()
-
         wLogs.fetch
           success: (wLogs) -> callback null, wLogs
           error: (model, error) -> callback error

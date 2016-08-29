@@ -2,10 +2,12 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Account    = require './account/module'
 Profile    = require './profile/module'
+Weight     = require '../main/weight/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -63,14 +65,26 @@ class Router extends Marionette.AppRouter
 
   profile: ->
     @navChannel.request('nav:main')
-    model = new Profile.Model()
-    model.fetch
-      success: (model) =>
-        @rootView.content.show new Profile.View
-          model: model
+    async.waterfall [
+      (callback) ->
+        model = new Profile.Model()
+        model.fetch
+          success: (model) -> callback null, model
+          error: (model, error) -> callback error
+      (userModel, callback) ->
+        wLogs = new Weight.Collection()
+        wLogs.fetch
+          success: (wLogs) -> callback null, userModel, wLogs
+          error: (model, error) -> callback error
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+
+    ], (error, userModel, wLogs) =>
+      if error
+        @rootChannel.request 'message:error', error
+      else
+        @rootView.content.show new Profile.View
+          model: userModel
+          wLogs: wLogs
         return
     return
 

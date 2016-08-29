@@ -16,6 +16,14 @@ require 'backbone.stickit'
 require 'touchspin'
 
 #-------------------------------------------------------------------------------
+# Given an array of models, return the latest date.
+#-------------------------------------------------------------------------------
+
+lastestWeight = (collection) ->
+  model = _.maxBy collection.models, (model) -> model.get('date')
+  return model.get('weight')
+
+#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
@@ -86,6 +94,10 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, 'wLogs'
+
+    if @wLogs.length > 0
+      @model.set 'weight', lastestWeight(@wLogs)
 
   onRender: ->
 
