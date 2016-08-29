@@ -87,7 +87,11 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-name': 'name'
 
-    '.strength-table-td-count': 'count'
+    '.strength-table-td-count':
+      observe: 'count'
+      onGet: (value) ->
+        #@updateProgressBar(value)
+        return value
 
     '.strength-table-td-muscle':
       observe: 'muscle'
@@ -106,13 +110,22 @@ class ItemView extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @mergeOptions options, [
-      'channel'
-    ]
+    @mergeOptions options, 'channel'
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()
+    return
+
+  onShow: ->
+    @updateProgressBar(@model.get('count'))
+    return
+
+  updateProgressBar: (value) ->
+    max     = @channel.request('get:max')
+    percent = _.round((value/max * 100), 2)
+
+    $(@el).find('.progress-bar').css('width', "#{percent}%")
     return
 
   onBeforeDestroy: ->
@@ -142,6 +155,9 @@ class View extends Marionette.CompositeView
     @mergeOptions options, [
       'channel'
     ]
+
+    @channel.reply
+      'get:max': => _.maxBy(@collection.models, (model) -> model.get('count')).get('count')
 
   childViewOptions: ->
     return {
