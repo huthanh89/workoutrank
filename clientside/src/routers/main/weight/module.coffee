@@ -109,7 +109,7 @@ class View extends Marionette.LayoutView
 
     @pageableCollection = new Table.Collection @collection.models
     @updatePageableCollection()
-    
+
     @summaryModel = new Summary.Model {},
       wLogs: @collection
 
