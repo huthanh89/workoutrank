@@ -1,0 +1,42 @@
+#weight-modal-view
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#weight-home
+                a Home
+            li.active
+                span Weight
+.row
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading.clearfix
+                .pull-right
+                    button.btn.btn-xs.btn-primary#weight-detail-add
+                        i.fa.fa-fw.fa-plus
+                        = ' '
+                        span Add
+                .panel-title.clearfix
+                    i.fa.fa-fw.fa-lg.fa-tachometer
+                    = ' '
+                    span Weight
+            .panel-body
+                #weight-date-view
+            #weight-table-view
+            .panel-footer.clearfix
+                a.pull-right#weight-schedule-btn
+                    i.fa.fa-fw.fa-calendar-plus-o
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading.clearfix Calendar
+            .panel-body
+                #weight-calendar-view
+            .panel-footer.clearfix
+                a.pull-right#weight-calendar-btn
+                    i.fa.fa-fw.fa-calendar-check-o
+    .col-sm-6
+        .panel.panel-info
+            .panel-heading
+                .panel-title.clearfix
+                    span Summary
+            .panel-body
+                #weight-summary-view

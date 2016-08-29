@@ -20,6 +20,7 @@ urls = [
   '/strengths'
   '/strength/:sid'
   '/strength/:sid/log'
+  '/weights'
   '/logs'
   '/log/:lid'
 ]
@@ -52,6 +53,7 @@ Home     = require './home/module'
 Strength = require './strength/module'
 Log      = require './log/module'
 SLog     = require './slog/module'
+WLog     = require './wlog/module'
 Schedule = require './schedule/module'
 
 #-------------------------------------------------------------------------------
@@ -118,6 +120,25 @@ router.post '/api/schedule', Schedule.post
 
 # Edit schedules.
 router.put '/api/schedule/:sid', Schedule.put
+
+#-------------------------------------------------------------------------------
+# Weight Logs
+#-------------------------------------------------------------------------------
+
+# Get all slogs.
+router.get '/api/wlogs', WLog.list
+
+# Post a new wlog record.
+router.post '/api/wlogs', WLog.post
+
+# Get a specific wlog.
+router.get '/api/wlogs/:sid', WLog.get
+
+# Edit a specific wlog record.
+router.put '/api/wlogs/:sid', WLog.put
+
+# Delete a specific wlog record.
+router.delete '/api/wlogs/:sid', WLog.delete
 
 #-------------------------------------------------------------------------------
 # Exports

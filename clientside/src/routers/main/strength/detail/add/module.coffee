@@ -45,7 +45,6 @@ class View extends Marionette.ItemView
 
   ui:
     dialog: '.modal'
-    type:   '#strength-modal-type'
     rep:    '#strength-modal-rep'
     weight: '#strength-modal-weight'
     submit: '#strength-modal-submit'
@@ -147,6 +146,7 @@ class View extends Marionette.ItemView
   onBeforeDestroy: ->
     $('.modal-backdrop').remove()
     $('body').removeClass 'modal-open'
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

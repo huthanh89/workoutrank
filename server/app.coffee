@@ -37,6 +37,7 @@ db.on 'open', ->
 require('./models/user') mongoose
 require('./models/strength') mongoose
 require('./models/slog') mongoose
+require('./models/wlog') mongoose
 require('./models/schedule') mongoose
 require('./models/feedback') mongoose
 

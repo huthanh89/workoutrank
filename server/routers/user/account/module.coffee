@@ -6,27 +6,12 @@ _        = require 'lodash'
 moment   = require 'moment'
 async    = require 'async'
 mongoose = require 'mongoose'
-Err      = require '../../error'
-Validate = require '../../validate'
 
 #-------------------------------------------------------------------------------
 # Models
 #-------------------------------------------------------------------------------
 
 User = mongoose.model('user')
-
-#-------------------------------------------------------------------------------
-# Schema for POST and PUT validation
-#-------------------------------------------------------------------------------
-
-schema =
-  sunday:    []
-  monday:    []
-  tuesday:   []
-  wednesday: []
-  thursday:  []
-  friday:    []
-  saturday:  []
 
 #-------------------------------------------------------------------------------
 # GET
@@ -51,6 +36,7 @@ module.get = (req, res, next) ->
         'username'
         'firstname'
         'lastname'
+        'height'
         'weight'
         'gender'
         'auth'
@@ -76,10 +62,6 @@ module.put = (req, res, next) ->
 
   async.waterfall [
 
-    #(callback) ->
-
-    #  return Validate.isValid(req.body, schema, callback)
-
     (callback) ->
 
       User.findById req.session.user._id, (err, user) ->
@@ -93,6 +75,7 @@ module.put = (req, res, next) ->
       user.username  = req.body.username
       user.firstname = req.body.firstname
       user.lastname  = req.body.lastname
+      user.height    = req.body.height
       user.weight    = req.body.weight
       user.gender    = req.body.gender
 

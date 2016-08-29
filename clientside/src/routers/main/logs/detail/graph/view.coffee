@@ -61,7 +61,8 @@ plotLine = (text, value) ->
     dashStyle: 'shortdash'
     zIndex:     5
     label:
-      text:   text
+      #text:   text
+      text:   ''
       float:  true
       align: 'left'
       x:      5

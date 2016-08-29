@@ -8,7 +8,7 @@ mongoose = require 'mongoose'
 # Schema
 #-------------------------------------------------------------------------------
 
-SlogSchema = new mongoose.Schema
+SLogSchema = new mongoose.Schema
   date:
     type: Date
     required: true
@@ -33,7 +33,7 @@ SlogSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('slog', SlogSchema)
+model = mongoose.model('slog', SLogSchema)
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -39,8 +39,16 @@ class View extends Marionette.ItemView
       @rootChannel.request('schedule')
       return
 
+    'click #home-weights': ->
+      @rootChannel.request('weights')
+      return
+
     'click #home-logout': ->
       @rootChannel.request('logout')
+      return
+
+    'click #home-profile': ->
+      @rootChannel.request('profile')
       return
 
     'click #home-account': ->

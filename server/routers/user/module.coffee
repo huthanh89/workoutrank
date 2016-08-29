@@ -15,6 +15,7 @@ index = (req, res, next) ->
   return
 
 router.get '/account', index
+router.get '/profile', index
 
 #-------------------------------------------------------------------------------
 # Import Routes

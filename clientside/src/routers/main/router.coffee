@@ -11,6 +11,7 @@ Calendar   = require './calendar/module'
 Schedule   = require './schedule/module'
 Strength   = require './strength/module'
 Logs       = require './logs/module'
+Weight     = require './weight/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -66,6 +67,11 @@ class Router extends Marionette.AppRouter
         @logDetail(exerciseID)
         return
 
+      'weights': =>
+        @navigate('weights', trigger: true)
+        @weights()
+        return
+
   # Routes used for backbone urls.
   # Handle routes with APIs at the bottom.
   # Do not append "(/)" this will cause the view to load twice.
@@ -78,6 +84,7 @@ class Router extends Marionette.AppRouter
     'summary':        'summary'
     'calendar':       'calendar'
     'schedule':       'schedule'
+    'weights':        'weights'
     'logs':           'logs'
     'log/:lid/':      'logDetail'
 
@@ -335,6 +342,33 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new View
           collection: sLogs
           sConf:      sConfs.get(exerciseID)
+
+      return
+
+  weights: ->
+
+    @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
+    async.waterfall [
+
+      (callback) ->
+        wLogs = new Weight.Collection()
+
+        wLogs.fetch
+          success: (wLogs) -> callback null, wLogs
+          error: (model, error) -> callback error
+        return
+
+    ], (error, wLogs) =>
+
+      @rootChannel.request 'spin:page:loader', false
+
+      if error
+        @rootChannel.request 'message:error', error
+      else
+        View = Weight.View
+        @rootView.content.show new View
+          collection: wLogs
 
       return
 

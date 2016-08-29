@@ -383,9 +383,6 @@ Exercise
 /*-----------------------------------------------------------------------------
 Strength
 -----------------------------------------------------------------------------*/
-#strength-back {
-  min-width: 70px;
-}
 #strength-table-view tbody tr {
   cursor: pointer;
 }
@@ -402,17 +399,6 @@ Strength
   list-style-type: none;
 }
 #strength-table thead {
-  font-weight: 600;
-}
-.strength-cardtable table {
-  border-style: double;
-  border-width: 1px;
-}
-.strength-cardtable table tbody:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.strength-cardtable table td:first-child {
   font-weight: 600;
 }
 .strength-filter-btn {
@@ -452,6 +438,36 @@ Strength
   z-index: 0;
 }
 /*-----------------------------------------------------------------------------
+Weight
+-----------------------------------------------------------------------------*/
+#weight-date-datepicker {
+  text-align: center;
+  font-size: 18px;
+  z-index: 0;
+}
+#weight-date-prev {
+  z-index: 0;
+}
+#weight-date-next {
+  z-index: 0;
+}
+#weight-calendar-ui {
+  text-align: center;
+}
+#weight-calendar-ui .datepicker {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.weight-calendar-td {
+  font-weight: bold;
+  color: #2B2922;
+  background: #ffcc66;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid orange !important;
+}
+/*-----------------------------------------------------------------------------
 Calendar
 -----------------------------------------------------------------------------*/
 #calendar-table-edit {
@@ -482,10 +498,21 @@ Home
 /*-----------------------------------------------------------------------------
 Account
 -----------------------------------------------------------------------------*/
-#account-weight {
+#account-container {
+  float: none;
+  margin: 0 auto;
+}
+/*-----------------------------------------------------------------------------
+Profile
+-----------------------------------------------------------------------------*/
+#profile-container {
+  float: none;
+  margin: 0 auto;
+}
+#profile-weight {
   z-index: 0;
 }
-.account-weight-btn {
+.profile-weight-btn {
   z-index: 0!important;
 }
 /*-----------------------------------------------------------------------------

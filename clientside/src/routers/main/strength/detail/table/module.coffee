@@ -16,7 +16,6 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
-require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -92,6 +91,10 @@ class ItemView extends Marionette.ItemView
 
   onRender: ->
     @stickit()
+    return
+
+  onBeforeDestroy: ->
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

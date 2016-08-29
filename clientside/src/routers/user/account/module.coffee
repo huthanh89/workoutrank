@@ -43,30 +43,10 @@ class View extends Marionette.LayoutView
   regions:
     summary: '#account-summary'
 
-  ui:
-    weight: '#account-weight'
-    gender: '#account-gender'
-    submit: '#account-submit'
-
-  bindings:
-    '#account-firstname': 'firstname'
-    '#account-lastname':  'lastname'
-    '#account-email':     'email'
-    '#account-password':  'password'
-
-    '#account-weight':
-      observe: 'weight'
-      onSet: (value) -> parseInt(value)
-
   events:
 
     'click #account-home': ->
       @rootChannel.request 'home'
-      return
-
-    'change #account-gender': ->
-      value = $('#account-gender input:checked').val()
-      @model.set('gender', parseInt(value, 10))
       return
 
     'submit': (event) ->
@@ -85,32 +65,9 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-  onRender: ->
-
-    @ui.submit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
-
-    @ui.weight.TouchSpin
-      postfix:          'pounds'
-      buttondown_class: 'btn btn-info account-weight-btn'
-      buttonup_class:   'btn btn-info account-weight-btn'
-      min:              1
-      max:              99999
-
-    @stickit()
-    return
-
   onShow: ->
     @showChildView 'summary', new Summary.View
       model: @model
-
-    gender = @model.get('gender')
-    $("#account-gender :radio[value=#{gender}]").prop 'checked', true
-
-    return
-
-  onBeforeDestroy: ->
-    @ui.weight.TouchSpin('destroy')
-    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

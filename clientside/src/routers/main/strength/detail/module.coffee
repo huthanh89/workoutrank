@@ -50,7 +50,7 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    add: '#strength-detail-add'
+    add:  '#strength-detail-add'
     edit: '#strength-detail-edit'
 
   regions:
@@ -183,6 +183,7 @@ class View extends Marionette.LayoutView
     return
 
   onBeforeDestroy: ->
+    @unstickit()
     @channel.reset()
     return
 

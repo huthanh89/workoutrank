@@ -5,6 +5,7 @@
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Account    = require './account/module'
+Profile    = require './profile/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -24,9 +25,15 @@ class Router extends Marionette.AppRouter
     # When changing url, set trigger true to trigger onRoute() call.
 
     @rootChannel.reply
+
       'account': =>
         @navigate('account', trigger: true)
         @account()
+        return
+
+      'profile': =>
+        @navigate('profile', trigger: true)
+        @profile()
         return
 
   # Routes used for backbone urls.
@@ -36,6 +43,7 @@ class Router extends Marionette.AppRouter
 
   routes:
     'account': 'account'
+    'profile': 'profile'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -51,7 +59,19 @@ class Router extends Marionette.AppRouter
       error: (model, response) =>
         @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
+    return
 
+  profile: ->
+    @navChannel.request('nav:main')
+    model = new Profile.Model()
+    model.fetch
+      success: (model) =>
+        @rootView.content.show new Profile.View
+          model: model
+        return
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+        return
     return
 
 #-------------------------------------------------------------------------------

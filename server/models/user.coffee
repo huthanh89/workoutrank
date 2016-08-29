@@ -33,6 +33,8 @@ UserSchema = new mongoose.Schema
   birthday:
     type: Date
     required: true
+  height:
+    type: Number
   weight:
     type: Number
   gender:

@@ -1,0 +1,50 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#profile-home
+                a Home
+            li.active
+                span Profile
+.row
+    .col-sm-7#profile-container
+        .panel.panel-info
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-folder-open
+                    = ' '
+                    | Profile
+            .panel-body
+                form.form-horizontal
+                    .form-group
+                        label.col-sm-2.control-label(for='profile-firstname') First Name
+                        .col-sm-10
+                            input.form-control#profile-firstname(type='text', placeholder='First Name', name='firstname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                    .form-group
+                        label.col-sm-2.control-label(for='profile-lastname') Last Name
+                        .col-sm-10
+                            input.form-control#profile-lastname(type='text', placeholder='Last Name', name='lastname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                    .form-group#profile-gender
+                        label.col-sm-2.control-label(for='profile-gender') Gender
+                        .col-sm-10
+                            .radio.radio-inline
+                                label
+                                    input(type='radio', name='optradio', value=0)
+                                    | Female
+                            .radio.radio-inline
+                                label
+                                    input(type='radio', name='optradio', value=1)
+                                    | Male
+                    .form-group#profile-height-container
+                        label.col-sm-2.control-label(for='profile-height') Height
+                        .col-sm-10
+                            input.form-control#profile-height(type="number", placeholder=0 required)
+                    .form-group#profile-weight-container
+                        label.col-sm-2.control-label(for='profile-weight') Current Weight
+                        .col-sm-10
+                            input.form-control#profile-weight(type="number", placeholder=0 required)
+                    .form-group
+                        .col-sm-12
+                            button.btn.btn-primary.pull-right#profile-submit
+                                i.fa.fa-cloud-upload
+                                = ' '
+                                | Update

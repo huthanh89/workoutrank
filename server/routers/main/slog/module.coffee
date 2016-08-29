@@ -25,7 +25,7 @@ module.list = (req, res, next) ->
     (callback) ->
 
       SLog.find
-        user: req.session.user.id
+        user: req.session.user._id
       .exec (err, slogs) ->
         return callback err.message if err
         return callback null, slogs
