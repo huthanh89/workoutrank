@@ -31,15 +31,8 @@ class Model extends Backbone.Model
 # Pageable Collection
 #-------------------------------------------------------------------------------
 
-class Collection extends Backbone.PageableCollection
-
+class Collection extends Backbone.Collection
   model: Model
-
-  mode: 'client'
-
-  state:
-    currentPage: 1
-    pageSize:    5
 
 #-------------------------------------------------------------------------------
 # Null View

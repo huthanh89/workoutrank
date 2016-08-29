@@ -131,6 +131,7 @@ class View extends Marionette.LayoutView
         return
 
     @pageableCollection = new Table.Collection @collection.models
+    @updatePageableCollection()
 
     @summaryModel = new Summary.Model {},
       sConf: @model
@@ -183,7 +184,7 @@ class View extends Marionette.LayoutView
       dateA = moment(model.get('date')).startOf('day')
       dateB = moment(@model.get('date')).startOf('day')
       return dateA.isSame(dateB)
-    @pageableCollection.fullCollection.reset models
+    @pageableCollection.reset models
     return
 
   onBeforeDestroy: ->
