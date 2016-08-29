@@ -96,12 +96,15 @@ class ItemView extends Marionette.ItemView
     '.strength-table-td-muscle':
       observe: 'muscle'
       onGet: (values) ->
-        result = []
-        for value in values
-          result.push _.find(Data.Muscles, value: value).label
-        return _.truncate result.toString(),
-          length:    20,
-          separator: ' '
+        if values.length > 0
+          result = []
+          for value in values
+            result.push _.find(Data.Muscles, value: value).label
+          return _.truncate result.toString(),
+            length:    20,
+            separator: ' '
+        else
+          return '---'
 
   events:
     'click': ->
@@ -122,10 +125,12 @@ class ItemView extends Marionette.ItemView
     return
 
   updateProgressBar: (value) ->
-    max     = @channel.request('get:max')
-    percent = _.round((value/max * 100), 2)
-
-    $(@el).find('.progress-bar').css('width', "#{percent}%")
+    if value > 0
+      max     = @channel.request('get:max')
+      percent = _.round((value/max * 100), 2)
+      $(@el).find('.progress-bar').css('width', "#{percent}%")
+    else
+      $(@el).find('.progress-bar').css('width', '0%')
     return
 
   onBeforeDestroy: ->

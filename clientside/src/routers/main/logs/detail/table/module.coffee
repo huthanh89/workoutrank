@@ -78,6 +78,7 @@ class View extends Marionette.ItemView
 
     '#log-table-weight-sd':
       observe: 'weightSD'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-weight-total':
       observe: 'weightTotal'
@@ -93,6 +94,7 @@ class View extends Marionette.ItemView
 
     '#log-table-rep-sd':
       observe: 'repSD'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-rep-total':
       observe: 'repTotal'

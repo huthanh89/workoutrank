@@ -123,6 +123,7 @@ class View extends Marionette.ItemView
       max:              99999
 
     @ui.weight.TouchSpin
+      postfix:          'pounds'
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1

@@ -106,6 +106,7 @@ class View extends Marionette.ItemView
     date = @model.get('date')
 
     @ui.weight.TouchSpin
+      postfix:          'pounds'
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              1

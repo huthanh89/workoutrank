@@ -81,12 +81,15 @@ class View extends Marionette.LayoutView
     '#strength-summary-muscle':
       observe: 'muscle'
       onGet: (values) ->
-        result = []
-        for value in values
-          result.push _.find(Data.Muscles, value: value).label
-        return _.truncate result.toString(),
-          length:    20,
-          separator: ' '
+        if values.length > 0
+          result = []
+          for value in values
+            result.push _.find(Data.Muscles, value: value).label
+          return _.truncate result.toString(),
+            length:    20,
+            separator: ' '
+        else
+          return '---'
 
     '#strength-summary-count': 'count'
 
