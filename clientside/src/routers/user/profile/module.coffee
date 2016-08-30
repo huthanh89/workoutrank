@@ -85,7 +85,7 @@ class View extends Marionette.LayoutView
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          swal('Success', 'Profile Updated! Your ready to go out and explore.', 'success')
+          swal('Success!', 'Profile Updated. Your ready to go off and use all our features.', 'success')
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
@@ -130,7 +130,7 @@ class View extends Marionette.LayoutView
     # If is new, tell user to fill profile.
 
     if @isNew
-      swal('Hi new user!', 'Lets get started. Please fill out a couple of info and click update.')
+      swal('Hi new user! Lets get started. ', 'Please fill out these info correctly and click update. We\'ll use it for later calculations.')
 
     return
 

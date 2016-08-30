@@ -108,6 +108,7 @@ class Router extends Marionette.AppRouter
       (callback) =>
 
         user = Backbone.Radio.channel('user').request('user')
+
         user.fetch
           success: (model) =>
 
