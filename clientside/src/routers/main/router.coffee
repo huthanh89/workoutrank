@@ -99,18 +99,43 @@ class Router extends Marionette.AppRouter
   # Update Navbar and show view.
 
   home: ->
+
+
     @navChannel.request('nav:main')
     @rootChannel.request 'spin:page:loader', true
-    model = new Home.Model()
-    model.fetch
-      success: (model) =>
-        @rootChannel.request 'spin:page:loader', false
-        @rootView.content.show new Home.View
-          model: model
-        return
-      error: (model, response) =>
-        @rootChannel.request 'message:error', response
-        return
+    async.waterfall [
+
+      (callback) =>
+
+        user = Backbone.Radio.channel('user').request('user')
+        user.fetch
+          success: (model) =>
+
+            # If profile is empty, force user to fill form.
+
+            if '' in _.values(model.attributes)
+              @rootChannel.request 'profile', true
+
+            return callback null
+          error: (model, error) -> callback error
+
+      (callback) ->
+
+        model = new Home.Model()
+        model.fetch
+          success: (model) -> callback null, model
+          error: (model, error) -> callback error
+
+    ], (error, model) =>
+
+      @rootChannel.request 'spin:page:loader', false
+      if error
+        @rootChannel.request 'message:error', error
+
+      @rootView.content.show new Home.View
+        model: model
+      return
+
     return
 
   strengths: (muscle) ->

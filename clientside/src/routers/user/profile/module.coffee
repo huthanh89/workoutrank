@@ -85,7 +85,7 @@ class View extends Marionette.LayoutView
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          swal('Success', 'Profile Updated!', 'success')
+          swal('Success', 'Profile Updated! Your ready to go out and explore.', 'success')
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
@@ -94,7 +94,10 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @mergeOptions options, 'wLogs'
+    @mergeOptions options, [
+      'wLogs'
+      'isNew'
+    ]
 
     if @wLogs.length > 0
       @model.set 'weight', lastestWeight(@wLogs)
@@ -123,6 +126,11 @@ class View extends Marionette.LayoutView
   onShow: ->
     gender = @model.get('gender')
     $("#profile-gender :radio[value=#{gender}]").prop 'checked', true
+
+    # If is new, tell user to fill profile.
+
+    if @isNew
+      swal('Hi new user!', 'Lets get started. Please fill out a couple of info and click update.')
 
     return
 

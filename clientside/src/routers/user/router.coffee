@@ -33,9 +33,9 @@ class Router extends Marionette.AppRouter
         @account()
         return
 
-      'profile': =>
+      'profile': (isNew) =>
         @navigate('profile', trigger: true)
-        @profile()
+        @profile(isNew)
         return
 
   # Routes used for backbone urls.
@@ -63,7 +63,8 @@ class Router extends Marionette.AppRouter
         return
     return
 
-  profile: ->
+  profile: (isNew) ->
+
     @navChannel.request('nav:main')
     async.waterfall [
       (callback) ->
@@ -85,6 +86,7 @@ class Router extends Marionette.AppRouter
         @rootView.content.show new Profile.View
           model: userModel
           wLogs: wLogs
+          isNew: isNew
         return
     return
 
