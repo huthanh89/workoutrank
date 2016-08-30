@@ -2,27 +2,58 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-moment    = require 'moment'
-async     = require 'async'
-mongoose  = require 'mongoose'
+_        = require 'lodash'
+moment   = require 'moment'
+async    = require 'async'
+mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Post
+# Models
+#-------------------------------------------------------------------------------
+
+User = mongoose.model('user')
+
+#-------------------------------------------------------------------------------
+# GET
 #-------------------------------------------------------------------------------
 
 exports.get = (req, res) ->
 
-  if req.session.user
-    res
-    .status 201
-    .json req.session.user
+  async.waterfall [
 
-  else
-    res
-    .status 401
-    .end()
+    (callback) ->
 
-  return
+      User.findById req.session.user._id, (err, user) ->
+        return callback err if err
+        return callback null, user
+      return
+
+    (user, callback) ->
+
+      user =_.pick user, [
+        '_id'
+        'email'
+        'username'
+        'firstname'
+        'lastname'
+        'height'
+        'weight'
+        'gender'
+        'auth'
+        'height'
+      ]
+
+      callback null, user
+      return
+
+  ], (err, user) ->
+
+    if err
+      res
+      .status 400
+      .json   err
+
+    return res.json user
 
 
 #-------------------------------------------------------------------------------

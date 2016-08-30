@@ -27,6 +27,9 @@ class User extends Backbone.Model
     firstname: ''
     lastname:  ''
     email:     ''
+    height:    0
+    gender:    0
+    auth:      1
 
 #-------------------------------------------------------------------------------
 # RootView

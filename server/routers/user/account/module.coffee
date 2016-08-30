@@ -41,6 +41,7 @@ module.get = (req, res, next) ->
         'weight'
         'gender'
         'auth'
+        'height'
       ]
 
       callback null, user

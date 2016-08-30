@@ -98,6 +98,7 @@ exports.post = (req, res) ->
           'weight'
           'gender'
           'auth'
+          'height'
         ]
 
         # WIP Setting up a remember me.

@@ -26,9 +26,7 @@ firstDate = (collection) ->
 # Given an array of models, return the latest date.
 #-------------------------------------------------------------------------------
 
-lastDate = (collection) ->
-  model = _.maxBy collection.models, (model) -> model.get('date')
-  return model.get('date')
+latestModel = (collection) -> _.maxBy collection.models, (model) -> model.get('date')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -49,10 +47,14 @@ class Model extends Backbone.Model
     @update options.wLogs
 
   update: (wLogs) =>
+
+    model = latestModel wLogs
+
     @set
-      count:  wLogs.length
-      first:  if wLogs.length then firstDate(wLogs) else null
-      last:   if wLogs.length then lastDate(wLogs) else null
+      count:      wLogs.length
+      firstDate:  if wLogs.length then firstDate(wLogs) else null
+      lastDate:   if wLogs.length then model.get('date') else null
+      lastWeight: model.get('weight')
     return
 
 #-------------------------------------------------------------------------------
@@ -68,12 +70,29 @@ class View extends Marionette.LayoutView
     '#weight-summary-count': 'count'
 
     '#weight-summary-first':
-      observe: 'first'
+      observe: 'firstDate'
       onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
 
     '#weight-summary-last':
-      observe: 'last'
+      observe: 'lastDate'
       onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
+
+    '#weight-summary-current-weight':
+      observe: 'lastWeight'
+      onGet: (value) -> value + ' lb'
+
+
+    '#weight-summary-bmi':
+      observe: 'lastWeight'
+      onGet: (value) ->
+        height = @userChannel.get('height')
+        weight = value
+        bmi = _.round ((weight / (height * height)) * 703), 2
+        return bmi
+
+  constructor: ->
+    super
+    @userChannel = Backbone.Radio.channel('user').request('user')
 
   onRender: ->
     @stickit @model

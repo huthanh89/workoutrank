@@ -185,6 +185,7 @@ exports.post = (req, res, next) ->
         'weight'
         'gender'
         'auth'
+        'height'
       ]
 
       req.session.user = user
