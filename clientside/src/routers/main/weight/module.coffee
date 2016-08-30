@@ -62,24 +62,12 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'home'
       return
 
-    'click #weight-journals': ->
-      @rootChannel.request 'weights'
-      return
-
     'click #weight-detail-add': ->
       @channel.request 'add'
       return
 
-    'click #weight-graph-btn': ->
-      @rootChannel.request 'log:detail', @model.get('exercise')
-      return
-
-    'click #weight-calendar-btn': ->
-      @rootChannel.request 'calendar'
-      return
-
-    'click #weight-schedule-btn': ->
-      @rootChannel.request 'schedule'
+    'click .weight-body-btn': ->
+      @rootChannel.request 'body'
       return
 
   collectionEvents:
@@ -128,8 +116,8 @@ class View extends Marionette.LayoutView
       collection: @pageableCollection
       channel:    @channel
 
-    @showChildView 'summary', new Summary.View
-      model: @summaryModel
+    #@showChildView 'summary', new Summary.View
+    #  model: @summaryModel
 
     @showCalendar()
 

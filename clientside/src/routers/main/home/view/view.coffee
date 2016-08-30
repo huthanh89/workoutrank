@@ -14,6 +14,9 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
+  ui:
+    bodyIcon: '#home-body-icon'
+
   bindings:
     '#home-exercise-count': 'sLogs'
 
@@ -43,6 +46,10 @@ class View extends Marionette.ItemView
       @rootChannel.request('weights')
       return
 
+    'click #home-body': ->
+      @rootChannel.request('body')
+      return
+
     'click #home-logout': ->
       @rootChannel.request('logout')
       return
@@ -58,8 +65,14 @@ class View extends Marionette.ItemView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+    @user  = Backbone.Radio.channel('user').request 'user'
 
   onRender: ->
+
+    gender = @user.get 'gender'
+
+    @ui.bodyIcon.addClass(if gender then 'fa-male' else 'fa-female')
+
     @stickit()
     return
 

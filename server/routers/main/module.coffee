@@ -21,6 +21,7 @@ urls = [
   '/strength/:sid'
   '/strength/:sid/log'
   '/weights'
+  '/body'
   '/logs'
   '/log/:lid'
 ]

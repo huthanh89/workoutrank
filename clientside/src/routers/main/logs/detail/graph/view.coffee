@@ -57,7 +57,7 @@ plotLine = (text, value) ->
   return {
     value:      value
     width:      2
-    color:     'grey'
+    color:     'red'
     dashStyle: 'shortdash'
     zIndex:     5
     label:

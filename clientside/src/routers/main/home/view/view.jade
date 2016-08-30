@@ -4,7 +4,7 @@
             li.active
                 span Home
 .row
-    .col-sm-6
+    .col-md-8.col-center
         .panel.panel-info
             .panel-heading
                 h3.panel-title
@@ -31,19 +31,35 @@
                         b
                             = ' '
                             | Calendar
-                li.list-group-item#home-logs
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-bar-chart
-                    a
-                        b
-                            = ' '
-                            | Graphs
                 li.list-group-item#home-weights
                     i.nav-icon.fa.fa-fw.fa-lg.fa-tachometer
                     a
                         b
                             = ' '
                             | Weight
-    .col-sm-6
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-calculator
+                    = ' '
+                    | Summary
+            ul.list-group.home-list
+                li.list-group-item#home-logs
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-bar-chart
+                    a
+                        b
+                            = ' '
+                            | Workouts
+                li.list-group-item#home-body
+                    i.nav-icon.fa.fa-fw.fa-lg#home-body-icon
+                    a
+                        b
+                            = ' '
+                            | Body
+.row
+    .col-md-8.col-center
         .panel.panel-default
             .panel-heading
                 h3.panel-title

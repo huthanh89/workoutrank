@@ -1,0 +1,34 @@
+#body-modal-view
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#body-home
+                a Home
+            li.active
+                span Body
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading.clearfix
+                .panel-title.clearfix
+                    i.fa.fa-fw.fa-lg.fa-bar-chart
+                    = ' '
+                    span Weight Graph
+            .panel-body
+                #body-graph-view
+            .panel-footer.clearfix
+                a.pull-right.body-weights
+                    i.fa.fa-fw.fa-edit
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading.clearfix
+                .panel-title.clearfix
+                    i.fa.fa-fw.fa-lg.fa-calculator
+                    = ' '
+                    span Summary
+            .panel-body
+                #body-summary-view
+            .panel-footer.clearfix
+                a.pull-right.body-weights
+                    i.fa.fa-fw.fa-edit
