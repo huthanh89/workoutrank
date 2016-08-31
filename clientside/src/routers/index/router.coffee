@@ -30,7 +30,7 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'index': =>
-        @navigate('')
+        @navigate('', trigger: true)
         @index()
         return
 
