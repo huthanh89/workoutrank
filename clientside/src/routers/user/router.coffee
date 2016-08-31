@@ -29,12 +29,12 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'account': =>
-        @navigate('account', trigger: true)
+        @rootChannel.request 'navigate', 'account'
         @account()
         return
 
       'profile': (isNew) =>
-        @navigate('profile', trigger: true)
+        @rootChannel.request 'navigate', 'profile'
         @profile(isNew)
         return
 

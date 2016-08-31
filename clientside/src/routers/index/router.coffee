@@ -30,17 +30,17 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'index': =>
-        @navigate('', trigger: true)
+        @rootChannel.request 'navigate', ''
         @index()
         return
 
       'signup': =>
-        @navigate('signup', trigger: true)
+        @rootChannel.request 'navigate', 'signup'
         @signup()
         return
 
       'login': =>
-        @navigate('login', trigger: true)
+        @rootChannel.request 'navigate', 'login'
         @login()
         return
 
@@ -61,12 +61,12 @@ class Router extends Marionette.AppRouter
         return
 
       'about': =>
-        @navigate('about', trigger: true)
+        @rootChannel.request 'navigate', 'about'
         @about()
         return
 
       'feedback': =>
-        @navigate('feedback', trigger: true)
+        @rootChannel.request 'navigate', 'feedback'
         @feedback()
         return
 

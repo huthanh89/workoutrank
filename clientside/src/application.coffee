@@ -52,15 +52,24 @@ class RootView extends Marionette.LayoutView
 
 class Application extends Marionette.Application
 
+  # Send route url to google analytics.
+  # Send conversion data for specific routes.
+
+  trackAnalytics: (route) ->
+    @googleAnalytics.send(route)
+    if route is 'signup'
+      @googleTrackingConversion.send()
+    return
+
   onStart: ->
 
     # Start Google analytics
 
-    googleAnalytics = new GA()
+    @googleAnalytics = new GA()
 
     # Start Google adword conversion tracker.
 
-    googleTrackingConversion = new GCT()
+    @googleTrackingConversion = new GCT()
 
     # Fetch user record.
 
@@ -87,8 +96,12 @@ class Application extends Marionette.Application
 
     rootChannel.reply
 
-      'gct:signedup': ->
-        googleTrackingConversion.send()
+      # Workaround for the refresh and navigate which will called twice.
+      # Trigger set to false so method will not get called twice.
+
+      navigate: (route, options) =>
+        Backbone.history.navigate route, trigger:false
+        @trackAnalytics route
         return
 
       'rootview': -> rootView
@@ -98,7 +111,6 @@ class Application extends Marionette.Application
         rootChannel.request 'spin:page:loader', false
 
         if response.status is 401
-
           rootView.showChildView 'content', new ErrorView()
 
         else
@@ -169,19 +181,10 @@ class Application extends Marionette.Application
       mode:          'auto'
       trailingSlash: 'ignore'
 
-    # Event is triggered the user navigate through out a page.
+    # Called when url is changed during navigation.
 
-    Backbone.history.on 'route', (router, route, params) ->
-
-      # Send route url to google analytics.
-
-      googleAnalytics.send(route)
-
-      # Send conversion data for specific routes.
-
-      if route is 'signup'
-        googleTrackingConversion.send()
-
+    Backbone.history.on 'route', (router, route) =>
+      @trackAnalytics route
       return
 
     # Start backbone history a main step to bookmarkable url's.

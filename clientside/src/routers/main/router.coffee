@@ -34,47 +34,47 @@ class Router extends Marionette.AppRouter
     @rootChannel.reply
 
       'home': =>
-        @navigate('home', trigger: true)
+        @rootChannel.request 'navigate', 'home'
         @home()
         return
 
       'strengths': (muscle) =>
-        @navigate('strengths', trigger:true)
+        @rootChannel.request 'navigate', 'strengths'
         @strengths(muscle)
         return
 
       'strength:detail': (exerciseID) =>
-        @navigate("strength/#{exerciseID}", trigger: true)
+        @rootChannel.request 'navigate', "strength/#{exerciseID}"
         @strengthDetail(exerciseID)
         return
 
       'calendar': =>
-        @navigate('calendar', trigger: true)
+        @rootChannel.request 'navigate', 'calendar'
         @calendar()
         return
 
       'schedule': =>
-        @navigate('schedule', trigger: true)
+        @rootChannel.request 'navigate', 'schedule'
         @schedule()
         return
 
       'logs': =>
-        @navigate('logs', trigger: true)
+        @rootChannel.request 'navigate', 'logs'
         @logs()
         return
 
       'log:detail': (exerciseID) =>
-        @navigate("log/#{exerciseID}", trigger: true)
+        @rootChannel.request 'navigate', "log/#{exerciseID}"
         @logDetail(exerciseID)
         return
 
       'weights': =>
-        @navigate('weights', trigger: true)
+        @rootChannel.request 'navigate', 'weights'
         @weights()
         return
 
       'body': =>
-        @navigate('body', trigger: true)
+        @rootChannel.request 'navigate', 'body'
         @body()
         return
 

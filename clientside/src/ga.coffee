@@ -16,7 +16,7 @@ class GoogleAnalytic
       'UA-74126093-1'
     ]
 
-    # Get javascript.
+    # Get javascript and create tag.
 
     do ->
       ga = document.createElement('script')

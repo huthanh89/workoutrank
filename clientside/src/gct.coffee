@@ -8,8 +8,6 @@ class GoogleConversionTracker
 
   send: ->
 
-    console.log 'sending'
-
     window.google_trackConversion
       google_conversion_id:        958303564
       google_conversion_language: 'en'
