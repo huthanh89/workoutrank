@@ -4,6 +4,7 @@
 #-------------------------------------------------------------------------------
 
 GA           = require './ga'
+GCT          = require './gct'
 Toastr       = require 'toastr'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
@@ -57,6 +58,10 @@ class Application extends Marionette.Application
 
     googleAnalytics = new GA()
 
+    # Start Google adword conversion tracker.
+
+    googleTrackingConversion = new GCT()
+
     # Fetch user record.
 
     user = new User()
@@ -81,6 +86,10 @@ class Application extends Marionette.Application
       isOwner: -> parseInt(user.get('auth'), 10) is 1
 
     rootChannel.reply
+
+      'gct:signedup': ->
+        googleTrackingConversion.send()
+        return
 
       'rootview': -> rootView
 
@@ -167,6 +176,11 @@ class Application extends Marionette.Application
       # Send route url to google analytics.
 
       googleAnalytics.send(route)
+
+      # Send conversion data for specific routes.
+
+      if route is 'signup'
+        googleTrackingConversion.send()
 
       return
 

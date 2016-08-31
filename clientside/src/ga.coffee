@@ -8,13 +8,16 @@ class GoogleAnalytic
 
   send: (route) ->
 
-    # Google analytics
+    # Set username and id.
 
     _gaq = _gaq or []
     _gaq.push [
       '_setAccount'
       'UA-74126093-1'
     ]
+
+    # Get javascript.
+
     do ->
       ga = document.createElement('script')
       ga.type = 'text/javascript'
@@ -28,8 +31,9 @@ class GoogleAnalytic
       s.parentNode.insertBefore ga, s
 
     # Call the track page view function and append route.
+#    _gaq.push(['_trackPageview', "/#{route}"])
 
-    _gaq.push(['_trackPageview', "/#{route}"])
+    ga('set', 'page', "/#{route}")
 
     # Send page view to google analytics.
 
