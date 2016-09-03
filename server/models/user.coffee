@@ -66,6 +66,7 @@ UserSchema.methods.getPublicFields = ->
     weight:    @weight
     gender:    @gender
     auth:      @auth
+    birthday:  @birthday
   }
 
 #-------------------------------------------------------------------------------

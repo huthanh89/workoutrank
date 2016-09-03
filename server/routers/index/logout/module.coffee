@@ -4,7 +4,6 @@
 
 async    = require 'async'
 mongoose = require 'mongoose'
-Err      = require '../../error'
 
 #-------------------------------------------------------------------------------
 # Models
