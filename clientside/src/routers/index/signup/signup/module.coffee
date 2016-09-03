@@ -26,7 +26,6 @@ class Model extends Backbone.Model
     email:     ''
     username:  ''
     password:  ''
-    birthday:  new Date()
     captcha:   ''
 
 #-------------------------------------------------------------------------------
@@ -39,7 +38,6 @@ class View extends Marionette.ItemView
 
   ui:
     form:     '#signup-form'
-    birthday: '#signup-birthday'
     gender:   '#signup-gender'
     spinner:  '#signup-spinner'
 
@@ -56,7 +54,6 @@ class View extends Marionette.ItemView
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
-      @model.set 'birthday', @ui.birthday.data('DateTimePicker').date()
 
       captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
       @model.set 'captcha', captcha
@@ -87,15 +84,6 @@ class View extends Marionette.ItemView
     return
 
   onShow: ->
-    @ui.birthday.datetimepicker
-      viewMode: 'years'
-      format:   'YYYY-MM-DD'
-      minDate:  moment().subtract(100, 'years')
-      maxDate:  moment()
-      widgetPositioning:
-        vertical: 'top'
-      ignoreReadonly: true
-
     @timer = setTimeout =>
       @ui.spinner.addClass 'hide'
       window.grecaptcha.render 'signup-recaptcha',
@@ -107,7 +95,6 @@ class View extends Marionette.ItemView
     return
 
   onBeforeDestroy: ->
-    @ui.birthday.data('DateTimePicker').destroy()
     clearTimeout(@timer)
     return
 

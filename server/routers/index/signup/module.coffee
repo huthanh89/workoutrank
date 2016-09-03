@@ -38,9 +38,6 @@ sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
 
 schema =
   captcha: []
-  birthday: [
-    method: 'isDate'
-  ]
   email: [
     method: 'isEmail'
   ,
@@ -149,7 +146,6 @@ exports.post = (req, res, next) ->
         lastname:  req.body.lastname
         email:     email
         username:  username
-        birthday:  req.body.birthday
         gender:    req.body.gender
         salt:      salt
         key:       key
