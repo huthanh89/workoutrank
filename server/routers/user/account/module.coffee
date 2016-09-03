@@ -26,26 +26,7 @@ module.get = (req, res, next) ->
 
       User.findById req.session.user._id, (err, user) ->
         return callback err if err
-        return callback null, user
-      return
-
-    (user, callback) ->
-
-      user =_.pick user, [
-        '_id'
-        'email'
-        'username'
-        'firstname'
-        'lastname'
-        'height'
-        'weight'
-        'gender'
-        'auth'
-        'height'
-        'birthday'
-      ]
-
-      callback null, user
+        return callback null, user.getPublicFields()
       return
 
   ], (err, user) ->
@@ -82,9 +63,9 @@ module.put = (req, res, next) ->
       user.gender    = req.body.gender
       user.birthday  = req.body.birthday
 
-      user.save (err, entry) ->
+      user.save (err, user) ->
         return callback err.message if err
-        return callback null, entry
+        return callback null, user.getPublicFields()
 
       return
 

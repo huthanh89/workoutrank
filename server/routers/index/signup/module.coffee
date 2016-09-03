@@ -161,7 +161,7 @@ exports.post = (req, res, next) ->
           return callback 'There was a problem. Cannot create new account.'
 
         return callback err if err
-        return callback null, user
+        return callback null, user.getPublicFields()
 
       return
 
@@ -175,18 +175,6 @@ exports.post = (req, res, next) ->
       .json   err
 
     else
-
-      user = _.pick user, [
-        '_id'
-        'email'
-        'username'
-        'firstname'
-        'lastname'
-        'weight'
-        'gender'
-        'auth'
-        'height'
-      ]
 
       req.session.user = user
 

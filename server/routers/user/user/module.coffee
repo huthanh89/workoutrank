@@ -23,27 +23,11 @@ exports.get = (req, res) ->
 
     (callback) ->
 
-      User.findById req.session.user._id, (err, user) ->
+      User
+      .findById req.session.user._id
+      .exec (err, user) ->
         return callback err if err
-        return callback null, user
-      return
-
-    (user, callback) ->
-
-      user =_.pick user, [
-        '_id'
-        'email'
-        'username'
-        'firstname'
-        'lastname'
-        'height'
-        'weight'
-        'gender'
-        'auth'
-        'height'
-      ]
-
-      callback null, user
+        return callback null, user.getPublicFields()
       return
 
   ], (err, user) ->
@@ -54,6 +38,5 @@ exports.get = (req, res) ->
       .json   err
 
     return res.json user
-
 
 #-------------------------------------------------------------------------------

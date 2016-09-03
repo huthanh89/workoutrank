@@ -50,6 +50,25 @@ UserSchema = new mongoose.Schema
   collection: 'user'
 
 #-------------------------------------------------------------------------------
+# Methods
+#-------------------------------------------------------------------------------
+
+# Return public fields only.
+
+UserSchema.methods.getPublicFields = ->
+  return {
+    _id:       @_id
+    email:     @email
+    username:  @username
+    firstname: @firstname
+    lastname:  @lastname
+    height:    @height
+    weight:    @weight
+    gender:    @gender
+    auth:      @auth
+  }
+
+#-------------------------------------------------------------------------------
 # Model Registration
 #-------------------------------------------------------------------------------
 

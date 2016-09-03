@@ -76,7 +76,7 @@ exports.post = (req, res) ->
         if err
           return callback 'Could not look up username / password.'
         if user.key is key.toString('hex')
-          return callback null, user
+          return callback null, user.getPublicFields()
         else
           return callback 'Invalid username or password.'
 
@@ -89,17 +89,7 @@ exports.post = (req, res) ->
         # If login was successful then
         # Save user data to their session.
 
-        req.session.user = _.pick user, [
-          '_id'
-          'email'
-          'username'
-          'firstname'
-          'lastname'
-          'weight'
-          'gender'
-          'auth'
-          'height'
-        ]
+        req.session.user = user
 
         # WIP Setting up a remember me.
 
