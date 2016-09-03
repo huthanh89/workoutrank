@@ -250,8 +250,6 @@ gulp.task 'js:bundle', (callback) ->
       throw new PluginError('webpack', err)
     #log '[webpack]', stats.toString(colors: true)
 
-    livereload.reload()
-
     callback null
     return
 
@@ -289,7 +287,7 @@ gulp.task 'css:concat', ->
   ])
   .pipe(concat('style.css'))
   .pipe gulp.dest('./static/')
-  .pipe(livereload())
+#  .pipe(livereload())
 
 #-------------------------------------------------------------------------------
 # Page reload
@@ -477,10 +475,11 @@ gulp.task 'compile:css', [
   'css:concat'
 ]
 
-gulp.task 'compile:client:js', [
-  'coffee:to:js:server'
-  'js:bundle'
-]
+gulp.task 'compile:client:js', (callback) ->
+  runSequence 'js:bundle',
+    'page:reload',
+    callback
+  return
 
 gulp.task 'minify', [
   'minify-css'

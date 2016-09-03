@@ -42,6 +42,7 @@ module.get = (req, res, next) ->
         'gender'
         'auth'
         'height'
+        'birthday'
       ]
 
       callback null, user
@@ -72,9 +73,6 @@ module.put = (req, res, next) ->
       return
 
     (user, callback) ->
-
-
-      console.log req.body
 
       user.email     = req.body.email
       user.username  = req.body.username
