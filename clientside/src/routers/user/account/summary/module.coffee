@@ -18,7 +18,6 @@ require 'backbone.stickit'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-
   idAttribute: '_id'
 
 #-------------------------------------------------------------------------------
@@ -35,9 +34,6 @@ class View extends Marionette.LayoutView
   bindings:
     '#account-summary-email':    'email'
     '#account-summary-username': 'username'
-    '#account-summary-birthday':
-      observe: 'birthday'
-      onGet: (value) -> moment(value).format('MM-DD-YYYY')
 
   onRender: ->
     @stickit @model
