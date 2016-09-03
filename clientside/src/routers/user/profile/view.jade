@@ -39,9 +39,17 @@
                         .col-sm-10
                             input.form-control#profile-height(type="number", placeholder=0 required)
                     .form-group#profile-weight-container
-                        label.col-sm-2.control-label(for='profile-weight') Current Weight
+                        label.col-sm-2.control-label(for='profile-weight') Weight
                         .col-sm-10
                             input.form-control#profile-weight(type="number", placeholder=0 required)
+                    .form-group
+                        label.col-sm-2.control-label(for='profile-birthday') Birthday
+                        .col-sm-10
+                            .input-group.date
+                                input.form-control#profile-birthday(type='date', name='date',placeholder='yyyy-mm-dd', required)
+                                span.input-group-addon
+                                    span
+                                        i.fa.fa-fw.fa-lg.fa-birthday-cake
                     .form-group
                         .col-sm-12
                             button.btn.btn-primary.pull-right#profile-submit

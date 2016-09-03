@@ -10,11 +10,14 @@ class GoogleAnalytic
 
     # Set username and id.
 
+    ###
     _gaq = _gaq or []
     _gaq.push [
       '_setAccount'
       'UA-74126093-1'
     ]
+
+###
 
     # Get javascript and create tag.
 
@@ -33,9 +36,11 @@ class GoogleAnalytic
     # Call the track page view function and append route.
 #    _gaq.push(['_trackPageview', "/#{route}"])
 
-    ga('set', 'page', "/#{route}")
+  #  ga('set', 'page', "/#{route}")
 
     # Send page view to google analytics.
+
+    ga('create', 'UA-74126093-1', 'auto')
 
     ga('send', 'pageview', "/#{route}")
 

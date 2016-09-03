@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 $            = require 'jquery'
+moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
@@ -39,6 +40,7 @@ class Model extends Backbone.Model
     email:     ''
     height:    null
     weight:    null
+    birthday:  moment()
 
 #-------------------------------------------------------------------------------
 # View
@@ -49,10 +51,11 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    height: '#profile-height'
-    weight: '#profile-weight'
-    gender: '#profile-gender'
-    submit: '#profile-submit'
+    height:   '#profile-height'
+    weight:   '#profile-weight'
+    gender:   '#profile-gender'
+    submit:   '#profile-submit'
+    birthday: '#profile-birthday'
 
   bindings:
     '#profile-firstname': 'firstname'
@@ -82,6 +85,9 @@ class View extends Marionette.LayoutView
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
+
+      @model.set 'birthday', @ui.birthday.data('DateTimePicker').date()
+
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
@@ -124,7 +130,20 @@ class View extends Marionette.LayoutView
     return
 
   onShow: ->
+
+    @ui.birthday.datetimepicker
+      viewMode: 'years'
+      format:   'YYYY-MM-DD'
+      minDate:  moment().subtract(100, 'years')
+      maxDate:  moment()
+      widgetPositioning:
+        vertical: 'top'
+      ignoreReadonly: true
+
+    @ui.birthday.data('DateTimePicker').date moment(@model.get('birthday'))
+
     gender = @model.get('gender')
+
     $("#profile-gender :radio[value=#{gender}]").prop 'checked', true
 
     # If is new, tell user to fill profile.
@@ -135,6 +154,7 @@ class View extends Marionette.LayoutView
     return
 
   onBeforeDestroy: ->
+    @ui.birthday.data('DateTimePicker').destroy()
     @ui.height.TouchSpin('destroy')
     @ui.weight.TouchSpin('destroy')
     @unstickit()

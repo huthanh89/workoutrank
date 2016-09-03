@@ -73,12 +73,16 @@ module.put = (req, res, next) ->
 
     (user, callback) ->
 
+
+      console.log req.body
+
       user.email     = req.body.email
       user.username  = req.body.username
       user.firstname = req.body.firstname
       user.lastname  = req.body.lastname
       user.height    = req.body.height
       user.gender    = req.body.gender
+      user.birthday  = req.body.birthday
 
       user.save (err, entry) ->
         return callback err.message if err

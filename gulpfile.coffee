@@ -292,6 +292,14 @@ gulp.task 'css:concat', ->
   .pipe(livereload())
 
 #-------------------------------------------------------------------------------
+# Page reload
+#-------------------------------------------------------------------------------
+
+gulp.task 'page:reload', ->
+  livereload.reload()
+  return
+
+#-------------------------------------------------------------------------------
 # Compile Less
 #
 #   Less to css.
@@ -416,7 +424,7 @@ gulp.task 'inject:js', ->
   sources = gulp.src(['static/bundle-min.js']) if Production
 
   options =
-    ignorePath: 'static'
+    ignorePath:  'static'
     addRootSlash: false
 
   return gulp.src('static/index.html')
@@ -458,9 +466,11 @@ gulp.task 'lint', [
   'lesslint'
 ]
 
-gulp.task 'compile:server:js', [
-  'coffee:to:js:server'
-]
+gulp.task 'compile:server:js', (callback) ->
+  runSequence 'coffee:to:js:server',
+    'page:reload',
+    callback
+  return
 
 gulp.task 'compile:css', [
   'less:to:css'
