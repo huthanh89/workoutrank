@@ -91,13 +91,21 @@ app.use bodyParser.urlencoded(extended: false)
 app.use cookieParser()
 
 # Initialize session.
-app.use session(
+# Session cookie will last for a week.
+# Remove session from data base after an hour (3600 secs) of expiration.
+
+app.use session
   secret: 'nerf this'
   resave: false
   saveUninitialized: true
   cookie: {}
+  #cookie:
+  #  maxAge: 604800
   unset: 'destroy'
-  store: new MongoStore(mongooseConnection: mongoose.connection))
+  store: new MongoStore
+    mongooseConnection: mongoose.connection
+#    clear_interval: 3600
+    clear_interval: 604800
 
 # Middle ware for all pages.
 

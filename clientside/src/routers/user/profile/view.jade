@@ -8,8 +8,13 @@
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading
-                h3.panel-title
+            .panel-heading.clearfix
+                .pull-right
+                    button.btn.btn-xs.btn-primary#profile-submit
+                        i.fa.fa-fw.fa.fa-cloud-upload
+                        = ' '
+                        span Update
+                .panel-title
                     i.fa.fa-fw.fa-lg.fa-folder-open
                     = ' '
                     | Profile
@@ -50,9 +55,3 @@
                                 span.input-group-addon
                                     span
                                         i.fa.fa-fw.fa-lg.fa-birthday-cake
-                    .form-group
-                        .col-sm-12
-                            button.btn.btn-primary.pull-right#profile-submit
-                                i.fa.fa-cloud-upload
-                                = ' '
-                                | Update

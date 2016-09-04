@@ -82,7 +82,7 @@ class View extends Marionette.LayoutView
       @model.set('gender', parseInt(value, 10))
       return
 
-    'submit': (event) ->
+    'click #profile-submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
 

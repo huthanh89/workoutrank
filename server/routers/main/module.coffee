@@ -7,6 +7,20 @@ express = require 'express'
 router  = express.Router()
 
 #-------------------------------------------------------------------------------
+# Router Level Middleware
+#-------------------------------------------------------------------------------
+
+router.use (req, res, next) ->
+  if req.url.includes('api') and _.isUndefined(req.session.user)
+    res.status 401
+    res.end()
+  else if _.isUndefined(req.session.user)
+    res.render '401'
+  else
+    next()
+  return
+
+#-------------------------------------------------------------------------------
 # Path Routes.
 #   Pass index to all routes.
 #-------------------------------------------------------------------------------
@@ -30,21 +44,6 @@ for url in urls
   router.get url, (req, res, next) ->
     res.render 'index'
     return
-
-#-------------------------------------------------------------------------------
-# Router Level Middleware
-#-------------------------------------------------------------------------------
-
-# If user does not have a session, then redirect them to the login page.
-# Put up an unauthorized page.
-
-router.use  (req, res, next) ->
-  if req.url.includes('api') and _.isUndefined(req.session.user)
-    res.status 401
-    res.end()
-  else
-    next()
-  return
 
 #-------------------------------------------------------------------------------
 # Import Routes

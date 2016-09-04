@@ -77,7 +77,8 @@ app.use(session({
   cookie: {},
   unset: 'destroy',
   store: new MongoStore({
-    mongooseConnection: mongoose.connection
+    mongooseConnection: mongoose.connection,
+    clear_interval: 604800
   })
 }));
 

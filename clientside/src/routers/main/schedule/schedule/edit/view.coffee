@@ -81,7 +81,9 @@ class View extends Marionette.LayoutView
 
     # Show this dialog
 
-    @ui.dialog.modal()
+    @ui.dialog.modal
+      backdrop: 'static'
+      keyboard: false
 
     return
 
