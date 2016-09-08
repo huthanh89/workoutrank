@@ -40,6 +40,7 @@ require('./models/slog') mongoose
 require('./models/wlog') mongoose
 require('./models/schedule') mongoose
 require('./models/feedback') mongoose
+require('./models/token') mongoose
 
 #--------------------------------------------------------------
 # Create App

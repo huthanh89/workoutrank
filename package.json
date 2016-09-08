@@ -40,6 +40,7 @@
     "node-statsd": "*",
     "compression": "*",
     "prerender-node": "*",
+    "nodemailer": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

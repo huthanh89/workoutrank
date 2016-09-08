@@ -1,0 +1,27 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#forgot-home
+                a Home
+            li.active
+                span Forgot
+h4 Forgot your password?
+br
+.row
+    .col-xs-12
+        .col-lg-6#forgot-view-container
+            form.form-horizontal
+                .form-group
+                    .row
+                        .col-xs-12
+                            p Step 1. Enter your email or username and click the button below to reset your password.
+                    .row
+                        label.col-sm-2.control-label(for='forgot-user') Email or Username
+                        .col-sm-10
+                            .input-group
+                                input.form-control#forgot-user(placeholder="Email or Username" type='text' minlength="1" maxlength="25" required)
+                                span.input-group-btn
+                                    button.btn.btn-primary
+                                        i.fa.fa-fw.fa-lg.fa-envelope-o
+                                        = ' '
+                                        span Get Code

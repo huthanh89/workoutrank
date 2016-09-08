@@ -9,7 +9,6 @@ request   = require 'request'
 requestIp = require 'request-ip'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
-Err       = require '../../error'
 Validate  = require '../../validate'
 Data      = require './data'
 
@@ -131,7 +130,7 @@ exports.post = (req, res, next) ->
       salt     = salt.toString('hex')
 
       crypto.pbkdf2 password, salt, 10000, 32, 'sha512', (err, key) ->
-        return callback 'Could not process password.' if err
+        return callback 'Could not process new password.' if err
         return callback null, salt, key.toString('hex')
 
       return

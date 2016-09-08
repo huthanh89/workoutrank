@@ -48,6 +48,8 @@ require('./models/schedule')(mongoose);
 
 require('./models/feedback')(mongoose);
 
+require('./models/token')(mongoose);
+
 app = express();
 
 server = http.createServer(app);

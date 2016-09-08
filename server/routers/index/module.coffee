@@ -11,9 +11,11 @@ router  = express.Router()
 #-------------------------------------------------------------------------------
 
 feedback = require './feedback/module'
+forgot   = require './forgot/module'
 signup   = require './signup/module'
 login    = require './login/module'
 logout   = require './logout/module'
+reset    = require './reset/module'
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -29,15 +31,19 @@ router.get '/signup',   index
 router.get '/login',    index
 router.get '/about',    index
 router.get '/feedback', index
+router.get '/forgot',   index
+router.get '/reset',    index
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
 router.post '/api/feedback', feedback.post
+router.post '/api/forgot',   forgot.post
 router.post '/api/signup',   signup.post
 router.post '/api/login',    login.post
 router.post '/api/logout',   logout.post
+router.post '/api/reset',    reset.post
 
 #-------------------------------------------------------------------------------
 # Exports

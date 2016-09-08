@@ -362,9 +362,15 @@ gulp.task 'watch', ->
   ]
 
   gulp.watch [
-    './clientside/src/**'
+    './clientside/src/**/*.coffee'
   ], [
     'coffeelint'
+    'compile:client:js'
+  ]
+
+  gulp.watch [
+    './clientside/src/**/*.jade'
+  ], [
     'compile:client:js'
   ]
 

@@ -5,6 +5,8 @@
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Feedback     = require './feedback/module'
+Forgot       = require './forgot/module'
+Reset        = require './reset/module'
 LandingView  = require './landing/view'
 SignupView   = require './signup/view'
 LoginView    = require './login/view'
@@ -70,6 +72,16 @@ class Router extends Marionette.AppRouter
         @feedback()
         return
 
+      'forgot': =>
+        @rootChannel.request 'navigate', 'forgot'
+        @forgot()
+        return
+
+      'reset': =>
+        @rootChannel.request 'navigate', 'reset'
+        @reset()
+        return
+
   # Routes used for backbone urls.
   # Handle routes with APIs at the bottom.
   # Do not append "(/)" this will cause the view to load twice.
@@ -81,6 +93,8 @@ class Router extends Marionette.AppRouter
     'login':    'login'
     'about':    'about'
     'feedback': 'feedback'
+    'forgot':   'forgot'
+    'reset':    'reset'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -114,6 +128,39 @@ class Router extends Marionette.AppRouter
     @rootView.index.empty()
     @rootView.content.show new Feedback.View
       model: new Feedback.Model()
+    return
+
+  forgot: ->
+    @navChannel.request('nav:index')
+    @rootView.index.empty()
+    @rootView.content.show new Forgot.View
+      model: new Forgot.Model()
+    return
+
+  reset: (query) ->
+
+    ###
+    XXX workaround:
+    TODO: parse query the right way instead of using the following function.
+###
+
+    QueryStringToJSON = ->
+      pairs = location.search.slice(1).split('&')
+      result = {}
+      pairs.forEach (pair) ->
+        pair = pair.split('=')
+        result[pair[0]] = decodeURIComponent(pair[1] or '')
+        return
+      JSON.parse JSON.stringify(result)
+
+    query = QueryStringToJSON()
+
+    @navChannel.request('nav:index')
+    @rootView.index.empty()
+    @rootView.content.show new Reset.View
+      model: new Reset.Model
+        user:  query.user
+        token: query.token
     return
 
 #-------------------------------------------------------------------------------
