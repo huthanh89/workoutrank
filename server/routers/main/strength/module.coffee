@@ -27,13 +27,13 @@ schema =
     method: 'isLength'
     options:
       min: 1
-      max: 15
+      max: 25
   ]
   note: [
     method: 'isLength'
     options:
       min: 0
-      max: 15
+      max: 50
   ]
   count: [
     method: 'isInt'
@@ -117,6 +117,8 @@ module.post = (req, res) ->
 
     (callback) ->
 
+      console.log req.body
+
       Strength.create
         date:   req.body.date
         name:   req.body.name
@@ -170,6 +172,9 @@ module.put = (req, res, next) ->
       return
 
     (strength, callback) ->
+
+
+      console.log req.body
 
       strength.date   = req.body.date
       strength.name   = req.body.name

@@ -61,6 +61,10 @@ class View extends Marionette.ItemView
 
   bindings:
 
+    '#strength-modal-timestamp':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('YYYY/MM/DD - HH:mm:ss a')
+
     '#strength-modal-rep':
       observe: 'rep'
       onSet: (value) -> parseInt(value)
@@ -108,7 +112,9 @@ class View extends Marionette.ItemView
 
     @mergeOptions options, 'wLogs'
 
-    @model.set('date', new Date(options.date))
+#    @model.set('date', new Date(options.date))
+    @model.set('date', moment())
+
 
     # If there are data, use the latest data found in collection
     # as default values.

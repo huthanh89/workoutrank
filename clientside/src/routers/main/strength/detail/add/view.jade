@@ -32,6 +32,11 @@
                         #strength-modal-basic.tab-pane.active(role='tabpanel')
                             .form-group
                                 .col-xs-12
+                                    label.control-label Timestamp
+                                .col-xs-12
+                                    p.form-control-static#strength-modal-timestamp
+                            .form-group
+                                .col-xs-12
                                     label.control-label Weight
                                 .col-xs-12
                                     input.form-control#strength-modal-weight(type="number", placeholder=0 required)
@@ -64,4 +69,4 @@
                                 .col-xs-12
                                     label.control-label(for='strength-modal-note') Note
                                 .col-xs-12
-                                    textarea.form-control#strength-modal-note
+                                    textarea.form-control#strength-modal-note(minlength="1" maxlength="50")

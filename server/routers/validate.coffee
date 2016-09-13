@@ -23,7 +23,7 @@ Methods = [
 #-------------------------------------------------------------------------------
 
 sanitize = (str) ->
-  str = validator.blacklist(str, ['\\', '/', ' '])
+  str = validator.blacklist(str, ['\\', '/', ';', '"', '{', '}'])
   str = validator.escape(str)
   str = validator.trim(str)
   return str

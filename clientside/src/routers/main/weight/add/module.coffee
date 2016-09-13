@@ -47,6 +47,9 @@ class View extends Marionette.ItemView
     time:   '#weight-modal-time'
 
   bindings:
+    '#weight-modal-timestamp':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('YYYY/MM/DD - HH:mm:ss a')
 
     '#weight-modal-weight':
       observe: 'weight'
@@ -87,7 +90,8 @@ class View extends Marionette.ItemView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @model.set('date', new Date(options.date))
+#    @model.set('date', new Date(options.date))
+    @model.set('date', moment())
 
     # If there are data, use the latest data found in collection
     # as default values.

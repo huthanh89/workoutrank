@@ -34,7 +34,7 @@
                                 .col-xs-12
                                     label.control-label(for='strength-modal-name') Name
                                 .col-xs-12
-                                    input.form-control#strength-modal-name(required)
+                                    input.form-control#strength-modal-name(required minlength="1" maxlength="25")
                                     .help-block.with-errors
                             .form-group
                                 .col-xs-12
@@ -46,7 +46,7 @@
                                 .col-xs-12
                                     label.control-label(for='strength-modal-note') Note
                                 .col-xs-12
-                                    textarea.form-control#strength-modal-note
+                                    textarea.form-control#strength-modal-note(minlength="1" maxlength="50")
                             hr
                             .form-group
                                 .col-xs-12
