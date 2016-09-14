@@ -10,8 +10,10 @@ Marionette   = require 'marionette'
 Add          = require './add/module'
 Edit         = require './edit/module'
 DateView     = require './date/view'
+GraphView    = require './graph/view'
+SummaryView  = require './summary/view'
 Table        = require './table/module'
-Summary      = require './summary/module'
+Workout      = require './workout/module'
 CalendarView = require './calendar/view'
 viewTemplate = require './view.jade'
 
@@ -58,7 +60,9 @@ class View extends Marionette.LayoutView
     date:     '#strength-date-view'
     table:    '#strength-table-view'
     summary:  '#strength-summary-view'
+    workout:  '#strength-workout-view'
     calendar: '#strength-calendar-view'
+    graph:    '#strength-graph-view'
 
   bindings:
     '#strength-title': 'name'
@@ -100,11 +104,13 @@ class View extends Marionette.LayoutView
       @updatePageableCollection()
       @summaryModel.update(@model, @collection)
       @showCalendar()
+      @updateViews()
       return
 
   modelEvents:
     sync: (model) ->
       @summaryModel.update(@model, @collection)
+      @updateViews()
       return
 
   constructor: (options) ->
@@ -133,7 +139,7 @@ class View extends Marionette.LayoutView
     @pageableCollection = new Table.Collection @collection.models
     @updatePageableCollection()
 
-    @summaryModel = new Summary.Model {},
+    @summaryModel = new Workout.Model {},
       sConf: @model
       sLogs: @collection
 
@@ -156,13 +162,25 @@ class View extends Marionette.LayoutView
       collection: @pageableCollection
       channel:    @channel
 
-    @showChildView 'summary', new Summary.View
+    @showChildView 'workout', new Workout.View
       model: @summaryModel
 
     @showCalendar()
 
     @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
     @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+
+    @updateViews()
+    return
+
+  updateViews: ->
+    @showChildView 'graph', new GraphView
+      sLogs: @collection
+      sConf: @model
+
+    @showChildView 'summary', new SummaryView
+      sLogs: @collection
+      sConf: @model
 
     return
 

@@ -51,10 +51,10 @@ class Model extends Backbone.Model
     model = latestModel wLogs
 
     @set
-      count:      wLogs.length
-      firstDate:  if wLogs.length then firstDate(wLogs) else null
-      lastDate:   if wLogs.length then model.get('date') else null
-      lastWeight: model.get('weight')
+      count:     wLogs.length
+      firstDate: if wLogs.length then firstDate(wLogs) else null
+      lastDate:  if wLogs.length then model.get('date') else null
+      currentWeight: model.get('weight')
     return
 
 #-------------------------------------------------------------------------------
@@ -67,28 +67,36 @@ class View extends Marionette.LayoutView
 
   bindings:
 
-    '#weight-summary-count': 'count'
+    '#body-summary-count': 'count'
 
-    '#weight-summary-first':
+    '#body-summary-first':
       observe: 'firstDate'
       onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
 
-    '#weight-summary-last':
+    '#body-summary-last':
       observe: 'lastDate'
       onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
 
-    '#weight-summary-current-weight':
-      observe: 'lastWeight'
+    '#body-summary-current-weight':
+      observe: 'currentWeight'
       onGet: (value) -> value + ' lb'
 
 
-    '#weight-summary-bmi':
-      observe: 'lastWeight'
+    '#body-summary-bmi':
+      observe: 'currentWeight'
       onGet: (value) ->
         height = @userChannel.get('height')
         weight = value
-        bmi = _.round ((weight / (height * height)) * 703), 2
-        return bmi
+        bmi    = _.round ((weight / (height * height)) * 703), 2
+        text   = ''
+
+        switch
+          when (bmi <  18.5)  then text = 'Underweight'
+          when (18.5  < bmi <= 24.90) then text = 'Normal Weight'
+          when (24.90 < bmi <= 29.90) then text = 'Overweight'
+          else text = 'Overweight'
+
+        return "#{bmi} (#{text})"
 
   constructor: ->
     super

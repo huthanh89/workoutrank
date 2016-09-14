@@ -10,6 +10,7 @@ Marionette   = require 'marionette'
 Add          = require './add/module'
 Date         = require './date/module'
 Table        = require './table/module'
+GraphView    = require './graph/view'
 Summary      = require './summary/module'
 CalendarView = require './calendar/view'
 viewTemplate = require './view.jade'
@@ -53,6 +54,7 @@ class View extends Marionette.LayoutView
     modal:    '#weight-modal-view'
     date:     '#weight-date-view'
     table:    '#weight-table-view'
+    graph:    '#weight-graph-view'
     summary:  '#weight-summary-view'
     calendar: '#weight-calendar-view'
 
@@ -75,11 +77,13 @@ class View extends Marionette.LayoutView
       @updatePageableCollection()
       @summaryModel.update(@collection)
       @showCalendar()
+      @updateViews()
       return
 
   modelEvents:
     sync: (model) ->
       @summaryModel.update(@collection)
+      @updateViews()
       return
 
   constructor: (options) ->
@@ -116,13 +120,19 @@ class View extends Marionette.LayoutView
       collection: @pageableCollection
       channel:    @channel
 
-    #@showChildView 'summary', new Summary.View
-    #  model: @summaryModel
-
     @showCalendar()
 
     @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
+    @updateViews()
+    return
+
+  updateViews: ->
+    @showChildView 'graph', new GraphView
+      sLogs: @collection
+
+    @showChildView 'summary', new Summary.View
+      model: @summaryModel
     return
 
   showCalendar: ->

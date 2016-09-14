@@ -65,7 +65,7 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-time':
       observe: 'date'
-      onGet: (value) -> moment(value).format('h:mm A')
+      onGet: (value) -> moment(value).format('HH:mm a')
 
     '.strength-table-td-weight': 'weight'
 

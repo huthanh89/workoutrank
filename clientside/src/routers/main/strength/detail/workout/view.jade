@@ -1,0 +1,33 @@
+.row
+    .col-sm-12
+        form.form-horizontal#strength-summary-form
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-name') Name
+                .col-sm-6
+                    p.form-control-static#strength-summary-name
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-muscle') Muscle
+                .col-sm-6
+                    p.form-control-static#strength-summary-muscle
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-count') Count
+                .col-sm-6
+                    p.form-control-static#strength-summary-count
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-body') Using bodyweight
+                .col-sm-6
+                    .checkbox
+                        label
+                            input(type='checkbox', disabled)#strength-summary-body
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-first') First Entry
+                .col-sm-6
+                    p.form-control-static#strength-summary-first
+            .form-group
+                label.col-sm-6.control-label(for='strength-summary-last') Last Entry
+                .col-sm-6
+                    p.form-control-static#strength-summary-last
+            hr
+            .form-group
+                .col-xs-12
+                    p#strength-summary-note

@@ -39,6 +39,20 @@
 .row
     .col-md-8.col-center
         .panel.panel-info
+            .panel-heading Graph
+            .panel-body
+                #strength-graph-view
+
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading Summary
+            .panel-body
+                #strength-summary-view
+
+.row
+    .col-md-8.col-center
+        .panel.panel-info
             .panel-heading
                 .pull-right
                     button.btn.btn-xs.btn-default#strength-detail-edit
@@ -46,9 +60,6 @@
                         = ' '
                         span Edit
                 .panel-title.clearfix
-                    span Summary
+                    span Workout
             .panel-body
-                #strength-summary-view
-            .panel-footer.clearfix
-                a.pull-right#strength-graph-btn
-                    i.fa.fa-fw.fa-bar-chart
+                #strength-workout-view
