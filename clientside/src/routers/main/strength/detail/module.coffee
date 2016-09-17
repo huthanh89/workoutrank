@@ -12,6 +12,7 @@ Edit         = require './edit/module'
 DateView     = require './date/view'
 GraphView    = require './graph/view'
 SummaryView  = require './summary/view'
+GoalView     = require './goal/view'
 Table        = require './table/module'
 Workout      = require './workout/module'
 CalendarView = require './calendar/view'
@@ -24,9 +25,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-
   urlRoot: '/api/strengths'
-
   idAttribute: '_id'
 
 #-------------------------------------------------------------------------------
@@ -59,6 +58,7 @@ class View extends Marionette.LayoutView
     modal:    '#strength-modal-view'
     date:     '#strength-date-view'
     table:    '#strength-table-view'
+    goal:     '#strength-goal-view'
     summary:  '#strength-summary-view'
     workout:  '#strength-workout-view'
     calendar: '#strength-calendar-view'
@@ -108,6 +108,12 @@ class View extends Marionette.LayoutView
       return
 
   modelEvents:
+    'change:date': (model, value) ->
+      @showChildView 'goal', new GoalView
+        sLogs: @collection
+        date:  value
+      return
+
     sync: (model) ->
       @summaryModel.update(@model, @collection)
       @updateViews()
@@ -174,6 +180,10 @@ class View extends Marionette.LayoutView
     return
 
   updateViews: ->
+    @showChildView 'goal', new GoalView
+      sLogs: @collection
+      date:  @model.get('date')
+
     @showChildView 'graph', new GraphView
       sLogs: @collection
       sConf: @model

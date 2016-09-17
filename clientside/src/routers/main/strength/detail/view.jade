@@ -18,8 +18,6 @@
                         = ' '
                         span Add
                 .panel-title.clearfix
-                    i.fa.fa-fw.fa-lg.fa-file-text-o
-                    = ' '
                     span#strength-title
             .panel-body
                 #strength-date-view
@@ -30,7 +28,13 @@
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading.clearfix Calendar
+            .panel-heading Goal
+            .panel-body#strength-goal-panel
+                #strength-goal-view
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading.clearfix Calendar Entries
             .panel-body
                 #strength-calendar-view
             .panel-footer.clearfix
@@ -39,14 +43,14 @@
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading Graph
+            .panel-heading Perfomance Graph
             .panel-body
                 #strength-graph-view
 
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading Summary
+            .panel-heading Overall Summary
             .panel-body
                 #strength-summary-view
 

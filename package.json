@@ -42,6 +42,7 @@
     "prerender-node": "*",
     "nodemailer-smtp-transport": "*",
     "nodemailer": "*",
+    "eve": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

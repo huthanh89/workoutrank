@@ -134,7 +134,7 @@ gulp.task 'js:bundle', (callback) ->
 
   webpackPlugins = [
     new webpack.ProvidePlugin({
-      $: 'jquery',
+      $: 'jquery'
     })
   ]
 
@@ -234,6 +234,7 @@ gulp.task 'js:bundle', (callback) ->
         toastr:                     'scripts/toastr.js'
         fullcalendar:               'scripts/fullcalendar.js'
         sweetalert:                 'scripts/sweetalert.min.js'
+        gauge:                      'scripts/gauge.js'
 
       extensions: [
         ''
@@ -476,10 +477,12 @@ gulp.task 'compile:server:js', (callback) ->
     callback
   return
 
-gulp.task 'compile:css', [
-  'less:to:css'
-  'css:concat'
-]
+gulp.task 'compile:css', (callback) ->
+  runSequence 'less:to:css',
+    'css:concat'
+    'page:reload',
+    callback
+  return
 
 gulp.task 'compile:client:js', (callback) ->
   runSequence 'js:bundle',
