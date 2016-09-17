@@ -88,7 +88,6 @@ class View extends Marionette.ItemView
   onShow: ->
 
     target = $(@el).find('.strength-goal-gauge')[0]
-
     gauge  = new Gauge.Gauge(target).setOptions(opts)
     min    = @model.get('min')
     max    = @model.get('max')
@@ -97,7 +96,7 @@ class View extends Marionette.ItemView
     gauge.maxValue       = max
     gauge.animationSpeed = 83
 
-    gauge.set _.clamp @model.get('value'), min, max
+    gauge.set @model.get('value')
 
     return
 
@@ -114,21 +113,33 @@ class View extends Marionette.ItemView
     .value()
 
     values = _ records
-    .filter (record) => moment(record.x).isBefore moment(@date)
+    .filter (record) =>
+      searchDate = moment(@date)
+      recordDate = moment(record.x)
+      return recordDate.isBefore(searchDate.endOf('day'))
     .map (record) -> record.y
     .value()
 
     avg = @avg(values)
     sd  = standardDeviation(variance(values, _.mean(values)))
 
+    min = avg
+    max = avg
+
+    if sd
+      min = avg - sd
+      max = avg + sd
+
     decimals = 0
 
     @model.set
       value: _.round(@max(todayValues), 1) or 0
-      min:  _.round(avg - sd, decimals)
-      max:  _.round(avg + sd, decimals)
-      avg:  _.round(avg, decimals)
-      sd:   _.round(sd, decimals)
+      min:   _.round(min, decimals)
+      max:   _.round(max, decimals)
+      avg:   _.round(avg, decimals)
+      sd:    _.round(sd, decimals)
+
+    return
 
   min: (values) -> _.round(_.min(values), 2)
 
