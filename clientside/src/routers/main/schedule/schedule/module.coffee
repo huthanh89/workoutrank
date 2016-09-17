@@ -66,7 +66,7 @@ class View extends Marionette.LayoutView
       header:
         left:   ''
         center: 'title'
-        right:  'basicDay,basicWeek prev,next'
+        right:  'prev,next basicDay,basicWeek'
 
       eventClick: (calEvent) =>
         @rootChannel.request 'strength:detail', calEvent.strengthID
@@ -77,12 +77,12 @@ class View extends Marionette.LayoutView
         prev = $("#schedule-widget .fc-prev-button")
         next = $("#schedule-widget .fc-next-button")
 
-        if moment(view.start).isAfter moment().startOf('week')
+        if moment(view.start).startOf('day').isAfter moment().startOf('week')
           prev.css('visibility','visible')
         else
           prev.css('visibility','hidden')
 
-        if moment(view.end).isBefore moment().endOf('week')
+        if moment(view.end).endOf('day').isBefore moment().endOf('week')
           next.css('visibility','visible')
         else
           next.css('visibility','hidden')
@@ -94,7 +94,7 @@ class View extends Marionette.LayoutView
         return
 
     @calendar.fullCalendar('today')
-    @calendar.fullCalendar('changeView', 'basicDay')
+    @calendar.fullCalendar('changeView', 'basicWeek')
 
     @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
