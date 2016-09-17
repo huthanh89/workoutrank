@@ -88,6 +88,7 @@ class View extends Marionette.ItemView
   onShow: ->
 
     target = $(@el).find('.strength-goal-gauge')[0]
+
     gauge  = new Gauge.Gauge(target).setOptions(opts)
     min    = @model.get('min')
     max    = @model.get('max')
@@ -96,7 +97,7 @@ class View extends Marionette.ItemView
     gauge.maxValue       = max
     gauge.animationSpeed = 83
 
-    gauge.set _.clamp @model.get('value'), min + .01, max
+    gauge.set _.clamp @model.get('value'), min, max
 
     return
 

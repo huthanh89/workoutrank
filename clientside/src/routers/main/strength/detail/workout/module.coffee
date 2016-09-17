@@ -97,11 +97,11 @@ class View extends Marionette.LayoutView
 
     '#strength-summary-first':
       observe: 'first'
-      onGet: (value) -> moment(value).format('ddd YYYY/MM/DD')
+      onGet: (value) -> moment(value).format('MMMM DD, YYYY - dddd')
 
     '#strength-summary-last':
       observe: 'last'
-      onGet: (value) -> moment(value).format('ddd YYYY/MM/DD')
+      onGet: (value) -> moment(value).format('MMMM DD, YYYY - dddd')
 
   onRender: ->
     @ui.body.prop('checked', @model.get('body'))

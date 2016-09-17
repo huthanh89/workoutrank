@@ -59,19 +59,18 @@ class View extends Marionette.LayoutView
 
   onShow: ->
     @calendar = @ui.calendar.fullCalendar
-      height:      650
       events:     @calendarEvents
       eventOrder: 'color'
       header:
         left:   ''
         center: 'title'
-        right:  ''
+        right:  'agendaDay,agendaWeek'
       eventClick: (calEvent) =>
         @rootChannel.request 'strength:detail', calEvent.strengthID
         return
 
     @calendar.fullCalendar('today')
-    @calendar.fullCalendar('changeView', 'basicWeek')
+    @calendar.fullCalendar('changeView', 'agendaDay')
 
     @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 

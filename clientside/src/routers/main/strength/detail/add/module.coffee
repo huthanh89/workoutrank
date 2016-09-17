@@ -61,9 +61,13 @@ class View extends Marionette.ItemView
 
   bindings:
 
-    '#strength-modal-timestamp':
+    '#strength-modal-timestamp-date':
       observe: 'date'
-      onGet: (value) -> moment(value).format('YYYY/MM/DD - HH:mm:ss a')
+      onGet: (value) -> moment(value).format('MMMM DD, YYYY')
+
+    '#strength-modal-timestamp-time':
+      observe: 'date'
+      onGet: (value) -> moment(value).format('hh:mm a')
 
     '#strength-modal-rep':
       observe: 'rep'

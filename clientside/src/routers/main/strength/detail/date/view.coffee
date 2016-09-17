@@ -44,7 +44,7 @@ class View extends Marionette.ItemView
   onRender: ->
     @ui.date.datetimepicker
       viewMode:   'days'
-      format:     'YYYY-MM-DD'
+      format:     'MMM DD, YYYY'
       minDate:     moment().subtract(100, 'years')
       maxDate:     moment().add(1, 'years')
       defaultDate: moment()
