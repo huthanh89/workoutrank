@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
@@ -58,19 +59,42 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
+
     @calendar = @ui.calendar.fullCalendar
       events:     @calendarEvents
       eventOrder: 'color'
       header:
         left:   ''
         center: 'title'
-        right:  'agendaDay,agendaWeek'
+        right:  'basicDay,basicWeek prev,next'
+
       eventClick: (calEvent) =>
         @rootChannel.request 'strength:detail', calEvent.strengthID
         return
 
+      viewRender: (view,element) ->
+
+        prev = $("#schedule-widget .fc-prev-button")
+        next = $("#schedule-widget .fc-next-button")
+
+        if moment(view.start).isAfter moment().startOf('week')
+          prev.css('visibility','visible')
+        else
+          prev.css('visibility','hidden')
+
+        if moment(view.end).isBefore moment().endOf('week')
+          next.css('visibility','visible')
+        else
+          next.css('visibility','hidden')
+
+        if view.type is 'basicWeek'
+          prev.css('visibility','hidden')
+          next.css('visibility','hidden')
+
+        return
+
     @calendar.fullCalendar('today')
-    @calendar.fullCalendar('changeView', 'agendaDay')
+    @calendar.fullCalendar('changeView', 'basicDay')
 
     @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
