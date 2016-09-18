@@ -219,6 +219,7 @@ gulp.task 'js:bundle', (callback) ->
         marionette:                 'scripts/backbone.marionette.js'
         async:                      'scripts/async.js'
         highcharts:                 'scripts/highcharts.js'
+        'highcharts-more':          'scripts/highcharts-more.js'
         highstock:                  'scripts/highstock.js'
         bootstrap:                  'scripts/bootstrap.js'
         'bootstrap.validator':      'scripts/bootstrap.validator.js'

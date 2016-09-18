@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'

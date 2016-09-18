@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 moment       = require 'moment'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -54,7 +55,7 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.calendar.datepicker
+    datepicker = @ui.calendar.datepicker
       beforeShowDay: (date) =>
 
         rank = @dates[moment(date).startOf('day')]
@@ -84,6 +85,17 @@ class View extends Marionette.ItemView
               classes: ''
               tooltip: ''
             }
+    return
+
+  onShow: ->
+
+    medals = _.valuesIn @dates
+
+    $('#strength-trophy-gold').html _.filter(medals, (medal) -> medal is 'gold').length
+
+    $('#strength-trophy-silver').html _.filter(medals, (medal) -> medal is 'silver').length
+
+    $('#strength-trophy-bronze').html _.filter(medals, (medal) -> medal is 'bronze').length
 
     return
 
