@@ -103,6 +103,8 @@ class View extends Marionette.ItemView
 
   updateModel: (records) ->
 
+    # Get values that is within search date.
+
     todayValues = _ records
     .filter (record) =>
       searchDate = moment(@date)
@@ -111,9 +113,11 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
+    # Get values omitting today.
+
     values = _ records
     .filter (record) =>
-      searchDate = moment(@date)
+      searchDate = moment(@date).subtract(1, 'days')
       recordDate = moment(record.x)
       return recordDate.isBefore(searchDate.endOf('day'))
     .map (record) -> record.y
@@ -121,17 +125,18 @@ class View extends Marionette.ItemView
 
     # There must be an sd. If there is none just set it to an arbitrary 1.
 
-    avg = @avg(values)
-    sd  = standardDeviation(variance(values, _.mean(values))) or 1
-    min = avg - sd
-    max = avg + sd
+    avg   = @avg(values)
+    sd    = standardDeviation(variance(values, _.mean(values))) or 1
+    value = _.round(@max(todayValues), 1) or 0
+    min   = (avg - sd) or 0
+    max   = (avg + sd) or value
 
     decimals = 0
 
     @model.set
-      value: _.round(@max(todayValues), 1) or 0
-      min:   _.round(min, decimals)        or 0
-      max:   _.round(max, decimals)        or 0
+      value: value
+      min:   _.round(min, decimals)
+      max:   _.round(max, decimals)
       avg:   _.round(avg, decimals)
       sd:    _.round(sd, decimals)
 

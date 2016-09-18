@@ -192,7 +192,7 @@ class View extends Marionette.ItemView
           style:
             fontWeight: 'bold'
             fontSize:    14
-          x: 10
+          x: 5
       ]
 
       plotOptions:

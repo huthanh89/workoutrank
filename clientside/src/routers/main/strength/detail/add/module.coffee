@@ -58,6 +58,8 @@ class View extends Marionette.ItemView
     submit: '#strength-modal-submit'
     date:   '#strength-modal-date'
     time:   '#strength-modal-time'
+    weightView: '#strength-modal-weight-container'
+    labelView:  '#strength-modal-weight-label-container'
 
   bindings:
 
@@ -76,6 +78,10 @@ class View extends Marionette.ItemView
     '#strength-modal-weight':
       observe: 'weight'
       onSet: (value) -> parseInt(value)
+
+    '#strength-modal-weight-label':
+      observe: 'weight'
+      onGet: (value) -> value + ' lbs'
 
     '#strength-modal-note': 'note'
 
@@ -119,7 +125,6 @@ class View extends Marionette.ItemView
 #    @model.set('date', new Date(options.date))
     @model.set('date', moment())
 
-
     # If there are data, use the latest data found in collection
     # as default values.
 
@@ -145,12 +150,16 @@ class View extends Marionette.ItemView
       min:              1
       max:              99999
 
-    @ui.weight.TouchSpin
-      postfix:          'pounds'
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
-      min:              1
-      max:              99999
+    if @model.get('body')
+      @ui.weightView.hide()
+    else
+      @ui.labelView.hide()
+      @ui.weight.TouchSpin
+        postfix:          'pounds'
+        buttondown_class: 'btn btn-info'
+        buttonup_class:   'btn btn-info'
+        min:              1
+        max:              99999
 
     @ui.date.datetimepicker
       inline:      true
@@ -158,6 +167,7 @@ class View extends Marionette.ItemView
       minDate:     moment(date).subtract(1, 'years')
       maxDate:     moment(date).add(1, 'years')
       defaultDate: moment(date)
+
 
     @stickit()
 

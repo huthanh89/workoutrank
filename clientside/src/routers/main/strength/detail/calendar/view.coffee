@@ -100,8 +100,6 @@ class View extends Marionette.ItemView
     _.each models, (model) ->
       day = moment(model.get('date')).startOf('day')
       dates[day] = [] if dates[day] is undefined
-
-
       dates[day].push model.get(type)
       return
 
@@ -114,16 +112,17 @@ class View extends Marionette.ItemView
       typeValues = _ models
       .omitBy (model) ->
         modelDate = moment(model.get('date')).startOf('day')
-        return modelDate.isAfter(moment(new Date(date)))
+        return modelDate.isAfter(moment(new Date(date)).subtract(1, 'days'))
       .map (model) -> model.get(type)
       .value()
 
       # Determine placements for each day.
 
-      value = @max(values)
-      avg   = @mean typeValues
-      sd    = standardDeviation(variance(typeValues, _.mean(typeValues)))
-      goal  = (avg + sd) or avg
+      decimals = 0
+      value    = _.round(@max(values), decimals)
+      avg      = @mean typeValues
+      sd       = standardDeviation(variance(typeValues, _.mean(typeValues)))
+      goal     = _.round((avg + sd) or avg, decimals)
 
       # Always give first day gold, because there isn't enough data.
 
