@@ -48,10 +48,12 @@ class View extends Marionette.LayoutView
     @showChildView 'repGauge', new GaugeView
       logs: repData
       date: @date
+      type: 'rep'
 
     @showChildView 'weightGauge', new GaugeView
       logs: weightData
       date: @date
+      type: 'weight'
 
     return
 

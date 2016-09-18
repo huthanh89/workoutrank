@@ -55,26 +55,32 @@ seriesData = (model, type, chart) ->
     shadow : true
 
   if type is 0
+
+    color = '#00ffa4'
+
     return _.assign result,
       name: 'Reps'
       data:  model.get('repData')
-      color:     '#46dbd4'
-      lineColor: '#65c2bd'
+      color:     color
+      lineColor: color
       marker:
         enabled:    true
-        fillColor: '#65c2bd'
+        fillColor:  color
         radius:     6
   else
+
+    color = '#FE7935'
+
     return _.assign result,
       name: 'Weights'
       data:  model.get('weightData')
       tooltip:
         valueSuffix: ' lb'
-      color:     '#00ffa4'
-      lineColor: '#00B272'
+      color:     color
+      lineColor: color
       marker:
         enabled:    true
-        fillColor: '#00B272'
+        fillColor:  color
         radius:     6
 
 #-------------------------------------------------------------------------------

@@ -41,24 +41,6 @@ class Model extends Backbone.Model
     value: 0
 
 #-------------------------------------------------------------------------------
-# Gauge Options
-#-------------------------------------------------------------------------------
-
-opts =
-  lines:            12
-  angle:            0
-  lineWidth:        0.44
-  limitMax:        'false'
-  colorStart:      '#6FADCF'
-  colorStop:       '#8FC0DA'
-  strokeColor:     '#E0E0E0'
-  generateGradient: true
-  pointer:
-    length:      0.8
-    strokeWidth: 0.035
-    color:      '#000000'
-
-#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -78,6 +60,7 @@ class View extends Marionette.ItemView
     @mergeOptions options, [
       'logs'
       'date'
+      'type'
     ]
 
   onRender: ->
@@ -88,15 +71,31 @@ class View extends Marionette.ItemView
   onShow: ->
 
     target = $(@el).find('.strength-goal-gauge')[0]
-    gauge  = new Gauge.Gauge(target).setOptions(opts)
     min    = @model.get('min')
     max    = @model.get('max')
+    color  = if @type is 'rep' then '#00ffa4' else '#FE7935'
+
+    opts =
+      lines:            12
+      angle:            0.15
+      lineWidth:        0.44
+      limitMax:        'false'
+      colorStart:       color
+      colorStop:        color
+      strokeColor:     '#E0E0E0'
+      generateGradient: true
+      pointer:
+        length:      0.8
+        strokeWidth: 0.035
+        color:      '#000000'
+
+    gauge  = new Gauge.Gauge(target).setOptions(opts)
 
     gauge.minValue       = min
     gauge.maxValue       = max
     gauge.animationSpeed = 83
 
-    gauge.set @model.get('value')
+    gauge.set _.clamp @model.get('value'), min, max
 
     return
 
@@ -120,22 +119,19 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
+    # There must be an sd. If there is none just set it to an arbitrary 1.
+
     avg = @avg(values)
-    sd  = standardDeviation(variance(values, _.mean(values)))
-
-    min = avg
-    max = avg
-
-    if sd
-      min = avg - sd
-      max = avg + sd
+    sd  = standardDeviation(variance(values, _.mean(values))) or 1
+    min = avg - sd
+    max = avg + sd
 
     decimals = 0
 
     @model.set
       value: _.round(@max(todayValues), 1) or 0
-      min:   _.round(min, decimals)
-      max:   _.round(max, decimals)
+      min:   _.round(min, decimals)        or 0
+      max:   _.round(max, decimals)        or 0
       avg:   _.round(avg, decimals)
       sd:    _.round(sd, decimals)
 

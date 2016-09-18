@@ -328,6 +328,7 @@ gulp.task 'nodemon', ->
     ext: 'html js coffee'
     env:
       'NODE_ENV': 'development'
+    task: 'page:reload'
   return
 
 #-------------------------------------------------------------------------------
