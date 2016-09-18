@@ -53,7 +53,7 @@ class View extends Marionette.ItemView
 
     '#weight-modal-weight':
       observe: 'weight'
-      onSet: (value) -> parseInt(value)
+      onSet: (value) -> parseFloat(value)
 
     '#weight-modal-note': 'note'
 
@@ -113,8 +113,10 @@ class View extends Marionette.ItemView
       postfix:          'pounds'
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
-      min:              1
-      max:              99999
+      min:               1
+      max:               99999
+      step:              0.1
+      decimals:          1
 
     @ui.date.datetimepicker
       inline:      true

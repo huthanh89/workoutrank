@@ -139,6 +139,8 @@ class View extends Marionette.ItemView
           fontSize:      '15px'
           fontWeight:    'bold'
         valueDecimals:    0
+        formatter: ->
+          '<span style="color: lightseagreen">' + moment(@x).format('DD MMM') + ': </span>' + @y
 
       series: [
         seriesData(@model, 'column')
