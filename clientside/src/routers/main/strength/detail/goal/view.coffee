@@ -15,6 +15,10 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
+  ui:
+    rep:    '.strength-goal-rep'
+    weight: '.strength-goal-weight'
+
   regions:
     repGauge:    '.strength-goal-rep-gauge-container'
     weightGauge: '.strength-goal-weight-gauge-container'
@@ -24,9 +28,10 @@ class View extends Marionette.LayoutView
     @mergeOptions options, [
       'date'
       'sLogs'
+      'sConf'
     ]
 
-  onShow: ->
+  onRender: ->
 
     weightData = []
     repData    = []
@@ -50,10 +55,14 @@ class View extends Marionette.LayoutView
       date: @date
       type: 'rep'
 
-    @showChildView 'weightGauge', new GaugeView
-      logs: weightData
-      date: @date
-      type: 'weight'
+    if @sConf?.get('body') is false
+      @showChildView 'weightGauge', new GaugeView
+        logs: weightData
+        date: @date
+        type: 'weight'
+    else
+      @ui.weight.hide()
+      @ui.rep.switchClass 'col-sm-6', 'col-sm-12'
 
     return
 

@@ -108,10 +108,8 @@ class View extends Marionette.LayoutView
       return
 
   modelEvents:
-    'change:date': (model, value) ->
-      @showChildView 'goal', new GoalView
-        sLogs: @collection
-        date:  value
+    'change:date': ->
+      @updateAfterDateChange()
       return
 
     sync: (model) ->
@@ -179,6 +177,13 @@ class View extends Marionette.LayoutView
     @updateViews()
     return
 
+  updateAfterDateChange: ->
+    @showChildView 'goal', new GoalView
+      sLogs: @collection
+      sConf: @model
+      date:  @model.get('date')
+    return
+
   updateViews: ->
     @showChildView 'goal', new GoalView
       sLogs: @collection
@@ -192,11 +197,14 @@ class View extends Marionette.LayoutView
       sLogs: @collection
       sConf: @model
 
+    @updateAfterDateChange()
+
     return
 
   showCalendar: ->
     @showChildView 'calendar', new CalendarView
       collection: @collection
+      type: if @model.get('body') is true then 'rep' else 'weight'
     return
 
   addWorkout: ->

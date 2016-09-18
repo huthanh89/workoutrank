@@ -47,8 +47,9 @@ class View extends Marionette.ItemView
   ui:
     calendar: '#strength-calendar-ui'
 
-  constructor: ->
+  constructor: (options) ->
     super
+    @mergeOptions options, 'type'
     @reduce()
 
   onRender: ->
@@ -86,10 +87,11 @@ class View extends Marionette.ItemView
 
     return
 
-  # Parse for rank placement values for weights goals.
+  # Parse for rank placement values for typeValues goals.
 
   reduce: ->
 
+    type   = @type
     models = @collection.models
     dates  = {}
 
@@ -98,7 +100,9 @@ class View extends Marionette.ItemView
     _.each models, (model) ->
       day = moment(model.get('date')).startOf('day')
       dates[day] = [] if dates[day] is undefined
-      dates[day].push model.get('weight')
+
+
+      dates[day].push model.get(type)
       return
 
     # Get goal for dates before each day.
@@ -107,18 +111,18 @@ class View extends Marionette.ItemView
 
     for date, values of dates
 
-      weights = _ models
+      typeValues = _ models
       .omitBy (model) ->
         modelDate = moment(model.get('date')).startOf('day')
         return modelDate.isAfter(moment(new Date(date)))
-      .map (model) -> model.get('weight')
+      .map (model) -> model.get(type)
       .value()
 
       # Determine placements for each day.
 
       value = @max(values)
-      avg   = @mean weights
-      sd    = standardDeviation(variance(weights, _.mean(weights)))
+      avg   = @mean typeValues
+      sd    = standardDeviation(variance(typeValues, _.mean(typeValues)))
       goal  = (avg + sd) or avg
 
       # Always give first day gold, because there isn't enough data.
