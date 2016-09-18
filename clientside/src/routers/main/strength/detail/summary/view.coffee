@@ -69,15 +69,14 @@ class View extends Marionette.ItemView
 
     '#log-table-weight-max':
       observe: 'weightMax'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-weight-min':
       observe: 'weightMin'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-weight-avg':
       observe: 'weightAvg'
-
-    '#log-table-weight-sd':
-      observe: 'weightSD'
       onGet: (value) -> if value then value else '---'
 
     '#log-table-weight-total':
@@ -85,15 +84,14 @@ class View extends Marionette.ItemView
 
     '#log-table-rep-min':
       observe: 'repMin'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-rep-max':
       observe: 'repMax'
+      onGet: (value) -> if value then value else '---'
 
     '#log-table-rep-avg':
       observe: 'repAvg'
-
-    '#log-table-rep-sd':
-      observe: 'repSD'
       onGet: (value) -> if value then value else '---'
 
     '#log-table-rep-total':
