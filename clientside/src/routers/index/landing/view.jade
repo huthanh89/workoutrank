@@ -21,13 +21,13 @@
                 // Wrapper for slides
                 .carousel-inner(role='listbox')
                     .item.active
-                        h1 Simple fitness journal and calendar
+                        h1 Smart fitness journal and scheduler.
                         img(src='images/calendar_macbook.png')
                     .item
-                        h1 Interactive graphs for workout comparisons
+                        h1 View performance graphs to track progress.
                         img(src='images/graphs_blue.png')
                     .item
-                        h1 Responsive on any screen size
+                        h1 Let us be your go to app for recording daily sessions.
                         img(src='images/responsive_blue.png')
                 // Left and right controls
                 a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
@@ -39,60 +39,73 @@
 .row
     .index-section2.col-lg-6
         .col-sm-6
-            p.index-section-text Compare repetitions and weights of each workouts with interactive graphs. View data summary of your personal records and statistics.
-        .col-sm-6
-            img(src='images/data_phone.png').index-section-image
-    .index-section2.col-lg-6
+            .index-section-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-magic
+                    = ' '
+                    | Make working out fun again.
+                span Complete goals and challenges as you keep track of your daily gains. In addition, let us take out the guessing game of what to do next by relying on us to do that for you.
         .col-sm-6
             img(src='images/entry_phone.png').index-section-image
+    .index-section2.col-lg-6
         .col-sm-6
-            p.index-section-text Automatically keep track which workout you did last.
+            img(src='images/data_phone.png').index-section-image
+        .col-sm-6
+            .index-section-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-bar-chart-o(style="color:#14e190;")
+                    = ' '
+                    | Performance Graph
+                span Knowledge is key. Compare workout sessions with interactive graphs. View data summary of your personal records and various statistics.
 
-#index-section4
-    .col-sm-6
-        img(src='images/calendar_tablet.png')#index-section4-image
-    .col-sm-6
-        p#index-section4-text Create a daily schedule based on what muscle group to target. The scheduler will determine what to work on so you don't have to.
+.row
+    #index-section6
+        .col-sm-6
+            img(src='images/entryrank.png')#index-section6-image
+        .col-sm-6
+            #index-section6-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-trophy
+                    = ' '
+                    | Ranking System
+                span Earn trophies each day as you complete a new goal that is specially tailored for you to maximize your gains. Every session is evaluated and ranked against past performances. Easily distinguish how well you did with our instant feedback.
+.row
+    #index-section5
+        .col-sm-6
+            #index-section5-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-calendar-plus-o
+                    = ' '
+                    | Workout Scheduler
+                span Use our scheduler to see what workout to do next based on assigned muscle group to target for that day. Personalize your training schedule to best fit your need.
+        .col-sm-6
+            img(src='images/duo_tablets.png')#index-section5-image
+.row
+    #index-section7
+        .col-sm-6
+            #index-section7-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-book
+                    = ' '
+                    | Smart Journal
+                span What good is journal keeping if you cannot make use of the information. With our smart journal, you can easily pin point which workout is lacking and focus on that. We'll do all the remembering so you won't have to.
+        .col-sm-6
+            img(src='images/journalmaster.png')#index-section7-image
 
-#index-section5
-    .col-sm-6
-        p#index-section5-text Personalize your workout log. A go to app for recording daily sessions.
-    .col-sm-6
-        img(src='images/duo_tablets.png')#index-section5-image
-
-#index-section3
-    .row
-        .col-xs-12
-            h2 What kind of services do we have?
-    br
-    .row
-        .col-sm-3
-            i.fa.fa-3x.fa-file-text-o
-            h3 Journals
-            p Track daily sessions quick and easily
-        .col-sm-3
-            i.fa.fa-3x.fa-bar-chart
-            h3 Graphs
-            p Interactive visual charts and data summary for each workout
-        .col-sm-3
-            i.fa.fa-3x.fa-calendar-check-o
-            h3 Calendar
-            p View logged data entries for each month
-        .col-sm-3
-            i.fa.fa-3x.fa-calendar-plus-o
-            h3 Schedule
-            p Daily reminders for which workout to do next
 #index-btn-group-bottom
     .row
         .col-xs-12
-            p On the fence about signing up? Go for a test drive.
+            h3
+                i.fa.fa-fw.fa-lg.fa-key
+                = ' '
+                | Still on the fence about signing up? Go for a test drive.
             button.btn.btn-lg.btn-info.index-try-btn(type="button")
                 i.fa.fa-fw.fa-lg.fa-key
                 = ' '
-                | Try us out
+                | Try Demo
     .row
         .col-xs-12
-            p Create an account or Log In
+            p If you like what you see so far, create an account then Log In.
             button.btn.btn-lg.btn-success.index-signup-btn(type="button")
                 i.fa.fa-fw.fa-lg.fa-user
                 = ' '

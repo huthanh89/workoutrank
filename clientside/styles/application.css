@@ -66,6 +66,9 @@ Index landing page
   min-height: 400px;
   text-align: center;
 }
+.index-section2 i {
+  color: #f5850b;
+}
 .index-section2 .index-section-image {
   max-width: 100%;
   max-height: 400px;
@@ -79,37 +82,22 @@ Index landing page
   }
 }
 .index-section2 .index-section-text {
-  font-size: 1.4em;
+  font-size: 1.2em;
   color: grey;
   padding: 15px 0;
 }
+.index-section2 .index-section-text h3 {
+  color: grey;
+}
 @media (min-width: 767px) {
   .index-section2 .index-section-text {
-    padding: 130px 20px 0;
-  }
-}
-#index-section3 {
-  min-height: 400px;
-  max-height: 400px;
-  text-align: center;
-  color: grey;
-  padding: 70px 20px;
-}
-#index-section3 h2 {
-  color: grey;
-}
-#index-section3 h3 {
-  color: grey;
-}
-@media (max-width: 767px) {
-  #index-section3 {
-    padding: 10px 10px;
-    max-height: inherit;
+    padding: 100px 20px 0;
   }
 }
 #index-section4 {
   min-height: 400px;
   text-align: center;
+  background: white;
 }
 #index-section4 #index-section4-image {
   max-width: 100%;
@@ -157,13 +145,19 @@ Index landing page
 }
 #index-section5 #index-section5-text {
   padding: 150px 70px;
-  font-size: 1.4em;
+  font-size: 1.2em;
   color: grey;
+}
+#index-section5 #index-section5-text h3 {
+  color: grey;
+}
+#index-section5 #index-section5-text i {
+  color: #72bcd4;
 }
 @media (max-width: 767px) {
   #index-section5 #index-section5-text {
-    padding: 30px;
-    height: 200px;
+    padding: 10px;
+    height: 230px;
   }
 }
 #index-btn-group-top {
@@ -187,13 +181,97 @@ Index landing page
 #index-btn-group-bottom {
   text-align: center;
   background: white;
-  height: 300px;
+  height: 350px;
   padding-top: 50px;
 }
+#index-btn-group-bottom h3 {
+  color: grey;
+}
+#index-btn-group-bottom h3 i {
+  color: #ffd700;
+}
 #index-btn-group-bottom button {
-  margin: 15px;
+  margin: 10px;
   border-radius: 10px;
   border: 2px whitesmoke solid;
+}
+#index-section6 {
+  min-height: 400px;
+  text-align: center;
+}
+#index-section6 #index-section6-image {
+  max-width: 100%;
+  min-height: 340px;
+  max-height: 380px;
+  width: auto;
+  height: auto;
+  padding-top: 15px;
+  padding-left: 80px;
+}
+@media (max-width: 767px) {
+  #index-section6 #index-section6-image {
+    padding: 10px 0 10px 0;
+    min-height: 250px;
+    height: 260px;
+  }
+}
+#index-section6 #index-section6-text {
+  padding: 90px 90px;
+  color: gray;
+}
+#index-section6 #index-section6-text i {
+  color: gold;
+}
+#index-section6 #index-section6-text h3 {
+  color: gray;
+}
+#index-section6 #index-section6-text span {
+  font-size: 1.2em;
+}
+@media (max-width: 767px) {
+  #index-section6 #index-section6-text {
+    padding: 10px 10px;
+    height: 300px;
+  }
+}
+#index-section7 {
+  min-height: 400px;
+  text-align: center;
+}
+#index-section7 #index-section7-image {
+  max-width: 100%;
+  min-height: 340px;
+  max-height: 380px;
+  width: auto;
+  height: auto;
+  padding-top: 15px;
+  padding-left: 80px;
+}
+@media (max-width: 767px) {
+  #index-section7 #index-section7-image {
+    padding: 10px 0 10px 0;
+    min-height: 250px;
+    height: 250px;
+  }
+}
+#index-section7 #index-section7-text {
+  padding: 90px 90px;
+  color: gray;
+}
+#index-section7 #index-section7-text i {
+  color: #c3834c;
+}
+#index-section7 #index-section7-text h3 {
+  color: gray;
+}
+#index-section7 #index-section7-text span {
+  font-size: 1.2em;
+}
+@media (max-width: 767px) {
+  #index-section7 #index-section7-text {
+    padding: 30px;
+    height: 300px;
+  }
 }
 /*-----------------------------------------------------------------------------
 Content
