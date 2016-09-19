@@ -45,12 +45,13 @@ class Collection extends Backbone.Collection
 
         sConf = sConfs.get(model.id)
 
-        result.push
-          start:   new Date moment(data.x)
-          end:     new Date moment(data.x)
-          title:   sConf.get('name')
-          color:   Data.Colors[_.sum(sConf.get('muscle')) % Data.Colors.length]
-          modelID: model.id
+        if sConf
+          result.push
+            start:   new Date moment(data.x)
+            end:     new Date moment(data.x)
+            title:   sConf.get('name')
+            color:   Data.Colors[_.sum(sConf.get('muscle')) % Data.Colors.length]
+            modelID: model.id
       return
 
     return result

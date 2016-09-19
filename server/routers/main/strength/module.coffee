@@ -171,9 +171,6 @@ module.put = (req, res, next) ->
 
     (strength, callback) ->
 
-
-      console.log req.body
-
       strength.date   = req.body.date
       strength.name   = req.body.name
       strength.note   = req.body.note
@@ -242,11 +239,25 @@ module.delete = (req, res, next) ->
       return
 
     (strength, callback) ->
+
+      # Remove all associated logs.
+
+      SLog.remove
+        exercise: strength.id
+      .exec (err, slogs) ->
+        return callback err.message if err
+        return callback null, strength
+      return
+
+    (strength, callback) ->
+
+      # Remove actual sconf entry.
+
       strength.remove (err) ->
         return callback err.message if err
         return callback null
-
       return
+
 
   ], (err) ->
 
