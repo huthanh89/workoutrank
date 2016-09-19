@@ -52,12 +52,12 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    dialog: '.modal'
-    rep:    '#strength-modal-rep'
-    weight: '#strength-modal-weight'
-    submit: '#strength-modal-submit'
-    date:   '#strength-modal-date'
-    time:   '#strength-modal-time'
+    dialog:     '.modal'
+    rep:        '#strength-modal-rep'
+    weight:     '#strength-modal-weight'
+    submit:     '#strength-modal-submit'
+    date:       '#strength-modal-date'
+    time:       '#strength-modal-time'
     weightView: '#strength-modal-weight-container'
     labelView:  '#strength-modal-weight-label-container'
 
@@ -167,7 +167,6 @@ class View extends Marionette.ItemView
       minDate:     moment(date).subtract(1, 'years')
       maxDate:     moment(date).add(1, 'years')
       defaultDate: moment(date)
-
 
     @stickit()
 

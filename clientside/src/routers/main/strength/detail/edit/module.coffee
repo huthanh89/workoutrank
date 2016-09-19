@@ -88,6 +88,7 @@ class View extends Marionette.LayoutView
         error: (model, response) =>
           @rootChannel.request 'message:error', response
           return
+
       return
 
     'hidden.bs.modal': ->
@@ -111,7 +112,6 @@ class View extends Marionette.LayoutView
       buttonWidth:  '100%'
       buttonClass:  'btn btn-default'
     .multiselect 'dataprovider', Data.Muscles
-    .multiselect('select', @model.get('muscle'))
 
     @stickit()
 

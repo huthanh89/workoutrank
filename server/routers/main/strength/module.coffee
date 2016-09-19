@@ -117,8 +117,6 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      console.log req.body
-
       Strength.create
         date:   req.body.date
         name:   req.body.name
