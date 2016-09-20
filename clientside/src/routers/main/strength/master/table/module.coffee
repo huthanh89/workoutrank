@@ -128,8 +128,9 @@ class ItemView extends Marionette.ItemView
 
     if value > 0
 
-      max     = @channel.request('get:max')
-      percent = _.round((value/max * 100), 2)
+      average = @channel.request('get:average')
+      percent = _.round((value/average * 100), 2)
+      percent = _.clamp percent, 0, 100
 
       # Choose the color.
 
@@ -177,7 +178,7 @@ class View extends Marionette.CompositeView
     ]
 
     @channel.reply
-      'get:max': => _.maxBy(@collection.models, (model) -> model.get('count')).get('count')
+      'get:average': => _.meanBy(@collection.models, (model) -> model.get('count'))
 
   childViewOptions: ->
     return {

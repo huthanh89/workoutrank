@@ -37,7 +37,7 @@ class View extends Marionette.LayoutView
     super
     @mergeOptions options, ['sConfs', 'sLogs']
     @rootChannel = Backbone.Radio.channel('root')
-    @channel =     new Backbone.Radio.Channel(@cid)
+    @channel     = new Backbone.Radio.Channel(@cid)
 
     @channel.reply
 

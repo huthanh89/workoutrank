@@ -94,7 +94,7 @@ class View extends Marionette.LayoutView
         return
 
     @calendar.fullCalendar('today')
-    @calendar.fullCalendar('changeView', 'basicWeek')
+    @calendar.fullCalendar('changeView', 'basicDay')
 
     @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 

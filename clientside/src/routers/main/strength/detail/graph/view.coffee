@@ -156,7 +156,7 @@ class View extends Marionette.ItemView
 
       chart:
         renderTo:         container
-        height:           300
+        height:           190
         spacingBottom:    5
         spacingTop:       0
         spacingLeft:     -10

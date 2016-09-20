@@ -20,10 +20,6 @@ class View extends Marionette.ItemView
   bindings:
     '#home-exercise-count': 'sLogs'
 
-    #'#home-schedule-count': 'schedules'
-    #'#home-calendar-count': 'sLogs'
-    #'#home-log-count':      'sConfs'
-
   events:
 
     'click #home-strengths': ->
