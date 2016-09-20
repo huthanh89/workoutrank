@@ -55,12 +55,14 @@ class View extends Marionette.LayoutView
     @mergeOptions options, [
       'channel'
       'calendarEvents'
+      'sLogs'
     ]
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
 
     @calendar = @ui.calendar.fullCalendar
+      height:     'auto'
       events:     @calendarEvents
       eventOrder: 'color'
       header:
@@ -72,7 +74,32 @@ class View extends Marionette.LayoutView
         @rootChannel.request 'strength:detail', calEvent.strengthID
         return
 
-      viewRender: (view,element) ->
+      eventRender: (view, element) =>
+
+        day = moment(view.start).startOf('day')
+
+        models = _ @sLogs.models
+        .filter (model) ->
+
+          return false unless model.id is view.strengthID
+
+          eventDate  = moment(view.start).format('YYYY-MM-DD')
+
+          for data in model.get('repData')
+            return true if eventDate is moment(data.x).format('YYYY-MM-DD')
+
+          for data in model.get('weightData')
+            return true if eventDate is moment(data.x).format('YYYY-MM-DD')
+
+          return false
+
+        .value()
+
+        if models.length
+          element.find(".fc-title").prepend("<i class='fa fa-check'></i>")
+        return
+
+      viewRender: (view) ->
 
         prev = $("#schedule-widget .fc-prev-button")
         next = $("#schedule-widget .fc-next-button")

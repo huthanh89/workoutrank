@@ -85,14 +85,14 @@ class View extends Marionette.ItemView
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
-    @model = chartModel @options.sLogs
+    @model       = chartModel @options.sLogs
 
   onShow: ->
 
     chart = new Highstocks.StockChart
       chart:
         renderTo:         @ui.chart[0]
-        height:           300
+        height:           190
         spacingBottom:    5
         spacingTop:       0
         spacingLeft:     -10

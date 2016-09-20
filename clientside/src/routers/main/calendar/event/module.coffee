@@ -82,7 +82,7 @@ class View extends Marionette.ItemView
 
   onShow: ->
     @calendar = @ui.calendar.fullCalendar
-      height: 650
+      height: 'auto'
       events: @calendarEvents
       header:
         left:   'title'

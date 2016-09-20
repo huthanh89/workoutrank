@@ -65,7 +65,6 @@ class Collection extends Backbone.Collection
             color:  Data.Colors[_.sum(muscles) % Data.Colors.length]
             allDay: true
             strengthID: model.id
-            completed : false
       return
 
     return result
@@ -107,6 +106,7 @@ class View extends Marionette.LayoutView
           channel:        @channel
           model:          @model
           calendarEvents: events
+          sLogs:          @sLogs
         return
 
   onShow: ->
