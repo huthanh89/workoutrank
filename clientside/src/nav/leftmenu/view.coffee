@@ -49,18 +49,8 @@ class View extends Marionette.ItemView
       @api.close()
       return
 
-    'click #drawer-graphs': ->
-      @channel.request 'logs'
-      @api.close()
-      return
-
     'click #drawer-weights': ->
       @channel.request 'weights'
-      @api.close()
-      return
-
-    'click #drawer-body': ->
-      @channel.request 'body'
       @api.close()
       return
 
