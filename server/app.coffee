@@ -23,8 +23,8 @@ require 'coffee-script/register'
 
 # Connect to Database.
 
-#mongoose.connect 'mongodb://localhost:27017/local'
-mongoose.connect 'mongodb://54.201.171.251:27017/local'
+mongoose.connect 'mongodb://localhost:27017/local'
+#mongoose.connect 'mongodb://54.201.171.251:27017/local'
 
 db = mongoose.connection
 db.on 'error', console.error.bind(console, 'connection error:')

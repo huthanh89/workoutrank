@@ -10,43 +10,53 @@
                 span Entry
 .row
     .col-md-8.col-center
-        .panel.panel-info#strength-detail-add-container
+        .panel.panel-info
+            .panel-heading.clearfix
+                .panel-title
+                    span#strength-title
             .panel-body
-                .col-xs-6
-                    button.btn.btn-block.btn-primary#strength-schedule-btn
+                .col-xs-6#strength-detail-schedule-container
+                    button.btn.btn-primary#strength-schedule-btn
                         i.fa.fa-fw.fa-lg.fa-calendar-check-o
                             = ' '
                         span Schedule
-                .col-xs-6
-                    button.btn.btn-block.btn-primary#strength-detail-add
+                .col-xs-6#strength-detail-add-container
+                    button.btn.btn-primary#strength-detail-add
                         i.fa.fa-fw.fa-lg.fa-pencil
                         = ' '
                         span Add Entry
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading.clearfix
+            .panel-heading
                 .panel-title
-                    span#strength-title
-            .panel-body
-                #strength-date-view
-            #strength-table-view
+                    span Journal Entries
+            .panel-body#strength-history-panel
+                #strength-history-view
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading Daily Goal
+            .panel-heading.clearfix
+                .panel-title
+                    span Daily Challenges
+            .panel-body
+                #strength-challenge-view
+.row
+    .col-md-8.col-center
+        .panel.panel-info
+            .panel-heading Performance
             .panel-body#strength-goal-panel
                 #strength-goal-view
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading.clearfix Performance Ranking
+            .panel-heading.clearfix Overall Ranking
             .panel-body
                 #strength-calendar-view
 .row
     .col-md-8.col-center
         .panel.panel-info
-            .panel-heading Performance Graph
+            .panel-heading Progress Graph
             .panel-body
                 #strength-graph-view
 .row

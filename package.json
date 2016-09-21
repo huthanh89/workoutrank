@@ -43,6 +43,7 @@
     "nodemailer-smtp-transport": "*",
     "nodemailer": "*",
     "eve": "*",
+    "d3": "*",
     "passport-remember-me": "*"
   },
   "devDependencies": {

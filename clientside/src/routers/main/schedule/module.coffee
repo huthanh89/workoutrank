@@ -130,8 +130,6 @@ class View extends Marionette.LayoutView
 
   updateLabels: ->
 
-    console.log @model.get('tuesday')
-
     day    = moment().format('dddd').toLowerCase()
     values = @model.get(day)
     text   = 'No muscle group today.'

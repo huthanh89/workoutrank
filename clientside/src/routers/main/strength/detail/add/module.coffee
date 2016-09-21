@@ -20,7 +20,7 @@ require 'bootstrap.datetimepicker'
 # Given an array of models, return the latest date.
 #-------------------------------------------------------------------------------
 
-lastestWeight = (collection) ->
+lastWeight = (collection) ->
   model = _.maxBy collection.models, (model) -> model.get('date')
   return model.get('weight')
 
@@ -92,10 +92,10 @@ class View extends Marionette.ItemView
       return
 
     'submit': (event) ->
+
       event.preventDefault()
+
       @rootChannel.request 'spin:page:loader', true
-      @model.set
-        date: @ui.date.data('DateTimePicker').date().format()
 
       @model.save {},
         success: (model) =>
@@ -122,8 +122,8 @@ class View extends Marionette.ItemView
 
     @mergeOptions options, 'wLogs'
 
-#    @model.set('date', new Date(options.date))
-    @model.set('date', moment())
+    if options.date
+      @model.set('date', options.date)
 
     # If there are data, use the latest data found in collection
     # as default values.
@@ -138,7 +138,7 @@ class View extends Marionette.ItemView
     # Set to latest wLogs entry.
 
     if @model.get('body') and @wLogs.length
-      @model.set 'weight', lastestWeight @wLogs
+      @model.set 'weight', lastWeight @wLogs
 
   onRender: ->
 
@@ -167,6 +167,10 @@ class View extends Marionette.ItemView
       minDate:     moment(date).subtract(1, 'years')
       maxDate:     moment(date).add(1, 'years')
       defaultDate: moment(date)
+
+    @ui.date.on 'dp.change', =>
+      @model.set 'date', @ui.date.data('DateTimePicker').date()
+      return
 
     @stickit()
 

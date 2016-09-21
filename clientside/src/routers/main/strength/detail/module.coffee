@@ -2,21 +2,21 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
-moment       = require 'moment'
-Backbone     = require 'backbone'
-Radio        = require 'backbone.radio'
-Marionette   = require 'marionette'
-Add          = require './add/module'
-Edit         = require './edit/module'
-DateView     = require './date/view'
-GraphView    = require './graph/view'
-SummaryView  = require './summary/view'
-GoalView     = require './goal/view'
-Table        = require './table/module'
-Workout      = require './workout/module'
-CalendarView = require './calendar/view'
-viewTemplate = require './view.jade'
+_             = require 'lodash'
+moment        = require 'moment'
+Backbone      = require 'backbone'
+Radio         = require 'backbone.radio'
+Marionette    = require 'marionette'
+Add           = require './add/module'
+Edit          = require './edit/module'
+HistoryView   = require './history/view'
+GraphView     = require './graph/view'
+SummaryView   = require './summary/view'
+GoalView      = require './goal/view'
+Workout       = require './workout/module'
+ChallengeView = require './challenge/view'
+CalendarView  = require './calendar/view'
+viewTemplate  = require './view.jade'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -55,14 +55,14 @@ class View extends Marionette.LayoutView
     edit: '#strength-detail-edit'
 
   regions:
-    modal:    '#strength-modal-view'
-    date:     '#strength-date-view'
-    table:    '#strength-table-view'
-    goal:     '#strength-goal-view'
-    summary:  '#strength-summary-view'
-    workout:  '#strength-workout-view'
-    calendar: '#strength-calendar-view'
-    graph:    '#strength-graph-view'
+    modal:     '#strength-modal-view'
+    history:   '#strength-history-view'
+    challenge: '#strength-challenge-view'
+    goal:      '#strength-goal-view'
+    summary:   '#strength-summary-view'
+    workout:   '#strength-workout-view'
+    calendar:  '#strength-calendar-view'
+    graph:     '#strength-graph-view'
 
   bindings:
     '#strength-title': 'name'
@@ -78,7 +78,7 @@ class View extends Marionette.LayoutView
       return
 
     'click #strength-detail-add': ->
-      @channel.request 'add'
+      @channel.request 'add:workout', moment()
       return
 
     'click #strength-detail-edit': ->
@@ -91,19 +91,13 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'log:detail', @model.get('exercise')
       return
 
-    'click #strength-calendar-btn': ->
-      @rootChannel.request 'calendar'
-      return
-
     'click #strength-schedule-btn': ->
       @rootChannel.request 'schedule'
       return
 
   collectionEvents:
     'sync update': ->
-      @updatePageableCollection()
       @summaryModel.update(@model, @collection)
-      @showCalendar()
       @updateViews()
       return
 
@@ -125,33 +119,29 @@ class View extends Marionette.LayoutView
       'wLogs'
     ]
 
-    attributes = _.chain @model.attributes
-      .extend
-        date:     new Date()
-        exercise: @model.get('_id')
-      .omit '_id'
-      .value()
-
     @channel = new Radio.channel(@cid)
 
+    @date = moment()
+
     @channel.reply
-      'add': =>
-        @addWorkout
-          date: @model.get('date')
+
+      'add:workout': (date) =>
+        @showChildView 'modal', new Add.View
+          collection: @collection
+          date:       date
+          wLogs:      @wLogs
+          model: new Add.Model
+            exercise: @model.id
         return
 
-    @pageableCollection = new Table.Collection @collection.models
-    @updatePageableCollection()
+      'change:date': (date) =>
+        @date = date
+        @updateViews()
+        return
 
     @summaryModel = new Workout.Model {},
       sConf: @model
       sLogs: @collection
-
-    # When date is changed, update pageable collection.
-
-    @listenTo @model, 'change:date', =>
-      @updatePageableCollection()
-      return
 
   onRender: ->
     @stickit()
@@ -159,68 +149,54 @@ class View extends Marionette.LayoutView
 
   onShow: ->
 
-    @showChildView 'date', new DateView
-      model: @model
-
-    @showChildView 'table', new Table.View
-      collection: @pageableCollection
-      channel:    @channel
-
-    @showChildView 'workout', new Workout.View
-      model: @summaryModel
-
-    @showCalendar()
-
-    @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
-    @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    #@ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    #@ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     @updateViews()
     return
 
   updateAfterDateChange: ->
+
+    @showChildView 'history', new HistoryView
+      sLogs:   @collection
+      sConf:   @model
+      channel: @channel
+      date:    @date
+
+    @showChildView 'challenge', new ChallengeView
+      sLogs: @collection
+      date:  @date
+      type:  if @model.get('body') is true then 'rep' else 'weight'
+
     @showChildView 'goal', new GoalView
       sLogs: @collection
       sConf: @model
-      date:  @model.get('date')
+      date:  @date
     return
 
   updateViews: ->
+
     @showChildView 'goal', new GoalView
       sLogs: @collection
-      date:  @model.get('date')
+      date:  @date
 
     @showChildView 'graph', new GraphView
       sLogs: @collection
       sConf: @model
 
+    @showChildView 'calendar', new CalendarView
+      collection: @collection
+      type: if @model.get('body') is true then 'rep' else 'weight'
+
     @showChildView 'summary', new SummaryView
       sLogs: @collection
       sConf: @model
 
+    @showChildView 'workout', new Workout.View
+      model: @summaryModel
+
     @updateAfterDateChange()
 
-    return
-
-  showCalendar: ->
-    @showChildView 'calendar', new CalendarView
-      collection: @collection
-      type: if @model.get('body') is true then 'rep' else 'weight'
-    return
-
-  addWorkout: ->
-    @showChildView 'modal', new Add.View
-      collection: @collection
-      model:      new Add.Model _.omit(@model.attributes, '_id')
-      date:       @model.get('date')
-      wLogs:      @wLogs
-    return
-
-  updatePageableCollection: ->
-    models = @collection.filter (model) =>
-      dateA = moment(model.get('date')).startOf('day')
-      dateB = moment(@model.get('date')).startOf('day')
-      return dateA.isSame(dateB)
-    @pageableCollection.reset models
     return
 
   onBeforeDestroy: ->

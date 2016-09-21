@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+d3           = require 'd3'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
@@ -48,10 +49,15 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
-  bindings:
+  ui:
+    level: '.strength-goal-level'
 
-    '.strength-goal-min':   'min'
-    '.strength-goal-max':   'max'
+  serializeData: ->
+    return {
+      label: if @type is 'rep' then 'Reps' else 'Weight (lb)'
+    }
+
+  bindings:
     '.strength-goal-value': 'value'
 
   constructor: (options) ->
@@ -95,7 +101,15 @@ class View extends Marionette.ItemView
     gauge.maxValue       = max
     gauge.animationSpeed = 83
 
-    gauge.set _.clamp @model.get('value'), min, max
+    value = _.clamp(@model.get('value'), min, max)
+
+    gauge.set value
+
+    scale = d3.scaleLinear()
+    .domain([min, max])
+    .range([0, 100])
+
+    @ui.level.html _.round(scale(value), 0)
 
     return
 

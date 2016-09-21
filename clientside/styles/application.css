@@ -461,13 +461,24 @@ Exercise
 /*-----------------------------------------------------------------------------
 Strength
 -----------------------------------------------------------------------------*/
-#strength-detail-add-container {
-  margin-bottom: 6px;
+#strength-detail-schedule-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 5px 0 0;
 }
-@media (max-width: 767px) {
-  #strength-detail-add-container i {
-    display: none;
-  }
+#strength-detail-schedule-container button {
+  width: 100%;
+}
+#strength-history-panel {
+  padding: 7px;
+}
+#strength-detail-add-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 0 0 5px;
+}
+#strength-detail-add-container button {
+  width: 100%;
 }
 #strength-table-view tbody tr {
   cursor: pointer;

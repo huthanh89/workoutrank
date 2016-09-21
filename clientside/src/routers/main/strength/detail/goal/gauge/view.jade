@@ -2,16 +2,18 @@
     .col-xs-12
         table
             tr
-                td Minimum:
-                td.strength-goal-min
-            tr
-                td Goal:
-                td.strength-goal-max
-            tr
+                td #{label}:
                 td
-                    i Current:
+                    b
+                        i.strength-goal-value
+            tr
+                td Power Level:
                 td
-                    i.strength-goal-value
+                    span
+                        b.strength-goal-level
+                    span
+                        i %
+
 .col-xs-12
     .strength-goal-gauge-container
         canvas.strength-goal-gauge
