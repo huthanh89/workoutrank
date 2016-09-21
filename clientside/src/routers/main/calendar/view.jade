@@ -8,10 +8,13 @@
 .row
     .col-xs-12
         .panel.panel-info
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-calendar-plus-o
+                    = ' '
+                    | Calendar
             .panel-body
                 #calendar-view-container
             .panel-footer.clearfix
                 a.pull-right#calendar-schedule
-                    i.fa.fa-lg.fa-calendar-plus-o
-                a.pull-right#calendar-table-edit
-                    i.fa.fa-lg.fa-pencil-square-o
+                    i.fa.fa-lg.fa-calendar-check-o

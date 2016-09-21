@@ -511,6 +511,15 @@ Exercise
 Strength
 -----------------------------------------------------------------------------*/
 
+#strength-detail-add-container{
+  margin-bottom: 6px;
+  @media (max-width: 767px) {
+    i{
+      display: none;
+    }
+  }
+}
+
 #strength-table-view tbody tr {
   cursor: pointer;
 }
@@ -673,6 +682,21 @@ Schedule
   position: relative;
   top: 2px;
   margin-right: 10px;
+}
+
+#schedule-widget .fc-event{
+  height: 20px;
+  :hover{
+    background: darkslategrey;
+  }
+  span{
+    font-size: 14px;
+  }
+}
+
+#schedule-target-container{
+  width: 100%;
+  word-wrap: break-word;
 }
 
 /*-----------------------------------------------------------------------------

@@ -7,7 +7,6 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-EditView     = require './edit/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -20,32 +19,14 @@ require 'fullcalendar'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.ItemView
 
   template: viewTemplate
 
-  regions:
-    modal: '#schedule-modal-view'
-
   ui:
     calendar: '#schedule-widget'
-    edit:     '#schedule-edit'
 
   events:
-    'click #schedule-tab': ->
-      @channel.request 'show:events'
-      return
-
-    'click #schedule-edit': ->
-      @showChildView 'modal', new EditView
-        model:   @model
-        channel: @channel
-      return
-
-    'click #schedule-table-edit': ->
-      @rootChannel.request 'strengths'
-      return
-
     'click #schedule-calendar-btn': ->
       @rootChannel.request 'calendar'
       return
@@ -66,9 +47,9 @@ class View extends Marionette.LayoutView
       events:     @calendarEvents
       eventOrder: 'color'
       header:
-        left:   ''
+        left:   'prev,next'
         center: 'title'
-        right:  'prev,next basicDay,basicWeek'
+        right:  'basicDay,basicWeek'
 
       eventClick: (calEvent) =>
         @rootChannel.request 'strength:detail', calEvent.strengthID
@@ -95,8 +76,13 @@ class View extends Marionette.LayoutView
 
         .value()
 
+        title = element.find(".fc-title")
+
         if models.length
-          element.find(".fc-title").prepend("<i class='fa fa-check'></i>")
+          title.prepend("<i class='fa fa-fw fa-check'></i>")
+        else
+          title.prepend("<i class='fa fa-fw'></i>")
+
         return
 
       viewRender: (view) ->

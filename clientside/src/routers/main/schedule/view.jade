@@ -1,10 +1,27 @@
 .row
     .col-xs-12
+        #schedule-modal-view
+.row
+    .col-xs-12
         ol.breadcrumb(style='margin-bottom: 5px;')
             li#calendar-home
                 a Home
             li.active
                 span Schedule
+.row
+    .col-xs-12
+        .panel.panel-info
+            .panel-heading.clearfix
+                .pull-right
+                    button.btn.btn-xs.btn-primary#schedule-edit
+                        i.fa.fa-fw.fa.fa-wrench
+                        = ' '
+                        span Edit
+                .panel-title
+                    span#schedule-target-title
+            .panel-body
+                #schedule-target-container
+                    b#schedule-target
 .row
     .col-xs-12
         #calendar-view-container

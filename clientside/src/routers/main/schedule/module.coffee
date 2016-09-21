@@ -8,6 +8,7 @@ Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require './data/module'
 Schedule     = require './schedule/module'
+EditView     = require './edit/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -79,10 +80,22 @@ class View extends Marionette.LayoutView
 
   regions:
     calendar: '#calendar-view-container'
+    modal:    '#schedule-modal-view'
+
+  ui:
+    edit:   '#schedule-edit'
+    target: '#schedule-target'
+    title:  '#schedule-target-title'
 
   events:
     'click #calendar-home': ->
       @rootChannel.request 'home'
+      return
+
+    'click #schedule-edit': ->
+      @showChildView 'modal', new EditView
+        model:   @model
+        channel: @channel
       return
 
   constructor: (options) ->
@@ -93,6 +106,8 @@ class View extends Marionette.LayoutView
 
     @channel.reply
       'show:schedule': =>
+
+        @updateLabels()
 
         collection = new Collection [],
           sLogs:    @sLogs
@@ -111,6 +126,26 @@ class View extends Marionette.LayoutView
 
   onShow: ->
     @channel.request 'show:schedule'
+    return
+
+  updateLabels: ->
+
+    console.log @model.get('tuesday')
+
+    day    = moment().format('dddd').toLowerCase()
+    values = @model.get(day)
+    text   = 'No muscle group today.'
+    result = []
+
+    for value in values
+      result.push _.find(Data.Muscles, value: value).label
+
+    if result.length
+      text = result.join(', ')
+
+    @ui.target.html text
+    @ui.title.html moment().format('dddd') + '\'s Workout'
+
     return
 
   onBeforeDestroy: ->

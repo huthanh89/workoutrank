@@ -10,21 +10,27 @@
                 span Entry
 .row
     .col-md-8.col-center
+        .panel.panel-info#strength-detail-add-container
+            .panel-body
+                .col-xs-6
+                    button.btn.btn-block.btn-primary#strength-schedule-btn
+                        i.fa.fa-fw.fa-lg.fa-calendar-check-o
+                            = ' '
+                        span Schedule
+                .col-xs-6
+                    button.btn.btn-block.btn-primary#strength-detail-add
+                        i.fa.fa-fw.fa-lg.fa-pencil
+                        = ' '
+                        span Add Entry
+.row
+    .col-md-8.col-center
         .panel.panel-info
             .panel-heading.clearfix
-                .pull-right
-                    button.btn.btn-xs.btn-primary#strength-detail-add
-                        i.fa.fa-fw.fa-plus
-                        = ' '
-                        span Add
-                .panel-title.clearfix
+                .panel-title
                     span#strength-title
             .panel-body
                 #strength-date-view
             #strength-table-view
-            .panel-footer.clearfix
-                a.pull-right#strength-schedule-btn
-                    i.fa.fa-fw.fa-calendar-plus-o
 .row
     .col-md-8.col-center
         .panel.panel-info
@@ -37,9 +43,6 @@
             .panel-heading.clearfix Performance Ranking
             .panel-body
                 #strength-calendar-view
-            .panel-footer.clearfix
-                a.pull-right#strength-calendar-btn
-                    i.fa.fa-fw.fa-calendar-check-o
 .row
     .col-md-8.col-center
         .panel.panel-info
@@ -58,7 +61,7 @@
             .panel-heading
                 .pull-right
                     button.btn.btn-xs.btn-default#strength-detail-edit
-                        i.fa.fa-fw.fa-pencil
+                        i.fa.fa-fw.fa-lg.fa-wrench
                         = ' '
                         span Edit
                 .panel-title.clearfix

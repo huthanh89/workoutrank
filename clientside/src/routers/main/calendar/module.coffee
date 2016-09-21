@@ -25,10 +25,6 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'home'
       return
 
-    'click #calendar-table-edit': ->
-      @rootChannel.request 'strengths'
-      return
-
     'click #calendar-schedule': ->
       @rootChannel.request 'schedule'
       return
