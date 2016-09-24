@@ -26,7 +26,7 @@ MongoStore = require('connect-mongo')(session);
 
 require('coffee-script/register');
 
-mongoose.connect('mongodb://localhost:27017/local');
+mongoose.connect('mongodb://54.201.171.251:27017/local');
 
 db = mongoose.connection;
 

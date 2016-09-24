@@ -49,6 +49,8 @@ class View extends Marionette.ItemView
     bronzeRep:    '#strength-challenge-rep-bronze'
     bronzeWeight: '#strength-challenge-weight-bronze'
 
+    weightLabel: '.strength-challenge-weight'
+
   constructor: (options) ->
     super
     @mergeOptions options, [
@@ -71,8 +73,8 @@ class View extends Marionette.ItemView
       return
 
     @challenge =
-      rep:    @reduce(repValues)
-      weight: @reduce(weightValues)
+      rep:    @repReduce    repValues
+      weight: @weightReduce weightValues
 
   onRender: ->
 
@@ -89,27 +91,53 @@ class View extends Marionette.ItemView
 
     return
 
+  onShow: ->
+    @ui.weightLabel.hide() if @type is 'rep'
+    return
 
-  # Parse for rank placement values for typeValues goals.
-
-  reduce: (values) ->
+  repReduce: (values) ->
 
     decimals = 0
     mean     = @mean values
-    sd       = standardDeviation(variance(values, mean))
+    margin   = standardDeviation(variance(values, mean))
 
     return{
-      bronze: _.round((mean - sd) or mean, decimals) or 0
+      bronze: _.round((mean - margin) or mean, decimals) or 0
       silver: _.round(mean, decimals)                or 0
-      gold:   _.round((mean + sd) or mean, decimals) or 0
+      gold:   _.round((mean + margin) or mean, decimals) or 0
     }
     return
 
-  min: (values)  -> _.min(values)
+  weightReduce: (values) ->
 
-  max: (values)  -> _.max(values)
+    decimals = 0
+    mean     = @mean values
+    margin   = standardDeviation(variance(values, mean))
 
-  mean: (values) -> _.mean(values)
+    margin = 5 if margin is 0
+
+    bronze = _.round((mean - margin) or mean, decimals) or 0
+    bronze =  @roundUp5 bronze
+
+    silver = _.round(mean, decimals) or 0
+    silver =  @roundUp5 silver
+
+    gold = _.round((mean + margin) or mean, decimals) or 0
+    gold =  @roundUp5 gold
+
+    return{
+      bronze: bronze
+      silver: silver
+      gold:   gold
+    }
+
+  min: (values)     -> _.min(values)
+
+  max: (values)     -> _.max(values)
+
+  mean: (values)    -> _.mean(values)
+
+  roundUp5: (value) -> Math.ceil(value / 5) * 5
 
 #-------------------------------------------------------------------------------
 # Exports

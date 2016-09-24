@@ -36,10 +36,10 @@ standardDeviation = (variance) -> Math.sqrt(variance)
 
 class Model extends Backbone.Model
   defaults:
-    min:   0
-    max:   0
-    avg:   0
-    value: 0
+    gold:   0
+    silver: 0
+    bronze: 0
+    value:  0
 
 #-------------------------------------------------------------------------------
 # View
@@ -77,8 +77,8 @@ class View extends Marionette.ItemView
   onShow: ->
 
     target = $(@el).find('.strength-goal-gauge')[0]
-    min    = @model.get('min')
-    max    = @model.get('max')
+    min    = @model.get('bronze')
+    max    = @model.get('gold')
     color  = if @type is 'rep' then '#00ffa4' else '#FE7935'
 
     opts =
@@ -127,6 +127,8 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
+    @model.set 'value', @max todayValues
+
     # Get values omitting today.
 
     values = _ records
@@ -137,30 +139,66 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
-    # There must be an sd. If there is none just set it to an arbitrary 1.
+    if @type is 'rep' then @reduceRep(values) else @reduceWeight(values)
 
-    avg   = @avg(values)
-    sd    = standardDeviation(variance(values, _.mean(values))) or 1
-    value = _.round(@max(todayValues), 1) or 0
-    min   = (avg - sd) or 0
-    max   = (avg + sd) or value
+    return values
+
+  reduceWeight: (values) ->
+
+    # Calculate ranking locally.
 
     decimals = 0
 
+    mean     = @mean values
+    margin   = standardDeviation(variance(values, mean))
+
+    margin = 5 if margin is 0
+
+    bronze = _.round((mean - margin) or mean, decimals) or 0
+    bronze =  @roundUp5 bronze
+
+    silver = _.round(mean, decimals) or 0
+    silver =  @roundUp5 silver
+
+    gold = _.round((mean + margin) or mean, decimals) or 0
+    gold =  @roundUp5 gold
+
     @model.set
-      value: value
-      min:   _.round(min, decimals)
-      max:   _.round(max, decimals)
-      avg:   _.round(avg, decimals)
-      sd:    _.round(sd, decimals)
+      bronze: bronze
+      silver: silver
+      gold:   gold
 
     return
 
-  min: (values) -> _.round(_.min(values), 2)
+  reduceRep: (values) ->
 
-  max: (values) -> _.round(_.max(values),2)
+    decimals = 0
 
-  avg: (values) -> _.round(_.mean(values), 2)
+    mean     = @mean values
+    margin   = standardDeviation(variance(values, mean))
+
+    margin = 5 if margin is 0
+
+    bronze = _.round((mean - margin) or mean, decimals) or 0
+
+    silver = _.round(mean, decimals) or 0
+
+    gold = _.round((mean + margin) or mean, decimals) or 0
+
+    @model.set
+      bronze: bronze
+      silver: silver
+      gold:   gold
+
+    return
+
+  min: (values)     -> _.min(values)
+
+  max: (values)     -> _.max(values)
+
+  mean: (values)    -> _.mean(values)
+
+  roundUp5: (value) -> Math.ceil(value / 5) * 5
 
 #-------------------------------------------------------------------------------
 # Exports

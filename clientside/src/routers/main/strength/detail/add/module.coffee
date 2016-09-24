@@ -147,7 +147,7 @@ class View extends Marionette.ItemView
     @ui.rep.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
-      min:              1
+      min:              0
       max:              99999
 
     if @model.get('body')
@@ -158,7 +158,7 @@ class View extends Marionette.ItemView
         postfix:          'pounds'
         buttondown_class: 'btn btn-info'
         buttonup_class:   'btn btn-info'
-        min:              1
+        min:              0
         max:              99999
 
     @ui.date.datetimepicker
