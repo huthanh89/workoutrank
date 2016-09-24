@@ -21,13 +21,13 @@
                 // Wrapper for slides
                 .carousel-inner(role='listbox')
                     .item.active
-                        h1 Smart fitness journal and scheduler.
+                        h1 Smart Fitness Journal and Scheduler
                         img(src='images/calendar_macbook.png')
                     .item
-                        h1 View performance graphs to track progress.
+                        h1 Track Progress and Performances
                         img(src='images/graphs_blue.png')
                     .item
-                        h1 Let us be your go to app for recording daily sessions.
+                        h1 Sign Up for a Free Account
                         img(src='images/responsive_blue.png')
                 // Left and right controls
                 a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
@@ -37,62 +37,72 @@
                     span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
                     span.sr-only Next
 .row
-    .index-section2.col-lg-6
+    .index-section(style="background-color:white;")
         .col-sm-6
             .index-section-text
                 h3
-                    i.fa.fa-fw.fa-lg.fa-magic
+                    i.fa.fa-fw.fa-lg.fa-fire(style="color:red;")
                     = ' '
-                    | Make workout fun again!
-                span Complete goals and challenges as you keep track of your daily gains. In addition, let us take out the guessing game of what to do next by relying on us to do that for you.
+                    | Daily Challenges
+                span Each day a new challenge is given for you to beat. Watch as your power level is measured after each log. Easily distinguish how well you did with our instant feedback.
         .col-sm-6
-            img(src='images/entry_phone.png').index-section-image
-    .index-section2.col-lg-6
-        .col-sm-6
-            img(src='images/data_phone.png').index-section-image
-        .col-sm-6
-            .index-section-text
-                h3
-                    i.fa.fa-fw.fa-lg.fa-bar-chart-o(style="color:#14e190;")
-                    = ' '
-                    | Performance Graph
-                span Knowledge is key. Compare workout sessions with interactive graphs. View data summary of your personal records and various statistics.
-
+            img.index-section-image(src='images/challenge.png')
 .row
-    #index-section6
+    .index-section
         .col-sm-6
-            img(src='images/entryrank.png')#index-section6-image
+            img.index-section-image(src='images/entryrank.png')
         .col-sm-6
-            #index-section6-text
+            .index-section-text
                 h3
-                    i.fa.fa-fw.fa-lg.fa-trophy
+                    i.fa.fa-fw.fa-lg.fa-trophy(style="color:gold;")
                     = ' '
                     | Ranking System
-                span Earn trophies each day as you complete a new goal that is specially tailored for you to maximize your gains. WorkoutRank will adapt to your training routine. Every session is evaluated and ranked against past performances. Easily distinguish how well you did with our instant feedback.
+                span Earn trophies daily as you complete a new goal that is specifically tailored for you to maximize your gains. WorkoutRank will adapt to your training routine. Every session is evaluated and ranked against past performances.
 .row
-    #index-section5
+    .index-section(style="background-color:white;")
         .col-sm-6
-            #index-section5-text
+            .index-section-text
                 h3
-                    i.fa.fa-fw.fa-lg.fa-calendar-plus-o
+                    i.fa.fa-fw.fa-lg.fa-bar-chart(style="color:#14e190;")
+                    = ' '
+                    | Track Progress
+                span Knowledge is key. Compare workout sessions with interactive graphs. View data summary of your performances and various statistics.
+        .col-sm-6
+            img.index-section-image(src='images/data_phone.png')
+.row
+    .index-section
+        .col-sm-6
+            img.index-section-image(src='images/scheduler.png')
+        .col-sm-6
+            .index-section-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-calendar-plus-o(style="color:#61c5b6;")
                     = ' '
                     | Workout Scheduler
                 span Use our scheduler to see what workout to do next based on assigned muscle group to target for that day. Personalize your training schedule to best fit your need.
-        .col-sm-6
-            img(src='images/duo_tablets.png')#index-section5-image
 .row
-    #index-section7
+    .index-section(style="background-color:white;")
         .col-sm-6
-            #index-section7-text
+            .index-section-text
                 h3
-                    i.fa.fa-fw.fa-lg.fa-book
+                    i.fa.fa-fw.fa-lg.fa-mobile(style="color:#6699cc;")
+                    = ' '
+                    | Weightlifting Log
+                span Great tool for every bodybuilders to records reps and weights of each set. All data is saved in the cloud so no more pencil or paper needed.
+        .col-sm-6
+            img.index-section-image(src='images/entry_phone.png')
+.row
+    .index-section
+        .col-sm-6
+            img.index-section-image(src='images/journalmaster.png')
+        .col-sm-6
+            .index-section-text
+                h3
+                    i.fa.fa-fw.fa-lg.fa-book(style="color:#c3834c;")
                     = ' '
                     | Smart Journal
-                span What good is journal keeping if you cannot make use of the information. With our smart journal, you can easily pin point which workout is lacking and focus on that. We'll do all the remembering so you won't have to.
-        .col-sm-6
-            img(src='images/journalmaster.png')#index-section7-image
-
-#index-btn-group-bottom
+                span Lift better and smarter. What good is log keeping if you cannot make use of the information. With our smart journal, you can easily pin point which workout is lacking and focus on that. We'll do all the remembering so you won't have to.
+#index-btn-group-bottom(style="background-color:white;")
     .row
         .col-xs-12
             h3
