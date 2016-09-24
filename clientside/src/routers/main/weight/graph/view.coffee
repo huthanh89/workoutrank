@@ -89,14 +89,16 @@ class View extends Marionette.ItemView
 
   onShow: ->
 
+    data = @model.get('data')
+
     chart = new Highstocks.StockChart
       chart:
         renderTo:         @ui.chart[0]
         height:           190
         spacingBottom:    5
         spacingTop:       0
-        spacingLeft:     -10
-        spacingRight:     10
+        spacingLeft:      5
+        spacingRight:     0
         plotBorderColor: '#b2b2b2'
         plotBorderWidth:  2
         panning :         false
@@ -123,6 +125,8 @@ class View extends Marionette.ItemView
         crosshair: true
         title:
           enabled: false
+        min: @min data
+        max: @max data
       ]
 
       plotOptions:
@@ -160,6 +164,10 @@ class View extends Marionette.ItemView
     chart.reflow()
 
     return
+    
+  min: (values) -> _.min _.map values, (value) -> value.y
+
+  max: (values) -> _.max _.map values, (value) -> value.y
 
 #-------------------------------------------------------------------------------
 # Exports

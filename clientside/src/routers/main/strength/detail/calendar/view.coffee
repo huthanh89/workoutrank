@@ -125,11 +125,17 @@ class View extends Marionette.ItemView
       decimals = 0
       value    = _.round(@max(values), decimals)
       avg      = @mean typeValues
+
       margin   = standardDeviation(variance(typeValues, _.mean(typeValues)))
-      goal     = _.round((avg + margin) or avg, decimals) or 0
 
       if @type is 'weight'
-        goal =  @roundUp5 goal
+        margin = 5 if margin is 0
+
+      goal = _.round((avg + margin) or avg, decimals) or 0
+
+      if @type is 'weight'
+        avg  = @roundUp5 avg
+        goal = @roundUp5 goal
 
       # Always give first day gold, because there isn't enough data.
 
