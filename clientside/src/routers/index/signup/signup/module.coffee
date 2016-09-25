@@ -63,7 +63,7 @@ class View extends Marionette.ItemView
       @model.save {},
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request('home')
+          @rootChannel.request('profile', true)
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
