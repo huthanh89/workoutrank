@@ -1,12 +1,15 @@
 .row
     .col-xs-12
-        h2 Sign Up for a Free Account
-.row
-    .col-xs-12
-        span.help-block Please join! It’s only one click away!
+        h2 Create Your Account
+br
 .row
     .col-xs-12
         form.form-horizontal#signup-form
+            .form-group
+                .col-xs-12
+                    label(for='signup-username') Username
+                .col-xs-12
+                    input.form-control#signup-username(type='text', placeholder='Username', name='username', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="25")
             .form-group
                 .col-xs-12
                     label(for='signup-email') Email
@@ -17,24 +20,17 @@
                     label(for='signup-password') Password
                 .col-xs-12
                     input.form-control#signup-password(type='password', placeholder='Password', name='password', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="4" maxlength="20")
-            .form-group
-                .col-xs-12
-                    label(for='signup-username') Username
-                .col-xs-12
-                    input.form-control#signup-username(type='text', placeholder='Username', name='username', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="25")
             .form-group#signup-recaptcha-container
                 .col-xs-12
                     i.fa.fa-2x.fa-spinner.fa-spin#signup-spinner
                     #signup-recaptcha
-            .col-xs-12
-                span.help-block By clicking "Sign Up", you agree to the Terms of Service and Privacy Policy.
-            hr
             .form-group
                 .col-xs-12
                     button.btn.btn-lg.btn-success.btn-block(type="submit")
                         i.fa.fa-fw.fa-lg.fa-user
                         = ' '
                         | Sign Up
+            hr
             .form-group
                 .col-xs-12#signup-login
-                    a Already have an account
+                    a.pull-right Already have an account

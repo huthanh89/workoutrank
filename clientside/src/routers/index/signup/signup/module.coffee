@@ -58,13 +58,14 @@ class View extends Marionette.ItemView
       captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
       @model.set 'captcha', captcha
 
+      window.grecaptcha.reset()
+
       @model.save {},
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
           @rootChannel.request('home')
           return
         error: (model, response) =>
-          window.grecaptcha.reset()
           @rootChannel.request 'message:error', response
           return
 

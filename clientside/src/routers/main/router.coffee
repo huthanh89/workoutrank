@@ -98,18 +98,12 @@ class Router extends Marionette.AppRouter
     @rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
-      (callback) =>
+      (callback) ->
 
         user = Backbone.Radio.channel('user').request('user')
 
         user.fetch
-          success: (model) =>
-
-            # If profile is empty, force user to fill form.
-
-            if '' in _.values(model.attributes)
-              @rootChannel.request 'profile', true
-
+          success: ->
             return callback null
           error: (model, error) -> callback error
 
