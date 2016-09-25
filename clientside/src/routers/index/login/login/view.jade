@@ -21,15 +21,13 @@
                     .help-block.with-errors
             .form-group
                 .col-xs-12
-                    p#login-forgot-user
-                        a Trouble logging in?
-            hr
-            .form-group
-                .col-xs-12
                     button.btn.btn-lg.btn-primary.btn-block#login-submit
                         i.fa.fa-fw.fa-lg.fa-sign-in
                         = ' '
                         | Log In
-            .form-group
-                .col-xs-12#login-signup
-                    a Signup for an account
+hr
+.row
+    .col-xs-6
+        a#login-forgot-user Reset Password
+    .col-xs-6
+        a#login-signup SignUp for an Account
