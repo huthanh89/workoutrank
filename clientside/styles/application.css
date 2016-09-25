@@ -4,14 +4,16 @@ Body
 html {
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 body {
   background: #F8F8FF;
   overflow-x: hidden;
-  margin: 0;
   padding: 0;
   width: 100%;
   font-family: sans-serif;
+  max-width: 1920px;
+  margin: auto;
 }
 /*-----------------------------------------------------------------------------
 #Header

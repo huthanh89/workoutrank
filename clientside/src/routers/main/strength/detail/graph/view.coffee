@@ -151,12 +151,12 @@ class View extends Marionette.ItemView
 
     name  = model.get('name')
     title = if type is 0 then 'Reps' else 'Weights'
-
+    data  = if type is 0 then @model.get('repData') else @model.get('weightData')
     chart = new Highstocks.StockChart
 
       chart:
         renderTo:         container
-        height:           190
+        height:           180
         spacingBottom:    5
         spacingTop:       0
         spacingLeft:     -10
@@ -193,6 +193,8 @@ class View extends Marionette.ItemView
             fontWeight: 'bold'
             fontSize:    14
           x: 5
+        min: @min data
+        max: @max data
       ]
 
       plotOptions:
@@ -263,6 +265,10 @@ class View extends Marionette.ItemView
       return
 
     return
+
+  min: (values) -> _.min _.map values, (value) -> value.y
+
+  max: (values) -> _.max _.map values, (value) -> value.y
 
 #-------------------------------------------------------------------------------
 # Exports
