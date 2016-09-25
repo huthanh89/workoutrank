@@ -39,12 +39,13 @@ class User extends Backbone.Model
 class RootView extends Marionette.LayoutView
   el: 'body'
   regions:
-    header:  '#header'
-    loader:  '#loader'
-    content: '#content'
-    index:   '#index'
-    footer:  '#footer'
-    drawer:  '#drawer'
+    header:    '#header'
+    loader:    '#loader'
+    content:   '#content'
+    index:     '#index'
+    footer:    '#footer'
+    navigator: '#navigator'
+    drawer:    '#drawer'
 
 #-------------------------------------------------------------------------------
 # Create Application.
@@ -56,6 +57,20 @@ class Application extends Marionette.Application
   # Send conversion data for specific routes.
 
   trackAnalytics: (route) ->
+
+    Backbone.Radio.channel('root').request 'clear:navigation', route
+
+    if route in [
+      'login'
+      'signup'
+      'index'
+      'about'
+      'feedback'
+    ]
+      $('#navigator').hide()
+    else
+      $('#navigator').show()
+
     @googleAnalytics.send(route)
     if route is 'signup'
       @googleTrackingConversion.send()
@@ -95,6 +110,8 @@ class Application extends Marionette.Application
       isOwner: -> parseInt(user.get('auth'), 10) is 1
 
     rootChannel.reply
+
+      'get:route': => @route
 
       # Workaround for the refresh and navigate which will called twice.
       # Trigger set to false so method will not get called twice.
@@ -192,6 +209,8 @@ class Application extends Marionette.Application
     Backbone.history.start
       pushState:  true
       hashChange: false
+
+    rootView.showChildView 'navigator', new Nav.Navigator()
 
     return
 

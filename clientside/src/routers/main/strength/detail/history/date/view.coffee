@@ -41,7 +41,7 @@ class View extends Marionette.ItemView
     ]
 
   onRender: ->
-    @ui.date.val moment(@date).format('dddd MMM DD')
+    @ui.date.html moment(@date).format('dddd MMM DD')
     return
 
 #-------------------------------------------------------------------------------

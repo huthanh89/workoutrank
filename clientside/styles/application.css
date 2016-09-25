@@ -21,6 +21,11 @@ body {
 #header {
   height: 50px;
 }
+@media (max-width: 767px) {
+  #header {
+    display: none;
+  }
+}
 /*-----------------------------------------------------------------------------
 Index landing page
 -----------------------------------------------------------------------------*/
@@ -162,7 +167,7 @@ Footer
 -----------------------------------------------------------------------------*/
 #footer {
   text-align: center;
-  padding-bottom: 10px;
+  padding-bottom: 45px;
 }
 /*-----------------------------------------------------------------------------
 About
@@ -278,6 +283,53 @@ Top Nav Bar
 }
 .navbar {
   background: white;
+}
+/*-----------------------------------------------------------------------------
+Bottom Nav for Mobile
+-----------------------------------------------------------------------------*/
+#navigator-bottom-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  background: white;
+  z-index: 9999!important;
+}
+@media (min-width: 767px) {
+  #navigator-bottom-container {
+    display: none;
+  }
+}
+#navigator-bottom-container li {
+  width: 25%;
+  position: absolute;
+  display: inline-block;
+  border: solid lightgray 1.5px;
+  height: 50px;
+  padding-top: 10px;
+  color: gray;
+  cursor: pointer;
+  font-size: 15px;
+}
+#navigator-bottom-container .active {
+  color: #6e97b5;
+  background: rgba(234, 234, 234, 0.89);
+}
+#navigator-bottom-container #navigator-bottom-home {
+  left: 0;
+}
+#navigator-bottom-container #navigator-bottom-weight {
+  left: 25%;
+}
+#navigator-bottom-container #navigator-bottom-schedule {
+  left: 50%;
+}
+#navigator-bottom-container #navigator-bottom-journal {
+  left: 75%;
 }
 /*-----------------------------------------------------------------------------
 Page nav
@@ -399,10 +451,16 @@ Strength
   margin-right: auto;
   margin-left: auto;
 }
-#strength-date-datepicker {
+#strength-date-datepicker-container {
+  background: #e1f0f0;
   text-align: center;
+  padding-top: 10px;
+  height: 40px;
+}
+#strength-date-datepicker-container #strength-date-datepicker {
+  text-align: center;
+  font-weight: bold;
   font-size: 18px;
-  z-index: 0;
 }
 #strength-date-prev {
   z-index: 0;
