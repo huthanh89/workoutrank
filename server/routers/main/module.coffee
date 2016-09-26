@@ -15,7 +15,7 @@ router.use (req, res, next) ->
     res.status 401
     res.end()
   else if _.isUndefined(req.session.user)
-    res.render '401'
+    res.redirect '/login'
   else
     next()
   return
