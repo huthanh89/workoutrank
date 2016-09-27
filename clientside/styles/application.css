@@ -29,6 +29,13 @@ body {
 /*-----------------------------------------------------------------------------
 Index landing page
 -----------------------------------------------------------------------------*/
+#index {
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: 0 0 25px #888888;
+  padding: 0!important;
+  background: white;
+}
 #index-section1 {
   max-height: 400px;
 }
@@ -71,7 +78,7 @@ Index landing page
 #index-btn-group-top {
   z-index: 10;
   position: absolute;
-  width: 100%;
+  left: 50%;
   text-align: center;
   padding-top: 250px;
 }
@@ -79,6 +86,8 @@ Index landing page
   margin: 10px;
   border-radius: 10px;
   border: 2px whitesmoke solid;
+  position: relative;
+  right: 130px;
 }
 @media (max-width: 767px) {
   #index-btn-group-top {
@@ -103,40 +112,34 @@ Index landing page
   border: 2px whitesmoke solid;
 }
 .index-section {
-  min-height: 400px;
+  width: 100%;
   text-align: center;
-}
-.index-section .index-section-image {
-  max-width: 100%;
-  min-height: 340px;
-  max-height: 380px;
-  width: auto;
-  height: auto;
-  padding-top: 15px;
-  padding-left: 80px;
-}
-@media (max-width: 767px) {
-  .index-section .index-section-image {
-    padding: 10px 0 10px 0;
-    min-height: 250px;
-    height: 250px;
-  }
+  padding: 0 !important;
+  margin: 0 !important;
 }
 .index-section .index-section-text {
-  padding: 80px 90px;
-  color: gray;
+  height: 400px;
+  min-height: 400px;
+  padding: 80px 60px 60px 60px;
+  color: gray!important;
 }
 .index-section .index-section-text h3 {
   color: gray;
 }
-.index-section .index-section-text span {
-  font-size: 1.2em;
-}
 @media (max-width: 767px) {
   .index-section .index-section-text {
-    padding: 10px;
-    height: 250px;
+    height: auto;
+    max-height: 150px;
+    min-height: 150px;
+    padding: 0 5px;
+    margin: 0;
   }
+}
+.index-section .index-section-image-container {
+  padding: 15px;
+}
+.index-section .index-section-image {
+  max-width: 100%;
 }
 /*-----------------------------------------------------------------------------
 Content
