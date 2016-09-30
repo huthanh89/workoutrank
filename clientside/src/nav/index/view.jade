@@ -1,7 +1,12 @@
-.col-xs-12
-    nav.navbar.navbar-default.navbar-fixed-top
-        .container-fluid
-            .navbar-header
-                #index-nav-logo
-                    img(src='./images/logo.png' style="cursor:pointer;")#navbar-logo
-                    img(src='./images/banner.png' style="cursor:pointer;")#navbar-banner
+#index-nav-container
+    img(src='./images/logo.png')#index-nav-logo
+    img(src='./images/banner.png')#index-nav-banner
+    button.btn.btn-success(type="button")#index-nav-signup
+        i.fa.fa-fw.fa-lg.fa-user
+        = ' '
+        | Sign Up
+    = ' '
+    button.btn.btn-primary(type="button")#index-nav-login
+        i.fa.fa-fw.fa-lg.fa-sign-in
+        = ' '
+        | Login

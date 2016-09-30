@@ -1,33 +1,33 @@
-.col-xs-12
-    nav.navbar.navbar-default.navbar-fixed-top
-        .container-fluid
-            .navbar-header
-                a.navbar-brand#navbar-drawer
-                    i.fa.fa-lg.fa-navicon
-                    = ' '
-                img(src='./images/logo.png')#navbar-logo
-                img(src='./images/banner.png')#navbar-banner
-            .collapse.navbar-collapse
-                ul.nav.navbar-nav.navbar-right
-                    li.nav-divider-vertical
-                    li.nav-strengths.nav-strengths-tip
-                        a
-                            i.nav-icon.fa.fa-fw.fa-2x.fa-pencil
-                    li.nav-divider-vertical
-                    li.dropdown
-                        a.dropdown-toggle(data-toggle="dropdown", role="button", aria-expanded="false")
-                            b#nav-username Username
-                            i.fa.fa-fw.fa-lg.fa-caret-down
-                        ul.dropdown-menu(role="menu")
-                            li.nav-account
-                                a
-                                    i.fa.fa-fw.fa-lg.fa-user
-                                    = ' '
-                                    | Account
-                            li.divider
-                            li.nav-logout
-                                a
-                                    i.fa.fa-fw.fa-lg.fa-sign-out
-                                    = ' '
-                                    | Log Out
+#navbar-container
+    .col-xs-12
+        nav.navbar.navbar-default.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand#navbar-drawer
+                        i.fa.fa-lg.fa-navicon
+                        = ' '
+                    img(src='./images/banner.png')#navbar-banner
+                .collapse.navbar-collapse
+                    ul.nav.navbar-nav.navbar-right
+                        li.nav-divider-vertical
+                        li.nav-strengths.nav-strengths-tip
+                            a
+                                i.nav-icon.fa.fa-fw.fa-2x.fa-pencil
+                        li.nav-divider-vertical
+                        li.dropdown
+                            a.dropdown-toggle(data-toggle="dropdown", role="button", aria-expanded="false")
+                                b#nav-username Username
+                                i.fa.fa-fw.fa-lg.fa-caret-down
+                            ul.dropdown-menu(role="menu")
+                                li.nav-account
+                                    a
+                                        i.fa.fa-fw.fa-lg.fa-user
+                                        = ' '
+                                        | Account
+                                li.divider
+                                li.nav-logout
+                                    a
+                                        i.fa.fa-fw.fa-lg.fa-sign-out
+                                        = ' '
+                                        | Log Out
 

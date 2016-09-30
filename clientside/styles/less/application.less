@@ -24,9 +24,100 @@ body {
 #Header
 -----------------------------------------------------------------------------*/
 
-#header{
-  height: 50px;
+#navbar-container{
+  height: 45px;
+  @media (max-width: 767px){
+    display: none;
+  }
+}
 
+/*-----------------------------------------------------------------------------
+Basio Nav Bar
+-----------------------------------------------------------------------------*/
+
+#basic-nav-container{
+  position:      relative;
+  top:           0;
+  padding:       3.5px;
+  height:        45px;
+  width:         100%;
+  text-align:    center;
+  background:    white;
+  border-bottom: solid 1px darkgray;
+  z-index:       9999!important;
+  box-shadow:    0 0 2px #888888;
+
+  @media (max-width: 1000px){
+    margin: 0;
+    left:   0;
+  }
+  button{
+    float: right;
+    margin-right: 15px;
+    @media (max-width: 767px){
+      float: none;
+      margin-right: 5px;
+    }
+  }
+}
+
+#basic-nav-logo{
+  height: 35px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+#basic-nav-banner{
+  height: 20px;
+  cursor: pointer;
+}
+
+/*-----------------------------------------------------------------------------
+Index Nav Bar
+-----------------------------------------------------------------------------*/
+
+#index-nav-container{
+  position:      fixed;
+  top:           0;
+  left:          50%;
+  padding:       3.5px;
+  margin:        auto;
+  margin-left:  -500px;
+  height:        45px;
+  width:         100%;
+  max-width:     1000px;
+  text-align:    center;
+  background:    white;
+  border-bottom: solid 1px darkgray;
+  z-index:       9999!important;
+  box-shadow:    0 0 25px #888888;
+  opacity:       .9;
+
+  @media (max-width: 1000px){
+    margin: 0;
+    left:   0;
+  }
+  button{
+    float: right;
+    margin-right: 15px;
+    @media (max-width: 767px){
+      float: none;
+      margin-right: 5px;
+    }
+  }
+}
+
+#index-nav-logo{
+  height:      35px;
+  float:       left;
+  margin-left: 5px;
+  cursor:      pointer;
+}
+#index-nav-banner{
+  margin-top: 8px;
+  height:     20px;
+  float:      left;
+  cursor:     pointer;
   @media (max-width: 767px){
     display: none;
   }
@@ -39,9 +130,9 @@ Index landing page
 #index{
   max-width:  1000px;
   margin:     auto;
+  margin-top: 45px;
   box-shadow: 0 0 25px #888888;
   padding: 0!important;
-
   background: white;
 }
 
@@ -88,26 +179,6 @@ Index landing page
   }
 }
 
-
-#index-btn-group-top{
-  z-index:    10;
-  position:   absolute;
-  left:      50%;
-  text-align: center;
-  padding-top: 250px;
-  button{
-    margin: 10px;
-    border-radius: 10px;
-    border: 2px whitesmoke solid;
-    position: relative;
-    right: 130px;
-  }
-  @media (max-width: 767px){
-    position: relative;
-    padding:  0;
-  }
-}
-
 #index-btn-group-bottom{
   text-align:  center;
   height:      350px;
@@ -135,10 +206,9 @@ Index landing page
   padding: 0 !important;
   margin: 0 !important;
 
-
   .index-section-text{
-    height:     400px;
-    min-height: 400px;
+    height:     300px;
+    min-height: 300px;
     padding:    80px 60px 60px 60px;
     color:      gray!important;
     h3{
@@ -288,6 +358,7 @@ Signup
   }
 }
 
+
 /*-----------------------------------------------------------------------------
 Top Nav Bar
 -----------------------------------------------------------------------------*/
@@ -308,16 +379,6 @@ Top Nav Bar
   border-left:  1px solid #F2F2F2;
 }
 
-#index-nav-logo{
-  position:  absolute;
-  width:      100%;
-  text-align: center;
-  img{
-    margin:     auto;
-    margin-top: 3px;
-    cursor:     default;
-  }
-}
 
 #navbar-logo{
   position:   relative;
@@ -331,8 +392,7 @@ Top Nav Bar
   position:   relative;
   width:       120px;
   height:      20px;
-  margin-top:  5px;
-  margin-left: 5px;
+  margin-top:  15px;
   cursor:      pointer;
 }
 

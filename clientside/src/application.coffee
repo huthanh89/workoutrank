@@ -166,6 +166,12 @@ class Application extends Marionette.Application
         rootView.showChildView 'drawer', new Nav.Drawer()
         return
 
+      'nav:basic': ->
+        rootChannel.request 'drawer:close'
+        rootView.showChildView 'header', new Nav.Basic()
+        rootView.showChildView 'drawer', new Nav.Drawer()
+        return
+
       'nav:main': ->
 
         rootChannel.request 'drawer:close'

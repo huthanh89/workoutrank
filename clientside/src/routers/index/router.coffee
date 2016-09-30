@@ -106,32 +106,32 @@ class Router extends Marionette.AppRouter
     return
 
   signup: ->
-    @navChannel.request('nav:index')
+    @navChannel.request('nav:basic')
     @rootView.index.empty()
     @rootView.content.show new SignupView()
     return
 
   login: ->
-    @navChannel.request('nav:index')
+    @navChannel.request('nav:basic')
     @rootView.index.empty()
     @rootView.content.show new LoginView()
     return
 
   about: ->
-    @navChannel.request('nav:index')
+    @navChannel.request('nav:basic')
     @rootView.index.empty()
     @rootView.content.show new AboutView()
     return
 
   feedback: ->
-    @navChannel.request('nav:index')
+    @navChannel.request('nav:basic')
     @rootView.index.empty()
     @rootView.content.show new Feedback.View
       model: new Feedback.Model()
     return
 
   forgot: ->
-    @navChannel.request('nav:index')
+    @navChannel.request('nav:basic')
     @rootView.index.empty()
     @rootView.content.show new Forgot.View
       model: new Forgot.Model()

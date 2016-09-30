@@ -19,6 +19,18 @@ class View extends Marionette.ItemView
       @channel.request 'index'
       return
 
+    'click #index-nav-banner': ->
+      @channel.request 'index'
+      return
+
+    'click #index-nav-login': ->
+      @channel.request 'login'
+      return
+
+    'click #index-nav-signup': ->
+      @channel.request 'signup'
+      return
+
   constructor: ->
     super
     @channel = Radio.channel('root')
