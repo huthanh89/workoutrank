@@ -45,7 +45,7 @@ class View extends Marionette.ItemView
 
   events:
     'click #feedback-home': ->
-      @rootChannel.request 'index'
+      @rootChannel.request 'login'
       return
 
     'submit': (event) ->

@@ -93,9 +93,11 @@ class Router extends Marionette.AppRouter
 
   home: ->
 
-
     @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+
+    rootChannel = @rootChannel
+    rootChannel.request 'spin:page:loader', true
+
     async.waterfall [
 
       (callback) ->
@@ -116,9 +118,9 @@ class Router extends Marionette.AppRouter
 
     ], (error, model) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
 
       @rootView.content.show new Home.View
         model: model
