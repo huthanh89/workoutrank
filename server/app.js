@@ -1,4 +1,6 @@
-var MongoStore, app, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session;
+var MongoStore, adminApp, app, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session, staticFiles;
+
+require('coffee-script/register');
 
 express = require('express');
 
@@ -23,8 +25,6 @@ http = require('http');
 compression = require('compression');
 
 MongoStore = require('connect-mongo')(session);
-
-require('coffee-script/register');
 
 mongoose.connect('mongodb://localhost:27017/local');
 
@@ -51,6 +51,8 @@ require('./models/feedback')(mongoose);
 require('./models/token')(mongoose);
 
 app = express();
+
+adminApp = require('./admin/app');
 
 server = http.createServer(app);
 
@@ -105,17 +107,21 @@ app.get('/favicon.ico', function(req, res, next) {
   next();
 });
 
-app.use(express["static"](path.join(__dirname, '../static'), {
+staticFiles = express["static"](path.join(__dirname, '../static'), {
   maxAge: 86400000
-}));
+});
 
-app.use('/strength', express["static"](path.join(__dirname, '../static')));
+app.use(staticFiles);
 
-app.use('/strength/:sid', express["static"](path.join(__dirname, '../static')));
+app.use('/strength', staticFiles);
 
-app.use('/log', express["static"](path.join(__dirname, '../static')));
+app.use('/strength/:sid', staticFiles);
 
-app.use('/log/:lid', express["static"](path.join(__dirname, '../static')));
+app.use('/log', staticFiles);
+
+app.use('/log/:lid', staticFiles);
+
+app.use('/admin', adminApp);
 
 routers = require('./routers/module');
 
@@ -124,6 +130,8 @@ app.use('/', routers.indexRouter);
 app.use('/', routers.mainRouter);
 
 app.use('/', routers.userRouter);
+
+app.use('/', routers.adminRouter);
 
 app.get('*', function(req, res) {
   res.status(404);

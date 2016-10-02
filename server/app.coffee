@@ -1,21 +1,25 @@
 #--------------------------------------------------------------
+# Coffeescript plugin to read .coffee files.
+#--------------------------------------------------------------
+
+require 'coffee-script/register'
+
+#--------------------------------------------------------------
 # Imports
 #--------------------------------------------------------------
 
-express      = require('express')
-path         = require('path')
-favicon      = require('serve-favicon')
-logger       = require('morgan')
-mongoose     = require('mongoose')
-bodyParser   = require('body-parser')
-cookieParser = require('cookie-parser')
-session      = require('express-session')
-passport     = require('passport')
-http         = require('http')
-compression  = require('compression')
+express      = require 'express'
+path         = require 'path'
+favicon      = require 'serve-favicon'
+logger       = require 'morgan'
+mongoose     = require 'mongoose'
+bodyParser   = require 'body-parser'
+cookieParser = require 'cookie-parser'
+session      = require 'express-session'
+passport     = require 'passport'
+http         = require 'http'
+compression  = require 'compression'
 MongoStore   = require('connect-mongo')(session)
-
-require 'coffee-script/register'
 
 #--------------------------------------------------------------
 # Database and Models
@@ -36,19 +40,20 @@ db.on 'open', ->
 # Create Schemas from models
 #--------------------------------------------------------------
 
-require('./models/user') mongoose
+require('./models/user')     mongoose
 require('./models/strength') mongoose
-require('./models/slog') mongoose
-require('./models/wlog') mongoose
+require('./models/slog')     mongoose
+require('./models/wlog')     mongoose
 require('./models/schedule') mongoose
 require('./models/feedback') mongoose
-require('./models/token') mongoose
+require('./models/token')    mongoose
 
 #--------------------------------------------------------------
-# Create App
+# Create Apps
 #--------------------------------------------------------------
 
-app = express()
+app      = express()
+adminApp = require './admin/app'
 
 #--------------------------------------------------------------
 # Create server using app.
@@ -107,8 +112,7 @@ app.use session
   unset: 'destroy'
   store: new MongoStore
     mongooseConnection: mongoose.connection
-#    clear_interval: 3600
-    clear_interval: 604800
+    clear_interval:     604800
 
 # Middle ware for all pages.
 
@@ -136,11 +140,15 @@ app.get '/favicon.ico', (req, res, next) ->
 
 # Location of static files starting from the root or app.js.
 # Cache these staic files for 24 hours in maxAge.
-app.use express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
-app.use '/strength', express.static(path.join(__dirname, '../static'))
-app.use '/strength/:sid', express.static(path.join(__dirname, '../static'))
-app.use '/log', express.static(path.join(__dirname, '../static'))
-app.use '/log/:lid', express.static(path.join(__dirname, '../static'))
+
+staticFiles = express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
+
+app.use                   staticFiles
+app.use '/strength',      staticFiles
+app.use '/strength/:sid', staticFiles
+app.use '/log',           staticFiles
+app.use '/log/:lid',      staticFiles
+app.use '/admin',         adminApp
 
 # Define all routers.
 # Can only require routes after express was initialized.
@@ -150,8 +158,9 @@ routers = require('./routers/module')
 app.use '/', routers.indexRouter
 app.use '/', routers.mainRouter
 app.use '/', routers.userRouter
+app.use '/', routers.adminRouter
 
-#The Page not Found 404 Route (ALWAYS Keep this as the last route)
+# The Page not Found 404 Route (ALWAYS Keep this as the last route)
 
 app.get '*', (req, res) ->
   res.status 404

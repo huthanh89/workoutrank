@@ -4,6 +4,7 @@
 
 _         = require 'lodash'
 async     = require 'async'
+moment    = require 'moment'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
 Validate  = require '../../validate'
@@ -68,8 +69,8 @@ exports.post = (req, res) ->
 
     (user, callback) ->
 
-      password = req.body.password
-      salt     = user.salt
+      password  = req.body.password
+      salt      = user.salt
       algorithm = user.algorithm
 
       crypto.pbkdf2 password, salt, user.rounds, 32, algorithm, (err, key) ->
@@ -91,14 +92,16 @@ exports.post = (req, res) ->
 
         req.session.user = user
 
-        # WIP Setting up a remember me.
+        # Update lastlogin time.
 
-        # Create a remember me cookie containing
-        # a random generated token.
+        User.findOneAndUpdate
+          _id: user._id
+        ,
+          lastlogin: moment()
 
-        #res.cookie 'remember_me', randtoken.uid(16)
-
-        return callback null, user
+        , (err, user) ->
+          return callback err.message if err
+          return callback null, user
 
       else
 

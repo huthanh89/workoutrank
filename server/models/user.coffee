@@ -67,6 +67,7 @@ UserSchema.methods.getPublicFields = ->
     gender:    @gender
     auth:      @auth
     birthday:  @birthday
+    lastlogin: @lastlogin
   }
 
 #-------------------------------------------------------------------------------

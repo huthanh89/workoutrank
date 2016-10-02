@@ -15,6 +15,7 @@ Loader       = require './loader/module'
 IndexRouter  = require './routers/index/router'
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
+AdminRouter  = require './routers/admin/router'
 
 #-------------------------------------------------------------------------------
 # User
@@ -201,6 +202,10 @@ class Application extends Marionette.Application
       trailingSlash: 'ignore'
 
     new UserRouter
+      mode:          'auto'
+      trailingSlash: 'ignore'
+
+    new AdminRouter
       mode:          'auto'
       trailingSlash: 'ignore'
 

@@ -16,6 +16,7 @@ class View extends Marionette.ItemView
 
   ui:
     bodyIcon: '#home-body-icon'
+    admin:    '#home-admin-accounts-container'
 
   bindings:
     '#home-exercise-count': 'sLogs'
@@ -58,12 +59,18 @@ class View extends Marionette.ItemView
       @rootChannel.request('account')
       return
 
+    'click #home-admin-accounts': ->
+      @rootChannel.request('admin:accounts')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
     @user  = Backbone.Radio.channel('user').request 'user'
 
   onRender: ->
+
+    @ui.admin.removeClass 'hide' if @user.get('username') in ['tth', 'admin']
 
     gender = @user.get 'gender'
 

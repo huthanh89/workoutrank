@@ -1,0 +1,25 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#admin-home
+                a Home
+            li.active
+                span Accounts
+.row
+    .col-xs-12
+        .panel.panel-info
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-users
+                    = ' '
+                    | Accounts
+            .panel-body
+                .row
+                    .col-sm-12
+                        table.table.table-striped.table-hover.table-condensed.table-responsive(style="overflow-x:scroll")
+                            thead
+                                tr
+                                    th.col-sm-4 #
+                                    th.col-sm-4 User
+                                    th.col-sm-4 Last Login
+                            tbody
