@@ -16,26 +16,37 @@ require 'backbone.stickit'
 require 'touchspin'
 
 #-------------------------------------------------------------------------------
-# Model
-#-------------------------------------------------------------------------------
-
-class Model extends Backbone.Model
-
-  idAttribute: '_id'
-
-  urlRoot: 'admin/api/accounts'
-
-  defaults:
-    firstname: ''
-    lastname:  ''
-    email:     ''
-
-#-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
+
   url: '/admin/api/accounts'
+
+  comparator: '-lastlogin'
+
+  parse: (response) ->
+
+    result = []
+
+    for user in response.users
+
+      account =
+        username:  user.username
+        lastlogin: user.lastlogin
+
+      sLogs = _.filter response.sLogs, (log) -> log.user is user._id
+      account.sLogs = sLogs.length
+
+      sConfs = _.filter response.sConfs, (log) -> log.user is user._id
+      account.sConfs = sConfs.length
+
+      wLogs = _.filter response.wLogs, (log) -> log.user is user._id
+      account.wLogs = wLogs.length
+
+      result.push account
+
+    return result
 
 #-------------------------------------------------------------------------------
 # ItemView
@@ -53,6 +64,9 @@ class ItemView extends Marionette.ItemView
   bindings:
 
     '.admin-account-username': 'username'
+    '.admin-account-sconfs':   'sConfs'
+    '.admin-account-slogs':    'sLogs'
+    '.admin-account-wlogs':    'wLogs'
 
     '.admin-account-lastlogin':
       observe: 'lastlogin'
@@ -91,7 +105,6 @@ class View extends Marionette.CompositeView
 #-------------------------------------------------------------------------------
 
 exports.Collection = Collection
-exports.Model      = Model
 exports.View       = View
 
 #-------------------------------------------------------------------------------

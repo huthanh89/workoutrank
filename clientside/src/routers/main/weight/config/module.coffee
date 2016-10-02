@@ -48,13 +48,14 @@ class Model extends Backbone.Model
 
   update: (wLogs) =>
 
-    model = latestModel wLogs
+    model = latestModel(wLogs)
 
     @set
       count:      wLogs.length
-      firstDate:  if wLogs.length then firstDate(wLogs) else null
+      firstDate:  if wLogs.length then firstDate(wLogs)  else null
       lastDate:   if wLogs.length then model.get('date') else null
-      lastWeight: model.get('weight')
+      lastWeight: if model then model.get('weight')      else null
+
     return
 
 #-------------------------------------------------------------------------------

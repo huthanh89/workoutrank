@@ -51,10 +51,10 @@ class Model extends Backbone.Model
     model = latestModel wLogs
 
     @set
-      count:     wLogs.length
-      firstDate: if wLogs.length then firstDate(wLogs) else null
-      lastDate:  if wLogs.length then model.get('date') else null
-      currentWeight: model.get('weight')
+      count:         wLogs.length
+      firstDate:     if wLogs.length then firstDate(wLogs)  else null
+      lastDate:      if wLogs.length then model.get('date') else null
+      currentWeight: if model then model.get('weight')      else null
     return
 
 #-------------------------------------------------------------------------------
