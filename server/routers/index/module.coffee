@@ -2,9 +2,9 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Err     = require '../error'
-express = require 'express'
-router  = express.Router()
+express  = require 'express'
+passport = require 'passport'
+router   = express.Router()
 
 #-------------------------------------------------------------------------------
 # Import Routes
@@ -22,7 +22,7 @@ reset    = require './reset/module'
 #   Pass index to all routes.
 #-------------------------------------------------------------------------------
 
-index = (req, res, next) ->
+index = (req, res) ->
   res.render 'index'
   return
 
@@ -41,9 +41,15 @@ router.get '/reset',    index
 router.post '/api/feedback', feedback.post
 router.post '/api/forgot',   forgot.post
 router.post '/api/signup',   signup.post
-router.post '/api/login',    login.post
 router.post '/api/logout',   logout.post
 router.post '/api/reset',    reset.post
+
+# If successful login.
+
+router.post '/api/login', passport.authenticate('local'), (req, res) ->
+  res.status 200
+  res.json {}
+  return
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -23,9 +23,19 @@ exports.get = (req, res) ->
 
     (callback) ->
 
+      userID = req.session.passport.user
+
+      return callback 'No Session ID' if userID is undefined
+
       User
-      .findById req.session.user._id
+      .findOne
+        $or: [
+          _id: userID
+        ,
+          facebookID: userID
+        ]
       .exec (err, user) ->
+        return callback 'No user found' if user is null
         return callback err if err
         return callback null, user.getPublicFields()
       return
@@ -33,10 +43,17 @@ exports.get = (req, res) ->
   ], (err, user) ->
 
     if err
+
       res
       .status 400
       .json   err
 
-    return res.json user
+    else
+
+      res
+      .status 200
+      .json user
+
+    return
 
 #-------------------------------------------------------------------------------

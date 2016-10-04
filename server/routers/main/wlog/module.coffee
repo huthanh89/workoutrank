@@ -24,7 +24,7 @@ module.list = (req, res, next) ->
     (callback) ->
 
       WLog.find
-        user: req.session.user._id
+        user: req.session.passport.user
       .exec (err, wlogs) ->
         return callback err.message if err
         return callback null, wlogs
@@ -84,7 +84,7 @@ module.post = (req, res) ->
         date:     req.body.date
         note:     req.body.note
         weight:   req.body.weight
-        user:     req.session.user._id
+        user:     req.session.passport.user
       , (err, wlog) ->
         return callback err.message if err
         return callback null, wlog

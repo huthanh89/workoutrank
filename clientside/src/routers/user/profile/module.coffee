@@ -38,8 +38,8 @@ class Model extends Backbone.Model
     firstname: ''
     lastname:  ''
     email:     ''
-    height:    null
-    weight:    null
+    height:    0
+    weight:    0
     birthday:  moment()
 
 #-------------------------------------------------------------------------------

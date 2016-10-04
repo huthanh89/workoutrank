@@ -24,7 +24,19 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      User.findById req.session.user._id, (err, user) ->
+      userID = req.session.passport.user
+
+      return callback 'No Session ID' if userID is undefined
+
+      User
+      .findOne
+        $or: [
+          _id: userID
+        ,
+          facebookID: userID
+        ]
+      .exec (err, user) ->
+        return callback 'No user found' if user is null
         return callback err if err
         return callback null, user.getPublicFields()
       return
@@ -36,7 +48,12 @@ module.get = (req, res, next) ->
       .status 400
       .json   err
 
-    return res.json user
+    else
+      res
+      .status 200
+      .json user
+
+    return
 
 #-------------------------------------------------------------------------------
 # PUT
@@ -48,7 +65,19 @@ module.put = (req, res, next) ->
 
     (callback) ->
 
-      User.findById req.session.user._id, (err, user) ->
+      userID = req.session.passport.user
+
+      return callback 'No Session ID' if userID is undefined
+
+      User
+      .findOne
+        $or: [
+          _id: userID
+        ,
+          facebookID: userID
+        ]
+      .exec (err, user) ->
+        return callback 'No user found' if user is null
         return callback err if err
         return callback null, user
       return
@@ -64,6 +93,7 @@ module.put = (req, res, next) ->
       user.birthday  = req.body.birthday
 
       user.save (err, user) ->
+        return callback 'No user found' if user is null
         return callback err.message if err
         return callback null, user.getPublicFields()
 
@@ -74,12 +104,12 @@ module.put = (req, res, next) ->
       # Create a new wlog entry.
 
       WLog.create
-        date:     moment()
-        note:     ''
-        weight:   req.body.weight
-        user:     req.session.user._id
+        date:   moment()
+        note:   req.body.note
+        weight: req.body.weight
+        user:   req.session.passport.user
       , (err) ->
-        return callback err.message if err
+        return callback err.errors if err
         return callback null, user
       return
 
@@ -90,7 +120,12 @@ module.put = (req, res, next) ->
       .status 400
       .json   err
 
-    return res.json user
+    else
+      res
+      .status 200
+      .json user
+
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

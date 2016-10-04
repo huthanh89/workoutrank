@@ -25,7 +25,7 @@ module.list = (req, res, next) ->
     (callback) ->
 
       SLog.find
-        user: req.session.user._id
+        user: req.session.passport.user
       .exec (err, slogs) ->
         return callback err.message if err
         return callback null, slogs
@@ -107,7 +107,7 @@ module.post = (req, res) ->
         note:     req.body.note
         rep:      req.body.rep
         weight:   req.body.weight
-        user:     req.session.user._id
+        user:     req.session.passport.user
       , (err, slog) ->
         return callback err.message if err
         return callback null, slog

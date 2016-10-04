@@ -150,6 +150,7 @@ exports.post = (req, res, next) ->
         key:       key
         algorithm: 'sha512'
         rounds:    10000
+        provider: 'local'
       , (err, user) ->
 
         if err?.code is 11000
@@ -171,13 +172,22 @@ exports.post = (req, res, next) ->
 
     else
 
-      req.session.user = user
+      req.login id: user._id, (err) ->
 
-      # Send 201 status for successful record creation.
+        if err
+          res
+          .status 400
+          .json   err
 
-      return res
-      .status 201
-      .json   user
+        else
+
+          # Send 201 status for successful record creation.
+
+          res
+          .status 201
+          .json   user
+
+      return
 
   return
 

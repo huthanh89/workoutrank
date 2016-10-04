@@ -21,7 +21,7 @@ class Model extends Backbone.Model
   url: 'api/login'
 
   defaults:
-    user:     ''
+    username: ''
     password: ''
 
 #-------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class View extends Marionette.ItemView
     submit: '#login-submit'
 
   bindings:
-    '#login-user':     'user'
+    '#login-user':     'username'
     '#login-password': 'password'
 
   events:
@@ -52,10 +52,9 @@ class View extends Marionette.ItemView
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
-      @model.save null,
-        success: (model) =>
+      @model.save {},
+        success: =>
           @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request 'show:'
           @rootChannel.request 'home'
           return
         error: (model, response) =>
@@ -63,11 +62,28 @@ class View extends Marionette.ItemView
           return
       return
 
+    'click #login-submit-facebook': (event) ->
+      event.preventDefault()
+      window.location = '/auth/facebook'
+      return
+
+    'click #login-submit-google': (event) ->
+      event.preventDefault()
+      model = new Backbone.Model()
+      model.fetch
+        url: 'api/login/google'
+      return
+
+    'click #login-submit-twitter': (event) ->
+      event.preventDefault()
+      window.location = '/auth/twitter'
+      return
+
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'channel'
-
+    
   onRender: ->
     @stickit()
     return

@@ -2,8 +2,29 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-express = require 'express'
-router  = express.Router()
+_        = require 'lodash'
+express  = require 'express'
+router   = express.Router()
+
+#-------------------------------------------------------------------------------
+# Router Level Middleware
+#-------------------------------------------------------------------------------
+
+router.use (req, res, next) ->
+
+  res.redirect '/login' unless req.session.passport
+
+  userID = req.session.passport.user
+
+  if req.url.includes('api') and _.isUndefined(userID)
+    res.status 401
+    res.end()
+  else if _.isUndefined(userID)
+    res.redirect '/login'
+  else
+    next()
+
+  return
 
 #-------------------------------------------------------------------------------
 # Path Routes.

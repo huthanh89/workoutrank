@@ -8,7 +8,6 @@ moment    = require 'moment'
 mongoose  = require 'mongoose'
 crypto    = require 'crypto'
 Validate  = require '../../validate'
-Err       = require '../../error'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -118,7 +117,6 @@ exports.post = (req, res) ->
       .json   err
 
     else
-
       res
       .status 201
       .json user

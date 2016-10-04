@@ -25,9 +25,34 @@
                         i.fa.fa-fw.fa-lg.fa-sign-in
                         = ' '
                         | Log In
-hr
+
 .row
     .col-xs-6
         a#login-forgot-user Reset Password
     .col-xs-6
         a#login-signup SignUp for an Account
+hr
+.row
+    .col-xs-12
+        span.help-block - Or Log In With -
+br
+.row
+    .col-xs-12
+        button.btn.btn-lg.btn-primary.btn-block#login-submit-facebook(style="background:#3b5998")
+            i.fa.fa-fw.fa-lg.fa-facebook-official
+            = ' '
+            | Facebook
+br
+.row
+    .col-xs-12
+        button.btn.btn-lg.btn-primary.btn-block#login-submit-google(style="background:#dd4b39")
+            i.fa.fa-fw.fa-lg.fa-google-plus
+            = ' '
+            | Google Plus
+br
+.row
+    .col-xs-12
+        button.btn.btn-lg.btn-primary.btn-block#login-submit-twitter(style="background:#1da1f2")
+            i.fa.fa-fw.fa-lg.fa-twitter
+            = ' '
+            | Twitter

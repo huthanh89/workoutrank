@@ -1,6 +1,8 @@
-var MongoStore, adminApp, app, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session, staticFiles;
+var Facebook, FacebookStrategy, LocalStrategy, MongoStore, TwitterStrategy, User, adminApp, app, async, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session, staticFiles;
 
 require('coffee-script/register');
+
+async = require('async');
 
 express = require('express');
 
@@ -18,13 +20,19 @@ cookieParser = require('cookie-parser');
 
 session = require('express-session');
 
-passport = require('passport');
-
 http = require('http');
 
 compression = require('compression');
 
 MongoStore = require('connect-mongo')(session);
+
+passport = require('passport');
+
+LocalStrategy = require('passport-local').Strategy;
+
+FacebookStrategy = require('passport-facebook').Strategy;
+
+TwitterStrategy = require('passport-twitter').Strategy;
 
 mongoose.connect('mongodb://localhost:27017/local');
 
@@ -49,6 +57,12 @@ require('./models/schedule')(mongoose);
 require('./models/feedback')(mongoose);
 
 require('./models/token')(mongoose);
+
+require('./models/facebook')(mongoose);
+
+User = mongoose.model('user');
+
+Facebook = mongoose.model('facebook');
 
 app = express();
 
@@ -86,6 +100,176 @@ app.use(session({
   })
 }));
 
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  if (id === void 0) {
+    console.log('No id found in deserialize user');
+    res.status(400).end();
+  }
+  User.findOne({
+    $or: [
+      {
+        _id: id
+      }, {
+        facebookID: id
+      }, {
+        twitterID: id
+      }, {
+        googleID: id
+      }
+    ]
+  }).exec(function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new FacebookStrategy({
+  clientID: '1588504301452640',
+  clientSecret: '672cb532bbaf22b5a565cdf5e15893c3',
+  callbackURL: 'http://localhost:5000/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'email']
+}, function(accessToken, refreshToken, profile, done) {
+  async.waterfall([
+    function(callback) {
+      return Facebook.findOne({
+        facebookID: profile.id
+      }).exec(function(err, user) {
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      if (user) {
+        return callback(null, user);
+      }
+      if (user === null) {
+        Facebook.create({
+          facebookID: profile.id,
+          name: profile.displayName,
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        }, function(err, user) {
+          if (err) {
+            return callback(err);
+          }
+          return callback(null, user);
+        });
+      }
+    }
+  ], function(err, user) {
+    return done(err, user);
+  });
+}));
+
+passport.use(new LocalStrategy(function(username, password, callback) {
+  User.findOne({
+    username: username
+  }, function(err, user) {
+    if (err) {
+      return callback(err);
+    }
+    if (!user) {
+      return callback(null, false, {
+        message: 'Incorrect username.'
+      });
+    }
+    return user.validPassword(password, callback);
+  });
+}));
+
+passport.use(new TwitterStrategy({
+  consumerKey: 'FdE3OIEzPttU9Dw3Jf8xpAqPW',
+  consumerSecret: 'ucZGlEOaDF8K7MIrYwz04biOD5JThbWk3kVvwFixCndKA2Upgo',
+  callbackURL: 'http://localhost:5000/auth/twitter/callback'
+}, function(token, tokenSecret, profile, callback) {
+  callback(null, profile);
+}));
+
+app.use(passport.initialize());
+
+app.use(passport.session());
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook'), function(req, res) {
+  async.waterfall([
+    function(callback) {
+      return User.findOne({
+        facebookID: req.session.passport.user
+      }).exec(function(err, user) {
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      if (user !== null) {
+        return callback(null);
+      }
+      return User.create({
+        facebookID: req.session.passport.user,
+        provider: 'facebook'
+      }, function(err, user) {
+        console.log('created', user);
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, user);
+      });
+    }
+  ], function(err, user) {
+    if (err) {
+      console.log('ERROR', err);
+      return res.status(404);
+    } else {
+      return res.redirect('/home');
+    }
+  });
+});
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback', passport.authenticate('twitter'), function(req, res) {
+  async.waterfall([
+    function(callback) {
+      return User.findOne({
+        facebookID: req.session.passport.user
+      }).exec(function(err, user) {
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      if (user !== null) {
+        return callback(null);
+      }
+      console.log('MY ID --->', req.session.passport.user);
+      return User.create({
+        twitterID: req.session.passport.user,
+        provider: 'twitter'
+      }, function(err, user) {
+        console.log('created', user);
+        if (err) {
+          return callback(err);
+        }
+        return callback(null, user);
+      });
+    }
+  ], function(err, user) {
+    if (err) {
+      console.log('ERROR', err);
+      return res.status(404);
+    } else {
+      return res.redirect('/home');
+    }
+  });
+});
+
 app.get('*', function(req, res, next) {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.removeHeader('server');
@@ -121,17 +305,21 @@ app.use('/log', staticFiles);
 
 app.use('/log/:lid', staticFiles);
 
+app.use('/auth/facebook', staticFiles);
+
+app.use('/auth', staticFiles);
+
 app.use('/admin', adminApp);
 
 routers = require('./routers/module');
 
-app.use('/', routers.indexRouter);
+app.use(routers.indexRouter);
 
-app.use('/', routers.mainRouter);
+app.use(routers.mainRouter);
 
-app.use('/', routers.userRouter);
+app.use(routers.userRouter);
 
-app.use('/', routers.adminRouter);
+app.use(routers.adminRouter);
 
 app.get('*', function(req, res) {
   res.status(404);
@@ -139,7 +327,7 @@ app.get('*', function(req, res) {
   res.end();
 });
 
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   console.log('ERROR', err);
   console.trace();
   res.render('error', {
@@ -147,7 +335,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.use(function(err, req, res, next) {
+app.get(function(err, req, res, next) {
   err = new Error('Not Found, Server Ended.');
   err.status = 404;
   next(err);

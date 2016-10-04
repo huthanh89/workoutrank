@@ -2,55 +2,42 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_        = require 'lodash'
-async    = require 'async'
-mongoose = require 'mongoose'
+_         = require 'lodash'
+async     = require 'async'
+moment    = require 'moment'
+mongoose  = require 'mongoose'
+crypto    = require 'crypto'
 
 #-------------------------------------------------------------------------------
-# Models
+# Schema
 #-------------------------------------------------------------------------------
 
-Strength = mongoose.model('strength')
-SLog     = mongoose.model('slog')
+FacebookSchema = new mongoose.Schema
+  facebookID:
+    type:   String
+    unique: false
+  name:
+    type:   String
+    unique: false
+  accessToken:
+    type:   String
+    unique: false
+  refreshToken:
+    type:   String
+    unique: false
+,
+  collection: 'facebook'
 
 #-------------------------------------------------------------------------------
-# GET XXX Not yet implemented
-#
-#   Get a list of all logs combine.
+# Model Registration
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
-
-  async.waterfall [
-
-    (callback) ->
-
-      # Get logs
-
-      SLog.find
-        user: req.session.passport.user
-      .sort 'date'
-      .lean()
-      .exec (err, slogs) ->
-        return callback err.message if err
-        return callback null, slogs
-
-      return
-
-  ], (err, slogs) ->
-
-    # If Error occured, return error status and text.
-
-    if err
-      res
-      .status 400
-      .json   err
-    return res.json slogs
+model = mongoose.model('facebook', FacebookSchema)
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = module
+module.exports = model
 
 #-------------------------------------------------------------------------------

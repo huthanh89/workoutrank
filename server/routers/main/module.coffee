@@ -11,13 +11,19 @@ router  = express.Router()
 #-------------------------------------------------------------------------------
 
 router.use (req, res, next) ->
-  if req.url.includes('api') and _.isUndefined(req.session.user)
+
+  res.redirect '/login' unless req.session.passport
+
+  userID = req.session.passport.user
+
+  if req.url.includes('api') and _.isUndefined(userID)
     res.status 401
     res.end()
-  else if _.isUndefined(req.session.user)
+  else if _.isUndefined(userID)
     res.redirect '/login'
   else
     next()
+
   return
 
 #-------------------------------------------------------------------------------

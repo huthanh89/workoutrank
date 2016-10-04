@@ -11,6 +11,13 @@ mongoose = require 'mongoose'
 
 exports.post = (req, res) ->
 
+  req.logout()
+  res
+  .status 200
+  .json {}
+#  res.redirect('/')
+
+  ###
   async.waterfall [
 
     (callback) ->
@@ -23,6 +30,7 @@ exports.post = (req, res) ->
     res
     .status 200
     .json {}
+###
 
   return
 

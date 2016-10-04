@@ -128,29 +128,29 @@ class Application extends Marionette.Application
 
         rootChannel.request 'spin:page:loader', false
 
-        if response.status is 401
-          rootView.showChildView 'content', new ErrorView()
+        #if response.status is 401
+        #  rootView.showChildView 'content', new ErrorView()
 
-        else
+        #else
 
-          Toastr.options =
-            closeButton:       true
-            debug:             false
-            newestOnTop:       false
-            progressBar:       true
-            positionClass:    'toast-top-full-width'
-            preventDuplicates: false
-            onclick:           null
-            showDuration:     '10000'
-            hideDuration:     '10000'
-            timeOut:          '10000'
-            extendedTimeOut:  '10000'
-            showEasing:       'swing'
-            hideEasing:       'linear'
-            showMethod:       'fadeIn'
-            hideMethod:       'fadeOut'
+        Toastr.options =
+          closeButton:       true
+          debug:             false
+          newestOnTop:       false
+          progressBar:       true
+          positionClass:    'toast-top-full-width'
+          preventDuplicates: false
+          onclick:           null
+          showDuration:     '10000'
+          hideDuration:     '10000'
+          timeOut:          '10000'
+          extendedTimeOut:  '10000'
+          showEasing:       'swing'
+          hideEasing:       'linear'
+          showMethod:       'fadeIn'
+          hideMethod:       'fadeOut'
 
-          Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
+        Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
       'spin:page:loader': (enable) ->
         if enable

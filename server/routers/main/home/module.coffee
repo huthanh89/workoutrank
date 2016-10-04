@@ -31,7 +31,7 @@ module.get = (req, res, next) ->
 
     (callback) ->
       Strength.count
-        user: req.session.user._id
+        user: req.session.passport.user
       .exec (err, count) ->
         return callback err.message if err
         result.sConfs = count
@@ -40,7 +40,7 @@ module.get = (req, res, next) ->
 
     (callback) ->
       SLog.count
-        user: req.session.user._id
+        user: req.session.passport.user
       .exec (err, count) ->
         return callback err.message if err
         result.sLogs = count
@@ -49,7 +49,7 @@ module.get = (req, res, next) ->
 
     (callback) ->
       Schedule.findOne
-        user: req.session.user._id
+        user: req.session.passport.user
       .exec (err, schedule) ->
         return callback err.message if err
         if schedule?

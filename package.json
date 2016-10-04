@@ -26,8 +26,10 @@
     "async": "*",
     "passport": "*",
     "passport-facebook": "*",
+    "passport-twitter": "*",
     "passport-google": "*",
     "passport-local": "*",
+    "passport-remember-me": "*",
     "request": "*",
     "moment": "*",
     "lodash": "*",
@@ -43,8 +45,8 @@
     "nodemailer-smtp-transport": "*",
     "nodemailer": "*",
     "eve": "*",
-    "d3": "*",
-    "passport-remember-me": "*"
+    "q": "*",
+    "d3": "*"
   },
   "devDependencies": {
     "coffee-loader": "*",

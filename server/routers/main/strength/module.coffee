@@ -54,7 +54,7 @@ module.list = (req, res, next) ->
     (callback) ->
 
       Strength.find
-        user: req.session.user._id
+        user: req.session.passport.user
       .sort(date: -1)
       .lean()
       .exec (err, strengths) ->
@@ -123,7 +123,7 @@ module.post = (req, res) ->
         note:   req.body.note
         muscle: req.body.muscle
         body:   req.body.body
-        user:   req.session.user._id
+        user:   req.session.passport.user
 
       , (err, strength) ->
         return callback err.message if err

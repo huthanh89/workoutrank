@@ -24,7 +24,7 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      User.findById req.session.user._id, (err, user) ->
+      User.findById req.session.passport.user, (err, user) ->
         return callback err if err
         return callback null, user.getPublicFields()
       return
@@ -48,7 +48,7 @@ module.put = (req, res, next) ->
 
     (callback) ->
 
-      User.findById req.session.user._id, (err, user) ->
+      User.findById req.session.passport.user, (err, user) ->
         return callback err if err
         return callback null, user
       return
@@ -77,7 +77,7 @@ module.put = (req, res, next) ->
         date:     moment()
         note:     ''
         weight:   req.body.weight
-        user:     req.session.user._id
+        user:     req.session.passport.user
       , (err) ->
         return callback err.message if err
         return callback null, user

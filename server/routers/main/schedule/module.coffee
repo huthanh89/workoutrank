@@ -39,7 +39,7 @@ module.get = (req, res, next) ->
     (callback) ->
 
       Schedule.findOne
-        user: req.session.user._id
+        user: req.session.passport.user
       .lean()
       .exec (err, schedule) ->
         return callback err.message if err
@@ -73,7 +73,7 @@ module.post = (req, res) ->
     (callback) ->
 
       Schedule.create
-        user:      req.session.user._id
+        user:      req.session.passport.user
         date:      moment()
         sunday:    req.body.sunday
         monday:    req.body.monday
