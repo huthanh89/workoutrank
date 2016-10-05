@@ -88,6 +88,7 @@ UserSchema.methods.getPublicFields = ->
     auth:      @auth
     birthday:  @birthday
     lastlogin: @lastlogin
+    provider:  @provider
   }
 
 UserSchema.methods.validPassword = (password, callback) ->

@@ -27,7 +27,7 @@
     "passport": "*",
     "passport-facebook": "*",
     "passport-twitter": "*",
-    "passport-google-plus": "*",
+    "passport-google-oauth": "*",
     "passport-local": "*",
     "passport-remember-me": "*",
     "request": "*",

@@ -2,11 +2,10 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
-swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Summary      = require './summary/module'
+Local        = require './local/module'
+Social       = require './social/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -49,25 +48,17 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'home'
       return
 
-    'submit': (event) ->
-      event.preventDefault()
-      @rootChannel.request 'spin:page:loader', true
-      @model.save null,
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
-          swal('Success', 'Profile Updated!', 'success')
-          return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
-          return
-
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
-    @showChildView 'summary', new Summary.View
-      model: @model
+    if @model.get('provider') is 'local'
+      @showChildView 'summary', new Local.View
+        model: @model
+    else
+      @showChildView 'summary', new Social.View
+        model: @model
     return
 
 #-------------------------------------------------------------------------------

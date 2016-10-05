@@ -23,7 +23,7 @@ class Collection extends Backbone.Collection
 
   url: '/admin/api/accounts'
 
-  comparator: '-lastlogin'
+  comparator: (item) -> -moment(item.get('lastlogin')).utc()
 
   parse: (response) ->
 
@@ -34,6 +34,7 @@ class Collection extends Backbone.Collection
       account =
         username:  user.username
         lastlogin: user.lastlogin
+        provider:  user.provider
 
       sLogs = _.filter response.sLogs, (log) -> log.user is user._id
       account.sLogs = sLogs.length
@@ -63,7 +64,10 @@ class ItemView extends Marionette.ItemView
 
   bindings:
 
-    '.admin-account-username': 'username'
+    '.admin-account-username':
+      observe: 'username'
+      onGet: (value) -> value or @model.get('provider')
+
     '.admin-account-sconfs':   'sConfs'
     '.admin-account-slogs':    'sLogs'
     '.admin-account-wlogs':    'wLogs'

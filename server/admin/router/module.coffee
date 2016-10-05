@@ -2,10 +2,19 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_       = require 'lodash'
-express = require 'express'
-Account = require './account/module'
-router  = express.Router()
+_        = require 'lodash'
+async    = require 'async'
+express  = require 'express'
+mongoose = require 'mongoose'
+path     = require 'path'
+router   = express.Router()
+Account  = require './account/module'
+
+#-------------------------------------------------------------------------------
+# Models
+#-------------------------------------------------------------------------------
+
+User = mongoose.model('user')
 
 #-------------------------------------------------------------------------------
 # Router Level Middleware
@@ -13,16 +22,23 @@ router  = express.Router()
 
 router.use (req, res, next) ->
 
-  if _.isUndefined(req.session.user)
-    res.status 401
-    res.end()
+  res.redirect '/login' unless req.session.passport
 
-  else if req.session.user.username not in ['tth', 'admin']
-    res.status 401
-    res.redirect '/login'
+  userID = req.session.passport.user
 
-  else
-    next()
+  User.findOne
+    _id: userID
+  , (err, user) ->
+
+    if user is null
+      res.redirect '/login'
+    else if req.url.includes('api') and user.username not in ['tth']
+      res.status 401
+      res.end()
+    else
+      next()
+
+    return
 
   return
 
@@ -34,7 +50,7 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get 'accounts', index
+router.get '/accounts', index
 
 #-------------------------------------------------------------------------------
 # API Resources.

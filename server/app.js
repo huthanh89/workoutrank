@@ -430,8 +430,6 @@ app.use(routers.mainRouter);
 
 app.use(routers.userRouter);
 
-app.use(routers.adminRouter);
-
 app.get('*', function(req, res) {
   res.status(404);
   res.render('404.jade');

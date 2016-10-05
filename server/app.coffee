@@ -21,7 +21,6 @@ http         = require 'http'
 compression  = require 'compression'
 MongoStore   = require('connect-mongo')(session)
 passport     = require 'passport'
-
 LocalStrategy    = require('passport-local').Strategy
 FacebookStrategy = require('passport-facebook').Strategy
 TwitterStrategy  = require('passport-twitter').Strategy
@@ -443,7 +442,6 @@ routers = require('./routers/module')
 app.use routers.indexRouter
 app.use routers.mainRouter
 app.use routers.userRouter
-app.use routers.adminRouter
 
 # The Page not Found 404 Route (ALWAYS Keep this as the last route)
 
