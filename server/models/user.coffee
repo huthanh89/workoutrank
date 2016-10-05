@@ -31,20 +31,17 @@ UserSchema = new mongoose.Schema
     type: String
   email:
     type:   String
-    unique: true
   username:
     type:   String
-    unique: true
 
   facebookID:
     type:   String
-    unique: true
+
   twitterID:
     type:   String
-    unique: true
+
   googleID:
     type:   String
-    unique: true
 
   provider:
     type: String
@@ -67,7 +64,8 @@ UserSchema = new mongoose.Schema
     type: Number
   gender:
     type: Number
-
+  displayName:
+    type: String
 ,
   collection: 'user'
 

@@ -27,6 +27,8 @@ module.get = (req, res, next) ->
     sLogs:     0
     schedules: 0
 
+  console.log req.session.passport.user
+
   async.waterfall [
 
     (callback) ->
@@ -72,10 +74,13 @@ module.get = (req, res, next) ->
       .status 400
       .json   err
 
-    return res
-    .status 200
-    .json result
+    else
 
+      res
+      .status 200
+      .json result
+
+    return
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

@@ -15,16 +15,13 @@ crypto    = require 'crypto'
 FacebookSchema = new mongoose.Schema
   facebookID:
     type:   String
-    unique: false
+    unique: true
   name:
     type:   String
-    unique: false
   accessToken:
     type:   String
-    unique: false
   refreshToken:
     type:   String
-    unique: false
 ,
   collection: 'facebook'
 

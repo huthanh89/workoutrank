@@ -25,6 +25,7 @@ passport     = require 'passport'
 LocalStrategy    = require('passport-local').Strategy
 FacebookStrategy = require('passport-facebook').Strategy
 TwitterStrategy  = require('passport-twitter').Strategy
+GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy
 
 #--------------------------------------------------------------
 # Database Connection
@@ -54,13 +55,17 @@ require('./models/schedule') mongoose
 require('./models/feedback') mongoose
 require('./models/token')    mongoose
 require('./models/facebook') mongoose
+require('./models/twitter')  mongoose
+require('./models/google')   mongoose
 
 #-------------------------------------------------------------------------------
 # Import Models
 #-------------------------------------------------------------------------------
 
-User = mongoose.model('user')
+User     = mongoose.model('user')
 Facebook = mongoose.model('facebook')
+Twitter  = mongoose.model('twitter')
+Google   = mongoose.model('google')
 
 #--------------------------------------------------------------
 # Create App and sub app.
@@ -136,15 +141,6 @@ passport.serializeUser (user, done) ->
 # Called to find user with given id.
 
 passport.deserializeUser (id, done) ->
-
-  if id is undefined
-
-    console.log 'No id found in deserialize user'
-
-    res
-    .status 400
-    .end()
-
   User.findOne
     $or: [
       _id: id
@@ -158,12 +154,15 @@ passport.deserializeUser (id, done) ->
   .exec (err, user) ->
     done err, user
     return
-  return
+
+# Create an entry for facebook
+# Instead of using facebook id, we make and use our own.
+# and send that _id to be serialize in the session.
 
 passport.use new FacebookStrategy({
   clientID:     '1588504301452640'
   clientSecret: '672cb532bbaf22b5a565cdf5e15893c3'
-  callbackURL:  'http://localhost:5000/auth/facebook/callback'
+  callbackURL:  '/auth/facebook/callback'
   profileFields: ['id', 'displayName', 'photos', 'email']
 }, (accessToken, refreshToken, profile, done) ->
 
@@ -202,6 +201,7 @@ passport.use new FacebookStrategy({
 passport.use new LocalStrategy((username, password, callback) ->
   User.findOne
     username: username
+    provider: 'local'
   , (err, user) ->
     return callback(err) if err
     return callback(null, false, message: 'Incorrect username.') if !user
@@ -212,12 +212,76 @@ passport.use new LocalStrategy((username, password, callback) ->
 passport.use new TwitterStrategy({
   consumerKey:    'FdE3OIEzPttU9Dw3Jf8xpAqPW'
   consumerSecret: 'ucZGlEOaDF8K7MIrYwz04biOD5JThbWk3kVvwFixCndKA2Upgo'
-  callbackURL:    'http://localhost:5000/auth/twitter/callback'
-}, (token, tokenSecret, profile, callback) ->
-  callback null, profile
+  callbackURL:    '/auth/twitter/callback'
+}, (token, tokenSecret, profile, done) ->
+
+  async.waterfall [
+
+    (callback) ->
+      Twitter.findOne
+        twitterID:   profile.id
+      .exec (err, user) ->
+        return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      return callback null, user if user
+
+      if user is null
+        Twitter.create
+          twitterID:   profile.id
+          token:       token
+          tokenSecret: tokenSecret
+        , (err, user) ->
+          return callback err if err
+          return callback null, user
+
+      return
+
+  ], (err, user) ->
+
+    return done err, user
+
   return
 )
 
+passport.use new GoogleStrategy({
+  clientID:     '372505580779-p0ku93tjmq14n8lg5nv5et2uui8p8puh.apps.googleusercontent.com'
+  clientSecret: 'Bo-8UYRGdX5NAkKYxgxvtdg5'
+  callbackURL:  '/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) ->
+
+  async.waterfall [
+
+    (callback) ->
+      Google.findOne
+        googleID: profile.id
+      .exec (err, user) ->
+        return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      return callback null, user if user
+
+      if user is null
+        Google.create
+          googleID:     profile.id
+          accessToken:  accessToken
+          refreshToken: refreshToken
+        , (err, user) ->
+          return callback err if err
+          return callback null, user
+
+      return
+
+  ], (err, user) ->
+
+    return done err, user
+
+  return
+)
 app.use passport.initialize()
 app.use passport.session()
 
@@ -242,9 +306,6 @@ app.get '/auth/facebook/callback', passport.authenticate('facebook'), (req, res)
         facebookID: req.session.passport.user
         provider:   'facebook'
       , (err, user) ->
-
-        console.log 'created', user
-
         return callback err if err
         return callback null, user
 
@@ -253,24 +314,20 @@ app.get '/auth/facebook/callback', passport.authenticate('facebook'), (req, res)
     if err
       console.log 'ERROR', err
       res.status 404
-
     else
-
-      # Done.
-
       res.redirect '/home'
 
   return
 
-
 app.get '/auth/twitter', passport.authenticate('twitter' )
 
 app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res) ->
+
   async.waterfall [
 
     (callback) ->
       User.findOne
-        facebookID: req.session.passport.user
+        twitterID: req.session.passport.user
       .exec (err, user) ->
         return callback err if err
         return callback null, user
@@ -279,15 +336,10 @@ app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res)
 
       return callback null unless user is null
 
-      console.log 'MY ID --->', req.session.passport.user
-
       User.create
         twitterID: req.session.passport.user
         provider:  'twitter'
       , (err, user) ->
-
-        console.log 'created', user
-
         return callback err if err
         return callback null, user
 
@@ -296,11 +348,46 @@ app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res)
     if err
       console.log 'ERROR', err
       res.status 404
-
     else
+      res.redirect '/home'
 
-      # Done.
+  return
 
+app.get '/auth/google', passport.authenticate('google',
+  scope: 'https://www.googleapis.com/auth/plus.login'
+
+)
+
+app.get '/auth/google/callback', passport.authenticate('google',
+  scope: 'https://www.googleapis.com/auth/plus.login'
+), (req, res) ->
+
+  async.waterfall [
+
+    (callback) ->
+      User.findOne
+        googleID: req.session.passport.user
+      .exec (err, user) ->
+        return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      return callback null unless user is null
+
+      User.create
+        googleID: req.session.passport.user
+        provider: 'google'
+      , (err, user) ->
+        return callback err if err
+        return callback null, user
+
+  ], (err, user) ->
+
+    if err
+      console.log 'ERROR', err
+      res.status 404
+    else
       res.redirect '/home'
 
   return

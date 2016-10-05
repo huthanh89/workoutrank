@@ -69,9 +69,7 @@ class View extends Marionette.ItemView
 
     'click #login-submit-google': (event) ->
       event.preventDefault()
-      model = new Backbone.Model()
-      model.fetch
-        url: 'api/login/google'
+      window.location = '/auth/google'
       return
 
     'click #login-submit-twitter': (event) ->

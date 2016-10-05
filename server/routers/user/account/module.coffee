@@ -24,16 +24,20 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      userID = req.session.passport.user
+      id = req.session.passport.user
 
-      return callback 'No Session ID' if userID is undefined
+      return callback 'No Session ID' if id is undefined
 
       User
       .findOne
         $or: [
-          _id: userID
+          _id: id
         ,
-          facebookID: userID
+          facebookID: id
+        ,
+          twitterID: id
+        ,
+          googleID: id
         ]
       .exec (err, user) ->
         return callback 'No user found' if user is null
@@ -65,16 +69,20 @@ module.put = (req, res, next) ->
 
     (callback) ->
 
-      userID = req.session.passport.user
+      id = req.session.passport.user
 
-      return callback 'No Session ID' if userID is undefined
+      return callback 'No Session ID' if id is undefined
 
       User
       .findOne
         $or: [
-          _id: userID
+          _id: id
         ,
-          facebookID: userID
+          facebookID: id
+        ,
+          twitterID: id
+        ,
+          googleID: id
         ]
       .exec (err, user) ->
         return callback 'No user found' if user is null
