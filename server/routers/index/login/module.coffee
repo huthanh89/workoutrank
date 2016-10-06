@@ -97,7 +97,6 @@ exports.post = (req, res) ->
           _id: user._id
         ,
           lastlogin: moment()
-
         , (err, user) ->
           return callback err.message if err
           return callback null, user

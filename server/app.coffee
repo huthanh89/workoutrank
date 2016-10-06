@@ -9,6 +9,7 @@ require 'coffee-script/register'
 #--------------------------------------------------------------
 
 async        = require 'async'
+moment       = require 'moment'
 express      = require 'express'
 path         = require 'path'
 favicon      = require 'serve-favicon'
@@ -131,15 +132,17 @@ app.use session
 
 # Configure and initialize passport
 
-# Store id in session. User is passed here from strategy.
+# Store id in session. Parameter 'user' is passed in from strategy.
+# After serializeUser, we'll go to the auth/callback handler.
 
-passport.serializeUser (user, done) ->
-  done null, user.id
-  return
+passport.serializeUser (profileID, done) ->
+  console.log 'SERIAL', profileID
+  return done null, profileID
 
 # Called to find user with given id.
 
 passport.deserializeUser (id, done) ->
+
   User.findOne
     $or: [
       _id: id
@@ -192,15 +195,19 @@ passport.use new FacebookStrategy({
 
   ], (err, user) ->
 
-    return done err, user
+    return done err, user._id
 
   return
 )
 
 passport.use new LocalStrategy((username, password, callback) ->
-  User.findOne
+
+  User.findOneAndUpdate
     username: username
     provider: 'local'
+  ,
+    lastlogin: moment()
+
   , (err, user) ->
     return callback(err) if err
     return callback(null, false, message: 'Incorrect username.') if !user
@@ -218,7 +225,7 @@ passport.use new TwitterStrategy({
 
     (callback) ->
       Twitter.findOne
-        twitterID:   profile.id
+        twitterID: profile.id
       .exec (err, user) ->
         return callback err if err
         return callback null, user
@@ -240,7 +247,7 @@ passport.use new TwitterStrategy({
 
   ], (err, user) ->
 
-    return done err, user
+    return done err, user._id
 
   return
 )
@@ -277,7 +284,7 @@ passport.use new GoogleStrategy({
 
   ], (err, user) ->
 
-    return done err, user
+    return done err, user._id
 
   return
 )
@@ -299,13 +306,25 @@ app.get '/auth/facebook/callback', passport.authenticate('facebook'), (req, res)
 
     (user, callback) ->
 
-      return callback null unless user is null
+      return callback null, user unless user is null
 
       User.create
         facebookID: req.session.passport.user
         provider:   'facebook'
       , (err, user) ->
         return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      # Update lastlogin time.
+
+      User.findOneAndUpdate
+        _id: user._id
+      ,
+        lastlogin: moment()
+      , (err, user) ->
+        return callback err.message if err
         return callback null, user
 
   ], (err, user) ->
@@ -323,7 +342,6 @@ app.get '/auth/twitter', passport.authenticate('twitter' )
 app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res) ->
 
   async.waterfall [
-
     (callback) ->
       User.findOne
         twitterID: req.session.passport.user
@@ -333,7 +351,7 @@ app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res)
 
     (user, callback) ->
 
-      return callback null unless user is null
+      return callback null, user unless user is null
 
       User.create
         twitterID: req.session.passport.user
@@ -342,12 +360,26 @@ app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res)
         return callback err if err
         return callback null, user
 
+    (user, callback) ->
+
+      # Update lastlogin time.
+
+      User.findOneAndUpdate
+        _id: user._id
+      ,
+        lastlogin: moment()
+      , (err, user) ->
+        return callback err.message if err
+        return callback null, user
+
   ], (err, user) ->
 
     if err
       console.log 'ERROR', err
       res.status 404
     else
+
+
       res.redirect '/home'
 
   return
@@ -371,13 +403,25 @@ app.get '/auth/google/callback', passport.authenticate('google',
 
     (user, callback) ->
 
-      return callback null unless user is null
+      return callback null, user unless user is null
 
       User.create
         googleID: req.session.passport.user
         provider: 'google'
       , (err, user) ->
         return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      # Update lastlogin time.
+
+      User.findOneAndUpdate
+        _id: user._id
+      ,
+        lastlogin: moment()
+      , (err, user) ->
+        return callback err.message if err
         return callback null, user
 
   ], (err, user) ->

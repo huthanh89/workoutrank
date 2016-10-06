@@ -1,8 +1,10 @@
-var Facebook, FacebookStrategy, Google, GoogleStrategy, LocalStrategy, MongoStore, Twitter, TwitterStrategy, User, adminApp, app, async, bodyParser, compression, cookieParser, db, express, favicon, http, logger, mongoose, passport, path, port, routers, server, session, staticFiles;
+var Facebook, FacebookStrategy, Google, GoogleStrategy, LocalStrategy, MongoStore, Twitter, TwitterStrategy, User, adminApp, app, async, bodyParser, compression, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, port, routers, server, session, staticFiles;
 
 require('coffee-script/register');
 
 async = require('async');
+
+moment = require('moment');
 
 express = require('express');
 
@@ -36,7 +38,7 @@ TwitterStrategy = require('passport-twitter').Strategy;
 
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-mongoose.connect('mongodb://54.201.171.251:27017/local');
+mongoose.connect('mongodb://localhost:27017/local');
 
 db = mongoose.connection;
 
@@ -110,8 +112,9 @@ app.use(session({
   })
 }));
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+passport.serializeUser(function(profileID, done) {
+  console.log('SERIAL', profileID);
+  return done(null, profileID);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -167,14 +170,16 @@ passport.use(new FacebookStrategy({
       }
     }
   ], function(err, user) {
-    return done(err, user);
+    return done(err, user._id);
   });
 }));
 
 passport.use(new LocalStrategy(function(username, password, callback) {
-  User.findOne({
+  User.findOneAndUpdate({
     username: username,
     provider: 'local'
+  }, {
+    lastlogin: moment()
   }, function(err, user) {
     if (err) {
       return callback(err);
@@ -221,7 +226,7 @@ passport.use(new TwitterStrategy({
       }
     }
   ], function(err, user) {
-    return done(err, user);
+    return done(err, user._id);
   });
 }));
 
@@ -258,7 +263,7 @@ passport.use(new GoogleStrategy({
       }
     }
   ], function(err, user) {
-    return done(err, user);
+    return done(err, user._id);
   });
 }));
 
@@ -281,7 +286,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook'), function(r
       });
     }, function(user, callback) {
       if (user !== null) {
-        return callback(null);
+        return callback(null, user);
       }
       return User.create({
         facebookID: req.session.passport.user,
@@ -289,6 +294,17 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook'), function(r
       }, function(err, user) {
         if (err) {
           return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      return User.findOneAndUpdate({
+        _id: user._id
+      }, {
+        lastlogin: moment()
+      }, function(err, user) {
+        if (err) {
+          return callback(err.message);
         }
         return callback(null, user);
       });
@@ -318,7 +334,7 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter'), function(req
       });
     }, function(user, callback) {
       if (user !== null) {
-        return callback(null);
+        return callback(null, user);
       }
       return User.create({
         twitterID: req.session.passport.user,
@@ -326,6 +342,17 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter'), function(req
       }, function(err, user) {
         if (err) {
           return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      return User.findOneAndUpdate({
+        _id: user._id
+      }, {
+        lastlogin: moment()
+      }, function(err, user) {
+        if (err) {
+          return callback(err.message);
         }
         return callback(null, user);
       });
@@ -359,7 +386,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
       });
     }, function(user, callback) {
       if (user !== null) {
-        return callback(null);
+        return callback(null, user);
       }
       return User.create({
         googleID: req.session.passport.user,
@@ -367,6 +394,17 @@ app.get('/auth/google/callback', passport.authenticate('google', {
       }, function(err, user) {
         if (err) {
           return callback(err);
+        }
+        return callback(null, user);
+      });
+    }, function(user, callback) {
+      return User.findOneAndUpdate({
+        _id: user._id
+      }, {
+        lastlogin: moment()
+      }, function(err, user) {
+        if (err) {
+          return callback(err.message);
         }
         return callback(null, user);
       });
