@@ -2,29 +2,18 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_        = require 'lodash'
-express  = require 'express'
-router   = express.Router()
+_          = require 'lodash'
+express    = require 'express'
+middleware = require '../../middleware'
+router     = express.Router()
 
 #-------------------------------------------------------------------------------
-# Router Level Middleware
+# Route Middleware
 #-------------------------------------------------------------------------------
 
-router.use (req, res, next) ->
-
-  res.redirect '/login' unless req.session.passport
-
-  userID = req.session.passport.user
-
-  if req.url.includes('api') and _.isUndefined(userID)
-    res.status 401
-    res.end()
-  else if _.isUndefined(userID)
-    res.redirect '/login'
-  else
-    next()
-
-  return
+middlewares = [
+  middleware.isAuthenticated
+]
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -35,8 +24,8 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/account', index
-router.get '/profile', index
+router.get '/account', middlewares, index
+router.get '/profile', middlewares, index
 
 #-------------------------------------------------------------------------------
 # Import Routes
@@ -49,10 +38,9 @@ Account = require './account/module'
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get '/api/user', User.get
-
-router.get '/api/account', Account.get
-router.put '/api/account/:id', Account.put
+router.get '/api/user',        middlewares, User.get
+router.get '/api/account',     middlewares, Account.get
+router.put '/api/account/:id', middlewares, Account.put
 
 #-------------------------------------------------------------------------------
 # Exports

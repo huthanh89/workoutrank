@@ -2,29 +2,18 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_       = require 'lodash'
-express = require 'express'
-router  = express.Router()
+_          = require 'lodash'
+express    = require 'express'
+middleware = require '../../middleware'
+router     = express.Router()
 
 #-------------------------------------------------------------------------------
-# Router Level Middleware
+# Route Middleware
 #-------------------------------------------------------------------------------
 
-router.use (req, res, next) ->
-
-  res.redirect '/login' unless req.session.passport
-
-  userID = req.session.passport.user
-
-  if req.url.includes('api') and _.isUndefined(userID)
-    res.status 401
-    res.end()
-  else if _.isUndefined(userID)
-    res.redirect '/login'
-  else
-    next()
-
-  return
+middlewares = [
+  middleware.isAuthenticated
+]
 
 #-------------------------------------------------------------------------------
 # Path Routes.
@@ -38,7 +27,7 @@ urls = [
   '/calendar'
   '/schedule'
   '/strengths'
-  '/strength/:sid'
+  '/strength/:sid/'
   '/strength/:sid/log'
   '/weights'
   '/body'
@@ -47,7 +36,7 @@ urls = [
 ]
 
 for url in urls
-  router.get url, (req, res, next) ->
+  router.get url, middlewares,(req, res, next) ->
     res.render 'index'
     return
 
@@ -63,88 +52,96 @@ WLog     = require './wlog/module'
 Schedule = require './schedule/module'
 
 #-------------------------------------------------------------------------------
+# XHR Middleware
+#-------------------------------------------------------------------------------
+
+middlewares = [
+  middleware.isAuthenticated
+]
+
+#-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get '/api/home', Home.get
+router.get '/api/home', middlewares, Home.get
 
 #-------------------------------------------------------------------------------
 # Strengths
 #-------------------------------------------------------------------------------
 
 # Get all strength exercises belonging to a user.
-router.get '/api/strengths', Strength.list
+router.get '/api/strengths', middlewares, Strength.list
 
 # Get a specific strength workout matching strength ID.
-router.get '/api/strengths/:sid', Strength.get
-router.put '/api/strengths/:sid', Strength.put
+router.get '/api/strengths/:sid', middlewares, Strength.get
+router.put '/api/strengths/:sid', middlewares, Strength.put
 
 # Post a new strength exercise for an user.
-router.post '/api/strengths', Strength.post
+router.post '/api/strengths', middlewares, Strength.post
 
 # Get all slog for a strength exercise.
-router.get '/api/strengths/:sid/log', Strength.log
+router.get '/api/strengths/:sid/log', middlewares, Strength.log
 
 # Delete a strength exercise.
-router.delete '/api/strengths/:sid', Strength.delete
+router.delete '/api/strengths/:sid', middlewares, Strength.delete
 
 #-------------------------------------------------------------------------------
 # Strength Logs
 #-------------------------------------------------------------------------------
 
 # Get all slogs.
-router.get '/api/slogs', SLog.list
+router.get '/api/slogs', middlewares, SLog.list
 
 # Post a new slog record.
-router.post '/api/slogs', SLog.post
+router.post '/api/slogs', middlewares, SLog.post
 
 # Get a specific slog.
-router.get '/api/slogs/:sid', SLog.get
+router.get '/api/slogs/:sid', middlewares, SLog.get
 
 # Edit a specific slog record.
-router.put '/api/slogs/:sid', SLog.put
+router.put '/api/slogs/:sid', middlewares, SLog.put
 
 # Delete a specific slog record.
-router.delete '/api/slogs/:sid', SLog.delete
+router.delete '/api/slogs/:sid', middlewares, SLog.delete
 
 #-------------------------------------------------------------------------------
 # ALL Logs
 #-------------------------------------------------------------------------------
 
 # Get all logs.
-router.get '/api/logs', Log.get
+router.get '/api/logs', middlewares, Log.get
 
 #-------------------------------------------------------------------------------
 # Schedule
 #-------------------------------------------------------------------------------
 
 # Post a new schedule record.
-router.get '/api/schedule', Schedule.get
+router.get '/api/schedule', middlewares, Schedule.get
 
 # Post a new schedule record.
-router.post '/api/schedule', Schedule.post
+router.post '/api/schedule', middlewares, Schedule.post
 
 # Edit schedules.
-router.put '/api/schedule/:sid', Schedule.put
+router.put '/api/schedule/:sid', middlewares, Schedule.put
 
 #-------------------------------------------------------------------------------
 # Weight Logs
 #-------------------------------------------------------------------------------
 
 # Get all slogs.
-router.get '/api/wlogs', WLog.list
+router.get '/api/wlogs', middlewares, WLog.list
 
 # Post a new wlog record.
-router.post '/api/wlogs', WLog.post
+router.post '/api/wlogs', middlewares, WLog.post
 
 # Get a specific wlog.
-router.get '/api/wlogs/:sid', WLog.get
+router.get '/api/wlogs/:sid', middlewares, WLog.get
 
 # Edit a specific wlog record.
-router.put '/api/wlogs/:sid', WLog.put
+router.put '/api/wlogs/:sid', middlewares, WLog.put
 
 # Delete a specific wlog record.
-router.delete '/api/wlogs/:sid', WLog.delete
+router.delete '/api/wlogs/:sid', middlewares, WLog.delete
 
 #-------------------------------------------------------------------------------
 # Exports

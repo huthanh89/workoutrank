@@ -44,14 +44,11 @@ class View extends Marionette.LayoutView
     name:   '#strength-modal-name'
     muscle: '#strength-modal-muscle'
     body:   '#strength-modal-body'
-    date:   '#strength-modal-date'
     submit: '#strength-modal-submit'
 
   bindings:
 
     '#strength-modal-name': 'name'
-
-    '#strength-modal-note': 'note'
 
     '#strength-modal-muscle':
       observe: 'muscle'
@@ -71,9 +68,6 @@ class View extends Marionette.LayoutView
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
 
-      @model.set
-        date: @ui.date.data('DateTimePicker').date().format()
-
       @collection.create @model.attributes,
         wait: true
         at:   0
@@ -89,7 +83,6 @@ class View extends Marionette.LayoutView
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
-      @ui.date.data('DateTimePicker').destroy()
       return
 
   constructor: (options) ->
@@ -108,13 +101,6 @@ class View extends Marionette.LayoutView
       buttonClass:  'btn btn-default'
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get('muscle'))
-
-    @ui.date.datetimepicker
-      inline:      true
-      sideBySide:  false
-      minDate:     moment(date).subtract(1, 'years')
-      maxDate:     moment(date).add(1, 'years')
-      defaultDate: moment(date)
 
     @stickit()
 

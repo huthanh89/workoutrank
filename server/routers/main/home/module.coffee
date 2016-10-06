@@ -27,8 +27,6 @@ module.get = (req, res, next) ->
     sLogs:     0
     schedules: 0
 
-  console.log req.session.passport.user
-
   async.waterfall [
 
     (callback) ->

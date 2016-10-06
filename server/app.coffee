@@ -32,8 +32,8 @@ GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy
 
 # Connect to Database.
 
-mongoose.connect 'mongodb://localhost:27017/local'
-#mongoose.connect 'mongodb://54.201.171.251:27017/local'
+#mongoose.connect 'mongodb://localhost:27017/local'
+mongoose.connect 'mongodb://54.201.171.251:27017/local'
 
 db = mongoose.connection
 
@@ -354,7 +354,6 @@ app.get '/auth/twitter/callback', passport.authenticate('twitter' ),  (req, res)
 
 app.get '/auth/google', passport.authenticate('google',
   scope: 'https://www.googleapis.com/auth/plus.login'
-
 )
 
 app.get '/auth/google/callback', passport.authenticate('google',
@@ -419,9 +418,17 @@ app.get '/favicon.ico', (req, res, next) ->
   next()
   return
 
+# Define all routers.
+# Can only require routes after express was initialized.
+
+routers = require('./routers/module')
+
+app.use routers.indexRouter
+app.use routers.mainRouter
+app.use routers.userRouter
 
 # Location of static files starting from the root or app.js.
-# Cache these staic files for 24 hours in maxAge.
+# Cache these static files for 24 hours in maxAge.
 
 staticFiles = express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
 
@@ -433,15 +440,6 @@ app.use '/log/:lid',      staticFiles
 app.use '/auth/facebook', staticFiles
 app.use '/auth',          staticFiles
 app.use '/admin',         adminApp
-
-# Define all routers.
-# Can only require routes after express was initialized.
-
-routers = require('./routers/module')
-
-app.use routers.indexRouter
-app.use routers.mainRouter
-app.use routers.userRouter
 
 # The Page not Found 404 Route (ALWAYS Keep this as the last route)
 

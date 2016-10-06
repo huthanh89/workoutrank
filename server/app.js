@@ -36,7 +36,7 @@ TwitterStrategy = require('passport-twitter').Strategy;
 
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-mongoose.connect('mongodb://localhost:27017/local');
+mongoose.connect('mongodb://54.201.171.251:27017/local');
 
 db = mongoose.connection;
 
@@ -402,6 +402,14 @@ app.get('/favicon.ico', function(req, res, next) {
   next();
 });
 
+routers = require('./routers/module');
+
+app.use(routers.indexRouter);
+
+app.use(routers.mainRouter);
+
+app.use(routers.userRouter);
+
 staticFiles = express["static"](path.join(__dirname, '../static'), {
   maxAge: 86400000
 });
@@ -421,14 +429,6 @@ app.use('/auth/facebook', staticFiles);
 app.use('/auth', staticFiles);
 
 app.use('/admin', adminApp);
-
-routers = require('./routers/module');
-
-app.use(routers.indexRouter);
-
-app.use(routers.mainRouter);
-
-app.use(routers.userRouter);
 
 app.get('*', function(req, res) {
   res.status(404);
