@@ -30,11 +30,12 @@ class Collection extends Backbone.Collection
     result = []
 
     for user in response.users
-
       account =
         username:  user.username
         lastlogin: user.lastlogin
         provider:  user.provider
+        firstname: user.firstname
+        lastname:  user.lastname
 
       sLogs = _.filter response.sLogs, (log) -> log.user is user._id
       account.sLogs = sLogs.length
@@ -64,13 +65,13 @@ class ItemView extends Marionette.ItemView
 
   bindings:
 
-    '.admin-account-username':
-      observe: 'username'
-      onGet: (value) -> value or @model.get('provider')
-
-    '.admin-account-sconfs':   'sConfs'
-    '.admin-account-slogs':    'sLogs'
-    '.admin-account-wlogs':    'wLogs'
+    '.admin-account-username':  'username'
+    '.admin-account-provider':  'provider'
+    '.admin-account-firstname': 'firstname'
+    '.admin-account-lastname':  'lastname'
+    '.admin-account-sconfs':    'sConfs'
+    '.admin-account-slogs':     'sLogs'
+    '.admin-account-wlogs':     'wLogs'
 
     '.admin-account-lastlogin':
       observe: 'lastlogin'

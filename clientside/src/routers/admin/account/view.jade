@@ -15,13 +15,16 @@
                     | Accounts
             .panel-body
                 .row
-                    .col-sm-12
-                        table.table.table-striped.table-hover.table-condensed.table-responsive(style="overflow-x:scroll")
+                    .col-sm-12#admin-accounts-table
+                        table.table.table-striped.table-hover.table-condensed.table-responsive
                             thead
                                 tr
                                     th #
-                                    th User
-                                    th Last
+                                    th Username
+                                    th First Name
+                                    th Last Name
+                                    th Provider
+                                    th Last Login
                                     th sConfs
                                     th sLogs
                                     th wLogs

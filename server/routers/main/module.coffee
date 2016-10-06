@@ -23,16 +23,11 @@ middlewares = [
 urls = [
   '/home'
   '/exercise'
-  '/exercise/:type'
   '/calendar'
   '/schedule'
   '/strengths'
-  '/strength/:sid/'
-  '/strength/:sid/log'
   '/weights'
   '/body'
-  '/logs'
-  '/log/:lid'
 ]
 
 for url in urls
