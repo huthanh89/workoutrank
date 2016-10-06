@@ -11,13 +11,12 @@
                 i.fa.fa-fw.fa-lg.fa-pencil
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading.clearfix
-                .panel-title
-                    span#strength-title
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title#strength-title
             .panel-body
                 .col-xs-6#strength-detail-schedule-container
-                    button.btn.btn-default#strength-schedule-btn
+                    button.btn.btn-info#strength-schedule-btn
                         i.fa.fa-fw.fa-lg.fa-calendar-check-o
                             = ' '
                         span Schedule
@@ -28,54 +27,55 @@
                         span Add Entry
 .row
     .col-md-8.col-center
-        .panel.panel-info
+        .panel.panel-default
             .panel-heading
-                .panel-title
-                    span Journal Entries
+                h3.panel-title Journal Entries
             .panel-body#strength-history-panel
                 #strength-history-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
+        .panel.panel-default
             .panel-heading.clearfix
-                .panel-title
-                    span Daily Challenges
+                h3.panel-title Daily Challenges
             .panel-body
                 #strength-challenge-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading Performance
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Performance
             .panel-body#strength-goal-panel
                 #strength-goal-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading.clearfix Overall Ranking
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Overall Ranking
             .panel-body
                 #strength-calendar-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading Progress
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Progress
             .panel-body
                 #strength-graph-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading Overall Summary
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Summary
             .panel-body
                 #strength-summary-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading
+        .panel.panel-default
+            .panel-heading.clearfix
                 .pull-right
-                    button.btn.btn-xs.btn-default#strength-detail-edit
+                    button.btn.btn-xs.btn-primary#strength-detail-edit
                         i.fa.fa-fw.fa-lg.fa-wrench
                         = ' '
                         span Edit
-                .panel-title.clearfix
-                    span My Workout
+                h3.panel-title Workout
             .panel-body
                 #strength-workout-view
