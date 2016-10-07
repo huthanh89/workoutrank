@@ -1,4 +1,4 @@
-var MongoStore, adminApp, app, async, auth, bodyParser, compression, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, port, routers, server, session, staticFiles;
+var MongoStore, adminApp, app, async, auth, bodyParser, compression, config, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, routers, server, session, staticFiles;
 
 require('coffee-script/register');
 
@@ -52,7 +52,9 @@ passport = require('passport');
 
 auth = require('./auth');
 
-mongoose.connect('mongodb://localhost:27017/local');
+config = require('./config');
+
+mongoose.connect(config.developmentURL);
 
 db = mongoose.connection;
 
@@ -193,10 +195,8 @@ app.use(function(err, req, res) {
   });
 });
 
-port = 5000;
-
-server.listen(port, function() {
-  console.log('Express server listening on port %d in %s mode', port, app.get('env'));
+server.listen(config.port, function() {
+  console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
 });
 
 module.exports = app;

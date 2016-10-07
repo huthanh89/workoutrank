@@ -38,6 +38,7 @@ compression  = require 'compression'
 MongoStore   = require('connect-mongo')(session)
 passport     = require 'passport'
 auth         = require './auth'
+config       = require './config'
 
 #--------------------------------------------------------------
 # Database Connection
@@ -45,8 +46,7 @@ auth         = require './auth'
 
 # Connect to Database.
 
-mongoose.connect 'mongodb://localhost:27017/local'
-#mongoose.connect 'mongodb://54.201.171.251:27017/local'
+mongoose.connect config.developmentURL
 
 db = mongoose.connection
 
@@ -227,11 +227,9 @@ app.use (err, req, res) ->
 # Listen on port
 #--------------------------------------------------------------
 
-port = 5000
-
-server.listen port, ->
+server.listen config.port, ->
   console.log 'Express server listening on port %d in %s mode',
-    port, app.get('env')
+    config.port, app.get('env')
   return
 
 #--------------------------------------------------------------

@@ -326,6 +326,7 @@ gulp.task 'fonts', ->
 
 gulp.task 'nodemon', ->
   nodemon
+    script: 'server/app.coffee'
     ext: 'html js coffee'
     env:
       'NODE_ENV': 'development'
