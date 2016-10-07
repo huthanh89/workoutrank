@@ -7,8 +7,8 @@ async    = require 'async'
 express  = require 'express'
 mongoose = require 'mongoose'
 path     = require 'path'
-router   = express.Router()
 Account  = require './account/module'
+router   = express.Router()
 
 #-------------------------------------------------------------------------------
 # Models

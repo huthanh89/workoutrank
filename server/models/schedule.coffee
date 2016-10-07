@@ -5,10 +5,10 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Schedule Schema
 #-------------------------------------------------------------------------------
 
-ScheduleSchema = new mongoose.Schema
+schema = mongoose.Schema
   user:
     type: mongoose.Schema.ObjectId
     required: true
@@ -36,7 +36,7 @@ ScheduleSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('schedule', ScheduleSchema)
+model = mongoose.model('schedule', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

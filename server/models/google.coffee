@@ -5,10 +5,10 @@
 mongoose  = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Google Schema
 #-------------------------------------------------------------------------------
 
-GoogleSchema = new mongoose.Schema
+schema = mongoose.Schema
   googleID:
     type:   String
     unique: true
@@ -23,7 +23,7 @@ GoogleSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('google', GoogleSchema)
+model = mongoose.model('google', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

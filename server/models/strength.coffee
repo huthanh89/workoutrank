@@ -5,10 +5,10 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# SConf Schema
 #-------------------------------------------------------------------------------
 
-StrengthSchema = new mongoose.Schema
+schema = mongoose.Schema
   user:
     type: mongoose.Schema.ObjectId
     required: true
@@ -32,7 +32,7 @@ StrengthSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('strength', StrengthSchema)
+model = mongoose.model('strength', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

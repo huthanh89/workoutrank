@@ -5,10 +5,10 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Feedback Schema
 #-------------------------------------------------------------------------------
 
-FeedbackSchema = new mongoose.Schema
+schema = mongoose.Schema
   date:
     type: Date
   type:
@@ -24,7 +24,7 @@ FeedbackSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('feedback', FeedbackSchema)
+model = mongoose.model('feedback', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

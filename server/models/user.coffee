@@ -2,24 +2,17 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_         = require 'lodash'
-async     = require 'async'
-moment    = require 'moment'
-mongoose  = require 'mongoose'
-crypto    = require 'crypto'
-Validate  = require '../routers/validate'
+_        = require 'lodash'
+async    = require 'async'
+moment   = require 'moment'
+mongoose = require 'mongoose'
+crypto   = require 'crypto'
 
 #-------------------------------------------------------------------------------
-# Sanitize given string
+# User Schema
 #-------------------------------------------------------------------------------
 
-sanitize = (string) -> string.trim().toLowerCase().replace(' ', '')
-
-#-------------------------------------------------------------------------------
-# Schema
-#-------------------------------------------------------------------------------
-
-UserSchema = new mongoose.Schema
+schema = mongoose.Schema
 
   algorithm:
     type: String
@@ -75,7 +68,7 @@ UserSchema = new mongoose.Schema
 
 # Return public fields only.
 
-UserSchema.methods.getPublicFields = ->
+schema.methods.getPublicFields = ->
   return {
     _id:       @_id
     email:     @email
@@ -91,7 +84,7 @@ UserSchema.methods.getPublicFields = ->
     provider:  @provider
   }
 
-UserSchema.methods.validPassword = (password, callback) ->
+schema.methods.validPassword = (password, callback) ->
   crypto.pbkdf2 password, @salt, @rounds, 32, @algorithm, (err, key) =>
     if @key is key.toString('hex')
       return callback null, @_id
@@ -102,9 +95,11 @@ UserSchema.methods.validPassword = (password, callback) ->
 
 #-------------------------------------------------------------------------------
 # Model Registration
+#
+# Now you can access model from mongoose object instead of need to require.
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('user', UserSchema)
+model = mongoose.model('user', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

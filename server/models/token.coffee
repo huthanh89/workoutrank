@@ -5,10 +5,10 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Token Schema
 #-------------------------------------------------------------------------------
 
-TokenSchema = new mongoose.Schema
+schema = mongoose.Schema
   date:
     type:     Date
     required: true
@@ -25,7 +25,7 @@ TokenSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('token', TokenSchema)
+model = mongoose.model('token', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

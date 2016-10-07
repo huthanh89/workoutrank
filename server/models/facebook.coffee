@@ -9,10 +9,10 @@ mongoose  = require 'mongoose'
 crypto    = require 'crypto'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Facebook Schema
 #-------------------------------------------------------------------------------
 
-FacebookSchema = new mongoose.Schema
+schema = mongoose.Schema
   facebookID:
     type:   String
     unique: true
@@ -27,9 +27,10 @@ FacebookSchema = new mongoose.Schema
 
 #-------------------------------------------------------------------------------
 # Model Registration
+#   In order to call 'Facebook' model from mongoose object.
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('facebook', FacebookSchema)
+model = mongoose.model('facebook', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

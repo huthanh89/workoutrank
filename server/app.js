@@ -1,6 +1,26 @@
-var Facebook, FacebookStrategy, Google, GoogleStrategy, LocalStrategy, MongoStore, Twitter, TwitterStrategy, User, adminApp, app, async, bodyParser, compression, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, port, routers, server, session, staticFiles;
+var MongoStore, adminApp, app, async, auth, bodyParser, compression, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, port, routers, server, session, staticFiles;
 
 require('coffee-script/register');
+
+require('./models/facebook');
+
+require('./models/feedback');
+
+require('./models/google');
+
+require('./models/schedule');
+
+require('./models/slog');
+
+require('./models/strength');
+
+require('./models/token');
+
+require('./models/twitter');
+
+require('./models/user');
+
+require('./models/wlog');
 
 async = require('async');
 
@@ -30,13 +50,7 @@ MongoStore = require('connect-mongo')(session);
 
 passport = require('passport');
 
-LocalStrategy = require('passport-local').Strategy;
-
-FacebookStrategy = require('passport-facebook').Strategy;
-
-TwitterStrategy = require('passport-twitter').Strategy;
-
-GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+auth = require('./auth');
 
 mongoose.connect('mongodb://localhost:27017/local');
 
@@ -48,33 +62,17 @@ db.on('open', function() {
   console.log('MongoDb connection opened.');
 });
 
-require('./models/user')(mongoose);
+passport.serializeUser(auth.serializeUser);
 
-require('./models/strength')(mongoose);
+passport.deserializeUser(auth.deserializeUser);
 
-require('./models/slog')(mongoose);
+passport.use(auth.localStrategy);
 
-require('./models/wlog')(mongoose);
+passport.use(auth.facebookStrategy);
 
-require('./models/schedule')(mongoose);
+passport.use(auth.twitterStrategy);
 
-require('./models/feedback')(mongoose);
-
-require('./models/token')(mongoose);
-
-require('./models/facebook')(mongoose);
-
-require('./models/twitter')(mongoose);
-
-require('./models/google')(mongoose);
-
-User = mongoose.model('user');
-
-Facebook = mongoose.model('facebook');
-
-Twitter = mongoose.model('twitter');
-
-Google = mongoose.model('google');
+passport.use(auth.googleStrategy);
 
 app = express();
 
@@ -112,260 +110,17 @@ app.use(session({
   })
 }));
 
-passport.serializeUser(function(profileID, done) {
-  console.log('SERIAL', profileID);
-  return done(null, profileID);
-});
-
-passport.deserializeUser(function(id, done) {
-  return User.findOne({
-    $or: [
-      {
-        _id: id
-      }, {
-        facebookID: id
-      }, {
-        twitterID: id
-      }, {
-        googleID: id
-      }
-    ]
-  }).exec(function(err, user) {
-    done(err, user);
-  });
-});
-
-passport.use(new FacebookStrategy({
-  clientID: '1588504301452640',
-  clientSecret: '672cb532bbaf22b5a565cdf5e15893c3',
-  callbackURL: '/auth/facebook/callback',
-  profileFields: ['id', 'displayName', 'photos', 'email']
-}, function(accessToken, refreshToken, profile, done) {
-  async.waterfall([
-    function(callback) {
-      return Facebook.findOne({
-        facebookID: profile.id
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user) {
-        return callback(null, user);
-      }
-      if (user === null) {
-        Facebook.create({
-          facebookID: profile.id,
-          name: profile.displayName,
-          accessToken: accessToken,
-          refreshToken: refreshToken
-        }, function(err, user) {
-          if (err) {
-            return callback(err);
-          }
-          return callback(null, user);
-        });
-      }
-    }
-  ], function(err, user) {
-    return done(err, user._id);
-  });
-}));
-
-passport.use(new LocalStrategy(function(username, password, callback) {
-  User.findOneAndUpdate({
-    username: username,
-    provider: 'local'
-  }, {
-    lastlogin: moment()
-  }, function(err, user) {
-    if (err) {
-      return callback(err);
-    }
-    if (!user) {
-      return callback(null, false, {
-        message: 'Incorrect username.'
-      });
-    }
-    return user.validPassword(password, callback);
-  });
-}));
-
-passport.use(new TwitterStrategy({
-  consumerKey: 'FdE3OIEzPttU9Dw3Jf8xpAqPW',
-  consumerSecret: 'ucZGlEOaDF8K7MIrYwz04biOD5JThbWk3kVvwFixCndKA2Upgo',
-  callbackURL: '/auth/twitter/callback'
-}, function(token, tokenSecret, profile, done) {
-  async.waterfall([
-    function(callback) {
-      return Twitter.findOne({
-        twitterID: profile.id
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user) {
-        return callback(null, user);
-      }
-      if (user === null) {
-        Twitter.create({
-          twitterID: profile.id,
-          token: token,
-          tokenSecret: tokenSecret
-        }, function(err, user) {
-          if (err) {
-            return callback(err);
-          }
-          return callback(null, user);
-        });
-      }
-    }
-  ], function(err, user) {
-    return done(err, user._id);
-  });
-}));
-
-passport.use(new GoogleStrategy({
-  clientID: '372505580779-p0ku93tjmq14n8lg5nv5et2uui8p8puh.apps.googleusercontent.com',
-  clientSecret: 'Bo-8UYRGdX5NAkKYxgxvtdg5',
-  callbackURL: '/auth/google/callback'
-}, function(accessToken, refreshToken, profile, done) {
-  async.waterfall([
-    function(callback) {
-      return Google.findOne({
-        googleID: profile.id
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user) {
-        return callback(null, user);
-      }
-      if (user === null) {
-        Google.create({
-          googleID: profile.id,
-          accessToken: accessToken,
-          refreshToken: refreshToken
-        }, function(err, user) {
-          if (err) {
-            return callback(err);
-          }
-          return callback(null, user);
-        });
-      }
-    }
-  ], function(err, user) {
-    return done(err, user._id);
-  });
-}));
-
 app.use(passport.initialize());
 
 app.use(passport.session());
 
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
-app.get('/auth/facebook/callback', passport.authenticate('facebook'), function(req, res) {
-  async.waterfall([
-    function(callback) {
-      return User.findOne({
-        facebookID: req.session.passport.user
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user !== null) {
-        return callback(null, user);
-      }
-      return User.create({
-        facebookID: req.session.passport.user,
-        provider: 'facebook'
-      }, function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      return User.findOneAndUpdate({
-        _id: user._id
-      }, {
-        lastlogin: moment()
-      }, function(err, user) {
-        if (err) {
-          return callback(err.message);
-        }
-        return callback(null, user);
-      });
-    }
-  ], function(err, user) {
-    if (err) {
-      console.log('ERROR', err);
-      return res.status(404);
-    } else {
-      return res.redirect('/home');
-    }
-  });
-});
+app.get('/auth/facebook/callback', passport.authenticate('facebook'), auth.facebookAuthCallback);
 
 app.get('/auth/twitter', passport.authenticate('twitter'));
 
-app.get('/auth/twitter/callback', passport.authenticate('twitter'), function(req, res) {
-  async.waterfall([
-    function(callback) {
-      return User.findOne({
-        twitterID: req.session.passport.user
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user !== null) {
-        return callback(null, user);
-      }
-      return User.create({
-        twitterID: req.session.passport.user,
-        provider: 'twitter'
-      }, function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      return User.findOneAndUpdate({
-        _id: user._id
-      }, {
-        lastlogin: moment()
-      }, function(err, user) {
-        if (err) {
-          return callback(err.message);
-        }
-        return callback(null, user);
-      });
-    }
-  ], function(err, user) {
-    if (err) {
-      console.log('ERROR', err);
-      return res.status(404);
-    } else {
-      return res.redirect('/home');
-    }
-  });
-});
+app.get('/auth/twitter/callback', passport.authenticate('twitter'), auth.twitterAuthCallback);
 
 app.get('/auth/google', passport.authenticate('google', {
   scope: 'https://www.googleapis.com/auth/plus.login'
@@ -373,51 +128,7 @@ app.get('/auth/google', passport.authenticate('google', {
 
 app.get('/auth/google/callback', passport.authenticate('google', {
   scope: 'https://www.googleapis.com/auth/plus.login'
-}), function(req, res) {
-  async.waterfall([
-    function(callback) {
-      return User.findOne({
-        googleID: req.session.passport.user
-      }).exec(function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      if (user !== null) {
-        return callback(null, user);
-      }
-      return User.create({
-        googleID: req.session.passport.user,
-        provider: 'google'
-      }, function(err, user) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, user);
-      });
-    }, function(user, callback) {
-      return User.findOneAndUpdate({
-        _id: user._id
-      }, {
-        lastlogin: moment()
-      }, function(err, user) {
-        if (err) {
-          return callback(err.message);
-        }
-        return callback(null, user);
-      });
-    }
-  ], function(err, user) {
-    if (err) {
-      console.log('ERROR', err);
-      return res.status(404);
-    } else {
-      return res.redirect('/home');
-    }
-  });
-});
+}), auth.googleAuthCallback);
 
 app.get('*', function(req, res, next) {
   res.setHeader('X-XSS-Protection', '1; mode=block');
@@ -480,12 +191,6 @@ app.use(function(err, req, res) {
   res.render('error', {
     error: err
   });
-});
-
-app.get(function(err, req, res, next) {
-  err = new Error('Not Found, Server Ended.');
-  err.status = 404;
-  next(err);
 });
 
 port = 5000;

@@ -5,10 +5,10 @@
 mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# WLog Schema
 #-------------------------------------------------------------------------------
 
-WLogSchema = new mongoose.Schema
+schema = mongoose.Schema
   date:
     type: Date
     required: true
@@ -27,7 +27,7 @@ WLogSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('wlog', WLogSchema)
+model = mongoose.model('wlog', schema)
 
 #-------------------------------------------------------------------------------
 # Exports

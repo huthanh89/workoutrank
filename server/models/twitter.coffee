@@ -5,10 +5,10 @@
 mongoose  = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Schema
+# Twitter Schema
 #-------------------------------------------------------------------------------
 
-TwitterSchema = new mongoose.Schema
+schema = mongoose.Schema
   twitterID:
     type:   String
     unique: true
@@ -23,7 +23,7 @@ TwitterSchema = new mongoose.Schema
 # Model Registration
 #-------------------------------------------------------------------------------
 
-model = mongoose.model('twitter', TwitterSchema)
+model = mongoose.model('twitter', schema)
 
 #-------------------------------------------------------------------------------
 # Exports
