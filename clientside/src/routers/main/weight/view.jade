@@ -6,41 +6,38 @@
                 a Home
             li.active
                 span Weight
+                i.fa.fa-fw.fa-lg.fa-tachometer
 .row
     .col-md-8.col-center
-        .panel.panel-info
+        .panel.panel-default
             .panel-heading.clearfix
                 .pull-right
                     button.btn.btn-xs.btn-primary#weight-detail-add
                         i.fa.fa-fw.fa-plus
                         = ' '
                         span Add
-                .panel-title.clearfix
-                    i.fa.fa-fw.fa-lg.fa-tachometer
-                    = ' '
-                    span Weight
+                h3.panel-title Weight
             .panel-body
                 #weight-date-view
             #weight-table-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
-            .panel-heading.clearfix Entry Calendar
+        .panel.panel-default
+            .panel-heading.clearfix
+                h3.panel-title Entry Calendar
             .panel-body
                 #weight-calendar-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
+        .panel.panel-default
             .panel-heading
-                .panel-title
-                    span Progress
+                h3.panel-title Progress
             .panel-body
                 #weight-graph-view
 .row
     .col-md-8.col-center
-        .panel.panel-info
+        .panel.panel-default
             .panel-heading
-                .panel-title.clearfix
-                    span Summary
+                h3.panel-title Summary
             .panel-body
                 #weight-summary-view

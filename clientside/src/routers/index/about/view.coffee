@@ -16,7 +16,7 @@ class View extends Marionette.ItemView
 
   events:
     'click #about-home': ->
-      @rootChannel.request 'login'
+      @rootChannel.request 'home'
       return
 
   constructor: ->
