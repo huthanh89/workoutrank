@@ -39,6 +39,7 @@ MongoStore   = require('connect-mongo')(session)
 passport     = require 'passport'
 auth         = require './auth'
 config       = require './config'
+routers      = require './routers/module'
 
 #--------------------------------------------------------------
 # Database Connection
@@ -51,23 +52,16 @@ mongoose.connect config.developmentURL
 db = mongoose.connection
 
 db.on 'error', console.error.bind(console, 'connection error:')
+
 db.on 'open', ->
   console.log 'MongoDb connection opened.'
   return
 
 #--------------------------------------------------------------
-# Configure passport.
+# Configure and initialize passport.
 #--------------------------------------------------------------
 
-# Configure and initialize passport
-
-# Store id in session. Parameter 'user' is passed in from strategy.
-# After serializeUser, we'll go to the auth/callback handler.
-
 passport.serializeUser auth.serializeUser
-
-# Called to find user with given id.
-
 passport.deserializeUser auth.deserializeUser
 
 passport.use auth.localStrategy
@@ -100,16 +94,14 @@ app.set 'views', './static'
 app.set 'view engine', 'jade'
 
 #--------------------------------------------------------------
-# APP Configurations
+# APP configurations for headers etc.
 #--------------------------------------------------------------
-
-app.use(require('prerender-node').set('prerenderToken', 'YOUR_TOKEN'))
 
 app.use logger('dev')
 
 # Compress all requests.
 
-app.use(compression())
+app.use compression()
 
 # Handle cookie and session before defining routes.
 # cookie parser should be used before the session.
@@ -140,6 +132,17 @@ app.use session
 app.use passport.initialize()
 app.use passport.session()
 
+app.use (req, res, next) ->
+  res.setHeader    'X-XSS-Protection', '1; mode=block'
+  res.removeHeader 'server'
+  res.removeHeader 'x-powered-by'
+  next()
+  return
+
+#--------------------------------------------------------------
+# Top Level Route Handlers
+#--------------------------------------------------------------
+
 app.get '/auth/facebook', passport.authenticate('facebook')
 app.get '/auth/facebook/callback', passport.authenticate('facebook'), auth.facebookAuthCallback
 
@@ -154,38 +157,7 @@ app.get '/auth/google/callback', passport.authenticate('google',
   scope: 'https://www.googleapis.com/auth/plus.login'
 ), auth.googleAuthCallback
 
-#--------------------------------------------------------------
-# Top Level Route Handlers
-#--------------------------------------------------------------
-
-# Middle ware for all pages.
-
-app.get '*', (req, res, next) ->
-  res.setHeader    'X-XSS-Protection', '1; mode=block'
-  res.removeHeader 'server'
-  res.removeHeader 'x-powered-by'
-  next()
-  return
-
-# Set expiration date header for images. (1 month from now)
-
-app.get '/images/*', (req, res, next) ->
-  if req.url.indexOf('/images/') == 0 or req.url.indexOf('/stylesheets/') == 0
-    res.setHeader 'Cache-Control', 'public, max-age=2592000'
-    res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
-  next()
-  return
-
-app.get '/favicon.ico', (req, res, next) ->
-  res.setHeader 'Cache-Control', 'public, max-age=2592000'
-  res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
-  next()
-  return
-
-# Define all routers.
-# Can only require routes after express was initialized.
-
-routers = require('./routers/module')
+app.use '/admin', adminApp
 
 app.use routers.indexRouter
 app.use routers.mainRouter
@@ -193,17 +165,21 @@ app.use routers.userRouter
 
 # Location of static files starting from the root or app.js.
 # Cache these static files for 24 hours in maxAge.
+# Set expiration of static files as well for SEO optimization.
 
-staticFiles = express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
-
-app.use                   staticFiles
-app.use '/strength',      staticFiles
-app.use '/strength/:sid', staticFiles
-app.use '/log',           staticFiles
-app.use '/log/:lid',      staticFiles
-app.use '/auth/facebook', staticFiles
-app.use '/auth',          staticFiles
-app.use '/admin',         adminApp
+for url in [
+  ''
+  '/strength'
+  '/strength/:sid'
+  '/log'
+  '/log/:lid'
+  '/admin'
+]
+  app.use url, (req, res, next) ->
+    res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
+    next()
+    return
+  , express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
 
 # By the time the user gets here, there is no more route handlers.
 # Return a NOT FOUND 404 error and render the error page.
