@@ -28,7 +28,12 @@ admin.use express.static(path.join(__dirname, '../../static'))
 # Handle routes
 #--------------------------------------------------------------
 
-admin.use '/', router
+admin.use router
+
+admin.use (req, res, next) ->
+  console.log 'bob', req.url
+  next()
+  return
 
 #--------------------------------------------------------------
 # Exports

@@ -1,4 +1,4 @@
-var MongoStore, adminApp, app, async, auth, bodyParser, compression, config, cookieParser, db, express, favicon, http, logger, moment, mongoose, passport, path, routers, server, session, staticFiles;
+var MongoStore, adminApp, app, async, auth, bodyParser, compression, config, cookieParser, db, express, favicon, http, i, len, logger, moment, mongoose, passport, path, ref, routers, server, session, url;
 
 require('coffee-script/register');
 
@@ -54,6 +54,8 @@ auth = require('./auth');
 
 config = require('./config');
 
+routers = require('./routers/module');
+
 mongoose.connect(config.developmentURL);
 
 db = mongoose.connection;
@@ -86,8 +88,6 @@ app.set('views', './static');
 
 app.set('view engine', 'jade');
 
-app.use(require('prerender-node').set('prerenderToken', 'YOUR_TOKEN'));
-
 app.use(logger('dev'));
 
 app.use(compression());
@@ -116,6 +116,13 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
+app.use(function(req, res, next) {
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.removeHeader('server');
+  res.removeHeader('x-powered-by');
+  next();
+});
+
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook'), auth.facebookAuthCallback);
@@ -132,28 +139,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
   scope: 'https://www.googleapis.com/auth/plus.login'
 }), auth.googleAuthCallback);
 
-app.get('*', function(req, res, next) {
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.removeHeader('server');
-  res.removeHeader('x-powered-by');
-  next();
-});
-
-app.get('/images/*', function(req, res, next) {
-  if (req.url.indexOf('/images/') === 0 || req.url.indexOf('/stylesheets/') === 0) {
-    res.setHeader('Cache-Control', 'public, max-age=2592000');
-    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
-  }
-  next();
-});
-
-app.get('/favicon.ico', function(req, res, next) {
-  res.setHeader('Cache-Control', 'public, max-age=2592000');
-  res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
-  next();
-});
-
-routers = require('./routers/module');
+app.use('/admin', adminApp);
 
 app.use(routers.indexRouter);
 
@@ -161,25 +147,16 @@ app.use(routers.mainRouter);
 
 app.use(routers.userRouter);
 
-staticFiles = express["static"](path.join(__dirname, '../static'), {
-  maxAge: 86400000
-});
-
-app.use(staticFiles);
-
-app.use('/strength', staticFiles);
-
-app.use('/strength/:sid', staticFiles);
-
-app.use('/log', staticFiles);
-
-app.use('/log/:lid', staticFiles);
-
-app.use('/auth/facebook', staticFiles);
-
-app.use('/auth', staticFiles);
-
-app.use('/admin', adminApp);
+ref = ['', '/strength', '/strength/:sid', '/log', '/log/:lid', '/admin'];
+for (i = 0, len = ref.length; i < len; i++) {
+  url = ref[i];
+  app.use(url, function(req, res, next) {
+    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
+    next();
+  }, express["static"](path.join(__dirname, '../static'), {
+    maxAge: 86400000
+  }));
+}
 
 app.get('*', function(req, res) {
   res.status(404);
