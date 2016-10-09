@@ -172,7 +172,7 @@ exports.post = (req, res, next) ->
 
     else
 
-      req.login id: user._id, (err) ->
+      req.login user._id, (err) ->
 
         if err
           res
