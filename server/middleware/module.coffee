@@ -8,12 +8,6 @@
 #-------------------------------------------------------------------------------
 
 module.exports.isAuthenticated = (req, res, next) ->
-
-  console.log 'Sesssion:', req.session
-  console.log 'Cookies:',  req.cookies
-
-  res.send 'hello'
-
   next()
   return
 

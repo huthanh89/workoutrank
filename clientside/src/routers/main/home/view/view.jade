@@ -9,35 +9,44 @@
         .panel.panel-default
             .panel-heading
                 h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-home
+                    i.fa.fa-fw.fa-lg.fa-pencil-square-o
                     = ' '
-                    | Home
+                    | Journals
             ul.list-group.home-list
                 li.list-group-item#home-strengths
                     i.nav-icon.fa.fa-fw.fa-lg.fa-book
                     a
                         b
                             = ' '
-                            | Journals
+                            | My Workouts
                     span.badge.badge-info#home-exercise-count 0
-                li.list-group-item#home-schedule
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar-plus-o
-                    a
-                        b
-                            = ' '
-                            | Schedule
-                li.list-group-item#home-calendar
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar-check-o
-                    a
-                        b
-                            = ' '
-                            | Calendar
                 li.list-group-item#home-weights
                     i.nav-icon.fa.fa-fw.fa-lg.fa-tachometer
                     a
                         b
                             = ' '
                             | Weight
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title
+                    i.fa.fa-fw.fa-lg.fa-database
+                    = ' '
+                    | Tools
+            ul.list-group.home-list
+                li.list-group-item#home-schedule
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar-plus-o
+                    a
+                        b
+                            = ' '
+                            | Scheduler
+                li.list-group-item#home-calendar
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar-check-o
+                    a
+                        b
+                            = ' '
+                            | Calendar
 .row#home-admin-accounts-container.hide
     .col-md-8.col-center
         .panel.panel-default
@@ -61,7 +70,7 @@
                     h3.panel-title
                         i.fa.fa-fw.fa-lg.fa-user
                         = ' '
-                        | User
+                        | User Settings
             ul.list-group.home-list
                 li.list-group-item#home-profile
                     i.nav-icon.fa.fa-fw.fa-lg.fa-folder-open-o

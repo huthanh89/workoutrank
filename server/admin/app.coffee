@@ -30,11 +30,6 @@ admin.use express.static(path.join(__dirname, '../../static'))
 
 admin.use router
 
-admin.use (req, res, next) ->
-  console.log 'bob', req.url
-  next()
-  return
-
 #--------------------------------------------------------------
 # Exports
 #--------------------------------------------------------------

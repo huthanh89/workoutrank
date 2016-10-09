@@ -29,6 +29,7 @@ class View extends Marionette.ItemView
     strengths:   '.nav-strengths'
     logs:        '.nav-logs'
     summary:     '.nav-summary'
+    profile:     '.nav-profile'
     account:     '.nav-account'
     setting:     '.nav-setting'
     about:       '.nav-about'
@@ -73,6 +74,11 @@ class View extends Marionette.ItemView
     'click @ui.account': ->
       Radio.channel('root').request 'drawer:close'
       @channel.request 'account'
+      return
+
+    'click @ui.profile': ->
+      Radio.channel('root').request 'drawer:close'
+      @channel.request 'profile'
       return
 
     'click @ui.setting': ->

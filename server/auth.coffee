@@ -78,25 +78,56 @@ exports.facebookStrategy = new FacebookStrategy({
     (callback) ->
       Facebook.findOne
         facebookID: profile.id
-      .exec (err, user) ->
+      .exec (err, facebook) ->
         return callback err if err
-        return callback null, user
+        return callback null, facebook
 
-    (user, callback) ->
+    (facebook, callback) ->
 
-      return callback null, user if user
+      return callback null, facebook if facebook
 
-      if user is null
+      if facebook is null
         Facebook.create
           facebookID:   profile.id
           name:         profile.displayName
           accessToken:  accessToken
           refreshToken: refreshToken
-        , (err, user) ->
+        , (err, facebook) ->
           return callback err if err
-          return callback null, user
+          return callback null, facebook
 
       return
+
+    (facebook, callback) ->
+
+      User.findOne
+        twitterID: facebook._id
+      .exec (err, user) ->
+        return callback err if err
+        return callback null, facebook, user
+
+    (facebook, user, callback) ->
+
+      return callback null, user unless user is null
+
+      User.create
+        facebookID:facebook._id
+        provider: 'facebook'
+      , (err, user) ->
+        return callback err if err
+        return callback null, user
+
+    (user, callback) ->
+
+      # Update lastlogin time.
+
+      User.findOneAndUpdate
+        _id: user._id
+      ,
+        lastlogin: moment()
+      , (err, user) ->
+        return callback err.message if err
+        return callback null, user
 
   ], (err, user) ->
 
@@ -120,124 +151,35 @@ exports.twitterStrategy = new TwitterStrategy({
         return callback err if err
         return callback null, user
 
-    (user, callback) ->
+    (twitter, callback) ->
 
-      return callback null, user if user
+      return callback null, twitter if twitter
 
-      if user is null
+      if twitter is null
         Twitter.create
           twitterID:   profile.id
           token:       token
           tokenSecret: tokenSecret
-        , (err, user) ->
+        , (err, twitter) ->
           return callback err if err
-          return callback null, user
+          return callback null, twitter
 
       return
 
-  ], (err, user) ->
+    (twitter, callback) ->
 
-    return done err, user._id
-
-  return
-)
-exports.googleStrategy = new GoogleStrategy({
-  clientID:     '372505580779-p0ku93tjmq14n8lg5nv5et2uui8p8puh.apps.googleusercontent.com'
-  clientSecret: 'Bo-8UYRGdX5NAkKYxgxvtdg5'
-  callbackURL:  '/auth/google/callback'
-}, (accessToken, refreshToken, profile, done) ->
-
-  async.waterfall [
-
-    (callback) ->
-      Google.findOne
-        googleID: profile.id
-      .exec (err, user) ->
-        return callback err if err
-        return callback null, user
-
-    (user, callback) ->
-
-      return callback null, user if user
-
-      if user is null
-        Google.create
-          googleID:     profile.id
-          accessToken:  accessToken
-          refreshToken: refreshToken
-        , (err, user) ->
-          return callback err if err
-          return callback null, user
-
-      return
-
-  ], (err, user) ->
-
-    return done err, user._id
-
-  return
-)
-
-exports.facebookAuthCallback = (req, res) ->
-
-  async.waterfall [
-
-    (callback) ->
       User.findOne
-        facebookID: req.session.passport.user
+        twitterID: twitter._id
       .exec (err, user) ->
         return callback err if err
-        return callback null, user
+        return callback null, twitter, user
 
-    (user, callback) ->
+    (twitter, user, callback) ->
 
       return callback null, user unless user is null
 
       User.create
-        facebookID: req.session.passport.user
-        provider:   'facebook'
-      , (err, user) ->
-        return callback err if err
-        return callback null, user
-
-    (user, callback) ->
-
-      # Update lastlogin time.
-
-      User.findOneAndUpdate
-        _id: user._id
-      ,
-        lastlogin: moment()
-      , (err, user) ->
-        return callback err.message if err
-        return callback null, user
-
-  ], (err, user) ->
-
-    if err
-      console.log 'ERROR', err
-      res.status 404
-    else
-      res.redirect '/home'
-
-  return
-
-exports.twitterAuthCallback =  (req, res) ->
-
-  async.waterfall [
-    (callback) ->
-      User.findOne
-        twitterID: req.session.passport.user
-      .exec (err, user) ->
-        return callback err if err
-        return callback null, user
-
-    (user, callback) ->
-
-      return callback null, user unless user is null
-
-      User.create
-        twitterID: req.session.passport.user
+        twitterID: twitter._id
         provider:  'twitter'
       , (err, user) ->
         return callback err if err
@@ -257,31 +199,55 @@ exports.twitterAuthCallback =  (req, res) ->
 
   ], (err, user) ->
 
-    if err
-      console.log 'ERROR', err
-      res.status 404
-    else
-      res.redirect '/home'
+    return done err, user._id
 
   return
+)
 
-exports.googleAuthCallback = (req, res) ->
+exports.googleStrategy = new GoogleStrategy({
+  clientID:     '372505580779-p0ku93tjmq14n8lg5nv5et2uui8p8puh.apps.googleusercontent.com'
+  clientSecret: 'Bo-8UYRGdX5NAkKYxgxvtdg5'
+  callbackURL:  '/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) ->
 
   async.waterfall [
 
     (callback) ->
+      Google.findOne
+        googleID: profile.id
+      .exec (err, google) ->
+        return callback err if err
+        return callback null, google
+
+    (google, callback) ->
+
+      return callback null, google if google
+
+      if google is null
+        Google.create
+          googleID:     profile.id
+          accessToken:  accessToken
+          refreshToken: refreshToken
+        , (err, google) ->
+          return callback err if err
+          return callback null, google
+
+      return
+
+    (google, callback) ->
+
       User.findOne
-        googleID: req.session.passport.user
+        twitterID: google._id
       .exec (err, user) ->
         return callback err if err
-        return callback null, user
+        return callback null, google, user
 
-    (user, callback) ->
+    (google, user, callback) ->
 
       return callback null, user unless user is null
 
       User.create
-        googleID: req.session.passport.user
+        googleID: google._id
         provider: 'google'
       , (err, user) ->
         return callback err if err
@@ -301,12 +267,21 @@ exports.googleAuthCallback = (req, res) ->
 
   ], (err, user) ->
 
-    if err
-      console.log 'ERROR', err
-      res.status 404
-    else
-      res.redirect '/home'
+    return done err, user._id
 
+  return
+)
+
+exports.facebookAuthCallback = (req, res) ->
+  res.redirect '/home'
+  return
+
+exports.twitterAuthCallback =  (req, res) ->
+  res.redirect '/home'
+  return
+
+exports.googleAuthCallback = (req, res) ->
+  res.redirect '/home'
   return
 
 #-------------------------------------------------------------------------------
