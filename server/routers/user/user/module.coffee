@@ -29,15 +29,7 @@ exports.get = (req, res) ->
 
       User
       .findOne
-        $or: [
-          _id: id
-        ,
-          facebookID: id
-        ,
-          twitterID: id
-        ,
-          googleID: id
-        ]
+        _id: id
       .exec (err, user) ->
         return callback 'No user found' if user is null
         return callback err if err

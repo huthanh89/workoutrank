@@ -35,15 +35,7 @@ exports.serializeUser = (profileID, done) ->
 
 exports.deserializeUser = (id, done) ->
   User.findOne
-    $or: [
-      _id: id
-    ,
-      facebookID: id
-    ,
-      twitterID: id
-    ,
-      googleID: id
-    ]
+    _id: id
   .exec (err, user) ->
     done err, user
     return
@@ -237,7 +229,7 @@ exports.googleStrategy = new GoogleStrategy({
     (google, callback) ->
 
       User.findOne
-        twitterID: google._id
+        googleID: google._id
       .exec (err, user) ->
         return callback err if err
         return callback null, google, user
