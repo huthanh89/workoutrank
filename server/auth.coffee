@@ -101,7 +101,7 @@ exports.facebookStrategy = new FacebookStrategy({
     (facebook, callback) ->
 
       User.findOne
-        twitterID: facebook._id
+        facebookID: facebook._id
       .exec (err, user) ->
         return callback err if err
         return callback null, facebook, user
