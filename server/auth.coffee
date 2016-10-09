@@ -34,9 +34,6 @@ exports.serializeUser = (profileID, done) ->
 # Called to find user with given id.
 
 exports.deserializeUser = (id, done) ->
-
-  console.log id
-
   User.findOne
     _id: id
   .exec (err, user) ->

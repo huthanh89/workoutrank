@@ -117,6 +117,14 @@ module.post = (req, res) ->
 
     (callback) ->
 
+      error = null
+      error = 'Select which muscle will be targeted' if req.body.muscle.length is 0
+
+      return callback error if error
+      return callback null
+
+    (callback) ->
+
       Strength.create
         date:   req.body.date
         name:   req.body.name

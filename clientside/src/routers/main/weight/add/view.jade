@@ -8,59 +8,24 @@
 
             .modal-body
                 form.form-horizontal
-                    // Nav tabs
-                    ul.nav.nav-tabs(role='tablist')
-                        li.active(role='presentation')
-                            a(href='#weight-modal-basic' aria-controls='basic', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-pencil
-                                = ' '
-                                | Basic
-                        li(role='presentation')
-                            a(href='#weight-modal-advance' aria-controls='advance', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-cogs
-                                = ' '
-                                | Optional
-                    br
-
-                    // Tab panes
-
-                    .tab-content
-
-                        // Basic
-
-                        #weight-modal-basic.tab-pane.active(role='tabpanel')
-                            .form-group
+                    #weight-modal-basic.tab-pane.active(role='tabpanel')
+                        .form-group
+                            .col-xs-12
+                                label.control-label Timestamp
+                            .col-xs-12
+                                p.form-control-static#weight-modal-timestamp
+                        .form-group
+                            .col-xs-12
+                                label.control-label Weight
+                            .col-xs-12
+                                input.form-control#weight-modal-weight(type="number", step="0.1" placeholder=0 required)
+                        hr
+                        .form-group
+                            .pull-right
                                 .col-xs-12
-                                    label.control-label Timestamp
-                                .col-xs-12
-                                    p.form-control-static#weight-modal-timestamp
-                            .form-group
-                                .col-xs-12
-                                    label.control-label Weight
-                                .col-xs-12
-                                    input.form-control#weight-modal-weight(type="number", step="0.1" placeholder=0 required)
-                            hr
-                            .form-group
-                                .pull-right
-                                    .col-xs-12
-                                        button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
+                                    button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
+                                    = ' '
+                                    button.btn.btn-primary.btn-lg(type="submit")
+                                        i.fa.fa-fw.fa-lg.fa-save
                                         = ' '
-                                        button.btn.btn-primary.btn-lg(type="submit")
-                                            i.fa.fa-fw.fa-lg.fa-save
-                                            = ' '
-                                            span save
-                        // Advance
-
-                        #weight-modal-advance.tab-pane(role='tabpanel')
-                            .form-group
-                                .col-xs-12
-                                    div(style='overflow:hidden;')
-                                        .form-group
-                                            .row
-                                                .col-xs-12
-                                                    #weight-modal-date
-                            .form-group
-                                .col-xs-12
-                                    label.control-label(for='weight-modal-note') Note
-                                .col-xs-12
-                                    textarea.form-control#weight-modal-note
+                                        span save

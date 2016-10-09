@@ -8,75 +8,38 @@
 
             .modal-body
                 form.form-horizontal(novalidate)
-                    // Nav tabs
-                    ul.nav.nav-tabs(role='tablist')
-                        li.active(role='presentation')
-                            a(href='#strength-modal-basic' aria-controls='basic', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-pencil
+                    .form-group
+                        .col-xs-12
+                            label.control-label Timestamp
+                        .col-xs-12
+                            p.form-control-static
+                                span#strength-modal-timestamp-date
+                                = ' - '
+                                i
+                                    u#strength-modal-timestamp-time
+                    .form-group#strength-modal-weight-container
+                        .col-xs-12
+                            label.control-label Weight
+                        .col-xs-12
+                            input.form-control#strength-modal-weight(type="number", placeholder=0 required)
+                    .form-group#strength-modal-weight-label-container
+                        .col-xs-12
+                            label.control-label Weight
+                        .col-xs-12
+                            p.form-control-static
+                                span#strength-modal-weight-label
+                    .form-group
+                        .col-xs-12
+                            label.control-label Reps
+                        .col-xs-12
+                            input.form-control#strength-modal-rep(type="number", placeholder=0 required)
+                    hr
+                    .form-group
+                        .pull-right
+                            .col-xs-12
+                                button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
                                 = ' '
-                                | Basic
-                        li(role='presentation')
-                            a(href='#strength-modal-advance' aria-controls='advance', role='tab', data-toggle='tab')
-                                i.fa.fa-fw.fa-lg.fa-cogs
-                                = ' '
-                                | Optional
-
-                    br
-
-                    // Tab panes
-
-                    .tab-content
-
-                        // Basic
-
-                        #strength-modal-basic.tab-pane.active(role='tabpanel')
-                            .form-group
-                                .col-xs-12
-                                    label.control-label Timestamp
-                                .col-xs-12
-                                    p.form-control-static
-                                        span#strength-modal-timestamp-date
-                                        = ' - '
-                                        i
-                                            u#strength-modal-timestamp-time
-                            .form-group#strength-modal-weight-container
-                                .col-xs-12
-                                    label.control-label Weight
-                                .col-xs-12
-                                    input.form-control#strength-modal-weight(type="number", placeholder=0 required)
-                            .form-group#strength-modal-weight-label-container
-                                .col-xs-12
-                                    label.control-label Weight
-                                .col-xs-12
-                                    p.form-control-static
-                                        span#strength-modal-weight-label
-                            .form-group
-                                .col-xs-12
-                                    label.control-label Reps
-                                .col-xs-12
-                                    input.form-control#strength-modal-rep(type="number", placeholder=0 required)
-                            hr
-                            .form-group
-                                .pull-right
-                                    .col-xs-12
-                                        button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
-                                        = ' '
-                                        button.btn.btn-primary.btn-lg(type="submit")
-                                            i.fa.fa-fw.fa-lg.fa-save
-                                            = ' '
-                                            span save
-                        // Advance
-
-                        #strength-modal-advance.tab-pane(role='tabpanel')
-                            .form-group
-                                .col-xs-12
-                                    div(style='overflow:hidden;')
-                                        .form-group
-                                            .row
-                                                .col-xs-12
-                                                    #strength-modal-date
-                            .form-group
-                                .col-xs-12
-                                    label.control-label(for='strength-modal-note') Note
-                                .col-xs-12
-                                    textarea.form-control#strength-modal-note(minlength="1" maxlength="50")
+                                button.btn.btn-primary.btn-lg(type="submit")
+                                    i.fa.fa-fw.fa-lg.fa-save
+                                    = ' '
+                                    span save

@@ -83,8 +83,6 @@ class View extends Marionette.ItemView
       observe: 'weight'
       onGet: (value) -> value + ' lbs'
 
-    '#strength-modal-note': 'note'
-
   events:
 
     'click #strength-modal-exercise': ->
@@ -142,8 +140,6 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    date = @model.get('date')
-
     @ui.rep.TouchSpin
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
@@ -160,17 +156,6 @@ class View extends Marionette.ItemView
         buttonup_class:   'btn btn-info'
         min:              0
         max:              99999
-
-    @ui.date.datetimepicker
-      inline:      true
-      sideBySide:  false
-      minDate:     moment(date).subtract(1, 'years')
-      maxDate:     moment(date).add(1, 'years')
-      defaultDate: moment(date)
-
-    @ui.date.on 'dp.change', =>
-      @model.set 'date', @ui.date.data('DateTimePicker').date()
-      return
 
     @stickit()
 

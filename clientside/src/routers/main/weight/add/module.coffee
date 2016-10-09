@@ -55,8 +55,6 @@ class View extends Marionette.ItemView
       observe: 'weight'
       onSet: (value) -> parseFloat(value)
 
-    '#weight-modal-note': 'note'
-
   events:
 
     'click #weight-modal-exercise': ->
@@ -66,8 +64,6 @@ class View extends Marionette.ItemView
     'submit': (event) ->
       event.preventDefault()
       @rootChannel.request 'spin:page:loader', true
-      @model.set
-        date: @ui.date.data('DateTimePicker').date().format()
 
       @model.save {},
         success: (model) =>
@@ -83,7 +79,6 @@ class View extends Marionette.ItemView
 
     'hidden.bs.modal': ->
       @ui.weight.TouchSpin('destroy')
-      @ui.date.data('DateTimePicker').destroy()
       @unstickit()
       return
 
@@ -117,13 +112,6 @@ class View extends Marionette.ItemView
       max:               99999
       step:              0.1
       decimals:          1
-
-    @ui.date.datetimepicker
-      inline:      true
-      sideBySide:  false
-      minDate:     moment(date).subtract(1, 'years')
-      maxDate:     moment(date).add(1, 'years')
-      defaultDate: moment(date)
 
     @stickit()
 
