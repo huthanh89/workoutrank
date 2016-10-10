@@ -110,7 +110,6 @@ class View extends Marionette.ItemView
     'hidden.bs.modal': ->
       @ui.rep.TouchSpin('destroy')
       @ui.weight.TouchSpin('destroy')
-      @ui.date.data('DateTimePicker').destroy()
       @unstickit()
       return
 

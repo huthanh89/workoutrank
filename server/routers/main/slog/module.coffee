@@ -79,6 +79,13 @@ module.post = (req, res) ->
 
     (callback) ->
 
+      err = null
+      err = 'Weight cannot be empty' if req.body.weight is null
+      err = 'Reps cannot be empty' if req.body.rep is null
+      callback err
+
+    (callback) ->
+
       # Find the specific strength exercise.
 
       Strength.findById req.body.exercise, (err, strength) ->
