@@ -91,6 +91,13 @@ class View extends Marionette.LayoutView
         else
           return '---'
 
+    '#strength-summary-body':
+      observe: 'body'
+      updateMethod: 'html'
+      onGet: (value) ->
+        icon = if value then 'fa-check' else 'fa-ban'
+        return "<i class='fa fa-lg #{icon}'></i>"
+
     '#strength-summary-count': 'count'
 
     '#strength-summary-note': 'note'
@@ -104,7 +111,6 @@ class View extends Marionette.LayoutView
       onGet: (value) -> moment(value).format('MMMM DD, YYYY - dddd')
 
   onRender: ->
-    @ui.body.prop('checked', @model.get('body'))
     @stickit @model
     return
 

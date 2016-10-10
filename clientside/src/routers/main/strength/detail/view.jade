@@ -12,12 +12,12 @@
 .row
     .col-md-8.col-center
         .panel.panel-default
-            .panel-heading
+            .panel-heading.panel-center
                 h3.panel-title#strength-title
             .panel-body
                 .col-xs-6#strength-detail-schedule-container
                     button.btn.btn-info#strength-schedule-btn
-                        i.fa.fa-fw.fa-lg.fa-calendar-check-o
+                        i.fa.fa-fw.fa-lg.fa-clock-o
                             = ' '
                         span Schedule
                 .col-xs-6#strength-detail-add-container
@@ -28,8 +28,6 @@
 .row
     .col-md-8.col-center
         .panel.panel-default
-            .panel-heading
-                h3.panel-title Journal Entries
             .panel-body#strength-history-panel
                 #strength-history-view
 .row
@@ -43,7 +41,7 @@
     .col-md-8.col-center
         .panel.panel-default
             .panel-heading
-                h3.panel-title Performance
+                h3.panel-title Performance Level
             .panel-body#strength-goal-panel
                 #strength-goal-view
 .row
@@ -63,8 +61,6 @@
 .row
     .col-md-8.col-center
         .panel.panel-default
-            .panel-heading
-                h3.panel-title Summary
             .panel-body
                 #strength-summary-view
 .row
@@ -76,6 +72,6 @@
                         i.fa.fa-fw.fa-lg.fa-wrench
                         = ' '
                         span Edit
-                h3.panel-title Workout
+                h3.panel-title Summary
             .panel-body
                 #strength-workout-view

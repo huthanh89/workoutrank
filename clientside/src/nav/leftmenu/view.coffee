@@ -39,6 +39,11 @@ class View extends Marionette.ItemView
       @api.close()
       return
 
+    'click #drawer-weight': ->
+      @channel.request 'weights'
+      @api.close()
+      return
+
     'click #drawer-schedule': ->
       @channel.request 'schedule'
       @api.close()

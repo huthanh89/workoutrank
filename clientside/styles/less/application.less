@@ -528,6 +528,13 @@ Strength
   }
 }
 
+#strength-table-view tbody{
+  tr:hover{
+    color: rgba(196, 25, 24, 0.78);
+    background: rgba(191, 191, 191, 0.28);
+  }
+}
+
 #strength-table-view tbody tr {
   cursor: pointer;
 }
@@ -598,7 +605,7 @@ Strength
 }
 #strength-date-datepicker-container{
 
-  background: #e1f0f0;
+  background: rgba(186, 196, 196, 0.29);
   text-align: center;
   padding-top: 10px;
   height: 40px;
@@ -729,6 +736,10 @@ Home
 
 .home-list{
   cursor: pointer;
+  :hover{
+    color: rgba(196, 25, 24, 0.78);
+    background: rgba(191, 191, 191, 0.28);
+  }
 }
 
 #home-exercise-count{
@@ -784,8 +795,14 @@ Custom classes
   margin: 0 auto;
 }
 
-.panel-heading{
+.panel-center {
   text-align: center;
+}
+
+.panel-heading{
+  h3{
+    font-weight: bold;
+  }
 }
 
 /*-----------------------------------------------------------------------------
