@@ -60,6 +60,8 @@ class View extends Marionette.ItemView
     time:       '#strength-modal-time'
     weightView: '#strength-modal-weight-container'
     labelView:  '#strength-modal-weight-label-container'
+    noteEnable: '#strength-modal-note-enable'
+    note:       '#strength-modal-note'
 
   bindings:
 
@@ -82,6 +84,8 @@ class View extends Marionette.ItemView
     '#strength-modal-weight-label':
       observe: 'weight'
       onGet: (value) -> value + ' lbs'
+
+    '#strength-modal-note': 'note'
 
   events:
 
@@ -113,11 +117,19 @@ class View extends Marionette.ItemView
       @unstickit()
       return
 
+    'click #strength-modal-note-enable': ->
+      checked = @ui.noteEnable.is(':checked')
+      if checked then @ui.note.removeClass('hide') else @ui.note.addClass('hide')
+      return
+
   constructor: (options) ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-    @mergeOptions options, 'wLogs'
+    @mergeOptions options, [
+      'wLogs'
+      'body'
+    ]
 
     if options.date
       @model.set('date', options.date)
@@ -134,7 +146,7 @@ class View extends Marionette.ItemView
 
     # Set to latest wLogs entry.
 
-    if @model.get('body') and @wLogs.length
+    if options.body and @wLogs.length
       @model.set 'weight', lastWeight @wLogs
 
   onRender: ->
@@ -145,7 +157,7 @@ class View extends Marionette.ItemView
       min:              0
       max:              99999
 
-    if @model.get('body')
+    if @body
       @ui.weightView.hide()
     else
       @ui.labelView.hide()

@@ -130,6 +130,7 @@ class View extends Marionette.LayoutView
           collection: @collection
           date:       date
           wLogs:      @wLogs
+          body:       @model.get 'body'
           model: new Add.Model
             exercise: @model.id
         return

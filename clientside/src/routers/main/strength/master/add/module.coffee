@@ -40,11 +40,13 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    dialog: '#strength-modal-dialog'
-    name:   '#strength-modal-name'
-    muscle: '#strength-modal-muscle'
-    body:   '#strength-modal-body'
-    submit: '#strength-modal-submit'
+    dialog:     '#strength-modal-dialog'
+    name:       '#strength-modal-name'
+    muscle:     '#strength-modal-muscle'
+    body:       '#strength-modal-body'
+    submit:     '#strength-modal-submit'
+    noteEnable: '#strength-modal-note-enable'
+    note:       '#strength-modal-note'
 
   bindings:
 
@@ -53,6 +55,8 @@ class View extends Marionette.LayoutView
     '#strength-modal-muscle':
       observe: 'muscle'
       onSet: (values) -> _.map values, (value) -> parseInt(value)
+
+    '#strength-modal-note': 'note'
 
   events:
 
@@ -83,6 +87,11 @@ class View extends Marionette.LayoutView
 
     'hidden.bs.modal': ->
       @ui.muscle.multiselect('destroy')
+      return
+
+    'click #strength-modal-note-enable': ->
+      checked = @ui.noteEnable.is(':checked')
+      if checked then @ui.note.removeClass('hide') else @ui.note.addClass('hide')
       return
 
   constructor: (options) ->
