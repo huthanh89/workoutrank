@@ -35,11 +35,11 @@
                         .col-xs-12
                             input.form-control#strength-modal-rep(type="number", placeholder='' required)
                     .form-group
-                        .col-xs-3
-                            label Comment
-                        .col-xs-9
-                            label
-                                input#strength-modal-note-enable(type="checkbox")
+                        .col-xs-12
+                            .checkbox
+                                label
+                                    input(type='checkbox')#strength-modal-note-enable
+                                    | Add comment
                         .col-xs-12
                             textarea.hide.form-control#strength-modal-note(type="text", placeholder='Optional')
                     hr
