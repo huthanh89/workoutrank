@@ -71,11 +71,11 @@ class View extends Marionette.LayoutView
 
     '#body-summary-first':
       observe: 'firstDate'
-      onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
+      onGet: (value) -> if value then moment(value).from moment() else '---'
 
     '#body-summary-last':
       observe: 'lastDate'
-      onGet: (value) -> if value is null then '---' else moment(value).format('ddd YYYY/MM/DD')
+      onGet: (value) -> if value then moment(value).from moment() else '---'
 
     '#body-summary-current-weight':
       observe: 'currentWeight'

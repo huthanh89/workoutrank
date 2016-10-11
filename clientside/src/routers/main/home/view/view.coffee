@@ -43,8 +43,8 @@ class View extends Marionette.ItemView
       @rootChannel.request('weights')
       return
 
-    'click #home-body': ->
-      @rootChannel.request('body')
+    'click #home-timeline': ->
+      @rootChannel.request('timeline')
       return
 
     'click #home-logout': ->

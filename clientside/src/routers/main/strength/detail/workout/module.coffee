@@ -59,8 +59,8 @@ class Model extends Backbone.Model
       body:   sConf.get('body')
       note:   sConf.get('note')
       count:  sLogs.length
-      first:  if sLogs.length then firstDate(sLogs) else sConf.get('date')
-      last:   if sLogs.length then lastDate(sLogs) else sConf.get('date')
+      first:  if sLogs.length then firstDate(sLogs) else null
+      last:   if sLogs.length then lastDate(sLogs) else  null
     return
 
 #-------------------------------------------------------------------------------
@@ -104,11 +104,11 @@ class View extends Marionette.LayoutView
 
     '#strength-summary-first':
       observe: 'first'
-      onGet: (value) -> moment(value).format('MMMM DD, YYYY - dddd')
+      onGet: (value) -> if value then moment(value).from moment() else '---'
 
     '#strength-summary-last':
       observe: 'last'
-      onGet: (value) -> moment(value).format('MMMM DD, YYYY - dddd')
+      onGet: (value) -> if value then moment(value).from moment() else '---'
 
   onRender: ->
     @stickit @model

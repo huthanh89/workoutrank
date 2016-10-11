@@ -12,6 +12,7 @@ Schedule   = require './schedule/module'
 Strength   = require './strength/module'
 Logs       = require './logs/module'
 Weight     = require './weight/module'
+Timeline   = require './timeline/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -72,6 +73,11 @@ class Router extends Marionette.AppRouter
         @weights()
         return
 
+      'timeline': =>
+        @rootChannel.request 'navigate', 'timeline'
+        @timeline()
+        return
+
   # Routes used for backbone urls.
   # Handle routes with APIs at the bottom.
   # Do not append "(/)" this will cause the view to load twice.
@@ -85,6 +91,7 @@ class Router extends Marionette.AppRouter
     'calendar':       'calendar'
     'schedule':       'schedule'
     'weights':        'weights'
+    'timeline':       'timeline'
     'logs':           'logs'
     'log/:lid/':      'logDetail'
 
@@ -401,6 +408,30 @@ class Router extends Marionette.AppRouter
 
       return
 
+  timeline: ->
+
+    @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
+    async.waterfall [
+
+      (callback) ->
+        wLogs = new Weight.Collection()
+        wLogs.fetch
+          success: (wLogs) -> callback null, wLogs
+          error: (model, error) -> callback error
+        return
+
+    ], (error, wLogs) =>
+
+      @rootChannel.request 'spin:page:loader', false
+
+      if error
+        @rootChannel.request 'message:error', error
+      else
+        @rootView.content.show new Timeline.View
+          collection: wLogs
+
+      return
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

@@ -28,6 +28,7 @@ urls = [
   '/strengths'
   '/weights'
   '/body'
+  '/timeline'
 ]
 
 for url in urls
