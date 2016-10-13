@@ -99,6 +99,10 @@ class View extends Marionette.LayoutView
     @stickit @model
     return
 
+  onBeforeDestroy: ->
+    @unstickit()
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

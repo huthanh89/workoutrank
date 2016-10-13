@@ -412,16 +412,45 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
     @rootChannel.request 'spin:page:loader', true
+
+    result = {}
+
     async.waterfall [
 
       (callback) ->
+
         wLogs = new Weight.Collection()
         wLogs.fetch
-          success: (wLogs) -> callback null, wLogs
+          success: (collection) ->
+            result.wLogs = collection
+            callback null
+            return
           error: (model, error) -> callback error
         return
 
-    ], (error, wLogs) =>
+      (callback) ->
+
+        sConfs = new Strength.Master.Collection()
+        sConfs.fetch
+          success: (collection) ->
+            result.sConfs = collection
+            callback null
+            return
+          error: (model, error) -> callback error
+        return
+
+      (callback) ->
+
+        sLogs = new Timeline.SLogCollection()
+        sLogs.fetch
+          success: (collection) ->
+            result.sLogs = collection
+            callback null
+            return
+          error: (model, error) -> callback error
+        return
+
+    ], (error) =>
 
       @rootChannel.request 'spin:page:loader', false
 
@@ -429,7 +458,11 @@ class Router extends Marionette.AppRouter
         @rootChannel.request 'message:error', error
       else
         @rootView.content.show new Timeline.View
-          collection: wLogs
+          collection: new Timeline.Collection [],
+            sConfs: result.sConfs
+            sLogs:  result.sLogs
+            wLogs:  result.wLogs
+            parse:  true
 
       return
 #-------------------------------------------------------------------------------

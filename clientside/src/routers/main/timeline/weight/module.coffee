@@ -18,13 +18,15 @@ require 'backbone.stickit'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.ItemView
 
   template: viewTemplate
 
+  serializeData: -> {}
+
   bindings:
 
-    '.timeline-weight-user': 'user'
+    #'.timeline-weight-user': 'user'
 
     '.timeline-weight-date':
       observe: 'date'
@@ -32,14 +34,14 @@ class View extends Marionette.LayoutView
 
     '.timeline-weight-value': 'weight'
 
-  constructor: ->
-    super
-    @userChannel = Backbone.Radio.channel('user').request('user')
+    '.timeline-weight-note': 'note'
 
   onRender: ->
-    console.log @model.attributes
-
     @stickit @model
+    return
+
+  onBeforeDestroy: ->
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

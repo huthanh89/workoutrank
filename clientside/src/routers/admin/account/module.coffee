@@ -82,6 +82,10 @@ class ItemView extends Marionette.ItemView
     @stickit()
     return
 
+  onBeforeDestroy: ->
+    @unstickit()
+    return
+
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------

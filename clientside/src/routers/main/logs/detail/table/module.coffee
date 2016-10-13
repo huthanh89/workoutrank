@@ -148,6 +148,10 @@ class View extends Marionette.ItemView
 
   avg: (values) -> _.round(_.mean(values), 2)
 
+  onBeforeDestroy: ->
+    @unstickit()
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

@@ -40,11 +40,13 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    dialog: '.modal'
-    weight: '#weight-modal-weight'
-    submit: '#weight-modal-submit'
-    date:   '#weight-modal-date'
-    time:   '#weight-modal-time'
+    dialog:     '.modal'
+    weight:     '#weight-modal-weight'
+    submit:     '#weight-modal-submit'
+    date:       '#weight-modal-date'
+    time:       '#weight-modal-time'
+    noteEnable: '#weight-modal-note-enable'
+    note:       '#weight-modal-note'
 
   bindings:
     '#weight-modal-timestamp':
@@ -54,6 +56,8 @@ class View extends Marionette.ItemView
     '#weight-modal-weight':
       observe: 'weight'
       onSet: (value) -> parseFloat(value)
+
+    '#weight-modal-note': 'note'
 
   events:
 
@@ -80,6 +84,11 @@ class View extends Marionette.ItemView
     'hidden.bs.modal': ->
       @ui.weight.TouchSpin('destroy')
       @unstickit()
+      return
+
+    'click #weight-modal-note-enable': ->
+      checked = @ui.noteEnable.is(':checked')
+      if checked then @ui.note.removeClass('hide') else @ui.note.addClass('hide')
       return
 
   constructor: (options) ->

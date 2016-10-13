@@ -97,6 +97,7 @@ class View extends Marionette.ItemView
 
   onBeforeDestroy: ->
     clearTimeout(@timer)
+    @unstickit()
     return
 
 #-------------------------------------------------------------------------------

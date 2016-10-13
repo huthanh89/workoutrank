@@ -6,18 +6,16 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
+Strength     = require './strength/module'
 Weight       = require './weight/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
-# Model
-#   Strength model used to fetch data of that exercises
-#   such as the name and muscle type.
+# SLogs Collection
 #-------------------------------------------------------------------------------
 
-class Model extends Backbone.Model
-  urlRoot:     '/api/wlogs'
-  idAttribute: '_id'
+class SLogCollection extends Backbone.Collection
+  url: 'api/slogs'
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -25,13 +23,28 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  model: Model
+  comparator: (model) -> -moment(model.get('date')).utc()
 
-  comparator: 'date'
+  parse: (response, options) ->
 
-  constructor: ->
-    super
-    @url = "/api/wlogs"
+    sConfs = options.sConfs
+
+    result = []
+
+    for model in options.sLogs.models
+
+      sConf = sConfs.get(model.get('exercise'))
+
+      if sConf
+        result.push _.extend {}, model.attributes,
+          type: 'strength'
+          name: sConf.get('name')
+
+    for model in options.wLogs.models
+      result.push _.extend {}, model.attributes,
+        type: 'weight'
+
+    return result
 
 #-------------------------------------------------------------------------------
 # View
@@ -41,14 +54,19 @@ class View extends Marionette.CompositeView
 
   template: viewTemplate
 
-  childView: Weight.View
+  serializeData: -> {}
+
+  childViewContainer: '#timeline-view'
+
+  getChildView: (model) ->
+    return if model.get('type') is 'strength' then Strength.View else Weight.View
 
   events:
     'click #timeline-home':  ->
       @rootChannel.request 'home'
       return
 
-  constructor: (options) ->
+  constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
@@ -56,8 +74,8 @@ class View extends Marionette.CompositeView
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.Model      = Model
-module.exports.Collection = Collection
-module.exports.View       = View
+module.exports.SLogCollection = SLogCollection
+module.exports.Collection     = Collection
+module.exports.View           = View
 
 #-------------------------------------------------------------------------------

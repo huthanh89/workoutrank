@@ -200,6 +200,10 @@ class View extends Marionette.ItemView
 
   roundUp5: (value) -> Math.ceil(value / 5) * 5
 
+  onBeforeDestroy: ->
+    @unstickit()
+    return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
