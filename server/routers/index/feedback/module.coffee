@@ -52,7 +52,6 @@ exports.post = (req, res) ->
         title: sanitize req.body.title
         text:  sanitize req.body.text
         type:  0
-
       , (err, feedback) ->
         return callback err if err
         return callback null, feedback

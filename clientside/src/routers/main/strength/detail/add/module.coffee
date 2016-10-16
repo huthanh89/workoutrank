@@ -167,6 +167,7 @@ class View extends Marionette.ItemView
         buttonup_class:   'btn btn-info'
         min:              0
         max:              99999
+        step:             5
 
     @stickit()
 

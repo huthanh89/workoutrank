@@ -38,7 +38,8 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      Schedule.findOne
+      Schedule
+      .findOne
         user: req.session.passport.user
       .lean()
       .exec (err, schedule) ->

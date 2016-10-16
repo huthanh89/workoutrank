@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+$            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
@@ -11,11 +12,103 @@ Weight       = require './weight/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Plugins
+#-------------------------------------------------------------------------------
+
+require 'waypoint'
+require 'infinite'
+
+#-------------------------------------------------------------------------------
 # SLogs Collection
 #-------------------------------------------------------------------------------
 
 class SLogCollection extends Backbone.Collection
   url: 'api/slogs'
+
+#-------------------------------------------------------------------------------
+# Helping functions
+#-------------------------------------------------------------------------------
+
+getChange = (value, prev, index) ->
+
+  growth = 'same'
+  change = 0
+
+  if index > 0
+    growth = 'up'   if value > prev
+    growth = 'down' if value < prev
+    change = _.round value - prev , 2
+
+  return {
+    growth: growth
+    change: change
+  }
+
+#-------------------------------------------------------------------------------
+# Parse sLogs
+#-------------------------------------------------------------------------------
+
+parseSLogs = (sLogs, sConfs) ->
+
+  result = []
+
+  #meanRep    = _.meanBy sLogs, (model) -> model.get('rep')
+  #meanWeight = _.meanBy sLogs, (model) -> model.get('weight')
+
+  repPrev    = 0
+  weightPrev = 0
+
+  for model, index in sLogs
+
+    sConf = sConfs.get(model.get('exercise'))
+
+    if sConf
+
+      repReduce    = getChange model.get('rep'), repPrev, index
+      repPrev      = model.get('rep')
+      weightReduce = getChange model.get('weight'), weightPrev, index
+      weightPrev   = model.get('weight')
+
+      result.push _.extend {}, model.attributes,
+        type: 'strength'
+        name: sConf.get('name')
+        repGrowth:    repReduce.growth
+        repChange:    repReduce.change
+        weightGrowth: weightReduce.growth
+        weightChange: weightReduce.change
+
+  return result
+
+#-------------------------------------------------------------------------------
+# Parse wLogs
+#-------------------------------------------------------------------------------
+
+parseWLogs = (wLogs) ->
+
+  result = []
+
+  mean = _.meanBy wLogs, (model) -> model.get('weight')
+  prev = 0
+
+  for model, index in wLogs
+
+    weight = model.get('weight')
+
+    avg = 'same'
+    avg = 'up'   if weight > mean
+    avg = 'down' if weight < mean
+
+    reduce = getChange(weight, prev, index)
+
+    prev = model.get('weight')
+
+    result.push _.extend {}, model.attributes,
+      type:  'weight'
+      avg:    avg
+      growth: reduce.growth
+      change: reduce.change
+
+  return result
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -28,38 +121,82 @@ class Collection extends Backbone.Collection
   parse: (response, options) ->
 
     sConfs = options.sConfs
-
+    sLogs  = options.sLogs.models
+    wLogs  = options.wLogs.models
     result = []
 
-    for model in options.sLogs.models
+    # Parse for sLog data.
 
-      sConf = sConfs.get(model.get('exercise'))
+    result.push parseSLogs sLogs, sConfs
 
-      if sConf
-        result.push _.extend {}, model.attributes,
-          type: 'strength'
-          name: sConf.get('name')
+    # Parse for wLog data.
 
-    for model in options.wLogs.models
-      result.push _.extend {}, model.attributes,
-        type: 'weight'
+    result.push parseWLogs wLogs
 
-    return result
+    return _.flatten result
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.CompositeView
-
-  template: viewTemplate
+class ListView extends Marionette.CollectionView
 
   serializeData: -> {}
 
-  childViewContainer: '#timeline-view'
-
   getChildView: (model) ->
     return if model.get('type') is 'strength' then Strength.View else Weight.View
+
+  collectionEvents:
+    update: ->
+      @point()
+      return
+
+  # Client side lazy rendering of our whole collection.
+  # Break models into chunks. Display 5 chunks at a time per load.
+
+  constructor: (options) ->
+
+    models  = options.collection.models
+    @chunks = _.chunk models, 5
+    @index  = 1
+
+    super _.extend {}, options,
+      collection: new Collection @chunks[0]
+    @rootChannel = Backbone.Radio.channel('root')
+
+  onShow: ->
+    @point()
+    return
+
+  point: ->
+
+    container = $('#timeline-view')
+
+    container.append '<a class="infinite-more-link href="//asfdasfd"></a>'
+
+    infinite = new Waypoint.Infinite
+      element: container[0]
+      more: '.infinite-more-link'
+
+      onBeforePageLoad: =>
+        models = @chunks[@index]
+        if models
+          @collection.add models
+          @index++
+        return
+
+#-------------------------------------------------------------------------------
+# Composite View
+#-------------------------------------------------------------------------------
+
+class View extends Marionette.LayoutView
+  template: viewTemplate
+
+  ui:
+    list: '#timeline-view'
+
+  regions:
+    list: '#timeline-view'
 
   events:
     'click #timeline-home':  ->
@@ -69,6 +206,11 @@ class View extends Marionette.CompositeView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+
+  onShow: ->
+    @showChildView 'list', new ListView
+      collection: @collection
+    return
 
 #-------------------------------------------------------------------------------
 # Exports

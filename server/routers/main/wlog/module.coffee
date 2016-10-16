@@ -23,8 +23,10 @@ module.list = (req, res, next) ->
 
     (callback) ->
 
-      WLog.find
+      WLog
+      .find
         user: req.session.passport.user
+      .lean()
       .exec (err, wlogs) ->
         return callback err.message if err
         return callback null, wlogs
@@ -51,8 +53,10 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      WLog.find
+      WLog
+      .find
         exercise: req.params.sid
+      .lean()
       .exec (err, wlogs) ->
         return callback err.message if err
         return callback null, wlogs
@@ -109,13 +113,13 @@ module.post = (req, res) ->
 #   Edit a wlog record.
 #-------------------------------------------------------------------------------
 
-module.put = (req, res, next) ->
+module.put = (req, res) ->
 
   async.waterfall [
 
     (callback) ->
 
-      WLog.findById req.params.sid, (err, strength) ->
+      WLog.findById req.params.sid, (err, wlog) ->
         return callback err.message if err
         return callback null, wlog
 
@@ -150,7 +154,7 @@ module.put = (req, res, next) ->
 #   Delete a wlog record.
 #-------------------------------------------------------------------------------
 
-module.delete = (req, res, next) ->
+module.delete = (req, res) ->
 
   async.waterfall [
 

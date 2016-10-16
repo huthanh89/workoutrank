@@ -13,6 +13,8 @@
     .col-md-8.col-center
         .panel.panel-default
             .panel-heading.panel-center
+                span.pull-left#strength-detail-edit
+                    i.fa.fa-fw.fa-lg.fa-cog(style="color:gray; cursor:pointer;")
                 h3.panel-title#strength-title
             .panel-body
                 .col-xs-6#strength-detail-schedule-container
@@ -25,6 +27,9 @@
                         i.fa.fa-fw.fa-lg.fa-pencil
                         = ' '
                         span Add Entry
+                .col-xs-12#strength-note-container
+                    hr
+                    #strength-note
 .row
     .col-md-8.col-center
         .panel.panel-default
@@ -67,11 +72,6 @@
     .col-md-8.col-center
         .panel.panel-default
             .panel-heading.clearfix
-                .pull-right
-                    button.btn.btn-xs.btn-primary#strength-detail-edit
-                        i.fa.fa-fw.fa-lg.fa-wrench
-                        = ' '
-                        span Edit
                 h3.panel-title Summary
             .panel-body
                 #strength-workout-view

@@ -3,13 +3,25 @@
         .panel-body
             .row
                 .col-xs-6
-                    span.timeline-weight-date
-                .col-xs-6
-                    span Weight at
+                    i.fa.fa-fw.fa-lg.fa-tachometer
                     = ' '
-                    span
-                        b.timeline-weight-value
-            hr
-            .row
+                    b Weight
                 .col-xs-6
+                    span.pull-right.timeline-weight-date
+            hr
+            .row(style="text-align:center;")
+                .col-xs-6
+                    span.timeline-weight-avg
+                .col-xs-6
+                    .col-xs-12
+                        span Weight
+                        = ' '
+                        span
+                            b.timeline-weight-value
+                        = ' '
+                        | lb
+                        span.timeline-weight-growth
+                        span.timeline-weight-change
+            .row
+                .col-xs-12
                     span.timeline-weight-note

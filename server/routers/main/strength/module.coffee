@@ -53,7 +53,8 @@ module.list = (req, res, next) ->
 
     (callback) ->
 
-      Strength.find
+      Strength
+      .find
         user: req.session.passport.user
       .sort(date: -1)
       .lean()
@@ -213,7 +214,9 @@ module.log = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-      SLog.find
+
+      SLog
+      .find
         exercise: req.params.sid
       .sort(date: -1)
       .lean()
@@ -233,7 +236,7 @@ module.log = (req, res, next) ->
 
 #-------------------------------------------------------------------------------
 # Delete
-#   Delete a slog record.
+#   Delete a sConf record.
 #-------------------------------------------------------------------------------
 
 module.delete = (req, res, next) ->
@@ -248,18 +251,19 @@ module.delete = (req, res, next) ->
 
     (strength, callback) ->
 
-      # Remove all associated logs.
+      # Remove all associated slogs.
 
-      SLog.remove
+      SLog
+      .remove
         exercise: strength.id
-      .exec (err, slogs) ->
+      .exec (err) ->
         return callback err.message if err
         return callback null, strength
       return
 
     (strength, callback) ->
 
-      # Remove actual sconf entry.
+      # Remove the actual sconf entry.
 
       strength.remove (err) ->
         return callback err.message if err

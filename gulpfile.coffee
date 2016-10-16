@@ -236,6 +236,8 @@ gulp.task 'js:bundle', (callback) ->
         fullcalendar:               'scripts/fullcalendar.js'
         sweetalert:                 'scripts/sweetalert.min.js'
         gauge:                      'scripts/gauge.js'
+        waypoint:                   'scripts/jquery.waypoints.js'
+        infinite:                   'scripts/jquery.infinite.js'
 
       extensions: [
         ''

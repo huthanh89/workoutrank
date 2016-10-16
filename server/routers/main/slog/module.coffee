@@ -24,8 +24,10 @@ module.list = (req, res, next) ->
 
     (callback) ->
 
-      SLog.find
+      SLog
+      .find
         user: req.session.passport.user
+      .lean()
       .exec (err, slogs) ->
         return callback err.message if err
         return callback null, slogs
@@ -52,8 +54,10 @@ module.get = (req, res, next) ->
 
     (callback) ->
 
-      SLog.find
+      SLog
+      .find
         exercise: req.params.sid
+      .lean()
       .exec (err, slogs) ->
         return callback err.message if err
         return callback null, slogs

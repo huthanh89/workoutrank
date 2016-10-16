@@ -68,6 +68,7 @@ module.put = (req, res, next) ->
       User
       .findOne
         _id: id
+      .lean()
       .exec (err, user) ->
         return callback 'No user found' if user is null
         return callback err if err

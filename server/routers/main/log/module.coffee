@@ -27,7 +27,8 @@ module.get = (req, res, next) ->
 
       # Get logs
 
-      SLog.find
+      SLog
+      .find
         user: req.session.passport.user
       .sort 'date'
       .lean()

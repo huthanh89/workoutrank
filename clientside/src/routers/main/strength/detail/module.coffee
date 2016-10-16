@@ -51,8 +51,10 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    add:  '#strength-detail-add'
-    edit: '#strength-detail-edit'
+    add:      '#strength-detail-add'
+    edit:     '#strength-detail-edit'
+    noteView: '#strength-note-container'
+    note:     '#strength-note'
 
   regions:
     modal:     '#strength-modal-view'
@@ -66,6 +68,7 @@ class View extends Marionette.LayoutView
 
   bindings:
     '#strength-title': 'name'
+    '#strength-note':  'note'
 
   events:
 
@@ -154,6 +157,10 @@ class View extends Marionette.LayoutView
     #@ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     @updateViews()
+
+    if @collection.length is 0
+      @channel.request 'add:workout', moment()
+
     return
 
   updateAfterDateChange: ->

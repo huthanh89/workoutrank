@@ -20,7 +20,7 @@ Schedule = mongoose.model('schedule')
 #   Get count of all exercises and all logs.
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   result =
     sConfs:    0
@@ -30,8 +30,10 @@ module.get = (req, res, next) ->
   async.waterfall [
 
     (callback) ->
-      Strength.count
+      Strength
+      .count
         user: req.session.passport.user
+      .lean()
       .exec (err, count) ->
         return callback err.message if err
         result.sConfs = count
@@ -39,8 +41,10 @@ module.get = (req, res, next) ->
       return
 
     (callback) ->
-      SLog.count
+      SLog
+      .count
         user: req.session.passport.user
+      .lean()
       .exec (err, count) ->
         return callback err.message if err
         result.sLogs = count
@@ -48,8 +52,10 @@ module.get = (req, res, next) ->
       return
 
     (callback) ->
-      Schedule.findOne
+      Schedule
+      .findOne
         user: req.session.passport.user
+      .lean()
       .exec (err, schedule) ->
         return callback err.message if err
         if schedule?
@@ -65,7 +71,7 @@ module.get = (req, res, next) ->
 
   ], (err) ->
 
-    # If Error occured, return error status and text.
+    # If Error occurred, return error status and text.
 
     if err
       res

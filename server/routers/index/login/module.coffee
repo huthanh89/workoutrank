@@ -50,7 +50,8 @@ exports.post = (req, res) ->
 
       user = sanitize(req.body.user)
 
-      User.findOne
+      User
+      .findOne
         $or: [
           username: user
         , email: user
