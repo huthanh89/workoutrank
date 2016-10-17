@@ -75,9 +75,13 @@ class View extends Marionette.LayoutView
       @collection.create @model.attributes,
         wait: true
         at:   0
-        success:  =>
+        success: (model) =>
           @rootChannel.request 'spin:page:loader', false
           @ui.dialog.modal('hide')
+
+          # Finish, redirect to the actual strength log.
+
+          @rootChannel.request 'strength:detail', model.id
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response
