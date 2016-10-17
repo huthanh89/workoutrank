@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_             = require 'lodash'
 moment        = require 'moment'
 Backbone      = require 'backbone'
 Radio         = require 'backbone.radio'
@@ -11,6 +10,7 @@ Add           = require './add/module'
 Edit          = require './edit/module'
 HistoryView   = require './history/view'
 GraphView     = require './graph/view'
+NoteView      = require './note/view'
 SummaryView   = require './summary/view'
 GoalView      = require './goal/view'
 Workout       = require './workout/module'
@@ -59,6 +59,7 @@ class View extends Marionette.LayoutView
   regions:
     modal:     '#strength-modal-view'
     history:   '#strength-history-view'
+    note:      '#strength-note-view'
     challenge: '#strength-challenge-view'
     goal:      '#strength-goal-view'
     summary:   '#strength-summary-view'
@@ -68,7 +69,10 @@ class View extends Marionette.LayoutView
 
   bindings:
     '#strength-title': 'name'
-    '#strength-note':  'note'
+
+    '#strength-note-container':
+      observe: 'note'
+      visible: (value) -> value
 
   events:
 
@@ -183,6 +187,9 @@ class View extends Marionette.LayoutView
     return
 
   updateViews: ->
+
+    @showChildView 'note', new NoteView
+      sConf: @model
 
     @showChildView 'goal', new GoalView
       sLogs: @collection

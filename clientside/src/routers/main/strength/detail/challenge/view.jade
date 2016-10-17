@@ -3,50 +3,51 @@
         #strength-challenge-help
             h4(style="color:#8484FF;") Not enough past entries before today to create any challenges.
 .row(style="text-align:center")
-    i.fa.fa-fw.fa-2x.fa-trophy(style="color:#FFD700")
-    = ' '
-    span
-        u
-            b#strength-challenge-rep-gold
+    .col-sm-4
+        i.fa.fa-fw.fa-2x.fa-trophy(style="color:#CD7F32")
         = ' '
-        | Reps
+        span
+            u
+                b#strength-challenge-rep-bronze
+            = ' '
+            | Reps
+            = ' '
+        span.strength-challenge-weight
+            | @ &#8805
+            = ' '
+            u
+                b#strength-challenge-weight-bronze
+            = ' '
+            | lbs
+    .col-sm-4
+        i.fa.fa-fw.fa-2x.fa-trophy(style="color:#C0C0C0")
         = ' '
-    span.strength-challenge-weight
-        | @ &#8805
+        span
+            u
+                b#strength-challenge-rep-silver
+            = ' '
+            | Reps
+            = ' '
+        span.strength-challenge-weight
+            | @ &#8805
+            = ' '
+            u
+                b#strength-challenge-weight-silver
+            = ' '
+            | lbs
+    .col-sm-4
+        i.fa.fa-fw.fa-2x.fa-trophy(style="color:#FFD700")
         = ' '
-        u
-            b#strength-challenge-weight-gold
-        = ' '
-        | lbs
-.row(style="text-align:center")
-    i.fa.fa-fw.fa-2x.fa-trophy(style="color:#C0C0C0")
-    = ' '
-    span
-        u
-            b#strength-challenge-rep-silver
-        = ' '
-        | Reps
-        = ' '
-    span.strength-challenge-weight
-        | @ &#8805
-        = ' '
-        u
-            b#strength-challenge-weight-silver
-        = ' '
-        | lbs
-.row(style="text-align:center")
-    i.fa.fa-fw.fa-2x.fa-trophy(style="color:#CD7F32")
-    = ' '
-    span
-        u
-            b#strength-challenge-rep-bronze
-        = ' '
-        | Reps
-        = ' '
-    span.strength-challenge-weight
-        | @ &#8805
-        = ' '
-        u
-            b#strength-challenge-weight-bronze
-        = ' '
-        | lbs
+        span
+            u
+                b#strength-challenge-rep-gold
+            = ' '
+            | Reps
+            = ' '
+        span.strength-challenge-weight
+            | @ &#8805
+            = ' '
+            u
+                b#strength-challenge-weight-gold
+            = ' '
+            | lbs

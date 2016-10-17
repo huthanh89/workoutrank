@@ -100,8 +100,6 @@ class View extends Marionette.LayoutView
 
     '#strength-summary-count': 'count'
 
-    '#strength-summary-note': 'note'
-
     '#strength-summary-first':
       observe: 'first'
       onGet: (value) -> if value then moment(value).from moment() else '---'
