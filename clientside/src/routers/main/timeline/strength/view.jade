@@ -9,15 +9,16 @@
                         b.timeline-strength-name
                 .col-xs-6
                     span.pull-right.timeline-strength-date
-            hr
+            br
             .row(style="text-align:center;")
                 .col-xs-6
                     span Reps
                     = ' '
                     span
                         b.timeline-strength-rep
-                    span.timeline-strength-growthRep
-                    span.timeline-strength-changeRep
+                    .row
+                        span.timeline-strength-growthRep
+                        span.timeline-strength-changeRep
                 .col-xs-6
                     span Weight
                     = ' '
@@ -25,7 +26,8 @@
                         b.timeline-strength-weight
                     = ' '
                     | lb
-                    span.timeline-strength-growthWeight
-                    span.timeline-strength-changeWeight
+                    .row
+                        span.timeline-strength-growthWeight
+                        span.timeline-strength-changeWeight
             .col-xs-12
                 span.timeline-strength-note

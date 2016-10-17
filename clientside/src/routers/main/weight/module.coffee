@@ -125,6 +125,10 @@ class View extends Marionette.LayoutView
     @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     @updateViews()
+
+    if @collection.length is 0
+      @channel.request 'add'
+
     return
 
   updateViews: ->
