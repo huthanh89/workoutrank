@@ -19,7 +19,10 @@ class View extends Marionette.ItemView
     admin:    '#home-admin-accounts-container'
 
   bindings:
-    '#home-exercise-count': 'sLogs'
+    '#home-sconf-count': 'sConfs'
+    '#home-slog-count':  'sLogs'
+    '#home-wlog-count':  'wLogs'
+    '#home-user-count':  'users'
 
   events:
 

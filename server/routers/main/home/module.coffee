@@ -12,7 +12,10 @@ mongoose = require 'mongoose'
 
 Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
+WLog     = mongoose.model('wlog')
 Schedule = mongoose.model('schedule')
+Feedback = mongoose.model('feedback')
+User     = mongoose.model('user')
 
 #-------------------------------------------------------------------------------
 # GET
@@ -48,6 +51,37 @@ module.get = (req, res) ->
       .exec (err, count) ->
         return callback err.message if err
         result.sLogs = count
+        return callback null
+      return
+
+    (callback) ->
+      WLog
+      .count
+        user: req.session.passport.user
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.wLogs = count
+        return callback null
+      return
+
+    (callback) ->
+      Feedback
+      .count()
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.feedbacks = count
+        return callback null
+      return
+
+    (callback) ->
+      User
+      .count()
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.users = count
         return callback null
       return
 

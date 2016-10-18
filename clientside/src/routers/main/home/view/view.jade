@@ -19,13 +19,16 @@
                         b
                             = ' '
                             | My Workouts
-                    span.badge.badge-info#home-exercise-count 0
+                    span.badge#home-slog-count 0
+                    = ' '
+                    span.badge#home-sconf-count 0
                 li.list-group-item#home-weights
                     i.nav-icon.fa.fa-fw.fa-lg.fa-tachometer
                     a
                         b
                             = ' '
                             | Weight Logs
+                    span.badge#home-wlog-count 0
 .row
     .col-md-8.col-center
         .panel.panel-default
@@ -68,6 +71,7 @@
                         b
                             = ' '
                             | Accounts
+                    span.badge#home-user-count 0
 .row
     .col-md-8.col-center
         .panel.panel-default
