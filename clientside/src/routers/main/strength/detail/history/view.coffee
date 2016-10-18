@@ -2,10 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
 DateView     = require './date/view'
 TableView    = require './table/view'

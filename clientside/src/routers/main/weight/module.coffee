@@ -157,17 +157,23 @@ class View extends Marionette.LayoutView
 
     models = @collection.filter (model, index) =>
 
-      if index > 0
+      # Filter by current day of date.
+
+      dateA  = moment(model.get('date')).startOf('day')
+      dateB  = moment(@dateModel.get('date')).startOf('day')
+      result = dateA.isSame(dateB)
+
+      if result and (index > 0)
         prev    =  clean.at(index - 1).get('weight')
         current = model.get('weight')
         model.set 'change',  _.round current - prev , 2
         model.set 'percent', _.round (current / prev) * 100 - 100 , 2
+      else
+        model.set 'change',  0
+        model.set 'percent', 0
 
-      # Filter by current day of date.
+      return result
 
-      dateA = moment(model.get('date')).startOf('day')
-      dateB = moment(@dateModel.get('date')).startOf('day')
-      return dateA.isSame(dateB)
     @tableCollection.reset models
     return
 

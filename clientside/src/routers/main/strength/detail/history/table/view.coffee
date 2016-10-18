@@ -25,11 +25,6 @@ class NullView extends Marionette.ItemView
   tagName: 'tr'
   template: nullTemplate
 
-  #events:
-  #  'click': ->
-  #    @channel.request 'add'
-  #    return
-
   constructor: (options) ->
     super
     @mergeOptions options, 'channel'
@@ -52,7 +47,79 @@ class ItemView extends Marionette.ItemView
 
     '.strength-table-td-rep': 'rep'
 
+    '.strength-table-td-rep-change':
+      observe: 'changeRep'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>+#{value}</span>"
+        else if value < 0
+          return "<span style='color:red;'>#{value}</span>"
+        else
+          return "<span style='color:green;'>+#{value}</span>"
+
+    '.strength-table-td-rep-percent':
+      observe:      'percentRep'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:green;'>(+#{value}%)</span>"
+
+    '.strength-table-td-rep-growth':
+      observe:      'changeRep'
+      updateMethod: 'html'
+      onGet: (value) ->
+
+        span = "<span>#{value}</span>"
+
+        if value < 0
+          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
+        else if value > 0
+          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
+        else
+          return "<i class='fa fa-fw fa-lg fa-minus'></i>"
+
     '.strength-table-td-weight': 'weight'
+
+    '.strength-table-td-weight-change':
+      observe: 'changeWeight'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>+#{value}</span>"
+        else if value < 0
+          return "<span style='color:red;'>#{value}</span>"
+        else
+          return "<span style='color:green;'>+#{value}</span>"
+
+    '.strength-table-td-weight-percent':
+      observe:      'percentWeight'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:green;'>(+#{value}%)</span>"
+
+    '.strength-table-td-weight-growth':
+      observe:      'changeWeight'
+      updateMethod: 'html'
+      onGet: (value) ->
+
+        span = "<span>#{value}</span>"
+
+        if value < 0
+          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
+        else if value > 0
+          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
+        else
+          return "<i class='fa fa-fw fa-lg fa-minus'></i>"
 
   events:
     'click .strength-table-td-remove': ->
@@ -61,7 +128,7 @@ class ItemView extends Marionette.ItemView
         wait: true
       return
 
-  constructor: (options) ->
+  constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
@@ -89,10 +156,30 @@ class View extends Marionette.CompositeView
 
   constructor: (options) ->
 
-    models = options.sLogs.filter (model) ->
-      dateA = moment(model.get('date')).startOf('day')
-      dateB = moment(options.date).startOf('day')
-      return dateA.isSame(dateB)
+    clean = options.sLogs.clone()
+
+    models = options.sLogs.filter (model, index) ->
+      dateA  = moment(model.get('date')).startOf('day')
+      dateB  = moment(options.date).startOf('day')
+      result = dateA.isSame(dateB)
+
+      if result and (index > 0)
+        prev    =  clean.at(index - 1).get('rep')
+        current = model.get('rep')
+        model.set 'changeRep',  _.round current - prev , 2
+        model.set 'percentRep', _.round (current / prev) * 100 - 100 , 2
+
+        prev    =  clean.at(index - 1).get('weight')
+        current = model.get('weight')
+        model.set 'changeWeight',  _.round current - prev , 2
+        model.set 'percentWeight', _.round (current / prev) * 100 - 100 , 2
+      else
+        model.set 'changeRep',     0
+        model.set 'percentRep',    0
+        model.set 'changeWeight',  0
+        model.set 'percentWeight', 0
+
+      return result
 
     super _.extend {}, options,
       collection: new Backbone.Collection models
