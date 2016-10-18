@@ -107,7 +107,7 @@ class ItemView extends Marionette.ItemView
         else if value > 0
           return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:rgba(232, 33, 30, 0.84);'></i>"
         else
-          return "<i class='fa fa-fw fa-lg fa-minus'></i>"
+          return "<i class='fa fa-fw fa-lg fa-minus' style='color:#3b9f38'></i>"
 
   events:
     'click .strength-table-td-remove': ->

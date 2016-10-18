@@ -81,7 +81,7 @@ class ItemView extends Marionette.ItemView
         else if value > 0
           return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
         else
-          return "<i class='fa fa-fw fa-lg fa-minus'></i>"
+          return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
 
     '.strength-table-td-weight': 'weight'
 
@@ -119,7 +119,7 @@ class ItemView extends Marionette.ItemView
         else if value > 0
           return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
         else
-          return "<i class='fa fa-fw fa-lg fa-minus'></i>"
+          return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
 
   events:
     'click .strength-table-td-remove': ->
