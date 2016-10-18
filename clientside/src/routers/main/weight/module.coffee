@@ -74,19 +74,19 @@ class View extends Marionette.LayoutView
 
   collectionEvents:
     'sync update': ->
-      @updatePageableCollection()
+      @updateTableCollection()
       @summaryModel.update(@collection)
       @showCalendar()
       @updateViews()
       return
 
   modelEvents:
-    sync: (model) ->
+    sync: ->
       @summaryModel.update(@collection)
       @updateViews()
       return
 
-  constructor: (options) ->
+  constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
@@ -99,8 +99,8 @@ class View extends Marionette.LayoutView
           date: @dateModel.get('date')
         return
 
-    @pageableCollection = new Table.Collection @collection.models
-    @updatePageableCollection()
+    @tableCollection = new Table.Collection @collection.models
+    @updateTableCollection()
 
     @summaryModel = new Summary.Model {},
       wLogs: @collection
@@ -108,7 +108,7 @@ class View extends Marionette.LayoutView
     # When date is changed, update pageable collection.
 
     @listenTo @dateModel, 'change:date', =>
-      @updatePageableCollection()
+      @updateTableCollection()
       return
 
   onShow: ->
@@ -117,7 +117,7 @@ class View extends Marionette.LayoutView
       model: @dateModel
 
     @showChildView 'table', new Table.View
-      collection: @pageableCollection
+      collection: @tableCollection
       channel:    @channel
 
     @showCalendar()
@@ -151,12 +151,24 @@ class View extends Marionette.LayoutView
       date:       @dateModel.get('date')
     return
 
-  updatePageableCollection: ->
-    models = @collection.filter (model) =>
+  updateTableCollection: ->
+
+    clean = @collection.clone()
+
+    models = @collection.filter (model, index) =>
+
+      if index > 0
+        prev    =  clean.at(index - 1).get('weight')
+        current = model.get('weight')
+        model.set 'change',  _.round current - prev , 2
+        model.set 'percent', _.round (current / prev) * 100 - 100 , 2
+
+      # Filter by current day of date.
+
       dateA = moment(model.get('date')).startOf('day')
       dateB = moment(@dateModel.get('date')).startOf('day')
       return dateA.isSame(dateB)
-    @pageableCollection.reset models
+    @tableCollection.reset models
     return
 
   onDestroy: ->
