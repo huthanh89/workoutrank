@@ -102,12 +102,15 @@ class View extends Marionette.LayoutView
     super
     @mergeOptions options, ['sConfs', 'sLogs']
     @rootChannel = Backbone.Radio.channel('root')
-    @channel =     new Backbone.Radio.Channel(@cid)
+    @channel     = new Backbone.Radio.Channel(@cid)
 
     @channel.reply
-      'show:schedule': =>
 
-        @updateLabels()
+      'update:label': (day) =>
+        @updateLabels(day)
+        return
+
+      'show:schedule': =>
 
         collection = new Collection [],
           sLogs:    @sLogs
@@ -128,9 +131,11 @@ class View extends Marionette.LayoutView
     @channel.request 'show:schedule'
     return
 
-  updateLabels: ->
+  # update workout daily muscle labels.
 
-    day    = moment().format('dddd').toLowerCase()
+  updateLabels: (dayNumber) ->
+
+    day    = moment().startOf('week').add(dayNumber - 1, 'days').format('dddd').toLowerCase()
     values = @model.get(day)
     text   = 'No muscle group today.'
     result = []
@@ -140,9 +145,14 @@ class View extends Marionette.LayoutView
 
     if result.length
       text = result.join(', ')
+      @ui.target.css 'color', '#5a646b'
+    else
+      @ui.target.css 'color', '#68a7d6'
+
+    titleDay = day.charAt(0).toUpperCase() + day.slice(1).toLowerCase()
 
     @ui.target.html text
-    @ui.title.html moment().format('dddd') + '\'s Workout'
+    @ui.title.text titleDay + '\'s Schedule'
 
     return
 

@@ -85,7 +85,7 @@ class View extends Marionette.ItemView
 
         return
 
-      viewRender: (view) ->
+      viewRender: (view) =>
 
         prev = $("#schedule-widget .fc-prev-button")
         next = $("#schedule-widget .fc-next-button")
@@ -103,6 +103,8 @@ class View extends Marionette.ItemView
         if view.type is 'basicWeek'
           prev.css('visibility','hidden')
           next.css('visibility','hidden')
+
+        @channel.request 'update:label', moment(view.end).day()
 
         return
 
