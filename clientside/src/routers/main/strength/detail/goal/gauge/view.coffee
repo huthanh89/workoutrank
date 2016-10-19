@@ -99,7 +99,7 @@ class View extends Marionette.ItemView
 
     gauge.minValue       = min
     gauge.maxValue       = max
-    gauge.animationSpeed = 83
+    gauge.animationSpeed = 1
 
     value = _.clamp(@model.get('value'), min, max)
 
