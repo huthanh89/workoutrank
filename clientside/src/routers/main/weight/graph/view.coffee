@@ -44,7 +44,7 @@ seriesData = (model, chart) ->
     marker:
       enabled:    true
       fillColor: '#00B272'
-      radius:     6
+      radius:     4
   }
 
 #-------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ getMean = (data) -> _.mean(_.map(data, (record) -> record.y))
 # Return plot line options for y axis.
 #-------------------------------------------------------------------------------
 
-plotLine = (value) ->
+plotLine = (text, value) ->
   return {
     value:      value
     width:      2
@@ -65,10 +65,13 @@ plotLine = (value) ->
     dashStyle: 'shortdash'
     zIndex:     5
     label:
-      text:   ''
+      text:   text
       float:  true
       align: 'left'
       x:      5
+      style:
+        fontWeight: 'bold'
+        color:      '#d82a2a'
   }
 
 #-------------------------------------------------------------------------------
@@ -129,12 +132,6 @@ class View extends Marionette.ItemView
         max: @max data
       ]
 
-      plotOptions:
-        column:
-          dataLabels:
-            enabled: true
-            color:  'gray'
-
       tooltip:
         shared: false
 
@@ -157,7 +154,7 @@ class View extends Marionette.ItemView
     # Draw weight plot lines on chart.
 
     mean = _.round(getMean(@model.get('data')), 1)
-    chart.yAxis[0].addPlotLine plotLine(mean)
+    chart.yAxis[0].addPlotLine plotLine("Avg: #{mean}", mean)
 
     # Call reflow so chart will fit 100% of the width container.
 

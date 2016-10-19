@@ -56,20 +56,22 @@ seriesData = (model, type, chart) ->
 
   if type is 0
 
-    color = '#00ffa4'
+    color       = '#00ffa4'
+    darkerColor = '#1ebd84'
 
     return _.assign result,
       name: 'Reps'
       data:  model.get('repData')
       color:     color
-      lineColor: color
+      lineColor:  darkerColor
       marker:
         enabled:    true
-        fillColor:  color
-        radius:     6
+        fillColor:   darkerColor
+        radius:     4
   else
 
-    color = '#FE7935'
+    color       = '#FE7935'
+    darkerColor = '#d06128'
 
     return _.assign result,
       name: 'Weights'
@@ -77,11 +79,11 @@ seriesData = (model, type, chart) ->
       tooltip:
         valueSuffix: ' lb'
       color:     color
-      lineColor: color
+      lineColor: darkerColor
       marker:
         enabled:    true
-        fillColor:  color
-        radius:     6
+        fillColor:  darkerColor
+        radius:     4
 
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
@@ -101,14 +103,13 @@ plotLine = (text, value) ->
     dashStyle: 'shortdash'
     zIndex:     5
     label:
-      #text:   text
-      text:   ''
+      text:   text
       float:  true
       align: 'left'
       x:      5
       style:
         fontWeight: 'bold'
-        color:      'grey'
+        color:      '#d82a2a'
   }
 
 #-------------------------------------------------------------------------------
@@ -197,12 +198,6 @@ class View extends Marionette.ItemView
         max: @max data
       ]
 
-      plotOptions:
-        column:
-          dataLabels:
-            enabled: true
-            color:  'gray'
-
       tooltip:
         shared: false
 
@@ -223,7 +218,7 @@ class View extends Marionette.ItemView
 
     data = if type is 0 then model.get('repData') else model.get('weightData')
     mean = _.round(getMean(data), 1)
-    chart.yAxis[0].addPlotLine plotLine("Average: #{mean}", mean)
+    chart.yAxis[0].addPlotLine plotLine("Avg: #{mean}", mean)
 
     # Call reflow so chart will fit 100% of the width container.
 
