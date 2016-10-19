@@ -79,8 +79,8 @@ class View extends Marionette.ItemView
       observe: 'weightAvg'
       onGet: (value) -> if value then value else '---'
 
-    '#log-table-weight-total':
-      observe: 'weightTotal'
+    '#log-table-weight-sum':
+      observe: 'weightSum'
 
     '#log-table-rep-min':
       observe: 'repMin'
@@ -94,8 +94,8 @@ class View extends Marionette.ItemView
       observe: 'repAvg'
       onGet: (value) -> if value then value else '---'
 
-    '#log-table-rep-total':
-      observe: 'repTotal'
+    '#log-table-rep-sum':
+      observe: 'repSum'
 
   constructor: (options) ->
     super _.extend {}, options,
@@ -136,19 +136,19 @@ class View extends Marionette.ItemView
     rep    = @reduce repData
 
     @model.set
-      name:        sConf.get('name')
-      exerciseID:  sConf.id
-      muscle:      sConf.get('muscle')
-      weightMin:   wieght.min
-      weightMax:   wieght.max
-      weightAvg:   wieght.avg
-      weightSD:    wieght.sd
-      weightTotal: wieght.total
-      repMin:      rep.min
-      repMax:      rep.max
-      repAvg:      rep.avg
-      repSD:       rep.sd
-      repTotal:    rep.total
+      name:       sConf.get('name')
+      exerciseID: sConf.id
+      muscle:     sConf.get('muscle')
+      weightMin:  wieght.min
+      weightMax:  wieght.max
+      weightAvg:  wieght.avg
+      weightSD:   wieght.sd
+      weightSum:  wieght.sum
+      repMin:     rep.min
+      repMax:     rep.max
+      repAvg:     rep.avg
+      repSD:      rep.sd
+      repSum:     rep.sum
     return
 
   reduce: (records) ->
@@ -157,10 +157,10 @@ class View extends Marionette.ItemView
     sd     = standardDeviation(variance(values, _.mean(values)))
 
     return {
-      min:  @min(values)
-      max:  @max(values)
-      avg:  @avg(values)
-      total: values.length
+      min: @min(values)
+      max: @max(values)
+      avg: @avg(values)
+      sum: @sum(values)
       sd:  _.round sd, 2
     }
 
@@ -169,6 +169,8 @@ class View extends Marionette.ItemView
   max: (values) -> _.round(_.max(values),2)
 
   avg: (values) -> _.round(_.mean(values), 2)
+
+  sum: (values) -> _.round(_.sum(values), 2)
 
   onBeforeDestroy: ->
     @unstickit()
