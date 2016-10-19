@@ -18,6 +18,14 @@ require 'multiselect'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Collection
+#-------------------------------------------------------------------------------
+
+class Collection extends Backbone.Collection
+
+  comparator: (model) -> -moment(model.get('date')).utc()
+
+#-------------------------------------------------------------------------------
 # Null View
 #-------------------------------------------------------------------------------
 
@@ -182,7 +190,7 @@ class View extends Marionette.CompositeView
       return result
 
     super _.extend {}, options,
-      collection: new Backbone.Collection models
+      collection: new Collection models
 
     @mergeOptions options, [
       'channel'

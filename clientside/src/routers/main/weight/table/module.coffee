@@ -32,6 +32,9 @@ class Model extends Backbone.Model
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
+
+  comparator: (model) -> -moment(model.get('date')).utc()
+
   model: Model
 
 #-------------------------------------------------------------------------------
