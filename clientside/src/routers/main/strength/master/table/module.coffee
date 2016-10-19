@@ -80,8 +80,7 @@ class ItemView extends Marionette.ItemView
   template: itemTemplate
 
   ui:
-    td:    '.strength-table-td'
-    count: '.strength-table-td-count'
+    td: '.strength-table-td'
 
   bindings:
 
