@@ -2,10 +2,11 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_        = require 'lodash'
-moment   = require 'moment'
-async    = require 'async'
-mongoose = require 'mongoose'
+_         = require 'lodash'
+moment    = require 'moment'
+async     = require 'async'
+mongoose  = require 'mongoose'
+validator = require 'validator'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -18,7 +19,7 @@ WLog = mongoose.model('wlog')
 # GET
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 
@@ -55,14 +56,20 @@ module.get = (req, res, next) ->
 # PUT
 #-------------------------------------------------------------------------------
 
-module.put = (req, res, next) ->
+module.put = (req, res) ->
 
   async.waterfall [
 
     (callback) ->
 
-      id = req.session.passport.user
+      return callback 'Bad Firstname' unless validator.isAlpha(req.body.firstname)
+      return callback 'Bad Lastname' unless validator.isAlpha(req.body.lastname)
 
+      return callback null
+
+    (callback) ->
+
+      id = req.session.passport.user
       return callback 'No Session ID' if id is undefined
 
       User

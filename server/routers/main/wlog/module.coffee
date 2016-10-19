@@ -17,7 +17,7 @@ WLog = mongoose.model('wlog')
 #   Get all wlogs from this user.
 #-------------------------------------------------------------------------------
 
-module.list = (req, res, next) ->
+module.list = (req, res) ->
 
   async.waterfall [
 
@@ -47,7 +47,7 @@ module.list = (req, res, next) ->
 #   Get a specific wlogs with matching strengthID
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 

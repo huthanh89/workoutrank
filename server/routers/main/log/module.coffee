@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_        = require 'lodash'
 async    = require 'async'
 mongoose = require 'mongoose'
 
@@ -10,7 +9,6 @@ mongoose = require 'mongoose'
 # Models
 #-------------------------------------------------------------------------------
 
-Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
 
 #-------------------------------------------------------------------------------
@@ -19,7 +17,7 @@ SLog     = mongoose.model('slog')
 #   Get a list of all logs combine.
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 

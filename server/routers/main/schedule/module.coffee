@@ -32,7 +32,7 @@ schema =
 # Get
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 
@@ -112,7 +112,7 @@ module.post = (req, res) ->
 #   Edit a new strength exercise.
 #-------------------------------------------------------------------------------
 
-module.put = (req, res, next) ->
+module.put = (req, res) ->
 
   async.waterfall [
 

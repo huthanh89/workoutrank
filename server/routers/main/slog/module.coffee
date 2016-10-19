@@ -18,7 +18,7 @@ Strength = mongoose.model('strength')
 #   Get all slogs from this user.
 #-------------------------------------------------------------------------------
 
-module.list = (req, res, next) ->
+module.list = (req, res) ->
 
   async.waterfall [
 
@@ -48,7 +48,7 @@ module.list = (req, res, next) ->
 #   Get a specific slogs with matching strengthID
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 
@@ -143,13 +143,13 @@ module.post = (req, res) ->
 #   Edit a slog record.
 #-------------------------------------------------------------------------------
 
-module.put = (req, res, next) ->
+module.put = (req, res) ->
 
   async.waterfall [
 
     (callback) ->
 
-      SLog.findById req.params.sid, (err, strength) ->
+      SLog.findById req.params.sid, (err, slog) ->
         return callback err.message if err
         return callback null, slog
 
@@ -184,7 +184,7 @@ module.put = (req, res, next) ->
 #   Delete a slog record.
 #-------------------------------------------------------------------------------
 
-module.delete = (req, res, next) ->
+module.delete = (req, res) ->
 
   async.waterfall [
 

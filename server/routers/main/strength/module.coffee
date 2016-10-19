@@ -47,7 +47,7 @@ schema =
 #   Return all strength exercises matching user id.
 #-------------------------------------------------------------------------------
 
-module.list = (req, res, next) ->
+module.list = (req, res) ->
 
   async.waterfall [
 
@@ -79,7 +79,7 @@ module.list = (req, res, next) ->
 #   Get a specific strength workout matching strength ID.
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   async.waterfall [
 
@@ -162,7 +162,7 @@ module.post = (req, res) ->
 #   Edit a new strength exercise.
 #-------------------------------------------------------------------------------
 
-module.put = (req, res, next) ->
+module.put = (req, res) ->
 
   async.waterfall [
 
@@ -209,7 +209,7 @@ module.put = (req, res, next) ->
 #   Get a list all slogs matching that strength exercise id.
 #-------------------------------------------------------------------------------
 
-module.log = (req, res, next) ->
+module.log = (req, res) ->
 
   async.waterfall [
 
@@ -239,7 +239,7 @@ module.log = (req, res, next) ->
 #   Delete a sConf record.
 #-------------------------------------------------------------------------------
 
-module.delete = (req, res, next) ->
+module.delete = (req, res) ->
 
   async.waterfall [
 
