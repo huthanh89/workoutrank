@@ -178,7 +178,7 @@ class Application extends Marionette.Application
         rootView.getRegion('index').empty()
 
         user.fetch
-          success: (model) ->
+          success: ->
             rootView.showChildView 'header', new Nav.Main
               model: user
             rootView.showChildView 'drawer', new Nav.Drawer()
