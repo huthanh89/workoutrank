@@ -91,7 +91,7 @@ class View extends Marionette.LayoutView
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          swal('Success!', 'Profile Updated. Your ready to go off and use all our features.', 'success')
+          swal('Success!', 'Profile Updated. Your ready to go off and use all our features. Click on the home button upper left.', 'success')
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response

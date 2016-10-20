@@ -79,6 +79,7 @@ class View extends Marionette.ItemView
     target = $(@el).find('.strength-goal-gauge')[0]
     min    = @model.get('bronze')
     max    = @model.get('gold')
+    min    = if min is max then 0 else min
     color  = if @type is 'rep' then '#00ffa4' else '#FE7935'
 
     opts =
@@ -127,7 +128,9 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
-    @model.set 'value', @max todayValues
+    mean = @mean todayValues
+    max  = @max todayValues
+    @model.set 'value', max
 
     # Get values omitting today.
 
@@ -139,9 +142,15 @@ class View extends Marionette.ItemView
     .map (record) -> record.y
     .value()
 
-    if @type is 'rep' then @reduceRep(values) else @reduceWeight(values)
+    if values.length > 0
+      if @type is 'rep' then @reduceRep(values) else @reduceWeight(values)
+    else
+      @model.set
+        bronze: 0
+        silver: mean
+        gold:   max
 
-    return values
+    return
 
   reduceWeight: (values) ->
 
