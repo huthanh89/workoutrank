@@ -164,13 +164,13 @@ class View extends Marionette.ItemView
       sd:  _.round sd, 2
     }
 
-  min: (values) -> _.round(_.min(values), 2)
+  min: (values) -> _.round(_.min(values), 0)
 
-  max: (values) -> _.round(_.max(values),2)
+  max: (values) -> _.round(_.max(values), 0)
 
-  avg: (values) -> _.round(_.mean(values), 2)
+  avg: (values) -> _.round(_.mean(values), 0)
 
-  sum: (values) -> _.round(_.sum(values), 2)
+  sum: (values) -> _.round(_.sum(values), 0)
 
   onBeforeDestroy: ->
     @unstickit()

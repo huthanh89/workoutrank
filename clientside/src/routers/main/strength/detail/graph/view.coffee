@@ -217,7 +217,7 @@ class View extends Marionette.ItemView
     # Draw weight plot lines on chart.
 
     data = if type is 0 then model.get('repData') else model.get('weightData')
-    mean = _.round(getMean(data), 1)
+    mean = _.round(getMean(data), 0)
     chart.yAxis[0].addPlotLine plotLine("Avg: #{mean}", mean)
 
     # Call reflow so chart will fit 100% of the width container.
