@@ -77,9 +77,11 @@ class View extends Marionette.ItemView
       window.location = '/auth/twitter'
       return
 
+    ###
     'click #login-google-play': ->
       window.open('https://play.google.com/store/apps/details?id=workoutrank.com.free&hl=en', '_blank')
       return
+###
 
   constructor: (options) ->
     super

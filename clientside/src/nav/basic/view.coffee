@@ -14,6 +14,7 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
+  ###
   events:
     'click #basic-nav-logo': ->
       @channel.request 'index'
@@ -22,6 +23,7 @@ class View extends Marionette.ItemView
     'click #basic-nav-banner': ->
       @channel.request 'index'
       return
+###
 
   constructor: ->
     super
