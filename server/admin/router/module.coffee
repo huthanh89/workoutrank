@@ -8,6 +8,7 @@ express  = require 'express'
 mongoose = require 'mongoose'
 path     = require 'path'
 Account  = require './account/module'
+Feedback = require './feedback/module'
 router   = express.Router()
 
 #-------------------------------------------------------------------------------
@@ -50,13 +51,15 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/accounts', index
+router.get '/accounts',  index
+router.get '/feedbacks', index
 
 #-------------------------------------------------------------------------------
 # API Resources.
 #-------------------------------------------------------------------------------
 
 router.get '/api/accounts', Account.get
+router.get '/api/feedbacks', Feedback.get
 
 #-------------------------------------------------------------------------------
 # Exports

@@ -90,7 +90,7 @@ class View extends Marionette.LayoutView
   createSelect: (day) ->
     @ui[day].multiselect
       includeSelectAllOption: true
-      maxHeight:     450
+      maxHeight:     250
       buttonWidth:  '100%'
       buttonClass:  'btn btn-default'
       dropRight:     true

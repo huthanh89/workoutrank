@@ -108,7 +108,7 @@ class View extends Marionette.LayoutView
     date = moment(@model.get('date'))
 
     @ui.muscle.multiselect
-      maxHeight:     330
+      maxHeight:     300
       dropRight:     true
       buttonWidth:  '100%'
       buttonClass:  'btn btn-default'

@@ -107,7 +107,7 @@ class View extends Marionette.LayoutView
 
   onRender: ->
     @ui.muscle.multiselect
-      maxHeight:     330
+      maxHeight:     300
       dropRight:     true
       buttonWidth:  '100%'
       buttonClass:  'btn btn-default'

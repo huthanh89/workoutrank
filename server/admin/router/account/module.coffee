@@ -20,7 +20,7 @@ WLog     = mongoose.model('wlog')
 # GET
 #-------------------------------------------------------------------------------
 
-module.get = (req, res, next) ->
+module.get = (req, res) ->
 
   result =
     users:  []

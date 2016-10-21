@@ -6,6 +6,7 @@ async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
 Account    = require './account/module'
+Feedback   = require './feedback/module'
 
 #-------------------------------------------------------------------------------
 # Router
@@ -26,8 +27,14 @@ class Router extends Marionette.AppRouter
         @accounts()
         return
 
+      'admin:feedbacks': =>
+        @rootChannel.request 'navigate', 'admin/feedbacks'
+        @feedbacks()
+        return
+
   routes:
-    'admin/accounts': 'accounts'
+    'admin/accounts':  'accounts'
+    'admin/feedbacks': 'feedbacks'
 
   accounts: ->
 
@@ -37,6 +44,21 @@ class Router extends Marionette.AppRouter
     collection.fetch
       success: (collection) =>
         @rootView.content.show new Account.View
+          collection: collection
+        return
+      error: (model, response) =>
+        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+        return
+    return
+
+  feedbacks: ->
+
+    @navChannel.request('nav:main')
+
+    collection = new Feedback.Collection()
+    collection.fetch
+      success: (collection) =>
+        @rootView.content.show new Feedback.View
           collection: collection
         return
       error: (model, response) =>

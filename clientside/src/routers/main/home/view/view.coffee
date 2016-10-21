@@ -19,10 +19,11 @@ class View extends Marionette.ItemView
     admin:    '#home-admin-accounts-container'
 
   bindings:
-    '#home-sconf-count': 'sConfs'
-    '#home-slog-count':  'sLogs'
-    '#home-wlog-count':  'wLogs'
-    '#home-user-count':  'users'
+    '#home-sconf-count':    'sConfs'
+    '#home-slog-count':     'sLogs'
+    '#home-wlog-count':     'wLogs'
+    '#home-user-count':     'users'
+    '#home-feedback-count': 'feedbacks'
 
   events:
 
@@ -64,6 +65,10 @@ class View extends Marionette.ItemView
 
     'click #home-admin-accounts': ->
       @rootChannel.request('admin:accounts')
+      return
+
+    'click #home-admin-feedbacks': ->
+      @rootChannel.request('admin:feedbacks')
       return
 
   constructor: ->

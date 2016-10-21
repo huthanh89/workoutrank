@@ -97,9 +97,6 @@ class View extends Marionette.CompositeView
   childView:          ItemView
   template:           viewTemplate
 
-  regions:
-    summary: '#admin-summary'
-
   events:
     'click #admin-home': ->
       @rootChannel.request 'home'
