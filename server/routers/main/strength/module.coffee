@@ -33,7 +33,7 @@ schema =
     method: 'isLength'
     options:
       min: 0
-      max: 50
+      max: 10
   ]
   count: [
     method: 'isInt'

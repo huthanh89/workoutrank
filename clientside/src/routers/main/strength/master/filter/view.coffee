@@ -32,7 +32,7 @@ class View extends Marionette.ItemView
 
     @ui.muscle.multiselect
       dropRight:    true
-      maxHeight:    350
+      maxHeight:    280
       buttonClass: 'btn btn-default strength-filter-btn'
       buttonWidth:  35
       templates:

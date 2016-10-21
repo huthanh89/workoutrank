@@ -21,6 +21,9 @@ class View extends Marionette.ItemView
 
   template: viewTemplate
 
+  ui:
+    note: '#strength-note-text'
+
   bindings:
     '#strength-note-text': 'note'
 
