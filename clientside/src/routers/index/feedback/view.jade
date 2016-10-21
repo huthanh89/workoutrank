@@ -4,38 +4,54 @@
             li#feedback-home
                 a Home
             li.active
-                span Feedback
-                i.fa.fa-fw.fa-lg.fa-mail-forward
-br
+                span Contact Us
+                = ' '
+                i.fa.fa-fw.fa-lg.fa-envelope
 .row
-    .col-lg-6#feedback-view-container
-        form.form-horizontal
-            .form-group
-                .row
-                    .col-xs-12
-                        h4 Help us improve your user experience.
-                        p Have a suggestion or feedback? Let us know below!
-                            = ' '
-                            i.fa.fa-fw.fa-heart
-            .form-group
-                .row
-                    .col-xs-12
-                        label.control-label(for='feedback-title') Title
-                .row
-                    .col-xs-12
-                        input.form-control#feedback-title(placeholder="Title" type='text' required minlength="1" maxlength="25")
-            .form-group
-                .row
-                    .col-xs-12
-                        label.control-label(for='feedback-editor') Body
-                .row
-                    .col-xs-12
-                        textarea#feedback-editor(placeholder="Enter text here..." required minlength="1" maxlength="200")
-            .form-group
-                .row
-                    .col-xs-12
-                        .pull-right
-                            button.btn.btn-primary
-                                i.fa.fa-fw.fa-lg.fa-envelope-o
-                                = ' '
-                                span Send
+    .col-xs-12(style="text-align:center;")
+        .well
+            .row
+                span
+                    b Email Support:
+                = ' '
+                span developertth@gmail.com
+            .row
+                span
+                    b Phone / Text:
+                = ' '
+                span (408) 841-1825
+.row
+    .col-md-6.col-sm-7.col-center
+        .panel.panel-default
+            .panel-body
+                .col-xs-12
+                    form.form-horizontal
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    h4 Help us improve your user experience.
+                                    p Have a suggestion or feedback? Let us know below!
+                                        = ' '
+                                        i.fa.fa-fw.fa-heart
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    label.control-label(for='feedback-title') Title
+                            .row
+                                .col-xs-12
+                                    input.form-control#feedback-title(placeholder="Title" type='text' required minlength="1" maxlength="25")
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    label.control-label(for='feedback-editor') Body
+                            .row
+                                .col-xs-12
+                                    textarea#feedback-editor(placeholder="Enter text here..." required minlength="1" maxlength="200")
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    .pull-right
+                                        button.btn.btn-primary
+                                            i.fa.fa-fw.fa-lg.fa-envelope-o
+                                            = ' '
+                                            span Send

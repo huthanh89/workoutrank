@@ -43,7 +43,7 @@ schema =
     method: 'isLength'
     options:
       min: 4
-      max: 25
+      max: 35
   ]
   username: [
     method: 'isLength'
