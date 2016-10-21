@@ -171,8 +171,8 @@ Index landing page
 }
 #index-btn-group-bottom {
   text-align: center;
-  height: 350px;
-  padding-top: 50px;
+  height: 250px;
+  padding-top: 10px;
 }
 #index-btn-group-bottom h3 {
   color: grey;
@@ -184,6 +184,10 @@ Index landing page
   margin: 10px;
   border-radius: 10px;
   border: 2px whitesmoke solid;
+}
+#index-google-play {
+  text-align: center;
+  padding-bottom: 15px;
 }
 .index-section {
   width: 100%;

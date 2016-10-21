@@ -43,23 +43,8 @@ class View extends Marionette.ItemView
       @rootChannel.request('login')
       return
 
-    'click .index-try-btn': ->
-
-      @rootChannel.request 'spin:page:loader', true
-
-      model = new Model
-        user:     'user'
-        password: 'user'
-
-      model.save {},
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request 'show:'
-          @rootChannel.request 'home'
-          return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
-          return
+    'click #index-google-play': ->
+      window.open('https://play.google.com/store/apps/details?id=workoutrank.com.free&hl=en', '_blank')
       return
 
   constructor: ->
