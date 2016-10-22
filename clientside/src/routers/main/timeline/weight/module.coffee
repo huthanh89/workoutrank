@@ -78,9 +78,9 @@ class View extends Marionette.ItemView
       updateMethod: 'html'
       onGet: (value) ->
         if value > 0
-          return "<span style='color:green;'>(+#{value}%)</span>"
+          return "<span style='color:red;'>(+#{value}%)</span>"
         else if value < 0
-          return "<span style='color:red;'>(#{value}%)</span>"
+          return "<span style='color:green;'>(#{value}%)</span>"
         else
           return "<span style='color:green;'>(+#{value}%)</span>"
 
