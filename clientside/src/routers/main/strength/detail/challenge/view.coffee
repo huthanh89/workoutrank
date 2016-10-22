@@ -38,10 +38,11 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    help: '#strength-challenge-help'
+    help:         '#strength-challenge-help'
+    challenges:   '#strength-challenges'
 
-    goldRep:    '#strength-challenge-rep-gold'
-    goldWeight: '#strength-challenge-weight-gold'
+    goldRep:      '#strength-challenge-rep-gold'
+    goldWeight:   '#strength-challenge-weight-gold'
 
     silverRep:    '#strength-challenge-rep-silver'
     silverWeight: '#strength-challenge-weight-silver'
@@ -49,7 +50,7 @@ class View extends Marionette.ItemView
     bronzeRep:    '#strength-challenge-rep-bronze'
     bronzeWeight: '#strength-challenge-weight-bronze'
 
-    weightLabel: '.strength-challenge-weight'
+    weightLabel:  '.strength-challenge-weight'
 
   constructor: (options) ->
     super
@@ -78,8 +79,6 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.help.hide() unless @challenge.rep.gold is 0
-
     @ui.goldRep.html @challenge.rep.gold
     @ui.goldWeight.html @challenge.weight.gold
 
@@ -88,6 +87,10 @@ class View extends Marionette.ItemView
 
     @ui.bronzeRep.html @challenge.rep.bronze
     @ui.bronzeWeight.html @challenge.weight.bronze
+
+
+    @ui.help.hide() unless @challenge.rep.gold is 0
+    @ui.challenges.hide() unless @challenge.rep.gold > 0
 
     return
 
@@ -103,7 +106,7 @@ class View extends Marionette.ItemView
 
     return{
       bronze: _.round((mean - margin) or mean, decimals) or 0
-      silver: _.round(mean, decimals)                or 0
+      silver: _.round(mean, decimals)                    or 0
       gold:   _.round((mean + margin) or mean, decimals) or 0
     }
     return
