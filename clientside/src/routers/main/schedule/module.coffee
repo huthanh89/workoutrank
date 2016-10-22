@@ -144,7 +144,7 @@ class View extends Marionette.LayoutView
 
     day    = moment().startOf('week').add(dayNumber - 1, 'days').format('dddd').toLowerCase()
     values = @model.get(day)
-    text   = 'No muscle group today.'
+    text   = 'No muscle group assigned for today.'
     result = []
 
     for value in values

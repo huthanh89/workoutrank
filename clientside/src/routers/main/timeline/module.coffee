@@ -32,17 +32,20 @@ class SLogCollection extends Backbone.Collection
 
 getChange = (value, prev, index) ->
 
-  growth = 'same'
-  change = 0
+  growth  = 'same'
+  change  = 0
+  percent = 0
 
   if index > 0
-    growth = 'up'   if value > prev
-    growth = 'down' if value < prev
-    change = _.round value - prev , 2
+    growth  = 'up'   if value > prev
+    growth  = 'down' if value < prev
+    change  = _.round value - prev , 2
+    percent = _.round (value / prev) * 100 - 100, 2
 
   return {
-    growth: growth
-    change: change
+    growth:  growth
+    change:  change
+    percent: percent
   }
 
 #-------------------------------------------------------------------------------
@@ -73,10 +76,12 @@ parseSLogs = (sLogs, sConfs) ->
       result.push _.extend {}, model.attributes,
         type: 'strength'
         name: sConf.get('name')
-        repGrowth:    repReduce.growth
-        repChange:    repReduce.change
-        weightGrowth: weightReduce.growth
-        weightChange: weightReduce.change
+        repGrowth:     repReduce.growth
+        repChange:     repReduce.change
+        repPercent:    repReduce.percent
+        weightGrowth:  weightReduce.growth
+        weightChange:  weightReduce.change
+        weightPercent: weightReduce.percent
 
   return result
 
@@ -104,10 +109,11 @@ parseWLogs = (wLogs) ->
     prev = model.get('weight')
 
     result.push _.extend {}, model.attributes,
-      type:  'weight'
-      avg:    avg
-      growth: reduce.growth
-      change: reduce.change
+      type:   'weight'
+      avg:     avg
+      growth:  reduce.growth
+      change:  reduce.change
+      percent: reduce.percent
 
   return result
 

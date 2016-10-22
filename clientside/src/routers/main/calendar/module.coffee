@@ -31,10 +31,6 @@ class View extends Marionette.LayoutView
         text:  'The calendar shows recorded workouts. Try adding some workout in your journal first, then come back here to see them automatically posted.'
       return
 
-    'click #calendar-schedule': ->
-      @rootChannel.request 'schedule'
-      return
-
   constructor: (options) ->
     super
     @mergeOptions options, ['sConfs', 'sLogs']

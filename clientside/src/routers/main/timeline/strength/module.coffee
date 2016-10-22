@@ -2,9 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
 moment       = require 'moment'
-Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
 
@@ -58,6 +56,17 @@ class View extends Marionette.ItemView
         else
           return "<i class='fa fa-fw fa-lg fa-minus' style='color:green'></i>"
 
+    '.timeline-strength-percentRep':
+      observe:      'repPercent'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:green;'>(+#{value}%)</span>"
+
     '.timeline-strength-weight': 'weight'
 
     '.timeline-strength-changeWeight':
@@ -81,6 +90,21 @@ class View extends Marionette.ItemView
           return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
         else
           return "<i class='fa fa-fw fa-lg fa-minus' style='color:green'></i>"
+
+    '.timeline-strength-percentWeight':
+      observe:      'weightPercent'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:green;'>(+#{value}%)</span>"
+
+    '.timeline-strength-note-container':
+      observe: 'note'
+      visible: (value) -> value
 
     '.timeline-strength-note': 'note'
 

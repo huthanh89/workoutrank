@@ -73,6 +73,21 @@ class View extends Marionette.ItemView
         else
           return "<i class='fa fa-fw fa-lg fa-minus'></i><span>Average</span>"
 
+    '.timeline-weight-percent':
+      observe:      'percent'
+      updateMethod: 'html'
+      onGet: (value) ->
+        if value > 0
+          return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:green;'>(+#{value}%)</span>"
+
+    '.timeline-weight-note-container':
+      observe: 'note'
+      visible: (value) -> value
+
     '.timeline-weight-note': 'note'
 
   onRender: ->

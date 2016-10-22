@@ -1,4 +1,4 @@
-.col-md-8.col-center
+.col-xs-12
     .panel.panel-default
         .panel-body
             .row
@@ -12,14 +12,18 @@
             br
             .row(style="text-align:center;")
                 .col-xs-6
+                    span.timeline-strength-growthRep
                     span Reps
                     = ' '
                     span
                         b.timeline-strength-rep
                     .row
-                        span.timeline-strength-growthRep
                         span.timeline-strength-changeRep
+                        = ' '
+                        span.timeline-strength-percentRep
+
                 .col-xs-6
+                    span.timeline-strength-growthWeight
                     span Weight
                     = ' '
                     span
@@ -27,7 +31,10 @@
                     = ' '
                     | lb
                     .row
-                        span.timeline-strength-growthWeight
                         span.timeline-strength-changeWeight
-            .col-xs-12
-                span.timeline-strength-note
+                        = ' '
+                        span.timeline-strength-percentWeight
+            .row.timeline-strength-note-container
+                .col-xs-12
+                    br
+                    span.timeline-strength-note

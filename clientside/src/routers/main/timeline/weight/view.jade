@@ -1,4 +1,4 @@
-.col-md-8.col-center
+.col-xs-12
     .panel.panel-default
         .panel-body
             .row
@@ -14,6 +14,7 @@
                     span.timeline-weight-avg
                 .col-xs-6
                     .col-xs-12
+                        span.timeline-weight-growth
                         span Weight
                         = ' '
                         span
@@ -21,8 +22,10 @@
                         = ' '
                         | lb
                         .row
-                            span.timeline-weight-growth
                             span.timeline-weight-change
-            .row
+                            = ' '
+                            span.timeline-weight-percent
+            .row.timeline-weight-note-container
                 .col-xs-12
+                    br
                     span.timeline-weight-note

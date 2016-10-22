@@ -26,11 +26,6 @@ class View extends Marionette.ItemView
   ui:
     calendar: '#schedule-widget'
 
-  events:
-    'click #schedule-calendar-btn': ->
-      @rootChannel.request 'calendar'
-      return
-
   constructor: (options) ->
     super
     @mergeOptions options, [
