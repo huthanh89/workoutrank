@@ -5,6 +5,7 @@
 $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Strength     = require './strength/module'
@@ -201,6 +202,12 @@ class View extends Marionette.LayoutView
   events:
     'click #timeline-home':  ->
       @rootChannel.request 'home'
+      return
+
+    'click #timeline-help': ->
+      swal
+        title: 'Instructions'
+        text:  'The timeline shows recorded logs. Try adding some entries in your journal first, then come back here to see them automatically posted.'
       return
 
   constructor: ->

@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -26,6 +27,12 @@ class View extends Marionette.ItemView
     '#home-feedback-count': 'feedbacks'
 
   events:
+
+    'click #home-help': ->
+      swal
+        title: 'Instructions'
+        text:  'Start with adding some workouts in "My Workouts"'
+      return
 
     'click #home-strengths': ->
       @rootChannel.request('strengths')

@@ -2,8 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
 moment       = require 'moment'
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Event        = require './event/module'
@@ -23,6 +23,12 @@ class View extends Marionette.LayoutView
   events:
     'click #calendar-home': ->
       @rootChannel.request 'home'
+      return
+
+    'click #calendar-help': ->
+      swal
+        title: 'Instructions'
+        text:  'The calendar shows recorded workouts. Try adding some workout in your journal first, then come back here to see them automatically posted.'
       return
 
     'click #calendar-schedule': ->

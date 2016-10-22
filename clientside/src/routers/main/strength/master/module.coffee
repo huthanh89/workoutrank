@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Add          = require './add/module'
@@ -62,6 +63,12 @@ class View extends Marionette.LayoutView
     table:  '#strength-table-view'
 
   events:
+
+    'click #strength-help': ->
+      swal
+        title: 'Instructions'
+        text:  'Click "Add Workout" button to add a new workout. Click on any item on the table to start your workout.'
+      return
 
     'click #strength-home': ->
       @rootChannel.request 'home'

@@ -77,6 +77,12 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'home'
       return
 
+    'click #profile-help': ->
+      swal
+        title: 'Instructions'
+        text:  'It is important you fill out your profile accurately. The information here will help us in your workout calculations.'
+      return
+
     'change #profile-gender': ->
       value = $('#profile-gender input:checked').val()
       @model.set('gender', parseInt(value, 10))
@@ -91,7 +97,15 @@ class View extends Marionette.LayoutView
       @model.save null,
         success: (model) =>
           @rootChannel.request 'spin:page:loader', false
-          swal('Success!', 'Profile Updated. Your ready to go off and use all our features. Click on the home button upper left.', 'success')
+
+          swal
+            title: 'Success!'
+            text:  'Profile Updated. Your ready to go off and use all our features.',
+            type:  'success'
+          , =>
+            @rootChannel.request 'home'
+            return
+
           return
         error: (model, response) =>
           @rootChannel.request 'message:error', response

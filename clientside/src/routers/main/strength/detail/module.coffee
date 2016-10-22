@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 moment        = require 'moment'
+swal          = require 'sweetalert'
 Backbone      = require 'backbone'
 Radio         = require 'backbone.radio'
 Marionette    = require 'marionette'
@@ -75,6 +76,12 @@ class View extends Marionette.LayoutView
       visible: (value) -> value
 
   events:
+
+    'click #home-help': ->
+      swal
+        title: 'Instructions'
+        text:  'Click the "Add Entry" button to add your workout set. Repeat to add more sets.'
+      return
 
     'click #strength-home': ->
       @rootChannel.request 'home'

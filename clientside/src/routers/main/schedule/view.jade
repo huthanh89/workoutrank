@@ -9,6 +9,8 @@
             li.active
                 span Schedule
                 i.fa.fa-fw.fa-lg.fa-clock-o
+            .pull-right
+                i.fa.fa-fw.fa-lg.fa-question-circle#schedule-help(style="cursor:pointer")
 .row
     .col-xs-12
         .panel.panel-default
@@ -17,7 +19,7 @@
                     button.btn.btn-xs.btn-primary#schedule-edit
                         i.fa.fa-fw.fa.fa-wrench
                         = ' '
-                        span Edit
+                        span Edit Schedule
                 h3.panel-title#schedule-target-title
             .panel-body
                 #schedule-target-container

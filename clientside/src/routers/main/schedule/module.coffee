@@ -4,6 +4,7 @@
 
 _            = require 'lodash'
 moment       = require 'moment'
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Data         = require './data/module'
@@ -90,6 +91,12 @@ class View extends Marionette.LayoutView
   events:
     'click #calendar-home': ->
       @rootChannel.request 'home'
+      return
+
+    'click #schedule-help': ->
+      swal
+        title: 'Instructions'
+        text:  'Click the "Edit Schedule" button to edit your schedule. Note: The schedule will automatically be populated after you\'ve created some workouts.'
       return
 
     'click #schedule-edit': ->

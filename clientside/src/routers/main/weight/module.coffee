@@ -4,6 +4,7 @@
 
 _            = require 'lodash'
 moment       = require 'moment'
+swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'marionette'
@@ -63,6 +64,13 @@ class View extends Marionette.LayoutView
     'click #weight-home': ->
       @rootChannel.request 'home'
       return
+
+    'click #weight-help': ->
+      swal
+        title: 'Instructions'
+        text:  'Click on the "Log Weight" button to log in your weight.'
+      return
+
 
     'click #weight-detail-add': ->
       @channel.request 'add'

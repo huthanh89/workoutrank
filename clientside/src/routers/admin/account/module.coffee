@@ -29,7 +29,7 @@ class Collection extends Backbone.Collection
 
     result = []
 
-    for user in response.users
+    for user, index in response.users
       account =
         username:  user.username
         lastlogin: user.lastlogin
@@ -65,6 +65,7 @@ class ItemView extends Marionette.ItemView
 
   bindings:
 
+    '.admin-account-index':     'index'
     '.admin-account-username':  'username'
     '.admin-account-provider':  'provider'
     '.admin-account-firstname': 'firstname'
@@ -78,7 +79,6 @@ class ItemView extends Marionette.ItemView
       onGet: (value) -> moment(value).format('MM/DD - hh:mm a')
 
   onRender: ->
-    @ui.index.html @_index + 1
     @stickit()
     return
 
@@ -105,6 +105,12 @@ class View extends Marionette.CompositeView
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
+
+    length = @collection.length
+
+    @collection.each (model, index) ->
+      model.set 'index', length - index
+      return
 
 #-------------------------------------------------------------------------------
 # Exports
