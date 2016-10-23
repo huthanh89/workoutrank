@@ -10,9 +10,13 @@ require('./models/google');
 
 require('./models/schedule');
 
+require('./models/strength');
+
 require('./models/slog');
 
-require('./models/strength');
+require('./models/cardio');
+
+require('./models/clog');
 
 require('./models/token');
 
@@ -147,7 +151,7 @@ app.use(routers.mainRouter);
 
 app.use(routers.userRouter);
 
-ref = ['', '/strength', '/strength/:sid', '/log', '/log/:lid', '/admin'];
+ref = ['', '/cardio', '/cardio/:cid', '/strength', '/strength/:sid', '/log', '/log/:lid', '/admin'];
 for (i = 0, len = ref.length; i < len; i++) {
   url = ref[i];
   app.use(url, function(req, res, next) {

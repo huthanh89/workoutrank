@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_          = require 'lodash'
 async      = require 'async'
 Backbone   = require 'backbone'
 Marionette = require 'marionette'
@@ -10,6 +9,7 @@ Home       = require './home/module'
 Calendar   = require './calendar/module'
 Schedule   = require './schedule/module'
 Strength   = require './strength/module'
+Cardio     = require './cardio/module'
 Logs       = require './logs/module'
 Weight     = require './weight/module'
 Timeline   = require './timeline/module'
@@ -45,6 +45,16 @@ class Router extends Marionette.AppRouter
 
       'strength:detail': (exerciseID) =>
         @rootChannel.request 'navigate', "strength/#{exerciseID}"
+        @strengthDetail(exerciseID)
+        return
+
+      'cardios': =>
+        @rootChannel.request 'navigate', 'cardios'
+        @cardios()
+        return
+
+      'cardio:detail': (exerciseID) =>
+        @rootChannel.request 'navigate', "cardio/#{exerciseID}"
         @strengthDetail(exerciseID)
         return
 
@@ -87,6 +97,8 @@ class Router extends Marionette.AppRouter
     'home':           'home'
     'strengths':      'strengths'
     'strength/:sid/': 'strengthDetail'
+    'cardios':        'cardios'
+    'cardio/:cid/':   'cardioDetail'
     'summary':        'summary'
     'calendar':       'calendar'
     'schedule':       'schedule'
@@ -226,6 +238,54 @@ class Router extends Marionette.AppRouter
           wLogs:      wLogs
 
       return
+
+    return
+
+  cardios: ->
+
+    @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
+
+    result = {}
+
+    async.waterfall [
+
+      (callback) ->
+
+        cConfs = new Cardio.Master.CConfs()
+
+        cConfs.fetch
+          success: (collection) ->
+            result.cConfs = collection
+            return callback null
+          error: (model, error) -> callback error
+
+        return
+
+      (callback) ->
+        cLogs = new Cardio.Master.CLogs()
+        cLogs.fetch
+          success: (collection) ->
+            result.cLogs = collection
+            return callback null
+          error: (model, error) -> callback error
+        return
+
+    ], (error) =>
+
+      @rootChannel.request 'spin:page:loader', false
+      if error
+        @rootChannel.request 'message:error', error
+
+      else
+
+        collection = new Cardio.Master.Collection [],
+          cConfs: result.cConfs.models
+          cLogs:  result.cLogs.models
+          parse:  true
+
+        @rootView.content.show new Cardio.Master.View
+          collection: collection
 
     return
 

@@ -1,0 +1,79 @@
+#cardio-modal-view
+.row
+    .col-md-8.col-center
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#cardio-home
+                a Home
+            li#cardio-journals
+                a Journals
+            li.active
+                span Entry
+                i.fa.fa-fw.fa-lg.fa-pencil
+            .pull-right
+                i.fa.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading.panel-center
+                span.pull-left#cardio-detail-edit
+                    i.fa.fa-fw.fa-lg.fa-cog(style="color:gray; cursor:pointer;")
+                h3.panel-title#cardio-title
+            .panel-body
+                .col-xs-6#cardio-detail-schedule-container
+                    button.btn.btn-info#cardio-schedule-btn
+                        i.fa.fa-fw.fa-lg.fa-clock-o
+                            = ' '
+                        span Schedule
+                .col-xs-6#cardio-detail-add-container
+                    button.btn.btn-primary#cardio-detail-add
+                        i.fa.fa-fw.fa-lg.fa-pencil
+                        = ' '
+                        span Add Entry
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-body#cardio-history-panel
+                #cardio-history-view
+.row#cardio-note-container
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-body
+                #cardio-note-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading.clearfix
+                h3.panel-title Daily Challenges
+            .panel-body
+                #cardio-challenge-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Performance Level
+            .panel-body#cardio-goal-panel
+                #cardio-goal-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading
+                h3.panel-title Overall Stats
+            .panel-body
+                #cardio-calendar-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-body
+                #cardio-graph-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-body
+                #cardio-summary-view
+.row
+    .col-md-8.col-center
+        .panel.panel-default
+            .panel-heading.clearfix
+                h3.panel-title Summary
+            .panel-body
+                #cardio-workout-view

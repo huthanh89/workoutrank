@@ -22,6 +22,8 @@ class View extends Marionette.ItemView
   bindings:
     '#home-sconf-count':    'sConfs'
     '#home-slog-count':     'sLogs'
+    '#home-cconf-count':    'cConfs'
+    '#home-clog-count':     'cLogs'
     '#home-wlog-count':     'wLogs'
     '#home-user-count':     'users'
     '#home-feedback-count': 'feedbacks'
@@ -36,6 +38,10 @@ class View extends Marionette.ItemView
 
     'click #home-strengths': ->
       @rootChannel.request('strengths')
+      return
+
+    'click #home-cardios': ->
+      @rootChannel.request('cardios')
       return
 
     'click #home-logs': ->

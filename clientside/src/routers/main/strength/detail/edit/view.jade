@@ -4,7 +4,7 @@
 
             .modal-header
                 button.close(type='button', data-dismiss='modal') ×
-                h4.modal-title Create a new workout
+                h4.modal-title Edit Exercise
 
             .modal-body
                 form.form-horizontal#strength-modal-form
@@ -32,7 +32,7 @@
                                     select.form-control#strength-modal-muscle(multiple='multiple')
                             .form-group
                                 .col-xs-12
-                                    label.control-label(for='strength-modal-name') Name
+                                    label.control-label(for='strength-modal-name') Exercise Name
                                 .col-xs-12
                                     input.form-control#strength-modal-name(required minlength="1" maxlength="25")
                                     .help-block.with-errors

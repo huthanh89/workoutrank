@@ -26,13 +26,14 @@ urls = [
   '/calendar'
   '/schedule'
   '/strengths'
+  '/cardios'
   '/weights'
   '/body'
   '/timeline'
 ]
 
 for url in urls
-  router.get url, middlewares,(req, res, next) ->
+  router.get url, middlewares,(req, res) ->
     res.render 'index'
     return
 
@@ -42,7 +43,9 @@ for url in urls
 
 Home     = require './home/module'
 Strength = require './strength/module'
+Cardio   = require './cardio/module'
 Log      = require './log/module'
+CLog     = require './clog/module'
 SLog     = require './slog/module'
 WLog     = require './wlog/module'
 Schedule = require './schedule/module'
@@ -99,6 +102,26 @@ router.put '/api/slogs/:sid', middlewares, SLog.put
 
 # Delete a specific slog record.
 router.delete '/api/slogs/:sid', middlewares, SLog.delete
+
+#-------------------------------------------------------------------------------
+# Cardio Conf
+#-------------------------------------------------------------------------------
+
+router.get    '/api/cardios',      middlewares, Cardio.list
+router.get    '/api/cardios/:cid', middlewares, Cardio.get
+router.put    '/api/cardios/:cid', middlewares, Cardio.put
+router.post   '/api/cardios',      middlewares, Cardio.post
+router.delete '/api/cardios/:cid', middlewares, Cardio.delete
+
+#-------------------------------------------------------------------------------
+# Cardio Logs
+#-------------------------------------------------------------------------------
+
+router.get    '/api/clogs',      middlewares, CLog.list
+router.post   '/api/clogs',      middlewares, CLog.post
+router.get    '/api/slogs/:cid', middlewares, CLog.get
+router.put    '/api/clogs/:cid', middlewares, CLog.put
+router.delete '/api/clogs/:cid', middlewares, CLog.delete
 
 #-------------------------------------------------------------------------------
 # ALL Logs

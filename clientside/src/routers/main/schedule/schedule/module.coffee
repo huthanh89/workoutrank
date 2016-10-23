@@ -74,9 +74,9 @@ class View extends Marionette.ItemView
         title = element.find(".fc-title")
 
         if models.length
-          title.prepend("<i class='fa fa-fw fa-check'></i>")
+          title.prepend("<i class='fa fa-fw fa-check-square-o'></i>")
         else
-          title.prepend("<i class='fa fa-fw'></i>")
+          title.prepend("<i class='fa fa-fw fa-square-o'></i>")
 
         return
 

@@ -11,19 +11,30 @@
         .panel.panel-default
             .panel-heading.panel-center
                 h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-pencil-square-o
+                    i.fa.fa-fw.fa-lg.fa-book
                     = ' '
                     | Journal
             ul.list-group.home-list
                 li.list-group-item#home-strengths
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-book
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-hand-rock-o
                     a
                         b
                             = ' '
-                            | My Workouts
+                            | Strength Training
                     span.badge#home-slog-count 0
                     = ' '
                     span.badge#home-sconf-count 0
+
+                //li.list-group-item#home-cardios
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-heartbeat
+                    a
+                        b
+                            = ' '
+                            | Cardio Training
+                    span.badge#home-clog-count 0
+                    = ' '
+                    span.badge#home-cconf-count 0
+
                 li.list-group-item#home-weights
                     i.nav-icon.fa.fa-fw.fa-lg.fa-tachometer
                     a

@@ -67,7 +67,7 @@ class View extends Marionette.LayoutView
     'click #strength-help': ->
       swal
         title: 'Instructions'
-        text:  'Click "Add Workout" button to add a new workout. Click on any item on the table to start your workout.'
+        text:  'Click "Add Exercise" button to add a new exercise. Click on any item on the table to start your exercise.'
       return
 
     'click #strength-home': ->
