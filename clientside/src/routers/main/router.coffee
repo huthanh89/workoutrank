@@ -289,6 +289,72 @@ class Router extends Marionette.AppRouter
 
     return
 
+  cardioDetail: (exerciseID) ->
+
+    @navChannel.request('nav:main')
+    @rootChannel.request 'spin:page:loader', true
+
+    result = {}
+
+    async.waterfall [
+
+      (callback) ->
+
+        cConf = new Cardio.Detail.Model
+          _id: exerciseID
+
+        cConf.fetch
+          success: (model) ->
+            result.cConf = model
+            return callback null
+          error: (model, error) -> callback error
+
+        return
+
+      (callback) ->
+
+        cLogs = new Strength.Detail.Collection [],
+          id: exerciseID
+
+        cLogs.fetch
+          success: (collection) ->
+            result.cLogs = collection
+            return callback null
+          error: (model, error) -> callback error
+
+        return
+
+      (callback) ->
+        wLogs = new Weight.Collection()
+        wLogs.fetch
+          success: (wLogs) ->
+            result.wLogs = wLogs
+            return callback null
+          error: (model, error) -> callback error
+        return
+
+    ], (error) =>
+
+      @rootChannel.request 'spin:page:loader', false
+
+      if error
+        @rootChannel.request 'message:error', error
+
+      else
+
+        View = Strength.Detail.View
+
+        console.log result
+
+        @rootView.content.show new View
+          model:      result.sConf
+          collection: result.sLogs
+          wLogs:      result.wLogs
+
+      return
+
+    return
+
   calendar: ->
 
     @navChannel.request('nav:main')
