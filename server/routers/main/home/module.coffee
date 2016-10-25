@@ -15,6 +15,7 @@ WLog     = mongoose.model('wlog')
 Schedule = mongoose.model('schedule')
 Feedback = mongoose.model('feedback')
 User     = mongoose.model('user')
+Image    = mongoose.model('image')
 
 #-------------------------------------------------------------------------------
 # GET
@@ -27,7 +28,10 @@ module.get = (req, res) ->
   result =
     sConfs:    0
     sLogs:     0
-    schedules: 0
+    wLogs:     0
+    users:     0
+    feedbacks: 0
+    image:     0
 
   async.waterfall [
 
@@ -81,6 +85,19 @@ module.get = (req, res) ->
       .exec (err, count) ->
         return callback err.message if err
         result.users = count
+        return callback null
+      return
+
+    (callback) ->
+
+      Image
+      .findOne
+        user: req.session.passport.user
+        imageType: 'profile'
+      .lean()
+      .exec (err, image) ->
+        return callback err.message if err
+        result.image = image
         return callback null
       return
 

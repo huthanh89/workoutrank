@@ -26,6 +26,8 @@ require('./models/user');
 
 require('./models/wlog');
 
+require('./models/image');
+
 async = require('async');
 
 moment = require('moment');
@@ -96,7 +98,9 @@ app.use(logger('dev'));
 
 app.use(compression());
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  limit: '8mb'
+}));
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -169,7 +173,6 @@ app.get('*', function(req, res) {
 });
 
 app.use(function(err, req, res) {
-  console.log('ERROR', err);
   console.trace();
   res.render('error', {
     error: err

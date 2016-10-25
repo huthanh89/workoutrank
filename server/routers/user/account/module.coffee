@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_         = require 'lodash'
 moment    = require 'moment'
 async     = require 'async'
 mongoose  = require 'mongoose'
@@ -12,14 +11,17 @@ validator = require 'validator'
 # Models
 #-------------------------------------------------------------------------------
 
-User = mongoose.model('user')
-WLog = mongoose.model('wlog')
+User  = mongoose.model('user')
+WLog  = mongoose.model('wlog')
+Image = mongoose.model('image')
 
 #-------------------------------------------------------------------------------
 # GET
 #-------------------------------------------------------------------------------
 
 module.get = (req, res) ->
+
+  result = {}
 
   async.waterfall [
 
@@ -35,10 +37,27 @@ module.get = (req, res) ->
       .exec (err, user) ->
         return callback 'No user found' if user is null
         return callback err if err
-        return callback null, user.getPublicFields()
+
+        result.user = user.getPublicFields()
+
+        return callback null
       return
 
-  ], (err, user) ->
+    (callback) ->
+
+      Image
+      .findOne
+        user: req.session.passport.user
+        imageType: 'profile'
+      .exec (err, image) ->
+
+        return callback err if err
+        result.image = image
+        return callback null
+
+      return
+
+  ], (err) ->
 
     if err
       res
@@ -48,7 +67,7 @@ module.get = (req, res) ->
     else
       res
       .status 200
-      .json user
+      .json result
 
     return
 
@@ -72,29 +91,19 @@ module.put = (req, res) ->
       id = req.session.passport.user
       return callback 'No Session ID' if id is undefined
 
-      User
-      .findOne
+      User.findOneAndUpdate
         _id: id
-      .exec (err, user) ->
-        return callback 'No user found' if user is null
-        return callback err if err
-        return callback null, user
-      return
-
-    (user, callback) ->
-
-      user.email     = req.body.email
-      user.username  = req.body.username
-      user.firstname = req.body.firstname
-      user.lastname  = req.body.lastname
-      user.height    = req.body.height
-      user.gender    = req.body.gender
-      user.birthday  = req.body.birthday
-
-      user.save (err, user) ->
+      ,
+        email:     req.body.email
+        firstname: req.body.firstname
+        lastname:  req.body.lastname
+        height:    req.body.height
+        gender:    req.body.gender
+        birthday:  req.body.birthday
+      , (err, user) ->
         return callback 'No user found' if user is null
         return callback err.message if err
-        return callback null, user.getPublicFields()
+        return callback null, user
 
       return
 
@@ -112,6 +121,38 @@ module.put = (req, res) ->
         return callback null, user
       return
 
+    (user, callback) ->
+
+      if req.body.data.length is 0
+        Image.findOneAndRemove
+          user: req.session.passport.user
+          imageType: 'profile'
+        , (err) ->
+          return callback err.errors if err
+          return callback null, user
+
+      else
+
+        Image.findOneAndUpdate
+          user: req.session.passport.user
+          imageType: 'profile'
+        ,
+          uploadDate:       moment()
+          lastModified:     req.body.lastModified
+          lastModifiedDate: req.body.lastModifiedDate
+          name:             req.body.name
+          size:             req.body.size
+          imageType:        req.body.imageType
+          type:             req.body.type
+          data:             req.body.data
+          user:             req.session.passport.user
+        , upsert: true
+        , (err) ->
+          return callback err.errors if err
+          return callback null, user
+
+      return
+
   ], (err, user) ->
 
     if err
@@ -122,7 +163,7 @@ module.put = (req, res) ->
     else
       res
       .status 200
-      .json user
+      .json user.getPublicFields()
 
     return
 

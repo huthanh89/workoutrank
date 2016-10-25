@@ -20,6 +20,7 @@ require './models/token'
 require './models/twitter'
 require './models/user'
 require './models/wlog'
+require './models/image'
 
 #--------------------------------------------------------------
 # Imports
@@ -109,7 +110,8 @@ app.use compression()
 # cookie parser should be used before the session.
 # this order is required for the session to work.
 
-app.use bodyParser.json()
+app.use bodyParser.json
+  limit: '8mb'
 app.use bodyParser.urlencoded
   extended: false
 
@@ -198,7 +200,7 @@ app.get '*', (req, res) ->
 # catch 404 and forward to error handler
 
 app.use (err, req, res) ->
-  console.log 'ERROR', err
+  #console.log 'ERROR', err
   console.trace()
   res.render 'error', error: err
   return

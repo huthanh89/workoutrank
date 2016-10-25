@@ -18,6 +18,7 @@ class View extends Marionette.ItemView
   ui:
     bodyIcon: '#home-body-icon'
     admin:    '#home-admin-accounts-container'
+    picture:  '#home-user-picture'
 
   bindings:
     '#home-sconf-count':    'sConfs'
@@ -34,6 +35,10 @@ class View extends Marionette.ItemView
       swal
         title: 'Instructions'
         text:  'Start with adding some workouts in "My Workouts"'
+      return
+
+    'click #home-user-picture': ->
+      @rootChannel.request('profile')
       return
 
     'click #home-strengths': ->
@@ -98,6 +103,15 @@ class View extends Marionette.ItemView
     @ui.bodyIcon.addClass(if gender then 'fa-male' else 'fa-female')
 
     @stickit()
+    return
+
+  onShow: ->
+    if @model.get('image')
+      @ui.picture[0].src = @model.get('image').data
+
+    # Scroll to top of page.
+    window.scrollTo 0, 0
+
     return
 
   onBeforeDestroy: ->

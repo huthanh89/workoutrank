@@ -32,15 +32,43 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  urlRoot: '/api/account'
+  url: '/api/account'
 
   defaults:
+    _id:       ''
     firstname: ''
     lastname:  ''
     email:     ''
     height:    0
     weight:    0
+    gender:    0
     birthday:  moment()
+
+    lastModified:     ''
+    lastModifiedDate: new Date()
+    name:             ''
+    size:             0
+    imageType:        'profile'
+    uploadDate:       moment()
+    type:             ''
+    data:             ''
+
+  resetImage: ->
+    @set
+      uploadDate:       moment()
+      lastModified:     ''
+      lastModifiedDate: new Date()
+      name:             ''
+      size:             0
+      imageType:        'profile'
+      type:             ''
+      data:             ''
+    return
+
+  parse: (response) ->
+    user  = _.pick response.user,  _.keys @defaults
+    image = _.pick response.image, _.keys @defaults
+    return _.extend {}, image, user
 
 #-------------------------------------------------------------------------------
 # View
@@ -56,8 +84,11 @@ class View extends Marionette.LayoutView
     gender:   '#profile-gender'
     submit:   '#profile-submit'
     birthday: '#profile-birthday'
+    picture:  '#profile-picture'
+    upload:   '#profile-upload'
 
   bindings:
+
     '#profile-firstname': 'firstname'
     '#profile-lastname':  'lastname'
     '#profile-email':     'email'
@@ -72,6 +103,36 @@ class View extends Marionette.LayoutView
       onSet: (value) -> parseInt(value)
 
   events:
+
+    'click #profile-picture-delete': ->
+      @ui.picture.attr 'src', './images/profile-icon.png'
+      @model.resetImage()
+      return
+
+    'change #profile-upload': (object) ->
+
+      preview = @ui.picture[0]
+      file    = $(object.target)[0].files[0]
+      reader  = new FileReader()
+
+      # Upload image to preview.
+
+      reader.addEventListener 'load', =>
+        preview.src = reader.result
+
+        @model.set file
+        @model.set
+          data: reader.result
+
+        return
+      , false
+
+      # Get the image source.
+
+      if file
+        reader.readAsDataURL file
+
+      return
 
     'click #profile-home': ->
       @rootChannel.request 'home'
@@ -164,6 +225,10 @@ class View extends Marionette.LayoutView
 
     if @isNew
       swal('Hi new user! Lets get started. ', 'Please fill out these info correctly and click update. We\'ll use it for later calculations.')
+
+
+    if @model.get('data')
+      @ui.picture[0].src = @model.get 'data'
 
     return
 

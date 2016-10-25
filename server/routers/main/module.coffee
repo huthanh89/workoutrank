@@ -48,6 +48,7 @@ Log      = require './log/module'
 CLog     = require './clog/module'
 SLog     = require './slog/module'
 WLog     = require './wlog/module'
+Image    = require './image/module'
 Schedule = require './schedule/module'
 
 #-------------------------------------------------------------------------------
@@ -122,6 +123,16 @@ router.post   '/api/clogs',      middlewares, CLog.post
 router.get    '/api/slogs/:cid', middlewares, CLog.get
 router.put    '/api/clogs/:cid', middlewares, CLog.put
 router.delete '/api/clogs/:cid', middlewares, CLog.delete
+
+#-------------------------------------------------------------------------------
+# Image
+#-------------------------------------------------------------------------------
+
+router.get    '/api/images',      middlewares, Image.list
+router.post   '/api/images',      middlewares, Image.post
+router.get    '/api/images/:cid', middlewares, Image.get
+router.put    '/api/images/:cid', middlewares, Image.put
+router.delete '/api/images/:cid', middlewares, Image.delete
 
 #-------------------------------------------------------------------------------
 # ALL Logs

@@ -38,9 +38,9 @@ Account = require './account/module'
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
-router.get '/api/user',        middlewares, User.get
-router.get '/api/account',     middlewares, Account.get
-router.put '/api/account/:id', middlewares, Account.put
+router.get '/api/user',    middlewares, User.get
+router.get '/api/account', middlewares, Account.get
+router.put '/api/account', middlewares, Account.put
 
 #-------------------------------------------------------------------------------
 # Exports

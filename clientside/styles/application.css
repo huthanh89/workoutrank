@@ -645,6 +645,33 @@ Logs
 /*-----------------------------------------------------------------------------
 Home
 -----------------------------------------------------------------------------*/
+#home-info-list {
+  display: inline-block;
+  list-style-type: none;
+  position: relative;
+  right: 20px;
+}
+#home-user-heading {
+  height: 45px;
+}
+#home-user-picture-container {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  left: 23px;
+  top: 3px;
+  border: rgba(149, 147, 151, 0.62) 1px solid;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 50%;
+}
+#home-user-picture {
+  position: relative;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+}
 .home-list {
   cursor: pointer;
 }
@@ -679,6 +706,30 @@ Profile
 }
 .profile-weight-btn {
   z-index: 0!important;
+}
+#profile-picture-container {
+  position: relative;
+  margin-left: 50%;
+  right: 100px;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  border: rgba(90, 89, 91, 0.82) 2px solid;
+}
+#profile-picture {
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+}
+#profile-picture-delete {
+  cursor: pointer;
+  margin-left: 50%;
+  position: absolute;
+  top: 55px;
+  left: 100px;
+  color: rgba(67, 68, 70, 0.61);
 }
 /*-----------------------------------------------------------------------------
 Custom classes
