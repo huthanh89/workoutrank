@@ -48,11 +48,16 @@ class View extends Marionette.LayoutView
       @rootChannel.request 'home'
       return
 
+    'click #account-logout': ->
+      @rootChannel.request('logout')
+      return
+
   constructor: ->
     super
     @rootChannel = Backbone.Radio.channel('root')
 
   onShow: ->
+
     if @model.get('provider') is 'local'
       @showChildView 'summary', new Local.View
         model: @model

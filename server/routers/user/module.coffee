@@ -33,14 +33,18 @@ router.get '/profile', middlewares, index
 
 User    = require './user/module'
 Account = require './account/module'
+Profile = require './profile/module'
 
 #-------------------------------------------------------------------------------
 # API Routes for Resources.
 #-------------------------------------------------------------------------------
 
 router.get '/api/user',    middlewares, User.get
+
 router.get '/api/account', middlewares, Account.get
-router.put '/api/account', middlewares, Account.put
+
+router.get '/api/profile', middlewares, Profile.get
+router.put '/api/profile', middlewares, Profile.put
 
 #-------------------------------------------------------------------------------
 # Exports

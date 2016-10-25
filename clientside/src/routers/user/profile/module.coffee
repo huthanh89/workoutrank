@@ -32,7 +32,7 @@ class Model extends Backbone.Model
 
   idAttribute: '_id'
 
-  url: '/api/account'
+  url: '/api/profile'
 
   defaults:
     _id:       ''
