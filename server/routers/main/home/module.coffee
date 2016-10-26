@@ -26,12 +26,14 @@ Image    = mongoose.model('image')
 module.get = (req, res) ->
 
   result =
-    sConfs:    0
-    sLogs:     0
-    wLogs:     0
-    users:     0
-    feedbacks: 0
-    image:     0
+    sConfs:        0
+    sLogs:         0
+    wLogs:         0
+    users:         0
+    feedbacks:     0
+    profilePic:    0
+    imageCount:    0
+    scheduleCount: 0
 
   async.waterfall [
 
@@ -89,6 +91,26 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+      Image
+      .count()
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.imageCount = count
+        return callback null
+      return
+
+    (callback) ->
+      Schedule
+      .count()
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.scheduleCount = count
+        return callback null
+      return
+
+    (callback) ->
 
       Image
       .findOne
@@ -97,7 +119,7 @@ module.get = (req, res) ->
       .lean()
       .exec (err, image) ->
         return callback err.message if err
-        result.image = image
+        result.profilePic = image
         return callback null
       return
 

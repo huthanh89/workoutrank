@@ -28,6 +28,8 @@ class View extends Marionette.ItemView
     '#home-wlog-count':     'wLogs'
     '#home-user-count':     'users'
     '#home-feedback-count': 'feedbacks'
+    '#home-image-count':    'imageCount'
+    '#home-schedule-count': 'scheduleCount'
 
   events:
 
@@ -106,8 +108,9 @@ class View extends Marionette.ItemView
     return
 
   onShow: ->
-    if @model.get('image')
-      @ui.picture[0].src = @model.get('image').data
+
+    if @model.get('profilePic')
+      @ui.picture[0].src = @model.get('profilePic').data
 
     # Scroll to top of page.
     window.scrollTo 0, 0
