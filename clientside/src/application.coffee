@@ -137,7 +137,6 @@ class Application extends Marionette.Application
           debug:             false
           newestOnTop:       false
           progressBar:       true
-          positionClass:    'toast-top-full-width'
           preventDuplicates: false
           onclick:           null
           showDuration:     '10000'
@@ -148,6 +147,7 @@ class Application extends Marionette.Application
           hideEasing:       'linear'
           showMethod:       'fadeIn'
           hideMethod:       'fadeOut'
+          positionClass:    'toast-top-center'
 
         Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
