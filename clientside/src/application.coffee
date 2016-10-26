@@ -138,10 +138,10 @@ class Application extends Marionette.Application
           progressBar:       true
           preventDuplicates: false
           onclick:           null
-          showDuration:     '10000'
-          hideDuration:     '10000'
-          timeOut:          '10000'
-          extendedTimeOut:  '10000'
+          showDuration:     '5000'
+          hideDuration:     '5000'
+          timeOut:          '5000'
+          extendedTimeOut:  '5000'
           showEasing:       'swing'
           hideEasing:       'linear'
           showMethod:       'fadeIn'
