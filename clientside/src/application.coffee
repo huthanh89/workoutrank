@@ -129,7 +129,6 @@ class Application extends Marionette.Application
 
         #if response.status is 401
         #  rootView.showChildView 'content', new ErrorView()
-
         #else
 
         Toastr.options =
