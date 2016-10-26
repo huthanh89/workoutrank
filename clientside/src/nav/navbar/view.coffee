@@ -101,6 +101,11 @@ class View extends Marionette.ItemView
       @channel.request 'logout'
       return
 
+    'click .nav-contact': ->
+      Radio.channel('root').request 'drawer:close'
+      @channel.request 'feedback'
+      return
+
   constructor: ->
     super
     @channel = Backbone.Radio.channel('root')
