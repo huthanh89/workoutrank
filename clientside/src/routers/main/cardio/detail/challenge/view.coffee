@@ -41,13 +41,13 @@ class View extends Marionette.ItemView
     help:         '#cardio-challenge-help'
     challenges:   '#cardio-challenges'
 
-    goldRep:      '#cardio-challenge-rep-gold'
+    goldDuration:      '#cardio-challenge-Duration-gold'
     goldWeight:   '#cardio-challenge-weight-gold'
 
-    silverRep:    '#cardio-challenge-rep-silver'
+    silverDuration:    '#cardio-challenge-rep-silver'
     silverWeight: '#cardio-challenge-weight-silver'
 
-    bronzeRep:    '#cardio-challenge-rep-bronze'
+    bronzeDuration:    '#cardio-challenge-rep-bronze'
     bronzeWeight: '#cardio-challenge-weight-bronze'
 
     weightLabel:  '.cardio-challenge-weight'
@@ -55,7 +55,7 @@ class View extends Marionette.ItemView
   constructor: (options) ->
     super
     @mergeOptions options, [
-      'sLogs'
+      'cLogs'
       'date'
       'type'
     ]
@@ -65,11 +65,11 @@ class View extends Marionette.ItemView
 
     # Get value for each day.
 
-    _.each @sLogs.models, (model) =>
+    _.each @cLogs.models, (model) =>
       modelDate  = moment(model.get('date')).startOf('day')
       searchDate = moment(@date).startOf('day')
       if modelDate.isBefore searchDate
-        repValues.push model.get('rep')
+        repValues.push model.get('duration')
         weightValues.push model.get('weight')
       return
 
@@ -79,13 +79,13 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.goldRep.html @challenge.rep.gold
+    @ui.goldDuration.html @challenge.rep.gold
     @ui.goldWeight.html @challenge.weight.gold
 
-    @ui.silverRep.html @challenge.rep.silver
+    @ui.silverDuration.html @challenge.rep.silver
     @ui.silverWeight.html @challenge.weight.silver
 
-    @ui.bronzeRep.html @challenge.rep.bronze
+    @ui.bronzeDuration.html @challenge.rep.bronze
     @ui.bronzeWeight.html @challenge.weight.bronze
 
 
@@ -95,7 +95,7 @@ class View extends Marionette.ItemView
     return
 
   onShow: ->
-    @ui.weightLabel.hide() if @type is 'rep'
+    @ui.weightLabel.hide() if @type is 'duration'
     return
 
   repReduce: (values) ->

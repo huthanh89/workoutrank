@@ -36,7 +36,7 @@ class View extends Marionette.ItemView
     'click #home-help': ->
       swal
         title: 'Instructions'
-        text:  'Start with adding some workouts in "My Workouts"'
+        text:  'Start with adding some workouts in "Strength Training" and "Cardio Training"'
       return
 
     'click #home-user-picture': ->

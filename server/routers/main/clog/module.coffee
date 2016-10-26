@@ -2,6 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment   = require 'moment'
 async    = require 'async'
 mongoose = require 'mongoose'
 
@@ -52,9 +53,9 @@ module.get = (req, res) ->
 
     (callback) ->
 
-      WLog
+      CLog
       .find
-        exercise: req.params.sid
+        exerciseID: req.params.cid
       .lean()
       .exec (err, clogs) ->
         return callback err.message if err
@@ -80,16 +81,23 @@ module.post = (req, res) ->
   async.waterfall [
 
     (callback) ->
-
+      
+      end   = moment req.body.date
+      start = moment(end).subtract(req.body.duration, 'days')
+      
       # Create a new clog entry.
 
-      WLog.create
-        date:     req.body.date
-        note:     req.body.note
-        weight:   req.body.weight
-        user:     req.session.passport.user
+      CLog.create
+        created:    moment()
+        note:       req.body.note
+        intensity:  req.body.intensity
+        speed:      req.body.speed
+        endDate:    end
+        startDate:  start
+        user:       req.session.passport.user
+        exerciseID: req.body.exerciseID
       , (err, clog) ->
-        return callback err.message if err
+        return callback err.errors if err
         return callback null, clog
 
   ], (err, clog) ->
@@ -118,7 +126,7 @@ module.put = (req, res) ->
 
     (callback) ->
 
-      WLog.findById req.params.sid, (err, clog) ->
+      CLog.findById req.params.Cid, (err, clog) ->
         return callback err.message if err
         return callback null, clog
 
@@ -126,10 +134,16 @@ module.put = (req, res) ->
 
     (clog, callback) ->
 
-      clog.date    = req.body.date
-      clog.muscle  = req.body.muscle
-      clog.note    = req.body.note
-      clog.session = req.body.session
+      end   = moment req.body.date
+      start = moment(end).subtract(req.body.duration, 'days')
+
+      clog.created    = moment()
+      clog.note       = req.body.note
+      clog.intensity  = req.body.intensity
+      clog.speed      = req.body.speed
+      clog.endDate    = end
+      clog.startDate  = start
+      clog.exerciseID = req.body.exerciseID
 
       clog.save (err, clog) ->
         return callback err.message if err
@@ -159,7 +173,7 @@ module.delete = (req, res) ->
 
     (callback) ->
 
-      WLog.findById req.params.sid, (err, clog) ->
+      CLog.findById req.params.cid, (err, clog) ->
         return callback err.message if err
         return callback null, clog
       return

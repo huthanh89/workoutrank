@@ -23,7 +23,7 @@ require 'backbone.stickit'
 
 class Collection extends Backbone.Collection
 
-  comparator: (model) -> -moment(model.get('date')).utc()
+  comparator: (model) -> -moment(model.get('created')).utc()
 
 #-------------------------------------------------------------------------------
 # Null View
@@ -53,10 +53,10 @@ class ItemView extends Marionette.ItemView
       observe: 'date'
       onGet: (value) -> moment(value).format('h:mm A')
 
-    '.cardio-table-td-rep': 'rep'
+    '.cardio-table-td-rep': 'duration'
 
     '.cardio-table-td-rep-change':
-      observe: 'changeRep'
+      observe: 'changeDuration'
       updateMethod: 'html'
       onGet: (value) ->
         if value > 0
@@ -67,7 +67,7 @@ class ItemView extends Marionette.ItemView
           return "<span style='color:green;'>+#{value}</span>"
 
     '.cardio-table-td-rep-percent':
-      observe:      'percentRep'
+      observe:      'percentDuration'
       updateMethod: 'html'
       onGet: (value) ->
         if value > 0
@@ -78,7 +78,7 @@ class ItemView extends Marionette.ItemView
           return "<span style='color:green;'>(+#{value}%)</span>"
 
     '.cardio-table-td-rep-growth':
-      observe:      'changeRep'
+      observe:      'changeDuration'
       updateMethod: 'html'
       onGet: (value) ->
 
@@ -131,7 +131,7 @@ class ItemView extends Marionette.ItemView
 
   events:
     'click .cardio-table-td-remove': ->
-      @model.urlRoot = '/api/slogs'
+      @model.urlRoot = '/api/cLogs'
       @model.destroy
         wait: true
       return
@@ -164,28 +164,26 @@ class View extends Marionette.CompositeView
 
   constructor: (options) ->
 
-    clean = options.sLogs.clone()
+    clean = options.cLogs.clone()
 
-    models = options.sLogs.filter (model, index) ->
+    models = options.cLogs.filter (model, index) ->
       dateA  = moment(model.get('date')).startOf('day')
       dateB  = moment(options.date).startOf('day')
       result = dateA.isSame(dateB)
 
       if result and (index > 0)
-        prev    =  clean.at(index - 1).get('rep')
-        current = model.get('rep')
-        model.set 'changeRep',  _.round current - prev , 2
-        model.set 'percentRep', _.round (current / prev) * 100 - 100 , 2
+        prev    =  clean.at(index - 1).get('duration')
+        current = model.get('duration')
+        model.set 'changeDuration',  _.round current - prev , 2
+        model.set 'percentDuration', _.round (current / prev) * 100 - 100 , 2
 
         prev    =  clean.at(index - 1).get('weight')
         current = model.get('weight')
         model.set 'changeWeight',  _.round current - prev , 2
         model.set 'percentWeight', _.round (current / prev) * 100 - 100 , 2
       else
-        model.set 'changeRep',     0
-        model.set 'percentRep',    0
-        model.set 'changeWeight',  0
-        model.set 'percentWeight', 0
+        model.set 'changeDuration',     0
+        model.set 'percentDuration',    0
 
       return result
 

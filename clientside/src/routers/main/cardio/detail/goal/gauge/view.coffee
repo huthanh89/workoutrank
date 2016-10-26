@@ -54,7 +54,7 @@ class View extends Marionette.ItemView
 
   serializeData: ->
     return {
-      label: if @type is 'rep' then 'Reps' else 'Weight (lb)'
+      label: if @type is 'duration' then 'Durations' else 'Weight (lb)'
     }
 
   bindings:
@@ -80,7 +80,7 @@ class View extends Marionette.ItemView
     min    = @model.get('bronze')
     max    = @model.get('gold')
     min    = if min is max then 0 else min
-    color  = if @type is 'rep' then '#00ffa4' else '#FE7935'
+    color  = if @type is 'duration' then '#00ffa4' else '#FE7935'
 
     opts =
       lines:            12
@@ -143,7 +143,7 @@ class View extends Marionette.ItemView
     .value()
 
     if values.length > 0
-      if @type is 'rep' then @reduceRep(values) else @reduceWeight(values)
+      if @type is 'duration' then @reduceDuration(values) else @reduceWeight(values)
     else
       @model.set
         bronze: 0
@@ -179,7 +179,7 @@ class View extends Marionette.ItemView
 
     return
 
-  reduceRep: (values) ->
+  reduceDuration: (values) ->
 
     decimals = 0
 

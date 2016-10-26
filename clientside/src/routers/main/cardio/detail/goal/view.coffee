@@ -27,8 +27,8 @@ class View extends Marionette.LayoutView
     super
     @mergeOptions options, [
       'date'
-      'sLogs'
-      'sConf'
+      'cLogs'
+      'cConf'
     ]
 
   onRender: ->
@@ -36,7 +36,7 @@ class View extends Marionette.LayoutView
     weightData = []
     repData    = []
 
-    @sLogs.each (model) ->
+    @cLogs.each (model) ->
 
       x = moment(model.get('date')).valueOf()
 
@@ -48,14 +48,14 @@ class View extends Marionette.LayoutView
       repData.push
         id: x
         x:  x
-        y:  model.get('rep')
+        y:  model.get('duration')
 
     @showChildView 'repGauge', new GaugeView
       logs: repData
       date: @date
-      type: 'rep'
+      type: 'duration'
 
-    if @sConf?.get('body') is false
+    if @cConf?.get('body') is false
       @showChildView 'weightGauge', new GaugeView
         logs: weightData
         date: @date

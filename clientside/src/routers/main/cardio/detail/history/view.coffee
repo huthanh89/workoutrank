@@ -26,8 +26,8 @@ class View extends Marionette.LayoutView
     @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'channel'
-      'sLogs'
-      'sConf'
+      'cLogs'
+      'cConf'
       'date'
     ]
 
@@ -38,7 +38,7 @@ class View extends Marionette.LayoutView
       channel: @channel
 
     @showChildView 'table', new TableView
-      sLogs:   @sLogs
+      cLogs:   @cLogs
       channel: @channel
       date:    @date
     return

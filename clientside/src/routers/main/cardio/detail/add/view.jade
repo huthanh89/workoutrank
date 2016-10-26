@@ -17,23 +17,22 @@
                                 = ' - '
                                 i
                                     u#cardio-modal-timestamp-time
-                    .form-group#cardio-modal-weight-container
-                        .col-xs-12
-                            label.control-label Weight
-                        .col-xs-12
-                            input.form-control#cardio-modal-weight(type="number", placeholder='' required)
-                    .form-group#cardio-modal-weight-label-container
-                        .col-xs-12
-                            label.control-label Using Body
-                        .col-xs-12
-                            p.form-control-static
-                                span#cardio-modal-weight-label
                     hr
                     .form-group
                         .col-xs-12
-                            label.control-label Reps
+                            label.control-label Duration
                         .col-xs-12
-                            input.form-control#cardio-modal-rep(type="number", placeholder='' required)
+                            input.form-control#cardio-modal-duration(type="number", placeholder='Required' required)
+                    .form-group
+                        .col-xs-12
+                            label.control-label Intensity (0 - 100)
+                        .col-xs-12
+                            input.form-control#cardio-modal-intensity(type="number", placeholder='Optional')
+                    .form-group
+                        .col-xs-12
+                            label.control-label Speed
+                        .col-xs-12
+                            input.form-control#cardio-modal-speed(type="number", placeholder='Optional')
                     .form-group
                         .col-xs-12
                             .checkbox

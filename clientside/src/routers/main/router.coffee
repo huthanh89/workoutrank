@@ -55,7 +55,7 @@ class Router extends Marionette.AppRouter
 
       'cardio:detail': (exerciseID) =>
         @rootChannel.request 'navigate', "cardio/#{exerciseID}"
-        @strengthDetail(exerciseID)
+        @cardioDetail(exerciseID)
         return
 
       'calendar': =>
@@ -313,7 +313,7 @@ class Router extends Marionette.AppRouter
 
       (callback) ->
 
-        cLogs = new Strength.Detail.Collection [],
+        cLogs = new Cardio.Detail.Collection [],
           id: exerciseID
 
         cLogs.fetch
@@ -322,15 +322,6 @@ class Router extends Marionette.AppRouter
             return callback null
           error: (model, error) -> callback error
 
-        return
-
-      (callback) ->
-        wLogs = new Weight.Collection()
-        wLogs.fetch
-          success: (wLogs) ->
-            result.wLogs = wLogs
-            return callback null
-          error: (model, error) -> callback error
         return
 
     ], (error) =>
@@ -342,14 +333,11 @@ class Router extends Marionette.AppRouter
 
       else
 
-        View = Strength.Detail.View
-
-        console.log result
+        View = Cardio.Detail.View
 
         @rootView.content.show new View
-          model:      result.sConf
-          collection: result.sLogs
-          wLogs:      result.wLogs
+          model:      result.cConf
+          collection: result.cLogs
 
       return
 

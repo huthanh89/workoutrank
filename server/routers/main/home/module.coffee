@@ -11,6 +11,8 @@ mongoose = require 'mongoose'
 
 Strength = mongoose.model('strength')
 SLog     = mongoose.model('slog')
+Cardio   = mongoose.model('cardio')
+CLog     = mongoose.model('clog')
 WLog     = mongoose.model('wlog')
 Schedule = mongoose.model('schedule')
 Feedback = mongoose.model('feedback')
@@ -28,6 +30,8 @@ module.get = (req, res) ->
   result =
     sConfs:        0
     sLogs:         0
+    cConfs:        0
+    cLogs:         0
     wLogs:         0
     users:         0
     feedbacks:     0
@@ -38,6 +42,7 @@ module.get = (req, res) ->
   async.waterfall [
 
     (callback) ->
+
       Strength
       .count
         user: req.session.passport.user
@@ -49,6 +54,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       SLog
       .count
         user: req.session.passport.user
@@ -60,6 +66,31 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
+      Cardio
+      .count
+        user: req.session.passport.user
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.cConfs = count
+        return callback null
+      return
+
+    (callback) ->
+
+      CLog
+      .count
+        user: req.session.passport.user
+      .lean()
+      .exec (err, count) ->
+        return callback err.message if err
+        result.cLogs = count
+        return callback null
+      return
+
+    (callback) ->
+
       WLog
       .count
         user: req.session.passport.user
@@ -71,6 +102,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       Feedback
       .count()
       .lean()
@@ -81,6 +113,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       User
       .count()
       .lean()
@@ -91,6 +124,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       Image
       .count()
       .lean()
@@ -101,6 +135,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       Schedule
       .count()
       .lean()
@@ -124,6 +159,7 @@ module.get = (req, res) ->
       return
 
     (callback) ->
+
       Schedule
       .findOne
         user: req.session.passport.user

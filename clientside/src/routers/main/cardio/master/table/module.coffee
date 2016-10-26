@@ -89,7 +89,6 @@ class ItemView extends Marionette.ItemView
 
   events:
     'click': ->
-      console.log  @model.id
       @rootChannel.request 'cardio:detail', @model.get('_id')
       return
 

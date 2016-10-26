@@ -41,7 +41,25 @@ class Collection extends Backbone.Collection
 
   constructor: (attributes, options) ->
     super
-    @url = "/api/cardios/#{options.id}/log"
+    @url = "/api/clogs/#{options.id}"
+
+  parse: (response) ->
+
+    return _.map response, (response) ->
+
+      start    = response.startDate
+      end      = response.endDate
+      ms       = moment(end).diff moment(start)
+      duration = moment.duration(ms)
+
+      return {
+        date:      response.created
+        exercise:  response.exerciseID
+        note:      response.note
+        duration:  duration.asMinutes()
+        intensity: response.intensity
+        speed:     response.speed
+      }
 
 #-------------------------------------------------------------------------------
 # View
@@ -80,7 +98,7 @@ class View extends Marionette.LayoutView
     'click #home-help': ->
       swal
         title: 'Instructions'
-        text:  'Click the "Add Entry" button to add your workout set. Repeat to add more sets.'
+        text:  'Click the "Add Entry" button to add your workout set. Durationeat to add more sets.'
       return
 
     'click #cardio-home': ->
@@ -146,7 +164,7 @@ class View extends Marionette.LayoutView
           wLogs:      @wLogs
           body:       @model.get 'body'
           model: new Add.Model
-            exercise: @model.id
+            exerciseID: @model.id
         return
 
       'change:date': (date) =>
@@ -155,17 +173,14 @@ class View extends Marionette.LayoutView
         return
 
     @summaryModel = new Workout.Model {},
-      sConf: @model
-      sLogs: @collection
+      cConf: @model
+      cLogs: @collection
 
   onRender: ->
     @stickit()
     return
 
   onShow: ->
-
-    #@ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
-    #@ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
 
     @updateViews()
 
@@ -177,51 +192,51 @@ class View extends Marionette.LayoutView
   updateAfterDateChange: ->
 
     @showChildView 'history', new HistoryView
-      sLogs:   @collection
-      sConf:   @model
+      cLogs:   @collection
+      cConf:   @model
       channel: @channel
       date:    @date
 
+    ###
     @showChildView 'challenge', new ChallengeView
-      sLogs: @collection
+      cLogs: @collection
       date:  @date
-      type:  if @model.get('body') is true then 'rep' else 'weight'
+      type:  if @model.get('body') is true then 'duration' else 'weight'
 
     @showChildView 'goal', new GoalView
-      sLogs: @collection
-      sConf: @model
+      cLogs: @collection
+      cConf: @model
       date:  @date
+###
     return
 
   updateViews: ->
 
-    ###
-
     @showChildView 'note', new NoteView
-      sConf: @model
+      cConf: @model
 
+    ###
     @showChildView 'goal', new GoalView
-      sLogs: @collection
+      cLogs: @collection
       date:  @date
 
     @showChildView 'graph', new GraphView
-      sLogs: @collection
-      sConf: @model
+      cLogs: @collection
+      cConf: @model
 
     @showChildView 'calendar', new CalendarView
       collection: @collection
-      type: if @model.get('body') is true then 'rep' else 'weight'
+      type: if @model.get('body') is true then 'duration' else 'weight'
 
     @showChildView 'summary', new SummaryView
-      sLogs: @collection
-      sConf: @model
+      cLogs: @collection
+      cConf: @model
 
     @showChildView 'workout', new Workout.View
       model: @summaryModel
-
+###
     @updateAfterDateChange()
 
-###
 
     return
 

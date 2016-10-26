@@ -29,7 +29,7 @@ class View extends Marionette.ItemView
 
   constructor: (options) ->
     super _.extend {}, options,
-      model: options.sConf
+      model: options.cConf
 
   onRender: ->
     @stickit @model

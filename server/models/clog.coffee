@@ -9,21 +9,22 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 schema = mongoose.Schema
-  date:
+  created:
     type: Date
     required: true
   note:
     type: String
   intensity:
     type: Number
-    required: true
-  start:
+  speed:
+    type: Number
+  startDate:
     type: Date
     required: true
-  end:
+  endDate:
     type: Date
     required: true
-  cardio:
+  exerciseID:
     type: mongoose.Schema.ObjectId
     required: true
   user:

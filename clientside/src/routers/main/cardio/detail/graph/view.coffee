@@ -32,7 +32,7 @@ chartModel = (model, collection) ->
     repData.push
       id: x
       x:  x
-      y:  model.get('rep')
+      y:  model.get('duration')
 
   return new Backbone.Model {
     exerciseID:   model.id
@@ -60,7 +60,7 @@ seriesData = (model, type, chart) ->
     darkerColor = '#1ebd84'
 
     return _.assign result,
-      name: 'Reps'
+      name: 'Durations'
       data:  model.get('repData')
       color:     color
       lineColor:  darkerColor
@@ -137,12 +137,12 @@ class View extends Marionette.ItemView
   ui:
     container:   '#cardio-log-graph-container'
     chartWeight: '#cardio-log-graph-weight'
-    chartRep:    '#cardio-log-graph-rep'
+    chartDuration:    '#cardio-log-graph-rep'
 
   constructor: (options) ->
 
     super _.extend {}, options,
-      model: chartModel options.sConf, options.sLogs
+      model: chartModel options.cConf, options.cLogs
 
     @rootChannel = Backbone.Radio.channel('root')
     @charts      = []
@@ -151,7 +151,7 @@ class View extends Marionette.ItemView
   addChart: (container, model, type) ->
 
     name  = model.get('name')
-    title = if type is 0 then 'Reps' else 'Weights'
+    title = if type is 0 then 'Durations' else 'Weights'
     data  = if type is 0 then @model.get('repData') else @model.get('weightData')
     chart = new Highstocks.StockChart
 
@@ -230,7 +230,7 @@ class View extends Marionette.ItemView
 
   onShow: ->
 
-    @addChart(@ui.chartRep[0], @model, 0)
+    @addChart(@ui.chartDuration[0], @model, 0)
     @addChart(@ui.chartWeight[0], @model, 1)
 
     @ui.container.bind 'mousemove touchmove touchstart', (e) =>

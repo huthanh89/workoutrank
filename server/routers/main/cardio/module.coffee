@@ -2,9 +2,9 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+moment   = require 'moment'
 async    = require 'async'
 mongoose = require 'mongoose'
-Validate = require '../../validate'
 
 #-------------------------------------------------------------------------------
 # Models
@@ -12,27 +12,6 @@ Validate = require '../../validate'
 
 Cardio = mongoose.model('cardio')
 CLog   = mongoose.model('clog')
-
-#-------------------------------------------------------------------------------
-# Schema for POST and PUT validation
-#-------------------------------------------------------------------------------
-
-schema =
-  date: [
-    method: 'isDate'
-  ]
-  name: [
-    method: 'isLength'
-    options:
-      min: 1
-      max: 25
-  ]
-  note: [
-    method: 'isLength'
-    options:
-      min: 0
-      max: 10
-  ]
 
 #-------------------------------------------------------------------------------
 # List
@@ -78,7 +57,7 @@ module.get = (req, res) ->
     (callback) ->
 
       Cardio.findOne
-        _id: req.params.sid
+        _id: req.params.cid
       .exec (err, cardio) ->
         return callback err.message if err
         return callback null, cardio
@@ -106,23 +85,11 @@ module.post = (req, res) ->
 
     (callback) ->
 
-      return Validate.isValid(req.body, schema, callback)
-
-    (callback) ->
-
-      error = null
-      error = 'Select which muscle will be targeted' if req.body.muscle.length is 0
-
-      return callback error if error
-      return callback null
-
-    (callback) ->
-
       Cardio.create
-        date:   req.body.date
-        name:   req.body.name
-        note:   req.body.note
-        user:   req.session.passport.user
+        date: moment()
+        name: req.body.name
+        note: req.body.note
+        user: req.session.passport.user
 
       , (err, cardio) ->
         return callback err.message if err
@@ -158,11 +125,7 @@ module.put = (req, res) ->
 
     (callback) ->
 
-      return Validate.isValid(req.body, schema, callback)
-
-    (callback) ->
-
-      Cardio.findById req.params.sid, (err, cardio) ->
+      Cardio.findById req.params.cid, (err, cardio) ->
         return callback err.message if err
         return callback null, cardio
 
@@ -170,9 +133,9 @@ module.put = (req, res) ->
 
     (cardio, callback) ->
 
-      cardio.date   = req.body.date
-      cardio.name   = req.body.name
-      cardio.note   = req.body.note
+      cardio.date = req.body.date
+      cardio.name = req.body.name
+      cardio.note = req.body.note
 
       cardio.save (err, entry) ->
         return callback err.message if err
@@ -201,6 +164,7 @@ module.delete = (req, res) ->
   async.waterfall [
 
     (callback) ->
+
       Cardio.findById req.params.sid, (err, cardio) ->
         return callback err.message if err
         return callback null, cardio

@@ -97,23 +97,23 @@ class View extends Marionette.ItemView
       model: new Model()
 
     @mergeOptions options, [
-      'sConf'
-      'sLogs'
+      'cConf'
+      'cLogs'
     ]
 
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()
-    @updateModel(@sConf, @sLogs)
+    @updateModel(@cConf, @cLogs)
     return
 
-  updateModel: (sConf, sLogs) ->
+  updateModel: (cConf, cLogs) ->
 
     weightData = []
     repData    = []
 
-    sLogs.each (model) ->
+    cLogs.each (model) ->
 
       x = moment(model.get('date')).valueOf()
 
@@ -125,15 +125,15 @@ class View extends Marionette.ItemView
       repData.push
         id: x
         x:  x
-        y:  model.get('rep')
+        y:  model.get('duration')
 
     wieght = @reduce weightData
     rep    = @reduce repData
 
     @model.set
-      name:       sConf.get('name')
-      exerciseID: sConf.id
-      muscle:     sConf.get('muscle')
+      name:       cConf.get('name')
+      exerciseID: cConf.id
+      muscle:     cConf.get('muscle')
       weightMin:  wieght.min
       weightMax:  wieght.max
       weightAvg:  wieght.avg

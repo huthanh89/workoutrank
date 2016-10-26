@@ -89,19 +89,10 @@ router.delete '/api/strengths/:sid', middlewares, Strength.delete
 # Strength Logs
 #-------------------------------------------------------------------------------
 
-# Get all slogs.
-router.get '/api/slogs', middlewares, SLog.list
-
-# Post a new slog record.
-router.post '/api/slogs', middlewares, SLog.post
-
-# Get a specific slog.
-router.get '/api/slogs/:sid', middlewares, SLog.get
-
-# Edit a specific slog record.
-router.put '/api/slogs/:sid', middlewares, SLog.put
-
-# Delete a specific slog record.
+router.get    '/api/slogs',      middlewares, SLog.list
+router.post   '/api/slogs',      middlewares, SLog.post
+router.get    '/api/slogs/:sid', middlewares, SLog.get
+router.put    '/api/slogs/:sid', middlewares, SLog.put
 router.delete '/api/slogs/:sid', middlewares, SLog.delete
 
 #-------------------------------------------------------------------------------
@@ -120,7 +111,7 @@ router.delete '/api/cardios/:cid', middlewares, Cardio.delete
 
 router.get    '/api/clogs',      middlewares, CLog.list
 router.post   '/api/clogs',      middlewares, CLog.post
-router.get    '/api/slogs/:cid', middlewares, CLog.get
+router.get    '/api/clogs/:cid', middlewares, CLog.get
 router.put    '/api/clogs/:cid', middlewares, CLog.put
 router.delete '/api/clogs/:cid', middlewares, CLog.delete
 

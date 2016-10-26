@@ -17,31 +17,22 @@ require 'backbone.stickit'
 require 'bootstrap.datetimepicker'
 
 #-------------------------------------------------------------------------------
-# Given an array of models, return the latest date.
-#-------------------------------------------------------------------------------
-
-lastWeight = (collection) ->
-  model = _.maxBy collection.models, (model) -> model.get('date')
-  return model.get('weight')
-
-#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
 
-  url: '/api/slogs'
+  url: '/api/clogs'
 
   idAttribute: '_id'
 
   defaults:
-    date:     moment()
-    name:     ''
-    exercise: ''
-    rep:      null
-    weight:   null
-    note:     ''
-    body:     false
+    date:       moment()
+    exerciseID: ''
+    duration:   null
+    intensity:  null
+    speed:      null
+    note:       ''
 
 #-------------------------------------------------------------------------------
 # View
@@ -53,15 +44,14 @@ class View extends Marionette.ItemView
 
   ui:
     dialog:     '.modal'
-    rep:        '#cardio-modal-rep'
-    weight:     '#cardio-modal-weight'
     submit:     '#cardio-modal-submit'
     date:       '#cardio-modal-date'
     time:       '#cardio-modal-time'
-    weightView: '#cardio-modal-weight-container'
-    labelView:  '#cardio-modal-weight-label-container'
     noteEnable: '#cardio-modal-note-enable'
     note:       '#cardio-modal-note'
+    duration:   '#cardio-modal-duration'
+    intensity:  '#cardio-modal-intensity'
+    speed:      '#cardio-modal-speed'
 
   bindings:
 
@@ -73,17 +63,17 @@ class View extends Marionette.ItemView
       observe: 'date'
       onGet: (value) -> moment(value).format('hh:mm a')
 
-    '#cardio-modal-rep':
-      observe: 'rep'
+    '#cardio-modal-duration':
+      observe: 'duration'
       onSet: (value) -> parseInt(value)
 
-    '#cardio-modal-weight':
-      observe: 'weight'
+    '#cardio-modal-intensity':
+      observe: 'intensity'
       onSet: (value) -> parseInt(value)
 
-    '#cardio-modal-weight-label':
-      observe: 'weight'
-      onGet: (value) -> value + ' lbs'
+    '#cardio-modal-speed':
+      observe: 'speed'
+      onSet: (value) -> parseInt(value)
 
     '#cardio-modal-note': 'note'
 
@@ -112,8 +102,9 @@ class View extends Marionette.ItemView
       return
 
     'hidden.bs.modal': ->
-      @ui.rep.TouchSpin('destroy')
-      @ui.weight.TouchSpin('destroy')
+      @ui.duration.TouchSpin('destroy')
+      @ui.intensity.TouchSpin('destroy')
+      @ui.speed.TouchSpin('destroy')
       @unstickit()
       return
 
@@ -127,8 +118,7 @@ class View extends Marionette.ItemView
     @rootChannel = Backbone.Radio.channel('root')
 
     @mergeOptions options, [
-      'wLogs'
-      'body'
+      'cLogs'
     ]
 
     if options.date
@@ -139,35 +129,33 @@ class View extends Marionette.ItemView
 
     if @collection.length
       latestModel = @collection.at(@collection.length - 1)
-      @model.set 'rep', latestModel.get('rep')
-      @model.set 'weight', latestModel.get('weight')
-
-    user = Backbone.Radio.channel('user').request 'user'
-
-    # Set to latest wLogs entry.
-
-    if options.body and @wLogs.length
-      @model.set 'weight', lastWeight @wLogs
+      @model.set 'duration',  latestModel.get('duration')
+      @model.set 'intensity', latestModel.get('intensity')
+      @model.set 'speed',     latestModel.get('speed')
 
   onRender: ->
 
-    @ui.rep.TouchSpin
+    @ui.duration.TouchSpin
+      postfix:          'minutes'
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              0
       max:              99999
 
-    if @body
-      @ui.weightView.hide()
-    else
-      @ui.labelView.hide()
-      @ui.weight.TouchSpin
-        postfix:          'pounds'
-        buttondown_class: 'btn btn-info'
-        buttonup_class:   'btn btn-info'
-        min:              0
-        max:              99999
-        step:             5
+    @ui.intensity.TouchSpin
+      buttondown_class: 'btn btn-info'
+      buttonup_class:   'btn btn-info'
+      min:              0
+      max:              100
+      step:             1
+
+    @ui.speed.TouchSpin
+      postfix:          'mph'
+      buttondown_class: 'btn btn-info'
+      buttonup_class:   'btn btn-info'
+      min:              0
+      max:              100
+      step:             1
 
     @stickit()
 

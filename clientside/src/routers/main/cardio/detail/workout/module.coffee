@@ -49,17 +49,17 @@ class Model extends Backbone.Model
 
   constructor: (attributes, options) ->
     super
-    @update options.sConf, options.sLogs
+    @update options.cConf, options.cLogs
 
-  update: (sConf, sLogs) =>
+  update: (cConf, cLogs) =>
     @set
-      name:   sConf.get('name')
-      muscle: sConf.get('muscle')
-      body:   sConf.get('body')
-      note:   sConf.get('note')
-      count:  sLogs.length
-      first:  if sLogs.length then firstDate(sLogs) else null
-      last:   if sLogs.length then lastDate(sLogs) else  null
+      name:   cConf.get('name')
+      muscle: cConf.get('muscle')
+      body:   cConf.get('body')
+      note:   cConf.get('note')
+      count:  cLogs.length
+      first:  if cLogs.length then firstDate(cLogs) else null
+      last:   if cLogs.length then lastDate(cLogs) else  null
     return
 
 #-------------------------------------------------------------------------------

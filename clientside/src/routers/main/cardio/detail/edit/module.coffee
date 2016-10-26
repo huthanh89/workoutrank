@@ -24,9 +24,7 @@ class Model extends Backbone.Model
   defaults:
     date:   moment()
     name:   ''
-    muscle: []
     note:   ''
-    body:   false
 
 #-------------------------------------------------------------------------------
 # View
@@ -39,29 +37,14 @@ class View extends Marionette.LayoutView
   ui:
     dialog: '#cardio-modal-dialog'
     name:   '#cardio-modal-name'
-    muscle: '#cardio-modal-muscle'
-    body:   '#cardio-modal-body'
+    note:   '#cardio-modal-note'
     submit: '#cardio-modal-submit'
 
   bindings:
-
     '#cardio-modal-name': 'name'
-
     '#cardio-modal-note': 'note'
 
-    '#cardio-modal-muscle':
-      observe: 'muscle'
-      onSet: (values) -> _.map values, (value) -> parseInt(value)
-
   events:
-
-    'shown.bs.modal': ->
-      @ui.body.prop 'checked', @model.get('body')
-      return
-
-    'click @ui.body': ->
-      @model.set 'body', @ui.body.is(':checked')
-      return
 
     'click #cardio-modal-delete': (event) ->
       event.preventDefault()
@@ -91,7 +74,6 @@ class View extends Marionette.LayoutView
       return
 
     'hidden.bs.modal': ->
-      @ui.muscle.multiselect('destroy')
       Backbone.Radio.channel('root').request('cardios') if @redirect
       return
 
