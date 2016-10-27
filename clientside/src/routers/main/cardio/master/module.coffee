@@ -69,6 +69,8 @@ class Collection extends Backbone.Collection
 
       cConf.set 'updated', if model then model.get('created') else null
 
+      cConf.set 'count', models.length
+
     return options.cConfs
 
 #-------------------------------------------------------------------------------
