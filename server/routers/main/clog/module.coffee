@@ -82,9 +82,6 @@ module.post = (req, res) ->
 
     (callback) ->
       
-      end   = moment req.body.date
-      start = moment(end).subtract(req.body.duration, 'days')
-      
       # Create a new clog entry.
 
       CLog.create
@@ -92,8 +89,7 @@ module.post = (req, res) ->
         note:       req.body.note
         intensity:  req.body.intensity
         speed:      req.body.speed
-        endDate:    end
-        startDate:  start
+        duration:   req.body.duration
         user:       req.session.passport.user
         exerciseID: req.body.exerciseID
       , (err, clog) ->
@@ -134,15 +130,11 @@ module.put = (req, res) ->
 
     (clog, callback) ->
 
-      end   = moment req.body.date
-      start = moment(end).subtract(req.body.duration, 'days')
-
       clog.created    = moment()
       clog.note       = req.body.note
       clog.intensity  = req.body.intensity
       clog.speed      = req.body.speed
-      clog.endDate    = end
-      clog.startDate  = start
+      clog.duration   = req.body.duration
       clog.exerciseID = req.body.exerciseID
 
       clog.save (err, clog) ->

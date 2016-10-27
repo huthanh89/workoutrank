@@ -14,16 +14,12 @@ schema = mongoose.Schema
     required: true
   note:
     type: String
+  duration:
+    type: Number
   intensity:
     type: Number
   speed:
     type: Number
-  startDate:
-    type: Date
-    required: true
-  endDate:
-    type: Date
-    required: true
   exerciseID:
     type: mongoose.Schema.ObjectId
     required: true

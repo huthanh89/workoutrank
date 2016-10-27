@@ -47,16 +47,14 @@ class Collection extends Backbone.Collection
 
     return _.map response, (response) ->
 
-      start    = response.startDate
-      end      = response.endDate
-      ms       = moment(end).diff moment(start)
-      duration = moment.duration(ms)
+      start = moment response.startDate
+      end   = moment response.endDate
 
       return {
         date:      response.created
         exercise:  response.exerciseID
         note:      response.note
-        duration:  duration.asMinutes()
+        duration:  end.diff(start, 'minutes')
         intensity: response.intensity
         speed:     response.speed
       }
@@ -186,6 +184,11 @@ class View extends Marionette.LayoutView
 
     if @collection.length is 0
       @channel.request 'add:workout', moment()
+
+    end = moment()
+    start = moment().subtract('10', 'minutes')
+
+    console.log end.diff(start, 'minutes')
 
     return
 
