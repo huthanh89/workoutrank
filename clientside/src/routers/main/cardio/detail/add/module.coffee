@@ -140,7 +140,7 @@ class View extends Marionette.ItemView
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              0
-      max:              99999
+      max:              9999
 
     @ui.intensity.TouchSpin
       buttondown_class: 'btn btn-info'
