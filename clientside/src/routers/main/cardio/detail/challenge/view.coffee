@@ -39,7 +39,7 @@ class View extends Marionette.ItemView
   ui:
     help:           '#cardio-challenge-help'
     challenges:     '#cardio-challenges'
-    goldDuration:   '#cardio-challenge-Duration-gold'
+    goldDuration:   '#cardio-challenge-duration-gold'
     silverDuration: '#cardio-challenge-duration-silver'
     bronzeDuration: '#cardio-challenge-duration-bronze'
 
@@ -67,7 +67,7 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.goldDuration.html @challenge.duration.gold
+    @ui.goldDuration.html   @challenge.duration.gold
     @ui.silverDuration.html @challenge.duration.silver
     @ui.bronzeDuration.html @challenge.duration.bronze
 
