@@ -18,6 +18,14 @@ require 'backbone.paginator'
 require 'bootstrap.paginate'
 
 #-------------------------------------------------------------------------------
+# Strength Log Collection
+#-------------------------------------------------------------------------------
+
+class SLogs extends Backbone.Collection
+
+  url: '/api/clogs'
+
+#-------------------------------------------------------------------------------
 # Model
 #   Keeps current state data of the page.
 #   Here we maintain what muscle type is being chosen.
@@ -149,6 +157,7 @@ class View extends Marionette.LayoutView
 # Exports
 #-------------------------------------------------------------------------------
 
+module.exports.SLogs      = SLogs
 module.exports.Model      = Model
 module.exports.Collection = Collection
 module.exports.View       = View

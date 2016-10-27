@@ -165,7 +165,7 @@ module.delete = (req, res) ->
 
     (callback) ->
 
-      Cardio.findById req.params.sid, (err, cardio) ->
+      Cardio.findById req.params.cid, (err, cardio) ->
         return callback err.message if err
         return callback null, cardio
       return

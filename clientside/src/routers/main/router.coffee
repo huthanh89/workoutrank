@@ -10,7 +10,6 @@ Calendar   = require './calendar/module'
 Schedule   = require './schedule/module'
 Strength   = require './strength/module'
 Cardio     = require './cardio/module'
-Logs       = require './logs/module'
 Weight     = require './weight/module'
 Timeline   = require './timeline/module'
 
@@ -68,11 +67,6 @@ class Router extends Marionette.AppRouter
         @schedule()
         return
 
-      'logs': =>
-        @rootChannel.request 'navigate', 'logs'
-        @logs()
-        return
-
       'log:detail': (exerciseID) =>
         @rootChannel.request 'navigate', "log/#{exerciseID}"
         @logDetail(exerciseID)
@@ -104,8 +98,6 @@ class Router extends Marionette.AppRouter
     'schedule':       'schedule'
     'weights':        'weights'
     'timeline':       'timeline'
-    'logs':           'logs'
-    'log/:lid/':      'logDetail'
 
   # Api for Route handling.
   # Update Navbar and show view.
@@ -165,7 +157,7 @@ class Router extends Marionette.AppRouter
         return
 
       (sConfs, callback) ->
-        sLogs = new Logs.Master.Collection()
+        sLogs = new Strength.Master.SLogs()
         sLogs.fetch
           success: (collection) -> callback null, sConfs, collection
           error: (model, error) -> callback error
@@ -359,7 +351,7 @@ class Router extends Marionette.AppRouter
 
       (sConfs, callback) ->
 
-        sLogs  = new Logs.Master.Collection()
+        sLogs  = new Strength.Master.SLogs()
         sLogs.fetch
           success: (sLogs) -> callback null, sConfs, sLogs
           error: (collection, error) -> callback error
@@ -394,7 +386,7 @@ class Router extends Marionette.AppRouter
         return
 
       (sConfs, callback) ->
-        sLogs  = new Logs.Master.Collection()
+        sLogs  = new Strength.Master.SLogs()
         sLogs.fetch
           success: (sLogs) -> callback null, sConfs, sLogs
           error: (collection, error) -> callback error
@@ -419,80 +411,6 @@ class Router extends Marionette.AppRouter
           sLogs:  sLogs
           sConfs: sConfs
           model:  model
-
-      return
-
-  logs: ->
-
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
-    async.waterfall [
-
-      (callback) ->
-        sConfs = new Strength.Master.Collection()
-        sConfs.fetch
-          success: (sConfs) -> callback null, sConfs
-          error: (model, error) -> callback error
-
-        return
-
-      (sConfs, callback) ->
-
-        sLogs  = new Logs.Master.Collection()
-        sLogs.fetch
-          success: (sLogs) -> callback null, sConfs, sLogs
-          error: (collection, error) -> callback error
-
-        return
-
-    ], (error, sConfs, sLogs) =>
-
-      @rootChannel.request 'spin:page:loader', false
-
-      if error
-        @rootChannel.request 'message:error', error
-      else
-        View = Logs.Master.View
-
-        @rootView.content.show new View
-          collection: sLogs
-          sConfs:     sConfs
-
-      return
-
-  logDetail: (exerciseID) ->
-
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
-    async.waterfall [
-
-      (callback) ->
-        sConfs = new Strength.Master.Collection()
-        sConfs.fetch
-          success: (sConfs) -> callback null, sConfs
-          error: (collection, error) -> callback error
-        return
-
-      (sConfs, callback) ->
-        sLogs = new Logs.Detail.Collection [],
-          _id: exerciseID
-        sLogs.fetch
-          success: (sLogs) -> callback null, sConfs, sLogs
-          error: (model, error) -> callback error
-        return
-
-    ], (error, sConfs, sLogs) =>
-
-      @rootChannel.request 'spin:page:loader', false
-
-      if error
-        @rootChannel.request 'message:error', error
-      else
-        View = Logs.Detail.View
-
-        @rootView.content.show new View
-          collection: sLogs
-          sConf:      sConfs.get(exerciseID)
 
       return
 

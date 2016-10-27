@@ -44,7 +44,6 @@ for url in urls
 Home     = require './home/module'
 Strength = require './strength/module'
 Cardio   = require './cardio/module'
-Log      = require './log/module'
 CLog     = require './clog/module'
 SLog     = require './slog/module'
 WLog     = require './wlog/module'
@@ -124,13 +123,6 @@ router.post   '/api/images',      middlewares, Image.post
 router.get    '/api/images/:cid', middlewares, Image.get
 router.put    '/api/images/:cid', middlewares, Image.put
 router.delete '/api/images/:cid', middlewares, Image.delete
-
-#-------------------------------------------------------------------------------
-# ALL Logs
-#-------------------------------------------------------------------------------
-
-# Get all logs.
-router.get '/api/logs', middlewares, Log.get
 
 #-------------------------------------------------------------------------------
 # Schedule

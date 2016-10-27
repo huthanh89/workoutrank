@@ -471,7 +471,7 @@ gulp.task 'start', shell.task [
 #-------------------------------------------------------------------------------
 
 gulp.task 'lint', [
-  'htmllint'
+ # 'htmllint'
   'coffeelint'
   'lesslint'
 ]
