@@ -16,12 +16,10 @@ class View extends Marionette.LayoutView
   template: viewTemplate
 
   ui:
-    rep:    '.cardio-goal-rep'
-    weight: '.cardio-goal-weight'
+    duration: '.cardio-goal-duration'
 
   regions:
-    repGauge:    '.cardio-goal-rep-gauge-container'
-    weightGauge: '.cardio-goal-weight-gauge-container'
+    durationGauge: '.cardio-goal-duration-gauge-container'
 
   constructor: (options) ->
     super
@@ -33,36 +31,21 @@ class View extends Marionette.LayoutView
 
   onRender: ->
 
-    weightData = []
-    repData    = []
+    durationData = []
 
     @cLogs.each (model) ->
 
       x = moment(model.get('date')).valueOf()
 
-      weightData.push
-        id: x
-        x:  x
-        y:  model.get('weight')
-
-      repData.push
+      durationData.push
         id: x
         x:  x
         y:  model.get('duration')
 
-    @showChildView 'repGauge', new GaugeView
-      logs: repData
+    @showChildView 'durationGauge', new GaugeView
+      logs: durationData
       date: @date
       type: 'duration'
-
-    if @cConf?.get('body') is false
-      @showChildView 'weightGauge', new GaugeView
-        logs: weightData
-        date: @date
-        type: 'weight'
-    else
-      @ui.weight.hide()
-      @ui.rep.switchClass 'col-sm-6', 'col-sm-12'
 
     return
 

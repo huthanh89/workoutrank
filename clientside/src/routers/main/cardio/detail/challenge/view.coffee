@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 moment       = require 'moment'
 Marionette   = require 'marionette'
 viewTemplate = require './view.jade'
@@ -38,19 +37,11 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    help:         '#cardio-challenge-help'
-    challenges:   '#cardio-challenges'
-
-    goldDuration:      '#cardio-challenge-Duration-gold'
-    goldWeight:   '#cardio-challenge-weight-gold'
-
-    silverDuration:    '#cardio-challenge-rep-silver'
-    silverWeight: '#cardio-challenge-weight-silver'
-
-    bronzeDuration:    '#cardio-challenge-rep-bronze'
-    bronzeWeight: '#cardio-challenge-weight-bronze'
-
-    weightLabel:  '.cardio-challenge-weight'
+    help:           '#cardio-challenge-help'
+    challenges:     '#cardio-challenges'
+    goldDuration:   '#cardio-challenge-Duration-gold'
+    silverDuration: '#cardio-challenge-duration-silver'
+    bronzeDuration: '#cardio-challenge-duration-bronze'
 
   constructor: (options) ->
     super
@@ -60,8 +51,7 @@ class View extends Marionette.ItemView
       'type'
     ]
 
-    repValues    = []
-    weightValues = []
+    durationValues = []
 
     # Get value for each day.
 
@@ -69,28 +59,20 @@ class View extends Marionette.ItemView
       modelDate  = moment(model.get('date')).startOf('day')
       searchDate = moment(@date).startOf('day')
       if modelDate.isBefore searchDate
-        repValues.push model.get('duration')
-        weightValues.push model.get('weight')
+        durationValues.push model.get('duration')
       return
 
     @challenge =
-      rep:    @repReduce    repValues
-      weight: @weightReduce weightValues
+      duration: @durationReduce durationValues
 
   onRender: ->
 
-    @ui.goldDuration.html @challenge.rep.gold
-    @ui.goldWeight.html @challenge.weight.gold
+    @ui.goldDuration.html @challenge.duration.gold
+    @ui.silverDuration.html @challenge.duration.silver
+    @ui.bronzeDuration.html @challenge.duration.bronze
 
-    @ui.silverDuration.html @challenge.rep.silver
-    @ui.silverWeight.html @challenge.weight.silver
-
-    @ui.bronzeDuration.html @challenge.rep.bronze
-    @ui.bronzeWeight.html @challenge.weight.bronze
-
-
-    @ui.help.hide() unless @challenge.rep.gold is 0
-    @ui.challenges.hide() unless @challenge.rep.gold > 0
+    @ui.help.hide() unless @challenge.duration.gold is 0
+    @ui.challenges.hide() unless @challenge.duration.gold > 0
 
     return
 
@@ -98,7 +80,7 @@ class View extends Marionette.ItemView
     @ui.weightLabel.hide() if @type is 'duration'
     return
 
-  repReduce: (values) ->
+  durationReduce: (values) ->
 
     decimals = 0
     mean     = @mean values
@@ -110,29 +92,6 @@ class View extends Marionette.ItemView
       gold:   _.round((mean + margin) or mean, decimals) or 0
     }
     return
-
-  weightReduce: (values) ->
-
-    decimals = 0
-    mean     = @mean values
-    margin   = standardDeviation(variance(values, mean))
-
-    margin = 5 if margin is 0
-
-    bronze = _.round((mean - margin) or mean, decimals) or 0
-    bronze =  @roundUp5 bronze
-
-    silver = _.round(mean, decimals) or 0
-    silver =  @roundUp5 silver
-
-    gold = _.round((mean + margin) or mean, decimals) or 0
-    gold =  @roundUp5 gold
-
-    return{
-      bronze: bronze
-      silver: silver
-      gold:   gold
-    }
 
   min: (values)     -> _.min(values)
 

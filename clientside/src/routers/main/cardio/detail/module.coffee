@@ -47,14 +47,11 @@ class Collection extends Backbone.Collection
 
     return _.map response, (response) ->
 
-      start = moment response.startDate
-      end   = moment response.endDate
-
       return {
         date:      response.created
         exercise:  response.exerciseID
         note:      response.note
-        duration:  end.diff(start, 'minutes')
+        duration:  response.duration
         intensity: response.intensity
         speed:     response.speed
       }
@@ -200,7 +197,6 @@ class View extends Marionette.LayoutView
       channel: @channel
       date:    @date
 
-    ###
     @showChildView 'challenge', new ChallengeView
       cLogs: @collection
       date:  @date
@@ -210,7 +206,7 @@ class View extends Marionette.LayoutView
       cLogs: @collection
       cConf: @model
       date:  @date
-###
+
     return
 
   updateViews: ->
@@ -218,7 +214,6 @@ class View extends Marionette.LayoutView
     @showChildView 'note', new NoteView
       cConf: @model
 
-    ###
     @showChildView 'goal', new GoalView
       cLogs: @collection
       date:  @date
@@ -234,7 +229,6 @@ class View extends Marionette.LayoutView
     @showChildView 'summary', new SummaryView
       cLogs: @collection
       cConf: @model
-###
 
     @showChildView 'workout', new Workout.View
       model: @summaryModel

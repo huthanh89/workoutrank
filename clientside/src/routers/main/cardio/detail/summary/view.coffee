@@ -29,19 +29,12 @@ standardDeviation = (variance) -> Math.sqrt(variance)
 
 class Model extends Backbone.Model
   defaults:
-    name:       ''
-    exercise:   ''
-    muscle:      0
-    weightMin:   0
-    weightAvg:   0
-    weightMax:   0
-    weightSD:    0
-    weightTotal: 0
-    repMin:      0
-    repAvg:      0
-    repMax:      0
-    repSD:       0
-    repTotal:    0
+    name:          ''
+    durationMin:   0
+    durationAvg:   0
+    durationMax:   0
+    durationSD:    0
+    durationTotal: 0
 
 #-------------------------------------------------------------------------------
 # View
@@ -58,39 +51,20 @@ class View extends Marionette.ItemView
 
     '#log-table-name': 'name'
 
-    '#log-table-date':
-      observe: 'date'
-      onGet: (value) -> moment(value).format('MM/DD/YY')
-
-    '#log-table-weight-max':
-      observe: 'weightMax'
+    '#log-table-duration-min':
+      observe: 'durationMin'
       onGet: (value) -> if value then value else '---'
 
-    '#log-table-weight-min':
-      observe: 'weightMin'
+    '#log-table-duration-max':
+      observe: 'durationMax'
       onGet: (value) -> if value then value else '---'
 
-    '#log-table-weight-avg':
-      observe: 'weightAvg'
+    '#log-table-duration-avg':
+      observe: 'durationAvg'
       onGet: (value) -> if value then value else '---'
 
-    '#log-table-weight-sum':
-      observe: 'weightSum'
-
-    '#log-table-rep-min':
-      observe: 'repMin'
-      onGet: (value) -> if value then value else '---'
-
-    '#log-table-rep-max':
-      observe: 'repMax'
-      onGet: (value) -> if value then value else '---'
-
-    '#log-table-rep-avg':
-      observe: 'repAvg'
-      onGet: (value) -> if value then value else '---'
-
-    '#log-table-rep-sum':
-      observe: 'repSum'
+    '#log-table-duration-sum':
+      observe: 'durationSum'
 
   constructor: (options) ->
     super _.extend {}, options,
@@ -110,40 +84,26 @@ class View extends Marionette.ItemView
 
   updateModel: (cConf, cLogs) ->
 
-    weightData = []
-    repData    = []
+    durationData = []
 
     cLogs.each (model) ->
 
       x = moment(model.get('date')).valueOf()
 
-      weightData.push
-        id: x
-        x:  x
-        y:  model.get('weight')
-
-      repData.push
+      durationData.push
         id: x
         x:  x
         y:  model.get('duration')
 
-    wieght = @reduce weightData
-    rep    = @reduce repData
+    duration = @reduce durationData
 
     @model.set
       name:       cConf.get('name')
-      exerciseID: cConf.id
-      muscle:     cConf.get('muscle')
-      weightMin:  wieght.min
-      weightMax:  wieght.max
-      weightAvg:  wieght.avg
-      weightSD:   wieght.sd
-      weightSum:  wieght.sum
-      repMin:     rep.min
-      repMax:     rep.max
-      repAvg:     rep.avg
-      repSD:      rep.sd
-      repSum:     rep.sum
+      durationMin: duration.min
+      durationMax: duration.max
+      durationAvg: duration.avg
+      durationSD:  duration.sd
+      durationSum: duration.sum
     return
 
   reduce: (records) ->

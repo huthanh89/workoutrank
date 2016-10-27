@@ -17,19 +17,13 @@ viewTemplate = require './view.jade'
 
 chartModel = (model, collection) ->
 
-  weightData = []
-  repData    = []
+  durationData = []
 
   collection.each (model) ->
 
     x = moment(model.get('date')).valueOf()
 
-    weightData.push
-      id: x
-      x:  x
-      y:  model.get('weight')
-
-    repData.push
+    durationData.push
       id: x
       x:  x
       y:  model.get('duration')
@@ -37,9 +31,7 @@ chartModel = (model, collection) ->
   return new Backbone.Model {
     exerciseID:   model.id
     name:         model.get('name')
-    weightData: _.sortBy weightData, (point) -> point.x
-    repData:    _.sortBy repData, (point) -> point.x
-    muscle:       model.get('muscle')
+    durationData:    _.sortBy durationData, (point) -> point.x
     user:         model.get('user')
   }
 
@@ -61,28 +53,12 @@ seriesData = (model, type, chart) ->
 
     return _.assign result,
       name: 'Durations'
-      data:  model.get('repData')
+      data:  model.get('durationData')
       color:     color
       lineColor:  darkerColor
       marker:
         enabled:    true
         fillColor:   darkerColor
-        radius:     4
-  else
-
-    color       = '#FE7935'
-    darkerColor = '#d06128'
-
-    return _.assign result,
-      name: 'Weights'
-      data:  model.get('weightData')
-      tooltip:
-        valueSuffix: ' lb'
-      color:     color
-      lineColor: darkerColor
-      marker:
-        enabled:    true
-        fillColor:  darkerColor
         radius:     4
 
 #-------------------------------------------------------------------------------
@@ -135,9 +111,8 @@ class View extends Marionette.ItemView
   template: viewTemplate
 
   ui:
-    container:   '#cardio-log-graph-container'
-    chartWeight: '#cardio-log-graph-weight'
-    chartDuration:    '#cardio-log-graph-rep'
+    container:     '#cardio-log-graph-container'
+    chartDuration: '#cardio-log-graph-duration'
 
   constructor: (options) ->
 
@@ -151,8 +126,8 @@ class View extends Marionette.ItemView
   addChart: (container, model, type) ->
 
     name  = model.get('name')
-    title = if type is 0 then 'Durations' else 'Weights'
-    data  = if type is 0 then @model.get('repData') else @model.get('weightData')
+    title = if type is 0 then 'Durations'
+    data  = if type is 0 then @model.get('durationData')
     chart = new Highstocks.StockChart
 
       chart:
@@ -216,7 +191,7 @@ class View extends Marionette.ItemView
 
     # Draw weight plot lines on chart.
 
-    data = if type is 0 then model.get('repData') else model.get('weightData')
+    data = if type is 0 then model.get('durationData')
     mean = _.round(getMean(data), 0)
     chart.yAxis[0].addPlotLine plotLine("Avg: #{mean}", mean)
 
@@ -231,7 +206,6 @@ class View extends Marionette.ItemView
   onShow: ->
 
     @addChart(@ui.chartDuration[0], @model, 0)
-    @addChart(@ui.chartWeight[0], @model, 1)
 
     @ui.container.bind 'mousemove touchmove touchstart', (e) =>
 
