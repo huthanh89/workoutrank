@@ -182,11 +182,6 @@ class View extends Marionette.LayoutView
     if @collection.length is 0
       @channel.request 'add:workout', moment()
 
-    end = moment()
-    start = moment().subtract('10', 'minutes')
-
-    console.log end.diff(start, 'minutes')
-
     return
 
   updateAfterDateChange: ->

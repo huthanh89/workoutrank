@@ -172,18 +172,18 @@ class View extends Marionette.CompositeView
       result = dateA.isSame(dateB)
 
       if result and (index > 0)
-        prev    =  clean.at(index - 1).get('duration')
-        current = model.get('duration')
-        model.set 'changeDuration',  _.round current - prev , 2
-        model.set 'percentDuration', _.round (current / prev) * 100 - 100 , 2
+        prev     = clean.at(index - 1).get('duration')
+        current  = model.get('duration')
+        duration = current - prev
 
-        prev    =  clean.at(index - 1).get('weight')
-        current = model.get('weight')
-        model.set 'changeWeight',  _.round current - prev , 2
-        model.set 'percentWeight', _.round (current / prev) * 100 - 100 , 2
+        model.set 'changeDuration',  _.round duration , 2
+
+        percent = (current / prev) * 100 - 100
+        model.set 'percentDuration', _.round percent , 2
+
       else
-        model.set 'changeDuration',     0
-        model.set 'percentDuration',    0
+        model.set 'changeDuration',  0
+        model.set 'percentDuration', 0
 
       return result
 
