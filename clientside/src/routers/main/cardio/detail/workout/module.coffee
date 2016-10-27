@@ -40,9 +40,7 @@ class Model extends Backbone.Model
 
   defaults:
     name:   ''
-    muscle: []
     count:  0
-    body:   false
     first:  new Date()
     last:   new Date()
     note:   ''
@@ -54,8 +52,6 @@ class Model extends Backbone.Model
   update: (cConf, cLogs) =>
     @set
       name:   cConf.get('name')
-      muscle: cConf.get('muscle')
-      body:   cConf.get('body')
       note:   cConf.get('note')
       count:  cLogs.length
       first:  if cLogs.length then firstDate(cLogs) else null
@@ -70,19 +66,9 @@ class View extends Marionette.LayoutView
 
   template: viewTemplate
 
-  ui:
-    body: '#cardio-summary-body'
-
   bindings:
 
     '#cardio-summary-name': 'name'
-
-    '#cardio-summary-body':
-      observe: 'body'
-      updateMethod: 'html'
-      onGet: (value) ->
-        icon = if value then 'fa-check' else 'fa-ban'
-        return "<i class='fa fa-lg #{icon}'></i>"
 
     '#cardio-summary-count': 'count'
 

@@ -234,10 +234,11 @@ class View extends Marionette.LayoutView
     @showChildView 'summary', new SummaryView
       cLogs: @collection
       cConf: @model
+###
 
     @showChildView 'workout', new Workout.View
       model: @summaryModel
-###
+
     @updateAfterDateChange()
 
 
