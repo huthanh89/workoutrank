@@ -21477,6 +21477,12 @@ Page loader
   z-index: 99999!important;
   background: transparent;
 }
+@media (min-width: 1980px) {
+  #loader-page-spinner {
+    left: 50%;
+    width: 100px;
+  }
+}
 #loader-page-spinner .sk-fading-circle {
   width: 100px;
   height: 100px;
