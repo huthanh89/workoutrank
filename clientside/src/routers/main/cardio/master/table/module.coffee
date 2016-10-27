@@ -83,9 +83,9 @@ class ItemView extends Marionette.ItemView
 
     '.cardio-table-td-name': 'name'
 
-    '.cardio-table-td-count':
-      observe: 'count'
-      onGet: (value) -> value
+    '.cardio-table-td-updated':
+      observe: 'updated'
+      onGet: (value) -> if value then moment(value).from(moment()) else '---'
 
   events:
     'click': ->

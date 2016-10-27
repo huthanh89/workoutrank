@@ -58,7 +58,18 @@ class Collection extends Backbone.Collection
 
   comparator: (item) -> return -item.get('date')
 
-  parse: (models, options) -> options.cConfs
+  parse: (models, options) ->
+
+    for cConf in options.cConfs
+
+      models = _.filter options.cLogs, (model) ->
+        return model.get('exerciseID') is cConf.get('_id')
+
+      model = _.maxBy models, (model) -> model.get('created')
+
+      cConf.set 'updated', if model then model.get('created') else null
+
+    return options.cConfs
 
 #-------------------------------------------------------------------------------
 # View
@@ -94,8 +105,7 @@ class View extends Marionette.LayoutView
   constructor: (options) ->
     super
     @mergeOptions options, [
-      'sLogs'
-      'muscle'
+      'cLogs'
     ]
     @rootChannel = Backbone.Radio.channel('root')
     @channel     = new Backbone.Radio.channel(@cid)
@@ -110,7 +120,6 @@ class View extends Marionette.LayoutView
     @showChildView 'table', new Table.View
       collection: @collection
       channel:    @channel
-      muscle:     @muscle
 
     if @collection.length is 0
       @channel.request 'add'
