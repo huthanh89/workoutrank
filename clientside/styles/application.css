@@ -812,7 +812,10 @@ Icon colors
   color: #6acae6;
 }
 .fa-book {
-  color: #d5803e;
+  color: #c1632d;
+}
+.fa-cubes {
+  color: #90d5be;
 }
 .fa-clock-o {
   color: #74d1d5;
@@ -828,6 +831,15 @@ Icon colors
 }
 .fa-user-circle {
   color: #7199d5;
+}
+.fa-user {
+  color: #7ca2d5;
+}
+.fa-envelope {
+  color: #506fd5;
+}
+.fa-info-circle {
+  color: #d5c639;
 }
 /*-----------------------------------------------------------------------------
 Cardio
