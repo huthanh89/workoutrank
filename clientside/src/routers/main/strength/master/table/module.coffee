@@ -57,6 +57,10 @@ class Collection extends Backbone.Collection
 
       sConf.set('count', models.length)
 
+      latest = _.maxBy models, (model) -> model.get('date')
+
+      sConf.set 'updated', if latest then latest.get('date') else null
+
       return
 
 #-------------------------------------------------------------------------------
@@ -95,6 +99,11 @@ class ItemView extends Marionette.ItemView
       observe: 'count'
       onGet: (value) -> value
 
+    '.strength-table-td-updated':
+      observe: 'updated'
+      onGet: (value) -> if value then moment(value).from(moment()) else '---'
+
+    ###
     '.strength-table-td-muscle':
       observe: 'muscle'
       onGet: (values) ->
@@ -107,6 +116,7 @@ class ItemView extends Marionette.ItemView
             separator: ' '
         else
           return '---'
+###
 
   events:
     'click': ->
