@@ -23,7 +23,7 @@ require 'bootstrap.paginate'
 
 class SLogs extends Backbone.Collection
 
-  url: '/api/clogs'
+  url: '/api/slogs'
 
 #-------------------------------------------------------------------------------
 # Model
@@ -119,6 +119,7 @@ class View extends Marionette.LayoutView
 
     @tableCollection = new Table.Collection @collection.models,
       sLogs: @sLogs
+      parse: true
 
     if @muscle?
       models = @collection.filter (model) =>
@@ -136,7 +137,7 @@ class View extends Marionette.LayoutView
       channel:    @channel
       muscle:     @muscle
 
-    if @collection.length is 0 and @isOwner
+    if @collection.length is 0
       @channel.request 'add'
 
     @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'

@@ -44,15 +44,20 @@ class Collection extends Backbone.Collection
     currentPage: 1
     pageSize:    10
 
-  constructor: (models, options) ->
-    super
-    _.each models, (model) ->
-      sLog = options.sLogs.get(model.id)
-      if sLog
-        model.set('count', sLog.get('repData').length)
-      return
-
   comparator: (item) -> return -item.get('date')
+
+  parse: (models, options) ->
+
+    sLogs  = options.sLogs.models
+    sConfs = models
+
+    _.each sConfs, (sConf) ->
+      models = _.filter sLogs, (sLog) ->
+        return sLog.get('exercise') is sConf.get('_id')
+
+      sConf.set('count', models.length)
+
+      return
 
 #-------------------------------------------------------------------------------
 # Null View

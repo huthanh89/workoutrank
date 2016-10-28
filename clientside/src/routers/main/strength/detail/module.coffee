@@ -200,6 +200,7 @@ class View extends Marionette.LayoutView
 
     @showChildView 'goal', new GoalView
       sLogs: @collection
+      sConf: @model
       date:  @date
 
     @showChildView 'graph', new GraphView
