@@ -790,11 +790,44 @@ Timeline
 .infinite-loading {
   background: rgba(147, 191, 231, 0.1);
 }
-#timeline-view .fa-tachometer {
-  color: #67a0e6;
+/*-----------------------------------------------------------------------------
+Icon colors
+-----------------------------------------------------------------------------*/
+.fa-home {
+  color: #d66400;
 }
-#timeline-view .fa-book {
-  color: #de904f;
+.fa-pencil {
+  color: #d68929;
+}
+.fa-question-circle {
+  color: #e6d857;
+}
+.fa-hand-rock-o {
+  color: #e69e3c;
+}
+.fa-heartbeat {
+  color: #c73439;
+}
+.fa-tachometer {
+  color: #6acae6;
+}
+.fa-book {
+  color: #d5803e;
+}
+.fa-clock-o {
+  color: #74d1d5;
+}
+.fa-newspaper-o {
+  color: #98d589;
+}
+.fa-calendar-plus-o {
+  color: rgba(105, 114, 203, 0.75);
+}
+.fa-id-card-o {
+  color: rgba(200, 143, 0, 0.9);
+}
+.fa-user-circle {
+  color: #7199d5;
 }
 /*-----------------------------------------------------------------------------
 Cardio
