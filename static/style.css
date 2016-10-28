@@ -21587,7 +21587,7 @@ Bottom Nav for Mobile
   }
 }
 #navigator-bottom-container li {
-  width: 25%;
+  width: 20%;
   position: absolute;
   display: inline-block;
   border: solid lightgray 1.5px;
@@ -21601,17 +21601,20 @@ Bottom Nav for Mobile
   color: #6e97b5;
   background: rgba(234, 234, 234, 0.89);
 }
-#navigator-bottom-container #navigator-bottom-home {
+#navigator-bottom-container #navigator-bottom-weight {
   left: 0;
 }
-#navigator-bottom-container #navigator-bottom-weight {
-  left: 25%;
-}
 #navigator-bottom-container #navigator-bottom-schedule {
-  left: 50%;
+  left: 20%;
+}
+#navigator-bottom-container #navigator-bottom-home {
+  left: 40%;
+}
+#navigator-bottom-container #navigator-bottom-cardio {
+  left: 60%;
 }
 #navigator-bottom-container #navigator-bottom-journal {
-  left: 75%;
+  left: 80%;
 }
 /*-----------------------------------------------------------------------------
 Page nav
