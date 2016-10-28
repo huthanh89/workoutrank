@@ -838,8 +838,17 @@ Icon colors
 .fa-envelope {
   color: #506fd5;
 }
+.fa-envelope-o {
+  color: #d53c39;
+}
 .fa-info-circle {
   color: #d5c639;
+}
+.fa-save {
+  color: #c6f8ff;
+}
+.fa-sign-out {
+  color: #d5a138;
 }
 /*-----------------------------------------------------------------------------
 Cardio
