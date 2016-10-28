@@ -176,7 +176,7 @@ module.delete = (req, res) ->
 
       CLog
       .remove
-        exercise: cardio.id
+        exerciseID: cardio.id
       .exec (err) ->
         return callback err.message if err
         return callback null, cardio
