@@ -88,46 +88,12 @@ class ItemView extends Marionette.ItemView
           return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
         else if value > 0
           return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
-        else
-          return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
 
-    '.cardio-table-td-weight': 'weight'
+    '.cardio-table-td-intensity':
+      observe: 'intensity'
 
-    '.cardio-table-td-weight-change':
-      observe: 'changeWeight'
-      updateMethod: 'html'
-      onGet: (value) ->
-        if value > 0
-          return "<span style='color:green;'>+#{value}</span>"
-        else if value < 0
-          return "<span style='color:red;'>#{value}</span>"
-        else
-          return "<span style='color:green;'>+#{value}</span>"
-
-    '.cardio-table-td-weight-percent':
-      observe:      'percentWeight'
-      updateMethod: 'html'
-      onGet: (value) ->
-        if value > 0
-          return "<span style='color:green;'>(+#{value}%)</span>"
-        else if value < 0
-          return "<span style='color:red;'>(#{value}%)</span>"
-        else
-          return "<span style='color:green;'>(+#{value}%)</span>"
-
-    '.cardio-table-td-weight-growth':
-      observe:      'changeWeight'
-      updateMethod: 'html'
-      onGet: (value) ->
-
-        span = "<span>#{value}</span>"
-
-        if value < 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
-        else if value > 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
-        else
-          return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
+    '.cardio-table-td-speed':
+      observe: 'speed'
 
   events:
     'click .cardio-table-td-remove': ->
@@ -141,6 +107,7 @@ class ItemView extends Marionette.ItemView
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
+    console.log @model.attributes
     @stickit()
     return
 
