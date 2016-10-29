@@ -1,0 +1,40 @@
+.col-xs-12
+    .panel.panel-default
+        .panel-body
+            .row
+                .col-xs-6
+                    i.fa.fa-fw.fa-lg.fa-hand-rock-o
+                    = ' '
+                    span
+                        b.timeline-cardio-name
+                .col-xs-6
+                    span.pull-right.timeline-cardio-date
+            br
+            .row(style="text-align:center;")
+                .col-xs-6
+                    span.timeline-cardio-growthDuration
+                    span Durations
+                    = ' '
+                    span
+                        b.timeline-cardio-duration
+                    .row
+                        span.timeline-cardio-changeDuration
+                        = ' '
+                        span.timeline-cardio-percentDuration
+
+                .col-xs-6
+                    span.timeline-cardio-growthWeight
+                    span Weight
+                    = ' '
+                    span
+                        b.timeline-cardio-weight
+                    = ' '
+                    | lb
+                    .row
+                        span.timeline-cardio-changeWeight
+                        = ' '
+                        span.timeline-cardio-percentWeight
+            .row.timeline-cardio-note-container
+                .col-xs-12
+                    br
+                    span.timeline-cardio-note
