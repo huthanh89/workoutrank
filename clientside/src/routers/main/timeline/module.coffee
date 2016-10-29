@@ -197,7 +197,7 @@ class Collection extends Backbone.Collection
 
     # Parse for cLog data.
 
-    result.push parseCLogs cLogs, cConfs
+    #result.push parseCLogs cLogs, cConfs
 
     # Parse for sLog data.
 
