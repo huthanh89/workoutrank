@@ -462,10 +462,33 @@ class Router extends Marionette.AppRouter
 
       (callback) ->
 
+        cConfs = new Timeline.CardioCollection()
+        cConfs.fetch
+          success: (collection) ->
+            result.cConfs = collection
+            callback null
+            return
+          error: (model, error) -> callback error
+        return
+
+      (callback) ->
+
         sConfs = new Strength.Master.Collection()
         sConfs.fetch
           success: (collection) ->
             result.sConfs = collection
+            callback null
+            return
+          error: (model, error) -> callback error
+        return
+
+      (callback) ->
+
+        cLogs = new Timeline.CLogCollection()
+
+        cLogs.fetch
+          success: (collection) ->
+            result.cLogs = collection
             callback null
             return
           error: (model, error) -> callback error
@@ -491,6 +514,8 @@ class Router extends Marionette.AppRouter
       else
         @rootView.content.show new Timeline.View
           collection: new Timeline.Collection [],
+            cConfs: result.cConfs
+            cLogs:  result.cLogs
             sConfs: result.sConfs
             sLogs:  result.sLogs
             wLogs:  result.wLogs
