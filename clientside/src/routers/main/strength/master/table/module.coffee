@@ -150,7 +150,7 @@ class ItemView extends Marionette.ItemView
 
       if(0 < percent <= 33) then bar.addClass('progress-bar-danger')
       else if(33 < percent <= 66) then bar.addClass('progress-bar-warning')
-      else bar.addClass('progress-bar-info')
+      else bar.addClass('progress-bar-success')
 
       # Update width size.
 

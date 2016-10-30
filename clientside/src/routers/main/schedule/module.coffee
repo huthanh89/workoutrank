@@ -64,7 +64,8 @@ class Collection extends Backbone.Collection
             start:  new Date moment().startOf('week').add(index, 'days')
             end:    new Date moment().startOf('week').add(index, 'days')
             title:  model.get('name')
-            color:  Data.Colors[_.sum(muscles) % Data.Colors.length]
+           # color:  Data.Colors[_.sum(muscles) % Data.Colors.length]
+            color: '#247f6b'
             allDay: true
             strengthID: model.id
       return

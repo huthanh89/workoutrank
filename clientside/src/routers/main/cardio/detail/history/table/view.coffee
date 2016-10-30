@@ -91,9 +91,11 @@ class ItemView extends Marionette.ItemView
 
     '.cardio-table-td-intensity':
       observe: 'intensity'
+      onGet: (value) -> value or '---'
 
     '.cardio-table-td-speed':
       observe: 'speed'
+      onGet: (value) -> value or '---'
 
   events:
     'click .cardio-table-td-remove': ->

@@ -6,6 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highstocks   = require 'highstock'
+Highcharts   = require 'highcharts'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -31,6 +32,10 @@ chartModel = (collection) ->
 #-------------------------------------------------------------------------------
 
 seriesData = (model, chart) ->
+
+  index = 0
+  color = Highcharts.getOptions().colors[index]
+
   return {
     type:    chart
     yAxis:   0
@@ -39,12 +44,27 @@ seriesData = (model, chart) ->
     name:   'Weights'
     tooltip:
       valueSuffix: ' lb'
-    color:     '#00ffa4'
-    lineColor: '#00B272'
     marker:
-      enabled:    true
-      fillColor: '#00B272'
-      radius:     3
+      enabled: true
+      radius:  3
+    color:     color
+    lineColor: color
+    fillColor:
+      linearGradient:
+        x1: 0
+        y1: 0
+        x2: 0
+        y2: 1
+      stops: [
+        [
+          0
+          color
+        ]
+        [
+          1
+          Highcharts.Color(Highcharts.getOptions().colors[index]).setOpacity(0).get('rgba')
+        ]
+      ]
   }
 
 #-------------------------------------------------------------------------------
@@ -143,7 +163,7 @@ class View extends Marionette.ItemView
           '<span style="color: lightseagreen">' + moment(@x).format('DD MMM') + ': </span>' + @y
 
       series: [
-        seriesData(@model, 'line')
+        seriesData(@model, 'areaspline')
       ]
 
 

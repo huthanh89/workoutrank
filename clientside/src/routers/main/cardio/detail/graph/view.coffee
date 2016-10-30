@@ -10,7 +10,6 @@ Highcharts   = require 'highcharts'
 Highstocks   = require 'highstock'
 viewTemplate = require './view.jade'
 
-
 #-------------------------------------------------------------------------------
 # Given a collection, condense the collection to a single chart model.
 #-------------------------------------------------------------------------------
@@ -45,22 +44,36 @@ seriesData = (model, type, chart) ->
     type:    chart
     yAxis:   0
     shadow : true
+    marker:
+      enabled: true
+      radius:  3
 
   if type is 0
 
-    color       = '#00ffa4'
-    darkerColor = '#1ebd84'
+    index = 2
+    color = Highcharts.getOptions().colors[index]
 
     return _.assign result,
-      name: 'Durations'
+      name: 'Duration'
       data:  model.get('durationData')
       color:     color
-      lineColor:  darkerColor
-      marker:
-        enabled:    true
-        fillColor:   darkerColor
-        radius:     3
-
+      lineColor: color
+      fillColor:
+        linearGradient:
+          x1: 0
+          y1: 0
+          x2: 0
+          y2: 1
+        stops: [
+          [
+            0
+            color
+          ]
+          [
+            1
+            Highcharts.Color(Highcharts.getOptions().colors[index]).setOpacity(0).get('rgba')
+          ]
+        ]
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
 #-------------------------------------------------------------------------------
@@ -126,7 +139,7 @@ class View extends Marionette.ItemView
   addChart: (container, model, type) ->
 
     name  = model.get('name')
-    title = if type is 0 then 'Durations'
+    title = if type is 0 then 'Duration'
     data  = if type is 0 then @model.get('durationData')
     chart = new Highstocks.StockChart
 
@@ -182,7 +195,7 @@ class View extends Marionette.ItemView
         valueDecimals:    0
 
       series: [
-        seriesData(model, type, 'line')
+        seriesData(model, type, 'areaspline')
       ]
 
       credits:
