@@ -47,7 +47,7 @@ router.use (req, res, next) ->
 # Serve Index.html
 #-------------------------------------------------------------------------------
 
-index = (req, res, next) ->
+index = (req, res) ->
   res.render 'index'
   return
 

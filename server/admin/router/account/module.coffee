@@ -12,6 +12,8 @@ mongoose = require 'mongoose'
 #-------------------------------------------------------------------------------
 
 User     = mongoose.model('user')
+CLog     = mongoose.model('clog')
+Cardio   = mongoose.model('cardio')
 SLog     = mongoose.model('slog')
 Strength = mongoose.model('strength')
 WLog     = mongoose.model('wlog')
@@ -24,6 +26,8 @@ module.get = (req, res) ->
 
   result =
     users:  []
+    cLogs:  []
+    cConfs: []
     sLogs:  []
     sConfs: []
     wLogs:  []
@@ -43,10 +47,28 @@ module.get = (req, res) ->
 
     (callback) ->
 
+      CLog.find()
+      .exec (err, cLogs) ->
+        return callback err if err
+        result.cLogs = cLogs
+        return callback null
+      return
+
+    (callback) ->
+
       SLog.find()
       .exec (err, sLogs) ->
         return callback err if err
         result.sLogs = sLogs
+        return callback null
+      return
+
+    (callback) ->
+
+      Cardio.find()
+      .exec (err, cConfs) ->
+        return callback err if err
+        result.cConfs = cConfs
         return callback null
       return
 

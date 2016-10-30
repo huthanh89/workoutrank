@@ -43,6 +43,12 @@ class Collection extends Backbone.Collection
       sConfs = _.filter response.sConfs, (log) -> log.user is user._id
       account.sConfs = sConfs.length
 
+      cLogs = _.filter response.cLogs, (log) -> log.user is user._id
+      account.cLogs = cLogs.length
+
+      cConfs = _.filter response.cConfs, (log) -> log.user is user._id
+      account.cConfs = cConfs.length
+
       wLogs = _.filter response.wLogs, (log) -> log.user is user._id
       account.wLogs = wLogs.length
 
@@ -73,6 +79,8 @@ class ItemView extends Marionette.ItemView
     '.admin-account-sconfs':    'sConfs'
     '.admin-account-slogs':     'sLogs'
     '.admin-account-wlogs':     'wLogs'
+    '.admin-account-cconfs':    'cConfs'
+    '.admin-account-clogs':     'cLogs'
 
     '.admin-account-lastlogin':
       observe: 'lastlogin'

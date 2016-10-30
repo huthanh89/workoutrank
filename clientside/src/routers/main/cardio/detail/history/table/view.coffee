@@ -107,7 +107,6 @@ class ItemView extends Marionette.ItemView
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
-    console.log @model.attributes
     @stickit()
     return
 
