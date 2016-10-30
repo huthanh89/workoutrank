@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 moment       = require 'moment'
+Color        = require 'color'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highstocks   = require 'highstock'
@@ -34,7 +35,7 @@ chartModel = (collection) ->
 seriesData = (model, chart) ->
 
   index = 0
-  color = Highcharts.getOptions().colors[index]
+  color = Color Highcharts.getOptions().colors[index]
 
   return {
     type:    chart
@@ -47,8 +48,8 @@ seriesData = (model, chart) ->
     marker:
       enabled: true
       radius:  3
-    color:     color
-    lineColor: color
+    color:     color.clone().darken(0.2).hslString()
+    lineColor: color.clone().darken(0.2).hslString()
     fillColor:
       linearGradient:
         x1: 0
@@ -58,13 +59,14 @@ seriesData = (model, chart) ->
       stops: [
         [
           0
-          color
+          color.hslString()
         ]
         [
           1
-          Highcharts.Color(Highcharts.getOptions().colors[index]).setOpacity(0).get('rgba')
+          color.clearer(1).hslString()
         ]
       ]
+
   }
 
 #-------------------------------------------------------------------------------

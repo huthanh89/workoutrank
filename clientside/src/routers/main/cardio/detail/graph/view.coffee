@@ -4,6 +4,7 @@
 
 _            = require 'lodash'
 moment       = require 'moment'
+Color        = require 'color'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
 Highcharts   = require 'highcharts'
@@ -46,18 +47,18 @@ seriesData = (model, type, chart) ->
     shadow : true
     marker:
       enabled: true
-      radius:  3
+      radius:  4
 
   if type is 0
 
     index = 2
-    color = Highcharts.getOptions().colors[index]
+    color = Color Highcharts.getOptions().colors[index]
 
     return _.assign result,
       name: 'Duration'
       data:  model.get('durationData')
-      color:     color
-      lineColor: color
+      color:     color.clone().darken(0.5).hslString()
+      lineColor: color.clone().darken(0.5).hslString()
       fillColor:
         linearGradient:
           x1: 0
@@ -67,13 +68,14 @@ seriesData = (model, type, chart) ->
         stops: [
           [
             0
-            color
+            color.hslString()
           ]
           [
             1
-            Highcharts.Color(Highcharts.getOptions().colors[index]).setOpacity(0).get('rgba')
+            color.clearer(1).hslString()
           ]
         ]
+
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
 #-------------------------------------------------------------------------------

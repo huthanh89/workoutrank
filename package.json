@@ -57,6 +57,7 @@
     "webpack": "*",
     "bootstrap": "*",
     "bootstrap-webpack": "*",
+    "color": "*",
     "d3": "*"
   },
   "devDependencies": {
