@@ -693,19 +693,19 @@ Home
   background: rgba(191, 191, 191, 0.28);
 }
 #home-sconf-count {
-  background: #cfaf60;
+  background: #df9d48;
 }
 #home-slog-count {
-  background: #7ac2cf;
+  background: #df9d48;
 }
 #home-wlog-count {
-  background: #7bcf8d;
+  background: #78aecf;
 }
 #home-cconf-count {
-  background: #cf815d;
+  background: #cf7451;
 }
 #home-clog-count {
-  background: #cf93c4;
+  background: #cf7451;
 }
 /*-----------------------------------------------------------------------------
 Profile

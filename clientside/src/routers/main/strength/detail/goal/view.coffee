@@ -62,7 +62,7 @@ class View extends Marionette.LayoutView
         type: 'weight'
     else
       @ui.weight.hide()
-      @ui.rep.switchClass 'col-sm-6', 'col-sm-12'
+      @ui.rep.addClass('col-sm-12').removeClass('col-sm-6')
 
     return
 

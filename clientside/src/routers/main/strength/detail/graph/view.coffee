@@ -67,7 +67,7 @@ seriesData = (model, type, chart) ->
       marker:
         enabled:    true
         fillColor:   darkerColor
-        radius:     4
+        radius:     3
   else
 
     color       = '#FE7935'
@@ -83,7 +83,7 @@ seriesData = (model, type, chart) ->
       marker:
         enabled:    true
         fillColor:  darkerColor
-        radius:     4
+        radius:     3
 
 #-------------------------------------------------------------------------------
 # Given a collection, return average weight in collection.
@@ -207,7 +207,6 @@ class View extends Marionette.ItemView
         valueDecimals:    0
 
       series: [
-        seriesData(model, type, 'column')
         seriesData(model, type, 'line')
       ]
 

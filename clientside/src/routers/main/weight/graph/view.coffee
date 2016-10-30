@@ -44,7 +44,7 @@ seriesData = (model, chart) ->
     marker:
       enabled:    true
       fillColor: '#00B272'
-      radius:     4
+      radius:     3
   }
 
 #-------------------------------------------------------------------------------
@@ -143,7 +143,6 @@ class View extends Marionette.ItemView
           '<span style="color: lightseagreen">' + moment(@x).format('DD MMM') + ': </span>' + @y
 
       series: [
-        seriesData(@model, 'column')
         seriesData(@model, 'line')
       ]
 
