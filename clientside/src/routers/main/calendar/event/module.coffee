@@ -6,7 +6,6 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'marionette'
-Data         = require '../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -39,19 +38,45 @@ class Collection extends Backbone.Collection
     result = []
 
     sConfs = options.sConfs
+    _.each options.sLogs.models, (sLog) ->
+      sConf = sConfs.get sLog.get('exercise')
+      if sConf
+        date = sLog.get('date')
+        result.push
+          start:   new Date moment(date)
+          end:     new Date moment(date)
+          title:   sConf.get('name')
+          color:   '#fcbc28'
+          modelID: sConf.id
+          type:    'sLog'
+      return
 
-    _.each options.sLogs.models, (model) ->
-      for data in model.get('repData')
+    cConfs = options.cConfs
+    _.each options.cLogs.models, (cLog) ->
 
-        sConf = sConfs.get(model.id)
+      cConf = cConfs.get cLog.get('exerciseID')
 
-        if sConf
-          result.push
-            start:   new Date moment(data.x)
-            end:     new Date moment(data.x)
-            title:   sConf.get('name')
-            color:   Data.Colors[_.sum(sConf.get('muscle')) % Data.Colors.length]
-            modelID: model.id
+      if cConf
+        date = cLog.get('date')
+        result.push
+          start:   new Date moment(date)
+          end:     new Date moment(date)
+          title:   cConf.get('name')
+          color:   '#e0571d'
+          modelID: cConf.id
+          type:    'cLog'
+      return
+
+    _.each options.wLogs.models, (wLog) ->
+
+      date = wLog.get('date')
+      result.push
+        start:   new Date moment(date)
+        end:     new Date moment(date)
+        title:   'Weight'
+        color:   '#709de5'
+        modelID: wLog.id
+        type:    'wLog'
       return
 
     return result
@@ -66,11 +91,6 @@ class View extends Marionette.ItemView
 
   ui:
     calendar: '#calendar-widget'
-
-  events:
-    'click #calendar-tab': ->
-      @channel.request 'show:schedule'
-      return
 
   constructor: (options) ->
     super
@@ -90,7 +110,13 @@ class View extends Marionette.ItemView
         right:  'today prev,next'
 
       eventClick: (calEvent) =>
-        @rootChannel.request 'strength:detail', calEvent.modelID
+        switch calEvent.type
+          when 'sLog'
+            @rootChannel.request 'strength:detail', calEvent.modelID
+          when 'cLog'
+            @rootChannel.request 'cardio:detail', calEvent.modelID
+          else
+            @rootChannel.request 'weights'
         return
 
     @calendar.fullCalendar('today')

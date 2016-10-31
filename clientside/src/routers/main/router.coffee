@@ -339,26 +339,58 @@ class Router extends Marionette.AppRouter
 
     @navChannel.request('nav:main')
     @rootChannel.request 'spin:page:loader', true
+
+    result = {}
+
     async.waterfall [
 
       (callback) ->
         sConfs = new Strength.Master.Collection()
         sConfs.fetch
-          success: (sConfs) -> callback null, sConfs
+          success: (sConfs) ->
+            result.sConfs = sConfs
+            return callback null
           error: (model, error) -> callback error
 
         return
 
-      (sConfs, callback) ->
-
+      (callback) ->
         sLogs  = new Strength.Master.SLogs()
         sLogs.fetch
-          success: (sLogs) -> callback null, sConfs, sLogs
+          success: (sLogs) ->
+            result.sLogs = sLogs
+            return callback null
           error: (collection, error) -> callback error
-
         return
 
-    ], (error, sConfs, sLogs) =>
+      (callback) ->
+        cConfs = new Cardio.Master.CConfs()
+        cConfs.fetch
+          success: (cConfs) ->
+            result.cConfs = cConfs
+            return callback null
+          error: (model, error) -> callback error
+        return
+
+      (callback) ->
+        cLogs  = new Cardio.Master.CLogs()
+        cLogs.fetch
+          success: (cLogs) ->
+            result.cLogs = cLogs
+            return callback null
+          error: (collection, error) -> callback error
+        return
+
+      (callback) ->
+        wLogs  = new Weight.Collection()
+        wLogs.fetch
+          success: (wLogs) ->
+            result.wLogs = wLogs
+            return callback null
+          error: (collection, error) -> callback error
+        return
+
+    ], (error) =>
 
       @rootChannel.request 'spin:page:loader', false
 
@@ -366,8 +398,11 @@ class Router extends Marionette.AppRouter
         @rootChannel.request 'message:error', error
       else
         @rootView.content.show new Calendar.View
-          sLogs:  sLogs
-          sConfs: sConfs
+          cLogs:  result.cLogs
+          cConfs: result.cConfs
+          sLogs:  result.sLogs
+          sConfs: result.sConfs
+          wLogs:  result.wLogs
 
       return
 

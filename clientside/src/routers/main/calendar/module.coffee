@@ -33,7 +33,13 @@ class View extends Marionette.LayoutView
 
   constructor: (options) ->
     super
-    @mergeOptions options, ['sConfs', 'sLogs']
+    @mergeOptions options, [
+      'cConfs'
+      'cLogs'
+      'sConfs'
+      'sLogs'
+      'wLogs'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
     @channel     = new Backbone.Radio.Channel(@cid)
 
@@ -41,8 +47,11 @@ class View extends Marionette.LayoutView
 
       'show:events': =>
         collection = new Event.Collection [],
+          cLogs:  @cLogs
+          cConfs: @cConfs
           sLogs:  @sLogs
           sConfs: @sConfs
+          wLogs:  @wLogs
           parse:  true
         events = collection.toJSON()
         @showChildView 'calendar', new Event.View

@@ -17,12 +17,20 @@ require 'backbone.paginator'
 require 'bootstrap.paginate'
 
 #-------------------------------------------------------------------------------
+# Cardio Config Model
+#-------------------------------------------------------------------------------
+
+class CConf extends Backbone.Model
+  idAttribute: '_id'
+
+#-------------------------------------------------------------------------------
 # Cardio Config Collection
 #-------------------------------------------------------------------------------
 
 class CConfs extends Backbone.Collection
 
   url: '/api/cardios'
+  model: CConf
 
 #-------------------------------------------------------------------------------
 # Cardio Log Collection

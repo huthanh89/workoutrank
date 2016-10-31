@@ -18,12 +18,24 @@ require 'backbone.paginator'
 require 'bootstrap.paginate'
 
 #-------------------------------------------------------------------------------
+# Strength Log Model
+#-------------------------------------------------------------------------------
+
+class SLog extends Backbone.Model
+
+  idAttribute: '_id'
+
+  defaults:
+    _id: ''
+
+#-------------------------------------------------------------------------------
 # Strength Log Collection
 #-------------------------------------------------------------------------------
 
 class SLogs extends Backbone.Collection
 
   url: '/api/slogs'
+  model: SLog
 
 #-------------------------------------------------------------------------------
 # Model
