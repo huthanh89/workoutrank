@@ -10,6 +10,20 @@ Data         = require '../data/module'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Day Array
+#-------------------------------------------------------------------------------
+
+Days = [
+  'sunday'
+  'monday'
+  'tuesday'
+  'wednesday'
+  'thursday'
+  'friday'
+  'saturday'
+]
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -19,27 +33,44 @@ class View extends Marionette.LayoutView
 
   ui:
     dialog:    '#calendar-modal-dialog'
-    sunday:    '#calendar-modal-sunday'
-    monday:    '#calendar-modal-monday'
-    tuesday:   '#calendar-modal-tuesday'
-    wednesday: '#calendar-modal-wednesday'
-    thursday:  '#calendar-modal-thursday'
-    friday:    '#calendar-modal-friday'
-    saturday:  '#calendar-modal-saturday'
+
+    sundayStrength:    '#calendar-modal-sunday'
+    mondayStrength:    '#calendar-modal-monday'
+    tuesdayStrength:   '#calendar-modal-tuesday'
+    wednesdayStrength: '#calendar-modal-wednesday'
+    thursdayStrength:  '#calendar-modal-thursday'
+    fridayStrength:    '#calendar-modal-friday'
+    saturdayStrength:  '#calendar-modal-saturday'
+
+    sundayCardio:    '#calendar-modal-sunday-cardio'
+    mondayCardio:    '#calendar-modal-monday-cardio'
+    tuesdayCardio:   '#calendar-modal-tuesday-cardio'
+    wednesdayCardio: '#calendar-modal-wednesday-cardio'
+    thursdayCardio:  '#calendar-modal-thursday-cardio'
+    fridayCardio:    '#calendar-modal-friday-cardio'
+    saturdayCardio:  '#calendar-modal-saturday-cardio'
 
   events:
 
     'submit': (event) ->
       event.preventDefault()
 
-      @model.set
-        sunday:    @ui.sunday.val() or []
-        monday:    @ui.monday.val() or []
-        tuesday:   @ui.tuesday.val() or []
-        wednesday: @ui.wednesday.val() or []
-        thursday:  @ui.thursday.val() or []
-        friday:    @ui.friday.val() or []
-        saturday:  @ui.saturday.val() or []
+      # Set schedule.
+
+      for day in Days
+
+        schedule = @ui["#{day}Strength"].val() or []
+
+        if  @ui["#{day}Cardio"].is(':checked')
+          schedule = _.union schedule, [-1]
+        else
+          schedule = _.difference schedule, [-1]
+
+        schedule = _.map schedule, (day) -> parseInt day
+
+        @model.set day, schedule
+
+      # Save schedule.
 
       @model.save [],
         success:  =>
@@ -53,13 +84,10 @@ class View extends Marionette.LayoutView
       return
 
     'hidden.bs.modal': ->
-      @ui.sunday.multiselect('destroy')
-      @ui.monday.multiselect('destroy')
-      @ui.tuesday.multiselect('destroy')
-      @ui.wednesday.multiselect('destroy')
-      @ui.thursday.multiselect('destroy')
-      @ui.friday.multiselect('destroy')
-      @ui.saturday.multiselect('destroy')
+
+      for day in Days
+        @ui["#{day}Strength"].multiselect('destroy')
+
       if @saved
         @channel.request 'show:schedule'
       return
@@ -71,13 +99,11 @@ class View extends Marionette.LayoutView
 
   onRender: ->
 
-    @createSelect('sunday')
-    @createSelect('monday')
-    @createSelect('tuesday')
-    @createSelect('wednesday')
-    @createSelect('thursday')
-    @createSelect('friday')
-    @createSelect('saturday')
+    for day in Days
+      @createSelect(day)
+
+      schedule = @model.get day
+      @ui["#{day}Cardio"].prop 'checked', _.indexOf(schedule, -1) isnt -1
 
     # Show this dialog
 
@@ -88,11 +114,13 @@ class View extends Marionette.LayoutView
     return
 
   createSelect: (day) ->
-    @ui[day].multiselect
+
+    @ui["#{day}Strength"].multiselect
       includeSelectAllOption: true
       maxHeight:     200
       buttonWidth:  '100%'
       buttonClass:  'btn btn-default'
+      nonSelectedText: 'Strength Training'
       dropRight:     true
     .multiselect 'dataprovider', Data.Muscles
     .multiselect('select', @model.get(day))

@@ -47,7 +47,12 @@ class View extends Marionette.ItemView
         right:  'basicDay,basicWeek'
 
       eventClick: (calEvent) =>
-        @rootChannel.request 'strength:detail', calEvent.strengthID
+
+        if calEvent.type is 'strength'
+          @rootChannel.request 'strength:detail', calEvent.strengthID
+        else if calEvent.type is 'cardio'
+          @rootChannel.request 'cardio:detail', calEvent.cardioID
+
         return
 
       eventRender: (view, element) =>

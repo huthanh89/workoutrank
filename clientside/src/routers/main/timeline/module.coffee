@@ -80,8 +80,6 @@ getChange = (value, prev, index) ->
 
 parseCLogs = (cLogs, cConfs) ->
 
-  console.log arguments
-
   result = []
 
   durationPrev  = 0
@@ -90,8 +88,6 @@ parseCLogs = (cLogs, cConfs) ->
   for model, index in cLogs
 
     cConf = cConfs.get(model.get('exerciseID'))
-
-    console.log model, cConf
 
     if cConf
 

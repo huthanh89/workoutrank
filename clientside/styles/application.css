@@ -636,7 +636,7 @@ Schedule
   height: 20px;
 }
 #schedule-widget .fc-event :hover {
-  background: darkslategrey;
+  background: rgba(212, 209, 212, 0.7);
 }
 #schedule-widget .fc-event span {
   font-size: 14px;

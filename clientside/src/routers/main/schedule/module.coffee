@@ -13,6 +13,20 @@ EditView     = require './edit/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Day Array
+#-------------------------------------------------------------------------------
+
+Days = [
+  'sunday'
+  'monday'
+  'tuesday'
+  'wednesday'
+  'thursday'
+  'friday'
+  'saturday'
+]
+
+#-------------------------------------------------------------------------------
 # Model
 #-------------------------------------------------------------------------------
 
@@ -43,32 +57,38 @@ class Collection extends Backbone.Collection
 
     result = []
 
-    days = [
-      'sunday'
-      'monday'
-      'tuesday'
-      'wednesday'
-      'thursday'
-      'friday'
-      'saturday'
-    ]
+    schedules = _.pick options.schedule.attributes, Days
+    sConfs    =   options.sConfs.models
+    cConfs    =   options.cConfs.models
 
-    schedule = _.pick options.schedule.attributes, days
+    index = 0
 
-    _.each options.sConfs.models, (model) ->
-      for day, index in days
-        muscles = model.get('muscle')
+    for schedule, exercises of schedules
 
-        if _.intersection(muscles, schedule[day]).length > 0
+      for sConf in sConfs
+        muscles = sConf.get('muscle')
+        if _.intersection(muscles, exercises).length > 0
           result.push
-            start:  new Date moment().startOf('week').add(index, 'days')
-            end:    new Date moment().startOf('week').add(index, 'days')
-            title:  model.get('name')
-           # color:  Data.Colors[_.sum(muscles) % Data.Colors.length]
-            color: '#247f6b'
-            allDay: true
-            strengthID: model.id
-      return
+            start:      new Date moment().startOf('week').add(index, 'days')
+            end:        new Date moment().startOf('week').add(index, 'days')
+            title:      sConf.get('name')
+            color:      '#fcbc28'
+            allDay:     true
+            strengthID: sConf.id
+            type:       'strength'
+
+      for cConf in cConfs
+        if _.intersection([-1], exercises).length > 0
+          result.push
+            start:    new Date moment().startOf('week').add(index, 'days')
+            end:      new Date moment().startOf('week').add(index, 'days')
+            title:    cConf.get('name')
+            color:    '#ea7149'
+            allDay:   true
+            cardioID: cConf.id
+            type:     'cardio'
+
+      index++
 
     return result
 
@@ -108,7 +128,12 @@ class View extends Marionette.LayoutView
 
   constructor: (options) ->
     super
-    @mergeOptions options, ['sConfs', 'sLogs']
+    @mergeOptions options, [
+      'cConfs'
+      'cLogs'
+      'sConfs'
+      'sLogs'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
     @channel     = new Backbone.Radio.Channel(@cid)
 
@@ -121,6 +146,8 @@ class View extends Marionette.LayoutView
       'show:schedule': =>
 
         collection = new Collection [],
+          cLogs:    @cLogs
+          cConfs:   @cConfs
           sLogs:    @sLogs
           sConfs:   @sConfs
           schedule: @model
@@ -149,7 +176,10 @@ class View extends Marionette.LayoutView
     result = []
 
     for value in values
-      result.push _.find(Data.Muscles, value: value).label
+      if value is -1
+        result.push 'Cardio'
+      else
+        result.push _.find(Data.Muscles, value: value).label
 
     if result.length
       text = result.join(', ')
