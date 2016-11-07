@@ -25,21 +25,18 @@ class View extends Marionette.ItemView
 
   ui:
 
-    home:        '.nav-home'
-    strengths:   '.nav-strengths'
-    logs:        '.nav-logs'
-    summary:     '.nav-summary'
-    profile:     '.nav-profile'
-    account:     '.nav-account'
-    setting:     '.nav-setting'
-    about:       '.nav-about'
-    report:      '.nav-report'
-    logout:      '.nav-logout'
-
-    homeTip:     '.nav-home-tip'
-    strengthTip: '.nav-strengths-tip'
-    logTip:      '.nav-logs-tip'
-    summaryTip:  '.nav-summary-tip'
+    home:         '.nav-home'
+    strengths:    '.nav-strengths'
+    cardios:      '.nav-cardios'
+    summary:      '.nav-summary'
+    profile:      '.nav-profile'
+    account:      '.nav-account'
+    setting:      '.nav-setting'
+    about:        '.nav-about'
+    report:       '.nav-report'
+    logout:       '.nav-logout'
+    strengthsTip: '.nav-strengths-tip'
+    cardiosTip:   '.nav-cardios-tip'
 
   bindings:
     '#nav-username':
@@ -66,9 +63,9 @@ class View extends Marionette.ItemView
       @channel.request 'strengths'
       return
 
-    'click @ui.logs': ->
+    'click @ui.cardios': ->
       Radio.channel('root').request 'drawer:close'
-      @channel.request 'logs'
+      @channel.request 'cardios'
       return
 
     'click @ui.account': ->
@@ -81,29 +78,9 @@ class View extends Marionette.ItemView
       @channel.request 'profile'
       return
 
-    'click @ui.setting': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'setting'
-      return
-
-    'click @ui.about': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'help'
-      return
-
-    'click @ui.report': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'report'
-      return
-
     'click @ui.logout': ->
       Radio.channel('root').request 'drawer:close'
       @channel.request 'logout'
-      return
-
-    'click .nav-contact': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'feedback'
       return
 
   constructor: ->
@@ -112,20 +89,12 @@ class View extends Marionette.ItemView
 
   onRender: ->
 
-    @ui.homeTip.tooltip
-      title:     'Home'
+    @ui.strengthsTip.tooltip
+      title:     'Strength'
       placement: 'bottom'
 
-    @ui.strengthTip.tooltip
-      title:     'Journals'
-      placement: 'bottom'
-
-    @ui.logTip.tooltip
-      title:     'Graphs'
-      placement: 'bottom'
-
-    @ui.summaryTip.tooltip
-      title:     'Summary'
+    @ui.cardiosTip.tooltip
+      title:     'Cardio'
       placement: 'bottom'
 
     @stickit()
