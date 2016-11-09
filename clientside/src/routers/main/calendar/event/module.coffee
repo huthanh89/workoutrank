@@ -37,6 +37,8 @@ class Collection extends Backbone.Collection
 
     result = []
 
+    # Parse Strength Logs.
+
     sConfs = options.sConfs
     _.each options.sLogs.models, (sLog) ->
       sConf = sConfs.get sLog.get('exercise')
@@ -51,13 +53,15 @@ class Collection extends Backbone.Collection
           type:    'sLog'
       return
 
+    # Parse Cardio Logs.
+
     cConfs = options.cConfs
     _.each options.cLogs.models, (cLog) ->
 
       cConf = cConfs.get cLog.get('exerciseID')
 
       if cConf
-        date = cLog.get('date')
+        date = cLog.get('created')
         result.push
           start:   new Date moment(date)
           end:     new Date moment(date)
@@ -66,6 +70,8 @@ class Collection extends Backbone.Collection
           modelID: cConf.id
           type:    'cLog'
       return
+
+    # Parse Weight Logs.
 
     _.each options.wLogs.models, (wLog) ->
 

@@ -12,7 +12,7 @@ Add          = require './add/module'
 Date         = require './date/module'
 Table        = require './table/module'
 GraphView    = require './graph/view'
-Summary      = require './summary/module'
+Reduce       = require './reduce/module'
 CalendarView = require './calendar/view'
 viewTemplate = require './view.jade'
 
@@ -56,7 +56,7 @@ class View extends Marionette.LayoutView
     date:     '#weight-date-view'
     table:    '#weight-table-view'
     graph:    '#weight-graph-view'
-    summary:  '#weight-summary-view'
+    reduce:   '#weight-reduce-view'
     calendar: '#weight-calendar-view'
 
   events:
@@ -83,14 +83,12 @@ class View extends Marionette.LayoutView
   collectionEvents:
     'sync update': ->
       @updateTableCollection()
-      @summaryModel.update(@collection)
       @showCalendar()
       @updateViews()
       return
 
   modelEvents:
     sync: ->
-      @summaryModel.update(@collection)
       @updateViews()
       return
 
@@ -109,9 +107,6 @@ class View extends Marionette.LayoutView
 
     @tableCollection = new Table.Collection @collection.models
     @updateTableCollection()
-
-    @summaryModel = new Summary.Model {},
-      wLogs: @collection
 
     # When date is changed, update pageable collection.
 
@@ -143,8 +138,8 @@ class View extends Marionette.LayoutView
     @showChildView 'graph', new GraphView
       sLogs: @collection
 
-    @showChildView 'summary', new Summary.View
-      model: @summaryModel
+    @showChildView 'reduce', new Reduce.View
+      wLogs: @collection
     return
 
   showCalendar: ->
