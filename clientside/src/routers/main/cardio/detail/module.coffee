@@ -26,7 +26,9 @@ viewTemplate  = require './view.jade'
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
+
   urlRoot: '/api/cardios'
+
   idAttribute: '_id'
 
 #-------------------------------------------------------------------------------
@@ -48,6 +50,7 @@ class Collection extends Backbone.Collection
     return _.map response, (response) ->
 
       return {
+        _id:       response._id
         date:      response.created
         exercise:  response.exerciseID
         note:      response.note
@@ -229,7 +232,6 @@ class View extends Marionette.LayoutView
       model: @summaryModel
 
     @updateAfterDateChange()
-
 
     return
 

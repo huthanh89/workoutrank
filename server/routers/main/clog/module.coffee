@@ -85,7 +85,7 @@ module.post = (req, res) ->
       # Create a new clog entry.
 
       CLog.create
-        created:    moment()
+        created:    req.body.date
         note:       req.body.note
         intensity:  req.body.intensity
         speed:      req.body.speed

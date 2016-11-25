@@ -32,6 +32,7 @@ class View extends Marionette.ItemView
       'channel'
       'calendarEvents'
       'sLogs'
+      'cLogs'
     ]
     @rootChannel = Backbone.Radio.channel('root')
 
@@ -57,28 +58,32 @@ class View extends Marionette.ItemView
 
       eventRender: (view, element) =>
 
-        day = moment(view.start).startOf('day')
+        # Filter for slogs the match day.
 
-        models = _ @sLogs.models
+        sLogs = _ @sLogs.models
         .filter (model) ->
-
-          return false unless model.id is view.strengthID
-
-          eventDate  = moment(view.start).format('YYYY-MM-DD')
-
-          for data in model.get('repData')
-            return true if eventDate is moment(data.x).format('YYYY-MM-DD')
-
-          for data in model.get('weightData')
-            return true if eventDate is moment(data.x).format('YYYY-MM-DD')
-
+          return false unless (model.get('exercise') is view.strengthID)
+          eventDate = moment(view.start).format('YYYY-MM-DD')
+          sLogDate  = model.get('date')
+          return true if eventDate is moment(sLogDate).format('YYYY-MM-DD')
           return false
-
         .value()
 
+        # Filter for clogs the match day.
+
+        cLogs = _ @cLogs.models
+        .filter (model) ->
+          return false unless (model.get('exerciseID') is view.cardioID)
+          eventDate = moment(view.start).format('YYYY-MM-DD')
+
+          cLogDate  = model.get('created')
+
+          return true if eventDate is moment(cLogDate).format('YYYY-MM-DD')
+          return false
+        .value()
         title = element.find(".fc-title")
 
-        if models.length
+        if sLogs.length or cLogs.length
           title.prepend("<i class='fa fa-fw fa-check-square-o'></i>")
         else
           title.prepend("<i class='fa fa-fw fa-square-o'></i>")

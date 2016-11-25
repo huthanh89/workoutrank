@@ -18,10 +18,21 @@ require 'multiselect'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Model
+#-------------------------------------------------------------------------------
+
+class Model extends Backbone.Model
+
+  urlRoot: '/api/cLogs'
+  idAttribute: '_id'
+
+#-------------------------------------------------------------------------------
 # Collection
 #-------------------------------------------------------------------------------
 
 class Collection extends Backbone.Collection
+
+  model: Model
 
   comparator: (model) -> -moment(model.get('created')).utc()
 
@@ -99,7 +110,6 @@ class ItemView extends Marionette.ItemView
 
   events:
     'click .cardio-table-td-remove': ->
-      @model.urlRoot = '/api/cLogs'
       @model.destroy
         wait: true
       return
@@ -134,7 +144,7 @@ class View extends Marionette.CompositeView
 
     clean = options.cLogs.clone()
 
-    models = options.cLogs.filter (model, index) ->
+    sLogs = options.cLogs.filter (model, index) ->
       dateA  = moment(model.get('date')).startOf('day')
       dateB  = moment(options.date).startOf('day')
       result = dateA.isSame(dateB)
@@ -154,6 +164,11 @@ class View extends Marionette.CompositeView
         model.set 'percentDuration', 0
 
       return result
+
+    models = []
+
+    for sLog in sLogs
+      models.push new Model sLog.attributes
 
     super _.extend {}, options,
       collection: new Collection models

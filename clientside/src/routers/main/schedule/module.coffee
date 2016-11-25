@@ -160,6 +160,7 @@ class View extends Marionette.LayoutView
           model:          @model
           calendarEvents: events
           sLogs:          @sLogs
+          cLogs:          @cLogs
         return
 
   onShow: ->
