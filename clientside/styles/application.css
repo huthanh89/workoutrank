@@ -639,7 +639,6 @@ Schedule
 #schedule-widget .fc-event {
   height: 25px;
   font-size: 18px;
-  letter-spacing: 1.2px;
 }
 #schedule-widget .fc-event :hover {
   background: rgba(212, 209, 212, 0.7);
