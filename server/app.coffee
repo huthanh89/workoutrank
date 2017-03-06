@@ -53,12 +53,13 @@ routers      = require './routers/module'
 #mongoose.connect config.developmentURL
 #mongoose.connect config.productionURL
 
-#db = mongoose.connection
 
 
-db = mongoose.connect 'mongodb://54.201.171.251:27017/local',
+mongoose.connect 'mongodb://54.201.171.251:27017/local',
   user: 'admin'
   pass: '1234'
+
+db = mongoose.connection
 
 db.on 'error', console.error.bind(console, 'connection error:')
 
