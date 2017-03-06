@@ -50,10 +50,15 @@ routers      = require './routers/module'
 
 # Connect to Database.
 
-#mongoose.connect config.developmentURL
-mongoose.connect config.productionURL
+mongoose.connect config.developmentURL
+#mongoose.connect config.productionURL
 
-db = mongoose.connection
+#db = mongoose.connection
+
+
+db = mongoose.connect 'mongodb://54.201.171.251:27017/local',
+  user: 'admin'
+  pass: '1234'
 
 db.on 'error', console.error.bind(console, 'connection error:')
 
