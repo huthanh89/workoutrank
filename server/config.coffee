@@ -13,7 +13,11 @@ exports.developmentURL = 'mongodb://54.201.171.251:27017/local'
 
 # MongoDB production path.
 
-#exports.poductionURL = 'mongodb://54.201.171.251:27017/local'
-exports.poductionURL = 'mongodb://admin:1234@localhost:27017/local'
+#exports.productionURL = 'mongodb://54.201.171.251:27017/local'
+exports.productionURL = 'mongodb://admin:1234@localhost:27017/local'
+
+
+#exports.productionURL = 'mongodb://admin:1234@54.201.171.251:27017/local'
+
 
 #--------------------------------------------------------------

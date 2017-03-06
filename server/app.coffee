@@ -50,7 +50,8 @@ routers      = require './routers/module'
 
 # Connect to Database.
 
-mongoose.connect config.developmentURL
+#mongoose.connect config.developmentURL
+mongoose.connect config.productionURL
 
 db = mongoose.connection
 
