@@ -65,10 +65,6 @@ class View extends Marionette.View
       return
     return
 
-  onBeforeDestroy: ->
-    @ui.date.data('DateTimePicker').destroy()
-    return
-
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------

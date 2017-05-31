@@ -44,10 +44,6 @@ class NullView extends Marionette.View
   tagName: 'tr'
   template: nullTemplate
 
-  constructor: (options) ->
-    super
-    @mergeOptions options, 'channel'
-
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------

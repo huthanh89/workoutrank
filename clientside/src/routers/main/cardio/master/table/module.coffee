@@ -61,7 +61,9 @@ class NullView extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+    ]
 
   events:
     click: -> @channel.request 'add'
@@ -94,7 +96,9 @@ class ItemView extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+    ]
     @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->

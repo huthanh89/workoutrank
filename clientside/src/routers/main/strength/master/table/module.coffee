@@ -6,8 +6,8 @@ $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
-Data         = require '../../data/module'
 nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
@@ -18,6 +18,12 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Pageable models
@@ -73,10 +79,14 @@ class NullView extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+    ]
 
   events:
-    click: -> @channel.request 'add'
+    click: ->
+      @channel.request 'add'
+      return
 
 #-------------------------------------------------------------------------------
 # ItemView
@@ -103,30 +113,16 @@ class ItemView extends Marionette.View
       observe: 'updated'
       onGet: (value) -> if value then moment(value).from(moment()) else '---'
 
-    ###
-    '.strength-table-td-muscle':
-      observe: 'muscle'
-      onGet: (values) ->
-        if values.length > 0
-          result = []
-          for value in values
-            result.push _.find(Data.Muscles, value: value).label
-          return _.truncate result.toString(),
-            length:    20,
-            separator: ' '
-        else
-          return '---'
-###
-
   events:
     'click': ->
-      @rootChannel.request 'strength:detail', @model.id
+      rootChannel.request 'strength:detail', @model.id
       return
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
-    @rootChannel = Backbone.Radio.channel('root')
+    @mergeOptions options, [
+      'channel'
+    ]
 
   onRender: ->
     @stickit()

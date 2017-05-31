@@ -32,7 +32,9 @@ class View extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'response'
+    @mergeOptions options, [
+      'response'
+    ]
 
 #-------------------------------------------------------------------------------
 # Exports

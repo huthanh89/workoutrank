@@ -5,6 +5,7 @@
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -13,6 +14,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # Given an array of models, return the oldest date.
@@ -49,8 +56,20 @@ class Model extends Backbone.Model
   parse: (attributes, options) ->
 
     wLogs    = options.wLogs
-    minModel = _.minBy wLogs.models, (model) -> model.get('weight')
-    maxModel = _.maxBy wLogs.models,  (model) -> model.get('weight')
+
+    if wLogs.length is 0
+      return {
+        min:   0
+        max:   0
+        avg:   0
+        count: 0
+        firstDate:     null
+        lastDate:      null
+        currentWeight: null
+      }
+
+    minModel = _.minBy  wLogs.models, (model) -> model.get('weight')
+    maxModel = _.maxBy  wLogs.models, (model) -> model.get('weight')
     avg      = _.meanBy wLogs.models, (model) -> model.get('weight')
     round    = 1
 
@@ -106,7 +125,8 @@ class View extends Marionette.View
     '#body-reduce-bmi':
       observe: 'currentWeight'
       onGet: (value) ->
-        height = @userChannel.get('height')
+        user   = userChannel.request('user')
+        height = user.get('height')
         weight = value
         bmi    = _.round ((weight / (height * height)) * 703), 2
         text   = ''

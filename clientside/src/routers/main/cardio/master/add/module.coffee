@@ -92,7 +92,9 @@ class View extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'edit'
+    @mergeOptions options, [
+      'edit'
+    ]
 
   onRender: ->
 

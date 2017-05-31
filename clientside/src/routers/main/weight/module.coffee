@@ -17,6 +17,12 @@ CalendarView = require './calendar/view'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+
+#-------------------------------------------------------------------------------
 # Model
 #   Strength model used to fetch data of that exercises
 #   such as the name and muscle type.
@@ -62,7 +68,7 @@ class View extends Marionette.View
   events:
 
     'click #weight-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #weight-help': ->
@@ -77,7 +83,7 @@ class View extends Marionette.View
       return
 
     'click .weight-body-btn': ->
-      @rootChannel.request 'body'
+      rootChannel.request 'body'
       return
 
   collectionEvents:
@@ -94,7 +100,6 @@ class View extends Marionette.View
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
 
     @dateModel = new Date.Model()
 

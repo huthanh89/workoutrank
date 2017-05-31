@@ -52,7 +52,9 @@ class NullView extends Marionette.View
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+    ]
 
 #-------------------------------------------------------------------------------
 # View
@@ -143,7 +145,9 @@ class View extends Marionette.CompositeView
 
   constructor: (options) ->
     super
-    @mergeOptions options, 'channel'
+    @mergeOptions options, [
+      'channel'
+    ]
 
   childViewOptions: ->
     return {
