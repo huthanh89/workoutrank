@@ -3,9 +3,15 @@
 #-------------------------------------------------------------------------------
 
 $            = require 'jquery'
-Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # View
@@ -34,16 +40,15 @@ class View extends Marionette.View
 
     @route = selector.data('route')
 
-    @channel.request selector.data('route')
+    rootChannel.request selector.data('route')
     return
 
   constructor: ->
     super
-    @channel = Backbone.Radio.channel('root')
 
     @route = ''
 
-    @channel.reply
+    rootChannel.reply
       'clear:navigation': (route) =>
         if @route isnt route
           $(@el).find('li').removeClass 'active'
