@@ -7,6 +7,7 @@ Radio        = require 'backbone.radio'
 Toastr       = require 'toastr'
 Marionette   = require 'backbone.marionette'
 Nav          = require './nav/module'
+LoaderView   = require './loader/view'
 FooterView   = require './footer/view'
 viewTemplate = require './view.jade'
 
@@ -80,9 +81,9 @@ class View extends Marionette.View
 
         Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
 
-      'spin:page:loader': (enable) ->
+      'spin:page:loader': (enable) =>
         if enable
-          @showChildView 'loader', new Loader.View()
+          @showChildView 'loader', new LoaderView()
         else
           @getRegion('loader').empty()
         return
@@ -107,7 +108,7 @@ class View extends Marionette.View
         @getRegion('index').empty()
 
         user.fetch
-          success: ->
+          success: =>
             @showChildView 'header', new Nav.Main
               model: user
             @showChildView 'drawer', new Nav.Drawer()

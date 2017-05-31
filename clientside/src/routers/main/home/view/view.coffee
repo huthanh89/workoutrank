@@ -4,8 +4,16 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # View
@@ -40,61 +48,60 @@ class View extends Marionette.View
       return
 
     'click #home-user-picture': ->
-      @rootChannel.request('profile')
+      rootChannel.request('profile')
       return
 
     'click #home-strengths': ->
-      @rootChannel.request('strengths')
+      rootChannel.request('strengths')
       return
 
     'click #home-cardios': ->
-      @rootChannel.request('cardios')
+      rootChannel.request('cardios')
       return
 
     'click #home-logs': ->
-      @rootChannel.request('logs')
+      rootChannel.request('logs')
       return
 
     'click #home-calendar': ->
-      @rootChannel.request('calendar')
+      rootChannel.request('calendar')
       return
 
     'click #home-schedule': ->
-      @rootChannel.request('schedule')
+      rootChannel.request('schedule')
       return
 
     'click #home-weights': ->
-      @rootChannel.request('weights')
+      rootChannel.request('weights')
       return
 
     'click #home-timeline': ->
-      @rootChannel.request('timeline')
+      rootChannel.request('timeline')
       return
 
     'click #home-logout': ->
-      @rootChannel.request('logout')
+      rootChannel.request('logout')
       return
 
     'click #home-profile': ->
-      @rootChannel.request('profile')
+      rootChannel.request('profile')
       return
 
     'click #home-account': ->
-      @rootChannel.request('account')
+      rootChannel.request('account')
       return
 
     'click #home-admin-accounts': ->
-      @rootChannel.request('admin:accounts')
+      rootChannel.request('admin:accounts')
       return
 
     'click #home-admin-feedbacks': ->
-      @rootChannel.request('admin:feedbacks')
+      rootChannel.request('admin:feedbacks')
       return
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
-    @user  = Backbone.Radio.channel('user').request 'user'
+    @user = userChannel.request 'user'
 
   onRender: ->
 

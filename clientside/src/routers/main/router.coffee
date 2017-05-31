@@ -4,6 +4,7 @@
 
 async      = require 'async'
 Backbone   = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 Home       = require './home/module'
 Calendar   = require './calendar/module'
@@ -14,6 +15,14 @@ Weight     = require './weight/module'
 Timeline   = require './timeline/module'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+navChannel  = Radio.channel('nav')
+rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
+
+#-------------------------------------------------------------------------------
 # Router
 #-------------------------------------------------------------------------------
 
@@ -21,64 +30,62 @@ class Router extends Marionette.AppRouter
 
   constructor: ->
     super
-    @navChannel  = Backbone.Radio.channel('nav')
-    @rootChannel = Backbone.Radio.channel('root')
-    @rootView    = @rootChannel.request('rootview')
+    @rootView = rootChannel.request('rootview')
 
     # Replies for menu navigation.
     # Change the url path with @navigate('url path')
     # before being sent to route handler.
     # When changing url, set trigger true to trigger onRoute()
 
-    @rootChannel.reply
+    rootChannel.reply
 
       'home': =>
-        @rootChannel.request 'navigate', 'home'
+        rootChannel.request 'navigate', 'home'
         @home()
         return
 
       'strengths': (muscle) =>
-        @rootChannel.request 'navigate', 'strengths'
+        rootChannel.request 'navigate', 'strengths'
         @strengths(muscle)
         return
 
       'strength:detail': (exerciseID) =>
-        @rootChannel.request 'navigate', "strength/#{exerciseID}"
+        rootChannel.request 'navigate', "strength/#{exerciseID}"
         @strengthDetail(exerciseID)
         return
 
       'cardios': =>
-        @rootChannel.request 'navigate', 'cardios'
+        rootChannel.request 'navigate', 'cardios'
         @cardios()
         return
 
       'cardio:detail': (exerciseID) =>
-        @rootChannel.request 'navigate', "cardio/#{exerciseID}"
+        rootChannel.request 'navigate', "cardio/#{exerciseID}"
         @cardioDetail(exerciseID)
         return
 
       'calendar': =>
-        @rootChannel.request 'navigate', 'calendar'
+        rootChannel.request 'navigate', 'calendar'
         @calendar()
         return
 
       'schedule': =>
-        @rootChannel.request 'navigate', 'schedule'
+        rootChannel.request 'navigate', 'schedule'
         @schedule()
         return
 
       'log:detail': (exerciseID) =>
-        @rootChannel.request 'navigate', "log/#{exerciseID}"
+        rootChannel.request 'navigate', "log/#{exerciseID}"
         @logDetail(exerciseID)
         return
 
       'weights': =>
-        @rootChannel.request 'navigate', 'weights'
+        rootChannel.request 'navigate', 'weights'
         @weights()
         return
 
       'timeline': =>
-        @rootChannel.request 'navigate', 'timeline'
+        rootChannel.request 'navigate', 'timeline'
         @timeline()
         return
 
@@ -104,16 +111,14 @@ class Router extends Marionette.AppRouter
 
   home: ->
 
-    @navChannel.request('nav:main')
-
-    rootChannel = @rootChannel
+    navChannel.request('nav:main')
     rootChannel.request 'spin:page:loader', true
 
     async.waterfall [
 
       (callback) ->
 
-        user = Backbone.Radio.channel('user').request('user')
+        user = userChannel.request('user')
 
         user.fetch
           success: ->
@@ -133,7 +138,7 @@ class Router extends Marionette.AppRouter
       if error
         rootChannel.request 'message:error', error
 
-      @rootView.content.show new Home.View
+      @rootView.showChildView 'content', new Home.View
         model: model
       return
 
@@ -141,8 +146,8 @@ class Router extends Marionette.AppRouter
 
   strengths: (muscle) ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -167,12 +172,12 @@ class Router extends Marionette.AppRouter
 
       @rootChannel.request 'spin:page:loader', false
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
 
       else
         View = Strength.Master.View
 
-        @rootView.content.show new View
+        @rootView.showChildView 'content', new View
           collection: sConfs
           sLogs:      sLogs
           muscle:     muscle
@@ -181,8 +186,8 @@ class Router extends Marionette.AppRouter
 
   strengthDetail: (strengthID) ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -216,15 +221,15 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConf, sLogs, wLogs) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
 
       else
         View = Strength.Detail.View
 
-        @rootView.content.show new View
+        @rootView.showChildView 'content', new View
           model:      sConf
           collection: sLogs
           wLogs:      wLogs
@@ -235,8 +240,8 @@ class Router extends Marionette.AppRouter
 
   cardios: ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
 
     result = {}
 
@@ -265,9 +270,9 @@ class Router extends Marionette.AppRouter
 
     ], (error) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
 
       else
 
@@ -276,15 +281,15 @@ class Router extends Marionette.AppRouter
           cLogs:  result.cLogs.models
           parse:  true
 
-        @rootView.content.show new Cardio.Master.View
+        @rootView.showChildView 'content', new Cardio.Master.View
           collection: collection
 
     return
 
   cardioDetail: (exerciseID) ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
 
     result = {}
 
@@ -318,16 +323,16 @@ class Router extends Marionette.AppRouter
 
     ], (error) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
 
       else
 
         View = Cardio.Detail.View
 
-        @rootView.content.show new View
+        @rootView.showChildView 'content', new View
           model:      result.cConf
           collection: result.cLogs
 
@@ -337,8 +342,8 @@ class Router extends Marionette.AppRouter
 
   calendar: ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
 
     result = {}
 
@@ -397,7 +402,7 @@ class Router extends Marionette.AppRouter
       if error
         @rootChannel.request 'message:error', error
       else
-        @rootView.content.show new Calendar.View
+        @rootView.showChildView 'content', new Calendar.View
           cLogs:  result.cLogs
           cConfs: result.cConfs
           sLogs:  result.sLogs
@@ -408,8 +413,8 @@ class Router extends Marionette.AppRouter
 
   schedule: ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
 
     result = {}
 
@@ -463,12 +468,12 @@ class Router extends Marionette.AppRouter
 
     ], (error, model) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
         @rootChannel.request 'message:error', error
       else
-        @rootView.content.show new Schedule.View
+        @rootView.showChildView 'content', new Schedule.View
           cLogs:  result.cLogs
           cConfs: result.cConfs
           sLogs:  result.sLogs
@@ -479,8 +484,8 @@ class Router extends Marionette.AppRouter
 
   weights: ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
     async.waterfall [
 
       (callback) ->
@@ -498,15 +503,15 @@ class Router extends Marionette.AppRouter
         @rootChannel.request 'message:error', error
       else
         View = Weight.View
-        @rootView.content.show new View
+        @rootView.showChildView 'content', new View
           collection: wLogs
 
       return
 
   timeline: ->
 
-    @navChannel.request('nav:main')
-    @rootChannel.request 'spin:page:loader', true
+    navChannel.request('nav:main')
+    rootChannel.request 'spin:page:loader', true
 
     result = {}
 
@@ -570,12 +575,12 @@ class Router extends Marionette.AppRouter
 
     ], (error) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
       else
-        @rootView.content.show new Timeline.View
+        @rootView.showChildView 'content', new Timeline.View
           collection: new Timeline.Collection [],
             cConfs: result.cConfs
             cLogs:  result.cLogs

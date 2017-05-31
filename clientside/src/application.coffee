@@ -14,7 +14,6 @@ MainRouter  = require './routers/main/router'
 UserRouter  = require './routers/user/router'
 AdminRouter = require './routers/admin/router'
 
-
 #-------------------------------------------------------------------------------
 # Channels
 #-------------------------------------------------------------------------------
