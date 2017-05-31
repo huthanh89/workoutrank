@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Local        = require './local/module'
 Social       = require './social/module'
@@ -14,6 +15,12 @@ viewTemplate = require './view.jade'
 
 require 'backbone.stickit'
 require 'touchspin'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -35,7 +42,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -45,16 +52,12 @@ class View extends Marionette.LayoutView
   events:
 
     'click #account-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #account-logout': ->
-      @rootChannel.request('logout')
+      rootChannel.request('logout')
       return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
   onAttach: ->
 

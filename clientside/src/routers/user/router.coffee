@@ -4,10 +4,18 @@
 
 async      = require 'async'
 Backbone   = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 Account    = require './account/module'
 Profile    = require './profile/module'
 Weight     = require '../main/weight/module'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+navChannel  = Radio.channel('nav')
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Router
@@ -17,24 +25,22 @@ class Router extends Marionette.AppRouter
 
   constructor: ->
     super
-    @navChannel  = Backbone.Radio.channel('nav')
-    @rootChannel = Backbone.Radio.channel('root')
-    @rootView    = @rootChannel.request('rootview')
+    @rootView = rootChannel.request('rootview')
 
     # Replies for menu navigation.
     # Change the url path with @navigate('url path')
     # before being sent to route handler.
     # When changing url, set trigger true to trigger onRoute() call.
 
-    @rootChannel.reply
+    rootChannel.reply
 
       'account': =>
-        @rootChannel.request 'navigate', 'account'
+        rootChannel.request 'navigate', 'account'
         @account()
         return
 
       'profile': (isNew) =>
-        @rootChannel.request 'navigate', 'profile'
+        rootChannel.request 'navigate', 'profile'
         @profile(isNew)
         return
 
@@ -51,21 +57,21 @@ class Router extends Marionette.AppRouter
   # Update Navbar and show view.
 
   account: ->
-    @navChannel.request('nav:main')
+    navChannel.request('nav:main')
     model = new Account.Model()
     model.fetch
-      success: (model) =>
-        @rootView.content.show new Account.View
+      success: (model) ->
+        rootView.content.show new Account.View
           model: model
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+      error: (model, response) ->
+        rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
   profile: (isNew) ->
 
-    @navChannel.request('nav:main')
+    navChannel.request('nav:main')
     async.waterfall [
       (callback) ->
         model = new Profile.Model()
@@ -79,11 +85,11 @@ class Router extends Marionette.AppRouter
           error: (model, error) -> callback error
         return
 
-    ], (error, userModel, wLogs) =>
+    ], (error, userModel, wLogs) ->
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
       else
-        @rootView.content.show new Profile.View
+        rootView.content.show new Profile.View
           model: userModel
           wLogs: wLogs
           isNew: isNew

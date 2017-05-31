@@ -259,7 +259,7 @@ class ListView extends Marionette.CollectionView
 # Composite View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
   template: viewTemplate
 
   ui:

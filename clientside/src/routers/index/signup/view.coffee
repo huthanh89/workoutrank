@@ -24,7 +24,6 @@ class View extends Marionette.View
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @channel = Backbone.Radio.channel('channel')
 
   onAttach: ->

@@ -3,18 +3,17 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-GA           = require './ga'
-GCT          = require './gct'
-Backbone     = require 'backbone'
-Radio        = require 'backbone.radio'
-Marionette   = require 'backbone.marionette'
-RootView     = require './view'
-IndexRouter  = require './routers/index/router'
-###
-MainRouter   = require './routers/main/router'
-UserRouter   = require './routers/user/router'
-AdminRouter  = require './routers/admin/router'
-###
+GA          = require './ga'
+GCT         = require './gct'
+Backbone    = require 'backbone'
+Radio       = require 'backbone.radio'
+Marionette  = require 'backbone.marionette'
+RootView    = require './view'
+IndexRouter = require './routers/index/router'
+MainRouter  = require './routers/main/router'
+UserRouter  = require './routers/user/router'
+AdminRouter = require './routers/admin/router'
+
 
 #-------------------------------------------------------------------------------
 # Channels
@@ -102,7 +101,6 @@ class Application extends Marionette.Application
       mode:          'auto'
       trailingSlash: 'ignore'
 
-    ###
     new MainRouter
       mode:          'auto'
       trailingSlash: 'ignore'
@@ -114,7 +112,6 @@ class Application extends Marionette.Application
     new AdminRouter
       mode:          'auto'
       trailingSlash: 'ignore'
-###
 
     # Called when url is changed during navigation.
 

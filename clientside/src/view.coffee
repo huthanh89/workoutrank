@@ -14,9 +14,9 @@ viewTemplate = require './view.jade'
 # Channels
 #-------------------------------------------------------------------------------
 
-userChannel = Radio.channel('user')
-rootChannel = Radio.channel('root')
 navChannel  = Radio.channel('nav')
+rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # RootView

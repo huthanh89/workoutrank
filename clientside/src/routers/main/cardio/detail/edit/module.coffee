@@ -30,7 +30,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
 
   template: viewTemplate
 

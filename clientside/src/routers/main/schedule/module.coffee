@@ -96,7 +96,7 @@ class Collection extends Backbone.Collection
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
 
   template: viewTemplate
 

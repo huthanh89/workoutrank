@@ -6,8 +6,15 @@ $            = require 'jquery'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Plugins
@@ -74,7 +81,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -151,30 +158,29 @@ class View extends Marionette.LayoutView
 
     'click #profile-submit': (event) ->
       event.preventDefault()
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       @model.set 'birthday', @ui.birthday.data('DateTimePicker').date()
 
       @model.save null,
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
+        success: ->
+          rootChannel.request 'spin:page:loader', false
 
           swal
             title: 'Success!'
             text:  'Profile Updated. Your ready to go off and use all our features.',
             type:  'success'
-          , =>
-            @rootChannel.request 'home'
+          , ->
+            rootChannel.request 'home'
             return
 
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'wLogs'
       'isNew'

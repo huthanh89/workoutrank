@@ -4,6 +4,7 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -12,6 +13,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -41,36 +48,32 @@ class View extends Marionette.View
 
   events:
     'click #reset-home': ->
-      @rootChannel.request 'index'
+      rootChannel.request 'index'
       return
 
     'click #reset-forgot': ->
-      @rootChannel.request 'forgot'
+      rootChannel.request 'forgot'
       return
 
     'submit': (event) ->
       event.preventDefault()
 
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       @model.save null,
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
+        success: ->
+          rootChannel.request 'spin:page:loader', false
           swal
             title: 'Success!'
             text:  'New password updated.'
             type:  'success'
 
-          @rootChannel.request 'login'
+          rootChannel.request 'login'
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
       return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()

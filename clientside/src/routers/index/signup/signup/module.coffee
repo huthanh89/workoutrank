@@ -4,6 +4,7 @@
 
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -13,6 +14,12 @@ viewTemplate = require './view.jade'
 
 require 'backbone.stickit'
 require 'bootstrap.datetimepicker'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -48,12 +55,12 @@ class View extends Marionette.View
 
   events:
     'click @ui.signup': ->
-      @rootChannel.request('index')
+      rootChannel.request('index')
       return
 
     'submit': (event) ->
       event.preventDefault()
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       captcha = _.find(@ui.form.serializeArray(), name: 'g-recaptcha-response')?.value
       @model.set 'captcha', captcha
@@ -61,23 +68,22 @@ class View extends Marionette.View
       window.grecaptcha.reset()
 
       @model.save {},
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request('profile', true)
+        success: ->
+          rootChannel.request 'spin:page:loader', false
+          rootChannel.request('profile', true)
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
       return
 
     'click #signup-login': ->
-      @rootChannel.request('login')
+      rootChannel.request('login')
       return
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'channel'
 
   onRender: ->
