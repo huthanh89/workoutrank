@@ -4,6 +4,7 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Table        = require './table/module'
@@ -15,6 +16,12 @@ viewTemplate = require './view.jade'
 
 require 'backbone.paginator'
 require 'bootstrap.paginate'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Cardio Config Model
@@ -117,8 +124,8 @@ class View extends Marionette.View
     @mergeOptions options, [
       'cLogs'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
-    @channel     = new Backbone.Radio.channel(@cid)
+
+    @channel = new Backbone.Radio.channel(@cid)
 
     @channel.reply
       'add': =>

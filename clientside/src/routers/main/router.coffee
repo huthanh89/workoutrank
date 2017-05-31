@@ -170,7 +170,7 @@ class Router extends Marionette.AppRouter
 
     ], (error, sConfs, sLogs) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
       if error
         rootChannel.request 'message:error', error
 
@@ -397,10 +397,10 @@ class Router extends Marionette.AppRouter
 
     ], (error) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
       else
         @rootView.showChildView 'content', new Calendar.View
           cLogs:  result.cLogs
@@ -471,7 +471,7 @@ class Router extends Marionette.AppRouter
       rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
       else
         @rootView.showChildView 'content', new Schedule.View
           cLogs:  result.cLogs
@@ -497,10 +497,10 @@ class Router extends Marionette.AppRouter
 
     ], (error, wLogs) =>
 
-      @rootChannel.request 'spin:page:loader', false
+      rootChannel.request 'spin:page:loader', false
 
       if error
-        @rootChannel.request 'message:error', error
+        rootChannel.request 'message:error', error
       else
         View = Weight.View
         @rootView.showChildView 'content', new View

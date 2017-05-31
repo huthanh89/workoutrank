@@ -5,9 +5,16 @@
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Event        = require './event/module'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # View
@@ -22,7 +29,7 @@ class View extends Marionette.View
 
   events:
     'click #calendar-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #calendar-help': ->
@@ -40,8 +47,7 @@ class View extends Marionette.View
       'sLogs'
       'wLogs'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
-    @channel     = new Backbone.Radio.Channel(@cid)
+    @channel = new Backbone.Radio.Channel(@cid)
 
     @channel.reply
 

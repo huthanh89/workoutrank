@@ -8,11 +8,11 @@ GCT         = require './gct'
 Backbone    = require 'backbone'
 Radio       = require 'backbone.radio'
 Marionette  = require 'backbone.marionette'
-RootView    = require './view'
 IndexRouter = require './routers/index/router'
 MainRouter  = require './routers/main/router'
 UserRouter  = require './routers/user/router'
 AdminRouter = require './routers/admin/router'
+RootView    = require './view'
 
 #-------------------------------------------------------------------------------
 # Channels
@@ -79,7 +79,7 @@ class Application extends Marionette.Application
 
     rootChannel.reply
 
-    'get:route': => @route
+      'get:route': => @route
 
       # Workaround for the refresh and navigate which will called twice.
       # Trigger set to false so method will not get called twice.

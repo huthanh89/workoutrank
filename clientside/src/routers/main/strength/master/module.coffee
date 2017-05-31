@@ -4,6 +4,7 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Table        = require './table/module'
@@ -16,6 +17,13 @@ viewTemplate = require './view.jade'
 
 require 'backbone.paginator'
 require 'bootstrap.paginate'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # Strength Log Model
@@ -60,7 +68,7 @@ class Model extends Backbone.Model
 
 class Collection extends Backbone.Collection
 
-  url:  '/api/strengths'
+  url: '/api/strengths'
 
   model: Model
 
@@ -91,7 +99,7 @@ class View extends Marionette.View
       return
 
     'click #strength-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #strength-add': ->
@@ -114,9 +122,8 @@ class View extends Marionette.View
       'sLogs'
       'muscle'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
-    @channel     = new Backbone.Radio.channel(@cid)
-    @isOwner     =  Backbone.Radio.channel('user').request 'isOwner'
+    @channel = new Backbone.Radio.channel(@cid)
+    @isOwner = userChannel.request 'isOwner'
 
     @channel.reply
 
@@ -152,7 +159,7 @@ class View extends Marionette.View
     if @collection.length is 0
       @channel.request 'add'
 
-    @ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    @ui.add.hide() unless userChannel.request 'isOwner'
 
     return
 

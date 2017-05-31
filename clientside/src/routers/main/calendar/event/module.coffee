@@ -5,6 +5,7 @@
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -13,6 +14,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'fullcalendar'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -104,7 +111,6 @@ class View extends Marionette.View
       'channel'
       'calendarEvents'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
 
   onAttach: ->
     @calendar = @ui.calendar.fullCalendar
@@ -115,14 +121,14 @@ class View extends Marionette.View
         center: ''
         right:  'today prev,next'
 
-      eventClick: (calEvent) =>
+      eventClick: (calEvent) ->
         switch calEvent.type
           when 'sLog'
-            @rootChannel.request 'strength:detail', calEvent.modelID
+            rootChannel.request 'strength:detail', calEvent.modelID
           when 'cLog'
-            @rootChannel.request 'cardio:detail', calEvent.modelID
+            rootChannel.request 'cardio:detail', calEvent.modelID
           else
-            @rootChannel.request 'weights'
+            rootChannel.request 'weights'
         return
 
     @calendar.fullCalendar('today')
