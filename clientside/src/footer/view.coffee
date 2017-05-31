@@ -16,6 +16,7 @@ require 'backbone.stickit'
 # Channels
 #-------------------------------------------------------------------------------
 
+rootChannel = Radio.channel('root')
 userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
@@ -37,15 +38,15 @@ class View extends Marionette.View
   events:
 
     'click #footer-about': ->
-      @rootChannel.request 'about'
+      rootChannel.request 'about'
       return
 
     'click #footer-feedback': ->
-      @rootChannel.request 'feedback'
+      rootChannel.request 'feedback'
       return
 
     'click #footer-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
   onRender: ->

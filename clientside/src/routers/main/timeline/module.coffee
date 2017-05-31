@@ -7,6 +7,7 @@ _            = require 'lodash'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Strength     = require './strength/module'
 Cardio       = require './cardio/module'
@@ -19,6 +20,12 @@ viewTemplate = require './view.jade'
 
 require 'waypoint'
 require 'infinite'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Cardio Model
@@ -269,7 +276,7 @@ class View extends Marionette.View
 
   events:
     'click #timeline-home':  ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #timeline-help': ->
@@ -277,10 +284,6 @@ class View extends Marionette.View
         title: 'Instructions'
         text:  'The timeline shows recorded logs. Try adding some entries in your journal first, then come back here to see them automatically posted.'
       return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
   onAttach: ->
     @showChildView 'list', new ListView

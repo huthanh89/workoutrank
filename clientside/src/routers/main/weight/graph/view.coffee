@@ -109,8 +109,7 @@ class View extends Marionette.View
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
-    @model       = chartModel @options.sLogs
+    @model = chartModel options.sLogs
 
   onAttach: ->
 

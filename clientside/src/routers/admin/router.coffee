@@ -4,9 +4,17 @@
 
 async      = require 'async'
 Backbone   = require 'backbone'
+Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 Account    = require './account/module'
 Feedback   = require './feedback/module'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+navChannel  = Radio.channel('nav')
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Router
@@ -17,18 +25,16 @@ class Router extends Marionette.AppRouter
   constructor: ->
     super
 
-    @navChannel  = Backbone.Radio.channel('nav')
-    @rootChannel = Backbone.Radio.channel('root')
-    @rootView    = @rootChannel.request('rootview')
+    @rootView = rootChannel.request('rootview')
 
-    @rootChannel.reply
+    rootChannel.reply
       'admin:accounts': =>
-        @rootChannel.request 'navigate', 'admin/accounts'
+        rootChannel.request 'navigate', 'admin/accounts'
         @accounts()
         return
 
       'admin:feedbacks': =>
-        @rootChannel.request 'navigate', 'admin/feedbacks'
+        rootChannel.request 'navigate', 'admin/feedbacks'
         @feedbacks()
         return
 
@@ -38,16 +44,16 @@ class Router extends Marionette.AppRouter
 
   accounts: ->
 
-    @navChannel.request('nav:main')
+    navChannel.request('nav:main')
 
     collection = new Account.Collection()
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Account.View
+        @rootView.showChildView 'content', new Account.View
           collection: collection
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+      error: (model, response) ->
+        rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 
@@ -58,11 +64,11 @@ class Router extends Marionette.AppRouter
     collection = new Feedback.Collection()
     collection.fetch
       success: (collection) =>
-        @rootView.content.show new Feedback.View
+        @rootView.showChildView 'content', new Feedback.View
           collection: collection
         return
-      error: (model, response) =>
-        @rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+      error: (model, response) ->
+        rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
         return
     return
 

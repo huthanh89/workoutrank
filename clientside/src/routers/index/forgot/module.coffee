@@ -49,7 +49,7 @@ class View extends Marionette.View
 
   events:
     'click #forgot-home': ->
-      @rootChannel.request 'index'
+      rootChannel.request 'index'
       return
 
     'submit': (event) ->

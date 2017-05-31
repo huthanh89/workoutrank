@@ -132,10 +132,6 @@ class ItemView extends Marionette.View
         wait: true
       return
 
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
-
   onRender: ->
     @stickit()
     return

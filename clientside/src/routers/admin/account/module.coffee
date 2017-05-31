@@ -4,6 +4,7 @@
 
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
@@ -14,6 +15,12 @@ viewTemplate = require './view.jade'
 
 require 'backbone.stickit'
 require 'touchspin'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Collection
@@ -107,12 +114,11 @@ class View extends Marionette.CompositeView
 
   events:
     'click #admin-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
 
     length = @collection.length
 

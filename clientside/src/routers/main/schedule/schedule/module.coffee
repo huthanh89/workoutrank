@@ -21,6 +21,7 @@ require 'fullcalendar'
 #-------------------------------------------------------------------------------
 
 rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # View
@@ -122,7 +123,7 @@ class View extends Marionette.View
     @calendar.fullCalendar('today')
     @calendar.fullCalendar('changeView', 'basicDay')
 
-    @ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    @ui.edit.hide() unless userChannel.request 'isOwner'
 
     return
 

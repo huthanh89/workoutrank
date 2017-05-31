@@ -2,9 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
-_            = require 'lodash'
-Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
@@ -14,6 +11,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # View
@@ -45,47 +48,43 @@ class View extends Marionette.View
   events:
 
     'click #navbar-logo': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'home'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'home'
       return
 
     'click #navbar-banner': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'home'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'home'
       return
 
     'click #navbar-drawer': ->
-      Radio.channel('root').request 'drawer:open'
+      rootChannel.request 'drawer:open'
       return
 
     'click @ui.strengths': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'strengths'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'strengths'
       return
 
     'click @ui.cardios': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'cardios'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'cardios'
       return
 
     'click @ui.account': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'account'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'account'
       return
 
     'click @ui.profile': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'profile'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'profile'
       return
 
     'click @ui.logout': ->
-      Radio.channel('root').request 'drawer:close'
-      @channel.request 'logout'
+      rootChannel.request 'drawer:close'
+      rootChannel.request 'logout'
       return
-
-  constructor: ->
-    super
-    @channel = Backbone.Radio.channel('root')
 
   onRender: ->
 

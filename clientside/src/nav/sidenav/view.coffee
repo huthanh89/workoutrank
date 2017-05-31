@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_            = require 'lodash'
 $            = require 'jquery'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'

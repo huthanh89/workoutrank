@@ -2,7 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -13,6 +13,12 @@ viewTemplate = require './view.jade'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
@@ -21,14 +27,9 @@ class View extends Marionette.View
   template: viewTemplate
 
   events:
-
     'click #error-index': ->
-      @rootChannel.request 'index'
+      rootChannel.request 'index'
       return
-
-  constructor: (options) ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Exports

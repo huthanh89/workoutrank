@@ -6,6 +6,7 @@ $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
@@ -17,6 +18,12 @@ viewTemplate = require './view.jade'
 
 require 'multiselect'
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Pageable models
@@ -91,7 +98,7 @@ class ItemView extends Marionette.View
 
   events:
     'click': ->
-      @rootChannel.request 'cardio:detail', @model.get('_id')
+      rootChannel.request 'cardio:detail', @model.get('_id')
       return
 
   constructor: (options) ->
@@ -99,7 +106,6 @@ class ItemView extends Marionette.View
     @mergeOptions options, [
       'channel'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()

@@ -61,12 +61,12 @@ class Router extends Marionette.AppRouter
         model.save {},
           url: '/api/logout'
           success: =>
-            @rootChannel.request 'spin:page:loader', false
+            rootChannel.request 'spin:page:loader', false
             @navigate('login', trigger: true)
             @login()
             return
-          error: (model, error) =>
-            @rootChannel.request 'message:error', error
+          error: (model, error) ->
+            rootChannel.request 'message:error', error
             return
         return
 

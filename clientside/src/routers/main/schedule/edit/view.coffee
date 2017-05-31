@@ -4,7 +4,6 @@
 
 $            = require 'jquery'
 moment       = require 'moment'
-Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require '../data/module'

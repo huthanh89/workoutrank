@@ -58,7 +58,7 @@ class View extends Marionette.View
     'submit': (event) ->
       event.preventDefault()
 
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       @model.save null,
         success: ->
@@ -68,8 +68,8 @@ class View extends Marionette.View
             text:  'Message Sent!'
             type:  'success'
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
       return
 
