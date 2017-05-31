@@ -23,7 +23,6 @@ class View extends Marionette.View
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'channel'
       'sLogs'

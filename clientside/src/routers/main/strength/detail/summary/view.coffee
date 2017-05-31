@@ -106,8 +106,6 @@ class View extends Marionette.View
       'sLogs'
     ]
 
-    @rootChannel = Backbone.Radio.channel('root')
-
   onRender: ->
     @stickit()
     @updateModel(@sConf, @sLogs)

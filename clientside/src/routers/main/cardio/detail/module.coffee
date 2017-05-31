@@ -20,6 +20,12 @@ CalendarView  = require './calendar/view'
 viewTemplate  = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+
+#-------------------------------------------------------------------------------
 # Model
 #   cardio model used to fetch data of that exercises
 #   such as the name and muscle type.
@@ -100,11 +106,11 @@ class View extends Marionette.View
       return
 
     'click #cardio-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #cardio-journals': ->
-      @rootChannel.request 'cardios'
+      rootChannel.request 'cardios'
       return
 
     'click #cardio-detail-add': ->
@@ -118,11 +124,11 @@ class View extends Marionette.View
       return
 
     'click #cardio-graph-btn': ->
-      @rootChannel.request 'log:detail', @model.get('exercise')
+      rootChannel.request 'log:detail', @model.get('exercise')
       return
 
     'click #cardio-schedule-btn': ->
-      @rootChannel.request 'schedule'
+      rootChannel.request 'schedule'
       return
 
   collectionEvents:
@@ -136,14 +142,13 @@ class View extends Marionette.View
       @updateAfterDateChange()
       return
 
-    sync: (model) ->
+    sync: ->
       @summaryModel.update(@model, @collection)
       @updateViews()
       return
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'cardioID'
       'wLogs'

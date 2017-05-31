@@ -232,7 +232,6 @@ class ListView extends Marionette.CollectionView
 
     super _.extend {}, options,
       collection: new Collection @chunks[0]
-    @rootChannel = Backbone.Radio.channel('root')
 
   onAttach: ->
     @point()

@@ -5,9 +5,16 @@
 $            = require 'jquery'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require '../data/module'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Day Array
@@ -77,8 +84,8 @@ class View extends Marionette.View
           @saved = true
           @ui.dialog.modal('hide')
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
       return
@@ -95,7 +102,6 @@ class View extends Marionette.View
   constructor: (options) ->
     super
     @mergeOptions options, 'channel'
-    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
 

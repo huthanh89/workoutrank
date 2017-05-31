@@ -172,9 +172,7 @@ class View extends Marionette.View
     super _.extend {}, options,
       model: chartModel options.sConf, options.sLogs
 
-    @rootChannel = Backbone.Radio.channel('root')
-    @charts      = []
-
+    @charts = []
 
   addChart: (container, model, type) ->
 

@@ -20,6 +20,12 @@ CalendarView  = require './calendar/view'
 viewTemplate  = require './view.jade'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+
+#-------------------------------------------------------------------------------
 # Model
 #   Strength model used to fetch data of that exercises
 #   such as the name and muscle type.
@@ -84,11 +90,11 @@ class View extends Marionette.View
       return
 
     'click #strength-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #strength-journals': ->
-      @rootChannel.request 'strengths'
+      rootChannel.request 'strengths'
       return
 
     'click #strength-detail-add': ->
@@ -102,11 +108,11 @@ class View extends Marionette.View
       return
 
     'click #strength-graph-btn': ->
-      @rootChannel.request 'log:detail', @model.get('exercise')
+      rootChannel.request 'log:detail', @model.get('exercise')
       return
 
     'click #strength-schedule-btn': ->
-      @rootChannel.request 'schedule'
+      rootChannel.request 'schedule'
       return
 
   collectionEvents:
@@ -120,14 +126,13 @@ class View extends Marionette.View
       @updateAfterDateChange()
       return
 
-    sync: (model) ->
+    sync: ->
       @summaryModel.update(@model, @collection)
       @updateViews()
       return
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'strengthID'
       'wLogs'

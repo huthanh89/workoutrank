@@ -3,7 +3,6 @@
 #-------------------------------------------------------------------------------
 
 _            = require 'lodash'
-moment       = require 'moment'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 

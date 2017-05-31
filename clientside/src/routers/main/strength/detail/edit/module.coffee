@@ -4,6 +4,7 @@
 
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
@@ -13,6 +14,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -72,8 +79,8 @@ class View extends Marionette.View
           @redirect = true
           @ui.dialog.modal('hide')
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
       return
@@ -85,8 +92,8 @@ class View extends Marionette.View
         success: =>
           @ui.dialog.modal('hide')
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
       return
@@ -102,8 +109,7 @@ class View extends Marionette.View
       'edit'
       'summary'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
-    @redirect    = false
+    @redirect = false
 
   onRender: ->
     @ui.muscle.multiselect

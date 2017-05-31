@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 
 async      = require 'async'
-Radio        = require 'backbone.radio'
+Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 Home       = require './home/module'
 Calendar   = require './calendar/module'

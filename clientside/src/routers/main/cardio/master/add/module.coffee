@@ -5,6 +5,7 @@
 $            = require 'jquery'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -14,6 +15,12 @@ viewTemplate = require './view.jade'
 
 require 'backbone.stickit'
 require 'bootstrap.datetimepicker'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -56,21 +63,21 @@ class View extends Marionette.View
 
     'submit': (event) ->
       event.preventDefault()
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       @collection.create @model.attributes,
         wait: true
         at:   0
         success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
+          rootChannel.request 'spin:page:loader', false
           @ui.dialog.modal('hide')
 
           # Finish, redirect to the actual cardio log.
 
-          @rootChannel.request 'cardio:detail', model.id
+          rootChannel.request 'cardio:detail', model.id
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
 
       return
@@ -86,7 +93,6 @@ class View extends Marionette.View
   constructor: (options) ->
     super
     @mergeOptions options, 'edit'
-    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
 

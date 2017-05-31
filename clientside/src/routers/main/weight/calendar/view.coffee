@@ -23,10 +23,6 @@ class View extends Marionette.View
   ui:
     calendar: '#weight-calendar-ui'
 
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
-
   onRender: ->
     dates = _.map @collection.models, (model) ->
       return moment(model.get('date')).startOf('day').format()

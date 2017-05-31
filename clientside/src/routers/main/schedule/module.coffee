@@ -6,11 +6,18 @@ _            = require 'lodash'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require './data/module'
 Schedule     = require './schedule/module'
 EditView     = require './edit/view'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Day Array
@@ -111,7 +118,7 @@ class View extends Marionette.View
 
   events:
     'click #calendar-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #schedule-help': ->
@@ -134,8 +141,7 @@ class View extends Marionette.View
       'sConfs'
       'sLogs'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
-    @channel     = new Backbone.Radio.Channel(@cid)
+    @channel = new Backbone.Radio.Channel(@cid)
 
     @channel.reply
 

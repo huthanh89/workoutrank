@@ -6,6 +6,7 @@ $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
+Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
@@ -14,6 +15,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'fullcalendar'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # View
@@ -34,7 +41,6 @@ class View extends Marionette.View
       'sLogs'
       'cLogs'
     ]
-    @rootChannel = Backbone.Radio.channel('root')
 
   onAttach: ->
 
@@ -47,12 +53,12 @@ class View extends Marionette.View
         center: 'title'
         right:  'basicDay,basicWeek'
 
-      eventClick: (calEvent) =>
+      eventClick: (calEvent) ->
 
         if calEvent.type is 'strength'
-          @rootChannel.request 'strength:detail', calEvent.strengthID
+          rootChannel.request 'strength:detail', calEvent.strengthID
         else if calEvent.type is 'cardio'
-          @rootChannel.request 'cardio:detail', calEvent.cardioID
+          rootChannel.request 'cardio:detail', calEvent.cardioID
 
         return
 

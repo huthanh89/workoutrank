@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-$            = require 'jquery'
 moment       = require 'moment'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'

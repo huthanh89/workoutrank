@@ -112,7 +112,7 @@ class View extends Marionette.View
       return
 
     'click #cardio-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #cardio-add': ->

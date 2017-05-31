@@ -3,7 +3,6 @@
 #-------------------------------------------------------------------------------
 
 moment       = require 'moment'
-Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 DateView     = require './date/view'
 TableView    = require './table/view'
@@ -23,7 +22,6 @@ class View extends Marionette.View
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, [
       'channel'
       'cLogs'
