@@ -60,8 +60,8 @@ class Router extends Marionette.AppRouter
     navChannel.request('nav:main')
     model = new Account.Model()
     model.fetch
-      success: (model) ->
-        rootView.content.show new Account.View
+      success: (model) =>
+        @rootView.showChildView 'content', new Account.View
           model: model
         return
       error: (model, response) ->
@@ -85,11 +85,11 @@ class Router extends Marionette.AppRouter
           error: (model, error) -> callback error
         return
 
-    ], (error, userModel, wLogs) ->
+    ], (error, userModel, wLogs) =>
       if error
         rootChannel.request 'message:error', error
       else
-        rootView.content.show new Profile.View
+        @rootView.showChildView 'content', new Profile.View
           model: userModel
           wLogs: wLogs
           isNew: isNew

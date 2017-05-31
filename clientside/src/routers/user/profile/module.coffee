@@ -142,7 +142,7 @@ class View extends Marionette.View
       return
 
     'click #profile-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
 
     'click #profile-help': ->
