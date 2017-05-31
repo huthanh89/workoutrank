@@ -4,7 +4,7 @@
 
 $            = require 'jquery'
 moment       = require 'moment'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ standardDeviation = (variance) -> Math.sqrt(variance)
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -94,7 +94,7 @@ class View extends Marionette.ItemView
 
     return
 
-  onShow: ->
+  onAttach: ->
     @ui.weightLabel.hide() if @type is 'rep'
     return
 

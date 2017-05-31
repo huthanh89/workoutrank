@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Local        = require './local/module'
 Social       = require './social/module'
 viewTemplate = require './view.jade'
@@ -56,7 +56,7 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-  onShow: ->
+  onAttach: ->
 
     if @model.get('provider') is 'local'
       @showChildView 'summary', new Local.View

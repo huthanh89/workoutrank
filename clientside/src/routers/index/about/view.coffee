@@ -2,26 +2,28 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
   events:
     'click #about-home': ->
-      @rootChannel.request 'home'
+      rootChannel.request 'home'
       return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Exports

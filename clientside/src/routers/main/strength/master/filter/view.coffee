@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 
 _            = require 'lodash'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Data         = require '../../data/module'
 viewTemplate = require './view.jade'
 
@@ -11,7 +11,7 @@ viewTemplate = require './view.jade'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 

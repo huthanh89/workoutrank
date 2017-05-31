@@ -6,7 +6,7 @@ $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ require 'fullcalendar'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -36,7 +36,7 @@ class View extends Marionette.ItemView
     ]
     @rootChannel = Backbone.Radio.channel('root')
 
-  onShow: ->
+  onAttach: ->
 
     @calendar = @ui.calendar.fullCalendar
       height:     'auto'

@@ -8,7 +8,7 @@ _ = require 'lodash'
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports.isAuthenticated =  (req, res, next) ->
+module.exports.isAuthenticated = (req, res, next) ->
 
   if req.xhr and not req.isAuthenticated()
     res

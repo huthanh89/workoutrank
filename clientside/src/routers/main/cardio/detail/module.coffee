@@ -6,7 +6,7 @@ moment        = require 'moment'
 swal          = require 'sweetalert'
 Backbone      = require 'backbone'
 Radio         = require 'backbone.radio'
-Marionette    = require 'marionette'
+Marionette    = require 'backbone.marionette'
 Add           = require './add/module'
 Edit          = require './edit/module'
 HistoryView   = require './history/view'
@@ -178,7 +178,7 @@ class View extends Marionette.LayoutView
     @stickit()
     return
 
-  onShow: ->
+  onAttach: ->
 
     @updateViews()
 

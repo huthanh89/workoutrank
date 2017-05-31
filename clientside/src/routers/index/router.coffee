@@ -3,7 +3,8 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
 Feedback     = require './feedback/module'
 Forgot       = require './forgot/module'
 Reset        = require './reset/module'
@@ -13,41 +14,48 @@ LoginView    = require './login/view'
 AboutView    = require './about/view'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
+navChannel  = Radio.channel('nav')
+
+#-------------------------------------------------------------------------------
 # Router
 #-------------------------------------------------------------------------------
 
 class Router extends Marionette.AppRouter
 
   constructor: ->
+
     super
-    @navChannel  = Backbone.Radio.channel('nav')
-    @rootChannel = Backbone.Radio.channel('root')
-    @rootView    = @rootChannel.request('rootview')
+
+    @rootView = rootChannel.request('rootview')
 
     # Replies for menu navigation.
     # Change the url path with @navigate('url path')
     # before being sent to route handler.
     # When changing url, set trigger true to trigger onRoute() call.
 
-    @rootChannel.reply
+    rootChannel.reply
 
       'index': =>
-        @rootChannel.request 'navigate', ''
+        rootChannel.request 'navigate', ''
         @index()
         return
 
       'signup': =>
-        @rootChannel.request 'navigate', 'signup'
+        rootChannel.request 'navigate', 'signup'
         @signup()
         return
 
       'login': =>
-        @rootChannel.request 'navigate', 'login'
+        rootChannel.request 'navigate', 'login'
         @login()
         return
 
       'logout': =>
-        @rootChannel.request 'spin:page:loader', true
+        rootChannel.request 'spin:page:loader', true
         model = new Backbone.Model()
 
         model.save {},
@@ -63,22 +71,22 @@ class Router extends Marionette.AppRouter
         return
 
       'about': =>
-        @rootChannel.request 'navigate', 'about'
+        rootChannel.request 'navigate', 'about'
         @about()
         return
 
       'feedback': =>
-        @rootChannel.request 'navigate', 'feedback'
+        rootChannel.request 'navigate', 'feedback'
         @feedback()
         return
 
       'forgot': =>
-        @rootChannel.request 'navigate', 'forgot'
+        rootChannel.request 'navigate', 'forgot'
         @forgot()
         return
 
       'reset': =>
-        @rootChannel.request 'navigate', 'reset'
+        rootChannel.request 'navigate', 'reset'
         @reset()
         return
 
@@ -100,40 +108,34 @@ class Router extends Marionette.AppRouter
   # Update Navbar and show view.
 
   index: ->
-    @navChannel.request('nav:index')
-    @rootView.content.empty()
-    @rootView.index.show new LandingView()
+    navChannel.request('nav:index')
+    @rootView.showChildView 'index', new LandingView()
     return
 
   signup: ->
-    @navChannel.request('nav:basic')
-    @rootView.index.empty()
-    @rootView.content.show new SignupView()
+    navChannel.request('nav:basic')
+    @rootView.showChildView 'index', new SignupView()
     return
 
   login: ->
-    @navChannel.request('nav:basic')
-    @rootView.index.empty()
-    @rootView.content.show new LoginView()
+    navChannel.request('nav:basic')
+    @rootView.showChildView 'index', new LoginView()
     return
 
   about: ->
-    @navChannel.request('nav:basic')
-    @rootView.index.empty()
-    @rootView.content.show new AboutView()
+    navChannel.request('nav:basic')
+    @rootView.showChildView 'index', new AboutView()
     return
 
   feedback: ->
-    @navChannel.request('nav:basic')
-    @rootView.index.empty()
-    @rootView.content.show new Feedback.View
+    navChannel.request('nav:basic')
+    @rootView.showChildView 'index', new Feedback.View
       model: new Feedback.Model()
     return
 
   forgot: ->
-    @navChannel.request('nav:basic')
-    @rootView.index.empty()
-    @rootView.content.show new Forgot.View
+    navChannel.request('nav:basic')
+    @rootView.showChildView 'index', new Forgot.View
       model: new Forgot.Model()
     return
 
@@ -155,9 +157,9 @@ class Router extends Marionette.AppRouter
 
     query = QueryStringToJSON()
 
-    @navChannel.request('nav:index')
-    @rootView.index.empty()
-    @rootView.content.show new Reset.View
+    navChannel.request('nav:index')
+
+    @rootView.showChildView 'index', new Reset.View
       model: new Reset.Model
         user:  query.user
         token: query.token

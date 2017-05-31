@@ -4,7 +4,7 @@
 
 async      = require 'async'
 Backbone   = require 'backbone'
-Marionette = require 'marionette'
+Marionette = require 'backbone.marionette'
 Home       = require './home/module'
 Calendar   = require './calendar/module'
 Schedule   = require './schedule/module'

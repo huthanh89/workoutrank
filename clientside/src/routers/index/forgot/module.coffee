@@ -4,7 +4,8 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -12,6 +13,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -28,7 +35,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -48,24 +55,20 @@ class View extends Marionette.ItemView
     'submit': (event) ->
       event.preventDefault()
 
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
 
       @model.save null,
-        success: (model) =>
-          @rootChannel.request 'spin:page:loader', false
+        success: ->
+          rootChannel.request 'spin:page:loader', false
           swal
             title: 'Email Sent!'
             text:  'Please check your email for the code.'
             type:  'success'
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
       return
-
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
 
   onRender: ->
     @stickit()

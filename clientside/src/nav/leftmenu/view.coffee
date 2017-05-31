@@ -5,7 +5,7 @@
 _            = require 'lodash'
 $            = require 'jquery'
 Radio        = require 'backbone.radio'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ require 'mmenu'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -99,7 +99,7 @@ class View extends Marionette.ItemView
         @api.close()
         return
 
-  onShow: ->
+  onAttach: ->
 
     menu = $(@el)
 

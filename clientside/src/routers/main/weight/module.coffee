@@ -7,7 +7,7 @@ moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Date         = require './date/module'
 Table        = require './table/module'
@@ -114,7 +114,7 @@ class View extends Marionette.LayoutView
       @updateTableCollection()
       return
 
-  onShow: ->
+  onAttach: ->
 
     @showChildView 'date', new Date.View
       model: @dateModel

@@ -4,7 +4,7 @@
 
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
 
@@ -60,7 +60,7 @@ class Collection extends Backbone.Collection
 # ItemView
 #-------------------------------------------------------------------------------
 
-class ItemView extends Marionette.ItemView
+class ItemView extends Marionette.View
 
   tagName: 'tr'
 

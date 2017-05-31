@@ -6,7 +6,7 @@ $            = require 'jquery'
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Data         = require '../../data/module'
 nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
@@ -67,7 +67,7 @@ class Collection extends Backbone.Collection
 # Null View
 #-------------------------------------------------------------------------------
 
-class NullView extends Marionette.ItemView
+class NullView extends Marionette.View
   tagName: 'tr'
   template: nullTemplate
 
@@ -82,7 +82,7 @@ class NullView extends Marionette.ItemView
 # ItemView
 #-------------------------------------------------------------------------------
 
-class ItemView extends Marionette.ItemView
+class ItemView extends Marionette.View
 
   tagName: 'tr'
 
@@ -132,7 +132,7 @@ class ItemView extends Marionette.ItemView
     @stickit()
     return
 
-  onShow: ->
+  onAttach: ->
     @updateProgressBar(@model.get('count'))
     return
 
@@ -199,7 +199,7 @@ class View extends Marionette.CompositeView
       channel: @channel
     }
 
-  onShow: ->
+  onAttach: ->
     return
 
 #-------------------------------------------------------------------------------

@@ -58,6 +58,8 @@
     "bootstrap": "*",
     "bootstrap-webpack": "*",
     "color": "*",
+    "backbone.marionette": "*",
+    "backbone.stickit": "*",
     "d3": "*"
   },
   "devDependencies": {

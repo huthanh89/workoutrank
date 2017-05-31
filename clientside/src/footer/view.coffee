@@ -2,8 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -13,10 +13,16 @@ viewTemplate = require './view.jade'
 require 'backbone.stickit'
 
 #-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+userChannel = Radio.channel('user')
+
+#-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -42,13 +48,8 @@ class View extends Marionette.ItemView
       @rootChannel.request 'home'
       return
 
-  constructor: ->
-    super
-    @rootChannel = Backbone.Radio.channel('root')
-    @userChannel = Backbone.Radio.channel('user')
-
-  onShow: ->
-    user = @userChannel.request 'user'
+  onRender: ->
+    user = userChannel.request 'user'
     @stickit user
     return
 

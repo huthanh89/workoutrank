@@ -5,16 +5,22 @@
 
 GA           = require './ga'
 GCT          = require './gct'
-Toastr       = require 'toastr'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
-Nav          = require './nav/module'
-FooterView   = require './footer/view'
-Loader       = require './loader/module'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
+RootView     = require './view'
 IndexRouter  = require './routers/index/router'
+###
 MainRouter   = require './routers/main/router'
 UserRouter   = require './routers/user/router'
 AdminRouter  = require './routers/admin/router'
+###
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # User
@@ -33,32 +39,19 @@ class User extends Backbone.Model
     auth:      1
 
 #-------------------------------------------------------------------------------
-# RootView
-#-------------------------------------------------------------------------------
-
-class RootView extends Marionette.LayoutView
-  el: 'body'
-  regions:
-    header:    '#header'
-    loader:    '#loader'
-    content:   '#content'
-    index:     '#index'
-    footer:    '#footer'
-    navigator: '#navigator'
-    drawer:    '#drawer'
-
-#-------------------------------------------------------------------------------
 # Create Application.
 #-------------------------------------------------------------------------------
 
 class Application extends Marionette.Application
+
+  region: 'body'
 
   # Send route url to google analytics.
   # Send conversion data for specific routes.
 
   trackAnalytics: (route) ->
 
-    Backbone.Radio.channel('root').request 'clear:navigation', route
+    rootChannel.request 'clear:navigation', route
 
     if route in [
       'login'
@@ -86,108 +79,22 @@ class Application extends Marionette.Application
 
     @googleTrackingConversion = new GCT()
 
-    # Fetch user record.
-
-    user = new User()
-
-    # Start channels.
-
-    rootView = new RootView()
-
-    # user: get user related info
-    # root: call methods at the root level(including page navigations)
-    # nav:  used to show which kind of navbar on top
-
-    userChannel = Backbone.Radio.channel('user')
-    rootChannel = Backbone.Radio.channel('root')
-    navChannel  = Backbone.Radio.channel('nav')
-
-    userChannel.reply
-      user: -> user
-
-      auth: -> user.get('auth')
-
-      isOwner: -> parseInt(user.get('auth'), 10) is 1
-
     rootChannel.reply
 
-      'get:route': => @route
+    'get:route': => @route
 
       # Workaround for the refresh and navigate which will called twice.
       # Trigger set to false so method will not get called twice.
 
-      navigate: (route, options) =>
+      navigate: (route) =>
         Backbone.history.navigate route, trigger:false
         @trackAnalytics route
         return
 
-      'rootview': -> rootView
+    # Show Root view.
 
-      'message:error': (response) ->
-
-        rootChannel.request 'spin:page:loader', false
-
-        #if response.status is 401
-        #  rootView.showChildView 'content', new ErrorView()
-        #else
-
-        Toastr.options =
-          closeButton:       true
-          debug:             false
-          newestOnTop:       false
-          progressBar:       true
-          preventDuplicates: false
-          onclick:           null
-          showDuration:     '5000'
-          hideDuration:     '5000'
-          timeOut:          '5000'
-          extendedTimeOut:  '5000'
-          showEasing:       'swing'
-          hideEasing:       'linear'
-          showMethod:       'fadeIn'
-          hideMethod:       'fadeOut'
-          positionClass:    'toast-top-center'
-
-        Toastr.error(response.responseText, "Error: #{response.status} #{response.statusText}")
-
-      'spin:page:loader': (enable) ->
-        if enable
-          rootView.showChildView 'loader', new Loader.View()
-        else
-          rootView.getRegion('loader').empty()
-        return
-
-    navChannel.reply
-
-      'nav:index': ->
-        rootChannel.request 'drawer:close'
-        rootView.showChildView 'header', new Nav.Index()
-        rootView.showChildView 'drawer', new Nav.Drawer()
-        return
-
-      'nav:basic': ->
-        rootChannel.request 'drawer:close'
-        rootView.showChildView 'header', new Nav.Basic()
-        rootView.showChildView 'drawer', new Nav.Drawer()
-        return
-
-      'nav:main': ->
-
-        rootChannel.request 'drawer:close'
-        rootView.getRegion('index').empty()
-
-        user.fetch
-          success: ->
-            rootView.showChildView 'header', new Nav.Main
-              model: user
-            rootView.showChildView 'drawer', new Nav.Drawer()
-            return
-          error: (model, response) ->
-            rootChannel.request 'message:error', response
-            return
-        return
-
-    rootView.footer.show new FooterView()
+    @showView new RootView
+      user: new User()
 
     # All router must be initialized before backbone.history starts to work.
 
@@ -195,6 +102,7 @@ class Application extends Marionette.Application
       mode:          'auto'
       trailingSlash: 'ignore'
 
+    ###
     new MainRouter
       mode:          'auto'
       trailingSlash: 'ignore'
@@ -206,6 +114,7 @@ class Application extends Marionette.Application
     new AdminRouter
       mode:          'auto'
       trailingSlash: 'ignore'
+###
 
     # Called when url is changed during navigation.
 
@@ -213,13 +122,11 @@ class Application extends Marionette.Application
       @trackAnalytics route
       return
 
-    # Start backbone history a main step to bookmarkable url's.
+    # Start backbone history a main step to bookmark-able url's.
 
     Backbone.history.start
       pushState:  true
       hashChange: false
-
-    rootView.showChildView 'navigator', new Nav.Navigator()
 
     return
 
@@ -227,6 +134,6 @@ class Application extends Marionette.Application
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = new Application()
+module.exports = Application
 
 #-------------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 nullTemplate = require './null.jade'
 itemTemplate = require './item.jade'
 viewTemplate = require './view.jade'
@@ -29,7 +29,7 @@ class Collection extends Backbone.Collection
 # Null View
 #-------------------------------------------------------------------------------
 
-class NullView extends Marionette.ItemView
+class NullView extends Marionette.View
   tagName: 'tr'
   template: nullTemplate
 
@@ -41,7 +41,7 @@ class NullView extends Marionette.ItemView
 # View
 #-------------------------------------------------------------------------------
 
-class ItemView extends Marionette.ItemView
+class ItemView extends Marionette.View
 
   tagName: 'tr'
 

@@ -5,7 +5,7 @@
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Event        = require './event/module'
 viewTemplate = require './view.jade'
 
@@ -60,7 +60,7 @@ class View extends Marionette.LayoutView
           calendarEvents: events
         return
 
-  onShow: ->
+  onAttach: ->
     @channel.request 'show:events'
     return
 

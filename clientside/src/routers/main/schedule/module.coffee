@@ -6,7 +6,7 @@ _            = require 'lodash'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Data         = require './data/module'
 Schedule     = require './schedule/module'
 EditView     = require './edit/view'
@@ -163,7 +163,7 @@ class View extends Marionette.LayoutView
           cLogs:          @cLogs
         return
 
-  onShow: ->
+  onAttach: ->
     @channel.request 'show:schedule'
     return
 

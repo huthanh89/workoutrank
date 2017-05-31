@@ -5,7 +5,7 @@
 d3           = require 'd3'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -74,7 +74,7 @@ class View extends Marionette.ItemView
     @updateModel(@logs)
     return
 
-  onShow: ->
+  onAttach: ->
 
     target = $(@el).find('.cardio-goal-gauge')[0]
     min    = @model.get('bronze')

@@ -6,7 +6,7 @@ _            = require 'lodash'
 moment       = require 'moment'
 Color        = require 'color'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Highcharts   = require 'highcharts'
 Highstocks   = require 'highstock'
 viewTemplate = require './view.jade'
@@ -121,7 +121,7 @@ syncExtremes = (e) ->
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -217,7 +217,7 @@ class View extends Marionette.ItemView
 
     return
 
-  onShow: ->
+  onAttach: ->
 
     @addChart(@ui.chartDuration[0], @model, 0)
 

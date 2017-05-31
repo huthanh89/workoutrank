@@ -6,7 +6,7 @@ $            = require 'jquery'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -204,7 +204,7 @@ class View extends Marionette.LayoutView
     @stickit()
     return
 
-  onShow: ->
+  onAttach: ->
 
     @ui.birthday.datetimepicker
       viewMode: 'years'

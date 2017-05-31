@@ -4,7 +4,7 @@
 
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 DateView     = require './date/view'
 TableView    = require './table/view'
 viewTemplate = require './view.jade'
@@ -31,7 +31,7 @@ class View extends Marionette.LayoutView
       'date'
     ]
 
-  onShow: ->
+  onAttach: ->
 
     @showChildView 'date', new DateView
       date:    @date

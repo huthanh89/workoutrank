@@ -5,7 +5,7 @@
 moment       = require 'moment'
 Color        = require 'color'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Highstocks   = require 'highstock'
 Highcharts   = require 'highcharts'
 viewTemplate = require './view.jade'
@@ -100,7 +100,7 @@ plotLine = (text, value) ->
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -112,7 +112,7 @@ class View extends Marionette.ItemView
     @rootChannel = Backbone.Radio.channel('root')
     @model       = chartModel @options.sLogs
 
-  onShow: ->
+  onAttach: ->
 
     data = @model.get('data')
 

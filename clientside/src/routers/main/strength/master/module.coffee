@@ -4,7 +4,7 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Table        = require './table/module'
 FilterView   = require './filter/view'
@@ -138,7 +138,7 @@ class View extends Marionette.LayoutView
         return parseInt(model.get('muscle'), 10) is parseInt(@muscle, 10)
       @tableCollection.reset models
 
-  onShow: ->
+  onAttach: ->
     @showChildView 'filter', new FilterView
       collection:      @collection
       tableCollection: @tableCollection

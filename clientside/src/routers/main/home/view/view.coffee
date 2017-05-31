@@ -4,14 +4,14 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -107,7 +107,7 @@ class View extends Marionette.ItemView
     @stickit()
     return
 
-  onShow: ->
+  onAttach: ->
 
     if @model.get('profilePic')
       @ui.picture[0].src = @model.get('profilePic').data

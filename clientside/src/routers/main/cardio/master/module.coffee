@@ -4,7 +4,7 @@
 
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Table        = require './table/module'
 viewTemplate = require './view.jade'
@@ -125,7 +125,7 @@ class View extends Marionette.LayoutView
         @addWorkout()
         return
 
-  onShow: ->
+  onAttach: ->
 
     @showChildView 'table', new Table.View
       collection: @collection

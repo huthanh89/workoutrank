@@ -3,7 +3,8 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Radio        = require 'backbone.radio'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -11,6 +12,12 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 require 'backbone.stickit'
+
+#-------------------------------------------------------------------------------
+# Channels
+#-------------------------------------------------------------------------------
+
+rootChannel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
 # Model
@@ -28,7 +35,7 @@ class Model extends Backbone.Model
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -42,23 +49,23 @@ class View extends Marionette.ItemView
 
   events:
     'click #login-signup': ->
-      @rootChannel.request 'signup'
+      rootChannel.request 'signup'
       return
 
     'click #login-forgot-user': ->
-      @rootChannel.request 'forgot'
+      rootChannel.request 'forgot'
       return
 
     'submit': (event) ->
       event.preventDefault()
-      @rootChannel.request 'spin:page:loader', true
+      rootChannel.request 'spin:page:loader', true
       @model.save {},
-        success: =>
-          @rootChannel.request 'spin:page:loader', false
-          @rootChannel.request 'home'
+        success: ->
+          rootChannel.request 'spin:page:loader', false
+          rootChannel.request 'home'
           return
-        error: (model, response) =>
-          @rootChannel.request 'message:error', response
+        error: (model, response) ->
+          rootChannel.request 'message:error', response
           return
       return
 
@@ -85,7 +92,6 @@ class View extends Marionette.ItemView
 
   constructor: (options) ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @mergeOptions options, 'channel'
     
   onRender: ->

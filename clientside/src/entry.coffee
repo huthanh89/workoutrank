@@ -62,8 +62,9 @@ $ ->
 
   # When setting up everything for application is done, call start.
 
-  Application.start()
+  new Application().start()
 
   return
 
 #-------------------------------------------------------------------------------
+

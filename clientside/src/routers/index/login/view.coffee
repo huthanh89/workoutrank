@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Login        = require './login/module'
 viewTemplate = require './view.jade'
 
@@ -11,7 +11,7 @@ viewTemplate = require './view.jade'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.LayoutView
+class View extends Marionette.View
 
   template: viewTemplate
 
@@ -20,10 +20,9 @@ class View extends Marionette.LayoutView
 
   constructor: ->
     super
-    @rootChannel = Backbone.Radio.channel('root')
     @channel = Backbone.Radio.channel('channel')
 
-  onShow: ->
+  onAttach: ->
     @showChildView 'login', new Login.View
       model:   new Login.Model()
       channel: @channel

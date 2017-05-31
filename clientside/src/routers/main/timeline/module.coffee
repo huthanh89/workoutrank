@@ -7,7 +7,7 @@ _            = require 'lodash'
 moment       = require 'moment'
 swal         = require 'sweetalert'
 Backbone     = require 'backbone'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 Strength     = require './strength/module'
 Cardio       = require './cardio/module'
 Weight       = require './weight/module'
@@ -234,7 +234,7 @@ class ListView extends Marionette.CollectionView
       collection: new Collection @chunks[0]
     @rootChannel = Backbone.Radio.channel('root')
 
-  onShow: ->
+  onAttach: ->
     @point()
     return
 
@@ -283,7 +283,7 @@ class View extends Marionette.LayoutView
     super
     @rootChannel = Backbone.Radio.channel('root')
 
-  onShow: ->
+  onAttach: ->
     @showChildView 'list', new ListView
       collection: @collection
     return

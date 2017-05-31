@@ -46,19 +46,20 @@ minifyCSS  = require 'gulp-cssnano'
 # Config Variable
 #-------------------------------------------------------------------------------
 
-Production = true
+Production = false
 
 #-------------------------------------------------------------------------------
 # Javascript minify
 #-------------------------------------------------------------------------------
 
+# XXX minify and uglify result in a hanged process when gulp.
+
 gulp.task 'minify-js', ->
-  gulp.src('./static/bundle.js')
+  return gulp.src('./static/bundle.js')
   .pipe(uglify())
-  .pipe(minifyJS())
+  #.pipe(minifyJS())
   .pipe(rename('bundle-min.js'))
   .pipe(gulp.dest('static'))
-  return
 
 #-------------------------------------------------------------------------------
 # CSS minify
@@ -206,17 +207,10 @@ gulp.task 'js:bundle', (callback) ->
       root: './clientside'
       alias:
 
-        underscore:                 'scripts/underscore.js'
-        lodash:                     'scripts/lodash.js'
-        moment:                     'scripts/moment.js'
-        backbone:                   'scripts/backbone.js'
         'backbone.paginator':       'scripts/backbone.paginator.js'
         'backbone.modal':           'scripts/backbone.modal-bundled.js'
-        'backbone.stickit':         'scripts/backbone.stickit.js'
         'backbone.validation':      'scripts/backbone.validation.js'
-        'backbone.radio':           'scripts/backbone.radio.js'
         'socket.io':                'scripts/socket.io.js'
-        marionette:                 'scripts/backbone.marionette.js'
         async:                      'scripts/async.js'
         highcharts:                 'scripts/highcharts.js'
         'highcharts-more':          'scripts/highcharts-more.js'

@@ -6,7 +6,7 @@ $            = require 'jquery'
 _            = require 'lodash'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
-Marionette   = require 'marionette'
+Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ require 'backbone.stickit'
 # View
 #-------------------------------------------------------------------------------
 
-class View extends Marionette.ItemView
+class View extends Marionette.View
 
   template: viewTemplate
 

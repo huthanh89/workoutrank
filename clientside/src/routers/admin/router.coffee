@@ -4,7 +4,7 @@
 
 async      = require 'async'
 Backbone   = require 'backbone'
-Marionette = require 'marionette'
+Marionette = require 'backbone.marionette'
 Account    = require './account/module'
 Feedback   = require './feedback/module'
 
