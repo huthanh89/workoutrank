@@ -19,6 +19,7 @@ AboutView    = require './about/view'
 
 rootChannel = Radio.channel('root')
 navChannel  = Radio.channel('nav')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # Router
@@ -62,6 +63,7 @@ class Router extends Marionette.AppRouter
           url: '/api/logout'
           success: =>
             rootChannel.request 'spin:page:loader', false
+            userChannel.request 'logout'
             @navigate('login', trigger: true)
             @login()
             return
@@ -109,33 +111,33 @@ class Router extends Marionette.AppRouter
 
   index: ->
     navChannel.request('nav:index')
-    @rootView.showChildView 'index', new LandingView()
+    @rootView.showChildView 'content', new LandingView()
     return
 
   signup: ->
     navChannel.request('nav:basic')
-    @rootView.showChildView 'index', new SignupView()
+    @rootView.showChildView 'content', new SignupView()
     return
 
   login: ->
     navChannel.request('nav:basic')
-    @rootView.showChildView 'index', new LoginView()
+    @rootView.showChildView 'content', new LoginView()
     return
 
   about: ->
     navChannel.request('nav:basic')
-    @rootView.showChildView 'index', new AboutView()
+    @rootView.showChildView 'content', new AboutView()
     return
 
   feedback: ->
     navChannel.request('nav:basic')
-    @rootView.showChildView 'index', new Feedback.View
+    @rootView.showChildView 'content', new Feedback.View
       model: new Feedback.Model()
     return
 
   forgot: ->
     navChannel.request('nav:basic')
-    @rootView.showChildView 'index', new Forgot.View
+    @rootView.showChildView 'content', new Forgot.View
       model: new Forgot.Model()
     return
 

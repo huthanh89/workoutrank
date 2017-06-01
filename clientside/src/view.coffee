@@ -44,11 +44,13 @@ class View extends Marionette.View
 
     userChannel.reply
 
-      user: -> user
+      user:    -> user
 
-      auth: -> user.get('auth')
+      auth:    -> user.get('auth')
 
       isOwner: -> parseInt(user.get('auth'), 10) is 1
+
+      logout:  -> user.clear().set user.defaults
 
     rootChannel.reply
 

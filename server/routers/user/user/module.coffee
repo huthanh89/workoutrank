@@ -2,8 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-_        = require 'lodash'
-moment   = require 'moment'
 async    = require 'async'
 mongoose = require 'mongoose'
 

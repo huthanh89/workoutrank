@@ -1,38 +1,19 @@
-#-------------------------------------------------------------------------------
-# Imports
-#-------------------------------------------------------------------------------
-
-async    = require 'async'
-mongoose = require 'mongoose'
 
 #-------------------------------------------------------------------------------
-# Models
+# Export
 #-------------------------------------------------------------------------------
 
 exports.post = (req, res) ->
 
   req.logout()
+
+  # We cant redirect the user on server side. So send a 200 OK back to the client
+  # and have them do any redirection via javascript client side.
+
   res
   .status 200
   .json {}
-#  res.redirect('/')
-
-  ###
-  async.waterfall [
-
-    (callback) ->
-      req.session.destroy()
-      return callback null
-
-  ], (err) ->
-
-    res.clearCookie()
-    res
-    .status 200
-    .json {}
-###
 
   return
-
 
 #-------------------------------------------------------------------------------
