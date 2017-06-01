@@ -15,6 +15,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 rootChannel = Radio.channel('root')
+userChannel = Radio.channel('user')
 
 #-------------------------------------------------------------------------------
 # Plugins
@@ -191,7 +192,7 @@ class View extends Marionette.View
 
   onRender: ->
 
-    @ui.submit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
+    @ui.submit.hide() unless userChannel.request 'isOwner'
 
     @ui.height.TouchSpin
       postfix:          'inches'

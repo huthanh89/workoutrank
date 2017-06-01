@@ -127,6 +127,9 @@ class View extends Marionette.View
       onGet: (value) ->
         user   = userChannel.request('user')
         height = user.get('height')
+
+        return 'n/a' if height is 0
+
         weight = value
         bmi    = _.round ((weight / (height * height)) * 703), 2
         text   = ''
