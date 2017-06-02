@@ -60,6 +60,7 @@
     "color": "*",
     "backbone.marionette": "*",
     "backbone.stickit": "*",
+    "highcharts": "*",
     "d3": "*"
   },
   "devDependencies": {

@@ -135,7 +135,8 @@ gulp.task 'js:bundle', (callback) ->
 
   webpackPlugins = [
     new webpack.ProvidePlugin({
-      $: 'jquery'
+      $:      'jquery'
+      jQuery: 'jquery'
     })
   ]
 
@@ -160,94 +161,65 @@ gulp.task 'js:bundle', (callback) ->
     ]
 
     output:
-      path:     './static'
+      path:      path.join(__dirname, 'static')
       filename: 'bundle.js'
 
-    # For files with jquery in the name, import 'jQuery' into it.
-    # Expose Backbone variable for files such as backbone.validation.
-
     module:
-      loaders: [
+
+      rules: [
         test:   /\.coffee$/
         loader: 'coffee-loader'
       ,
         test:   /\.jade$/
-        loader: 'jade'
-      ,
-        test: /jquery/
-        loader: "imports?$=jquery"
-      ,
-        test: /jquery/
-        loader: "imports?jQuery=jquery"
-      ,
-        test: /bootstrap/
-        loader: "imports?jQuery=jquery"
-      ,
-        test: /drawer/
-        loader: "imports?IScroll=iscroll"
-      ,
-        test: /timeentry.js/
-        loader: "imports?JQPlugin=JQPlugin"
-      ,
-        test: /backbone./
-        loader: "imports?Backbone=backbone"
-      ,
-        test: /backbone.modal-bundled/
-        loader: "imports?marionette=marionette"
+        loader: 'jade-loader'
       ]
-
-    # Absolute path is used and not relative path.
-    # had an error where module index.js could not be found.
-
-    resolveLoader: {
-      root: path.join(__dirname, 'node_modules')
-    }
 
     resolve:
-      root: './clientside'
-      alias:
 
-        'backbone.paginator':       'scripts/backbone.paginator.js'
-        'backbone.modal':           'scripts/backbone.modal-bundled.js'
-        'backbone.validation':      'scripts/backbone.validation.js'
-        'socket.io':                'scripts/socket.io.js'
-        async:                      'scripts/async.js'
-        highcharts:                 'scripts/highcharts.js'
-        'highcharts-more':          'scripts/highcharts-more.js'
-        highstock:                  'scripts/highstock.js'
-        bootstrap:                  'scripts/bootstrap.js'
-        'bootstrap.validator':      'scripts/bootstrap.validator.js'
-        jquery:                     'scripts/jquery.js'
-        'jquery.ui':                'scripts/jquery-ui.js'
-        mmenu:                      'scripts/jquery.mmenu.all.min.js'
-        touchspin:                  'scripts/jquery.bootstrap-touchspin.js'
-        multiselect:                'scripts/jquery.bootstrap-multiselect.js'
-        datepicker:                 'scripts/jquery.bootstrap-datepicker.js'
-        JQPlugin:                   'scripts/jquery.plugin.js'
-        'bootstrap.datetimepicker': 'scripts/bootstrap-datetimepicker.min.js'
-        'bootstrap.paginate':       'scripts/bootstrap.paginate.js'
-        toastr:                     'scripts/toastr.js'
-        fullcalendar:               'scripts/fullcalendar.js'
-        sweetalert:                 'scripts/sweetalert.min.js'
-        gauge:                      'scripts/gauge.js'
-        waypoint:                   'scripts/jquery.waypoints.js'
-        infinite:                   'scripts/jquery.infinite.js'
-
-      extensions: [
-        ''
-        '.webpack.js'
-        '.web.js'
-        '.js'
-        '.coffee'
+      modules: [
+        "node_modules"
+        "./clientside/scripts"
       ]
 
-      plugins: webpackPlugins
+      alias:
+        'backbone.paginator':       'backbone.paginator.js'
+        'backbone.modal':           'backbone.modal-bundled.js'
+        'backbone.validation':      'backbone.validation.js'
+        'socket.io':                'socket.io.js'
+        async:                      'async.js'
+        highcharts:                 'highcharts.js'
+        'highcharts-more':          'highcharts-more.js'
+        highstock:                  'highstock.js'
+        bootstrap:                  'bootstrap.js'
+        'bootstrap.validator':      'bootstrap.validator.js'
+        jquery:                     'jquery.js'
+        'jquery.ui':                'jquery-ui.js'
+        mmenu:                      'jquery.mmenu.all.min.js'
+        touchspin:                  'jquery.bootstrap-touchspin.js'
+        multiselect:                'jquery.bootstrap-multiselect.js'
+        datepicker:                 'jquery.bootstrap-datepicker.js'
+        JQPlugin:                   'jquery.plugin.js'
+        'bootstrap.datetimepicker': 'bootstrap.datetimepicker.js'
+        'bootstrap.paginate':       'bootstrap.paginate.js'
+        toastr:                     'toastr.js'
+        fullcalendar:               'fullcalendar.js'
+        sweetalert:                 'sweetalert.min.js'
+        gauge:                      'gauge.js'
+        waypoint:                   'jquery.waypoints.js'
+        infinite:                   'jquery.infinite.js'
 
-  webpack options, (err, stats) =>
+      # Resolve files ending with the following extension.
+
+      extensions: [
+        '.coffee'
+        '.js'
+      ]
+
+    plugins: webpackPlugins
+
+  webpack options, (err) =>
     if err
       throw new PluginError('webpack', err)
-    #log '[webpack]', stats.toString(colors: true)
-
     callback null
     return
 
