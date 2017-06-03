@@ -7,7 +7,7 @@ moment       = require 'moment'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require '../data/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

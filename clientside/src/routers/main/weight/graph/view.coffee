@@ -7,7 +7,7 @@ Color        = require 'color/module'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 Highstocks   = require 'highstock'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Given a collection, condense the collection to a single chart model.

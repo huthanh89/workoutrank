@@ -6,7 +6,7 @@ d3           = require 'd3'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

@@ -172,6 +172,9 @@ gulp.task 'js:bundle', (callback) ->
       ,
         test:   /\.jade$/
         loader: 'jade-loader'
+      ,
+        test:   /\.pug$/
+        loader: 'pug-loader'
       ]
 
     resolve:
@@ -342,6 +345,12 @@ gulp.task 'watch', ->
 
   gulp.watch [
     './clientside/src/**/*.jade'
+  ], [
+    'compile:client:js'
+  ]
+
+  gulp.watch [
+    './clientside/src/**/*.pug'
   ], [
     'compile:client:js'
   ]

@@ -8,7 +8,7 @@ Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Event        = require './event/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

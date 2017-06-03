@@ -6,7 +6,7 @@ swal         = require 'sweetalert'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

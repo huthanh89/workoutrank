@@ -8,7 +8,7 @@ Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Data         = require '../../data/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

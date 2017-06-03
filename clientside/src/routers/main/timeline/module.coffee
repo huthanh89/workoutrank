@@ -12,7 +12,7 @@ Marionette   = require 'backbone.marionette'
 Strength     = require './strength/module'
 Cardio       = require './cardio/module'
 Weight       = require './weight/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

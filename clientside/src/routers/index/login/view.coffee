@@ -5,7 +5,7 @@
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 Login        = require './login/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # View

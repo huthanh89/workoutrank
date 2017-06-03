@@ -6,9 +6,9 @@ _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
-nullTemplate = require './null.jade'
-itemTemplate = require './item.jade'
-viewTemplate = require './view.jade'
+nullTemplate = require './null.pug'
+itemTemplate = require './item.pug'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

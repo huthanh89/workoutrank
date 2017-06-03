@@ -8,9 +8,9 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
-nullTemplate = require './null.jade'
-itemTemplate = require './item.jade'
-viewTemplate = require './view.jade'
+nullTemplate = require './null.pug'
+itemTemplate = require './item.pug'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

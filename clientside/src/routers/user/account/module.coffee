@@ -7,7 +7,7 @@ Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
 Local        = require './local/module'
 Social       = require './social/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

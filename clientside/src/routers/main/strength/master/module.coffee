@@ -9,7 +9,7 @@ Marionette   = require 'backbone.marionette'
 Add          = require './add/module'
 Table        = require './table/module'
 FilterView   = require './filter/view'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Plugins

@@ -9,7 +9,7 @@ Marionette   = require 'backbone.marionette'
 Nav          = require './nav/module'
 LoaderView   = require './loader/view'
 FooterView   = require './footer/view'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

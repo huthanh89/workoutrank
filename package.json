@@ -92,6 +92,9 @@
     "read-file": "*",
     "run-sequence": "*",
     "rgb-hex": "*",
+    "pug-loader": "*",
+    "pug-load": "*",
+    "pug": "*",
     "npm-check-updates": "*"
   }
 }

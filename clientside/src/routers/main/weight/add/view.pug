@@ -1,0 +1,39 @@
+.modal.fade(role="dialog")
+    .modal-dialog.modal-sm
+        .modal-content
+
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Add a new session
+
+            .modal-body
+                form.form-horizontal
+                    #weight-modal-basic.tab-pane.active(role='tabpanel')
+                        .form-group
+                            .col-xs-12
+                                label.control-label Timestamp
+                            .col-xs-12
+                                p.form-control-static#weight-modal-timestamp
+                        .form-group
+                            .col-xs-12
+                                label.control-label Weight
+                            .col-xs-12
+                                input.form-control#weight-modal-weight(type="number", step="0.1" placeholder=0 required)
+                        .form-group
+                            .col-xs-12
+                                .checkbox
+                                    label
+                                        input(type='checkbox')#weight-modal-note-enable
+                                        | Add note
+                            .col-xs-12
+                                textarea.hide.form-control#weight-modal-note(placeholder='Optional' minlength="1" maxlength="250")
+                        hr
+                        .form-group
+                            .pull-right
+                                .col-xs-12
+                                    button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
+                                    span &nbsp
+                                    button.btn.btn-primary.btn-lg(type="submit")
+                                        i.fa.fa-fw.fa-lg.fa-save
+                                        span &nbsp
+                                        span save

@@ -11,7 +11,7 @@ Marionette   = require 'backbone.marionette'
 Data         = require './data/module'
 Schedule     = require './schedule/module'
 EditView     = require './edit/view'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

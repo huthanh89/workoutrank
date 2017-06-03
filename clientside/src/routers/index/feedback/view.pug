@@ -1,0 +1,52 @@
+.row
+    .col-xs-12
+        ol.breadcrumb(style='margin-bottom: 5px;')
+            li#feedback-home
+                a Home
+            li.active
+                span Contact Us
+                span &nbsp
+                i.fa.fa-fw.fa-lg.fa-envelope
+.row
+    .col-xs-12(style="text-align:center;")
+        .well
+            .row
+                h3 Contact Us
+            .row
+                span
+                    b Email:
+                span &nbsp
+                span developertth@gmail.com
+.row
+    .col-md-6.col-sm-7.col-center
+        .panel.panel-default
+            .panel-body
+                .col-xs-12
+                    form.form-horizontal
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    h4 Help us improve your experience.
+                                    p  Give us your feedback below.
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    label.control-label(for='feedback-title') Title
+                            .row
+                                .col-xs-12
+                                    input.form-control#feedback-title(placeholder="Title" type='text' required minlength="1" maxlength="25")
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    label.control-label(for='feedback-editor') Body
+                            .row
+                                .col-xs-12
+                                    textarea#feedback-editor(placeholder="Enter text here..." required minlength="1" maxlength="200")
+                        .form-group
+                            .row
+                                .col-xs-12
+                                    .pull-right
+                                        button.btn.btn-primary
+                                            i.fa.fa-fw.fa-lg.fa-send
+                                            span &nbsp
+                                            span Send

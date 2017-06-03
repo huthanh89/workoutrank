@@ -6,7 +6,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 Data         = require '../../data/module'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Variance

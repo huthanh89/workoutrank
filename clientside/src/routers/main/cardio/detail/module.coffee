@@ -17,7 +17,7 @@ GoalView      = require './goal/view'
 Workout       = require './workout/module'
 ChallengeView = require './challenge/view'
 CalendarView  = require './calendar/view'
-viewTemplate  = require './view.jade'
+viewTemplate  = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

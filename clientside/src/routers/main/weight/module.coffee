@@ -14,7 +14,7 @@ Table        = require './table/module'
 GraphView    = require './graph/view'
 Reduce       = require './reduce/module'
 CalendarView = require './calendar/view'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

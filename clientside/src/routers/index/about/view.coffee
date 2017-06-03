@@ -4,7 +4,7 @@
 
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # Channels

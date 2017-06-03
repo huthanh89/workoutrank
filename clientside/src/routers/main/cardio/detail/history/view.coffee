@@ -6,7 +6,7 @@ moment       = require 'moment'
 Marionette   = require 'backbone.marionette'
 DateView     = require './date/view'
 TableView    = require './table/view'
-viewTemplate = require './view.jade'
+viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
 # View
