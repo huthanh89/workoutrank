@@ -294,6 +294,63 @@ Page loader
 #loader-page-spinner .sk-circle:before {
   background-color: #8cb4ef;
 }
+/*-----------------------------------------------------------------------------
+Icon colors
+-----------------------------------------------------------------------------*/
+.fa-home {
+  color: #bf9129;
+}
+.fa-pencil {
+  color: #d68929;
+}
+.fa-question-circle {
+  color: #e6d857;
+}
+.fa-hand-rock-o {
+  color: #e69e3c;
+}
+.fa-heartbeat {
+  color: #c73439;
+}
+.fa-tachometer {
+  color: #60c9e6;
+}
+.fa-book {
+  color: #c1632d;
+}
+.fa-cubes {
+  color: #90d5be;
+}
+.fa-clock-o {
+  color: #59c29c;
+}
+.fa-newspaper-o {
+  color: #67d537;
+}
+.fa-calendar-plus-o {
+  color: rgba(173, 107, 203, 0.75);
+}
+.fa-id-card-o {
+  color: rgba(200, 143, 0, 0.9);
+}
+.fa-user-circle {
+  color: #7199d5;
+}
+.fa-user-o {
+  color: #7ca2d5;
+}
+.fa-envelope {
+  color: #506fd5;
+}
+.fa-envelope-o {
+  color: #d53c39;
+}
+.fa-info-circle {
+  color: #d5c639;
+}
+.fa-sign-out {
+  color: #d5a138;
+}
 /*-----------------------------------------------------------------------------1
 Login
 -----------------------------------------------------------------------------*/
@@ -697,20 +754,12 @@ Home
   color: rgba(196, 25, 24, 0.78);
   background: rgba(191, 191, 191, 0.28);
 }
-#home-sconf-count {
-  background: #df9d48;
+.home-journal-counters {
+  float: right;
+  color: #313131;
 }
-#home-slog-count {
-  background: #df9d48;
-}
-#home-wlog-count {
-  background: #78aecf;
-}
-#home-cconf-count {
-  background: #cf7451;
-}
-#home-clog-count {
-  background: #cf7451;
+.home-journal-counters .fa {
+  color: #313131;
 }
 /*-----------------------------------------------------------------------------
 Profile
@@ -794,63 +843,6 @@ Timeline
 -----------------------------------------------------------------------------*/
 .infinite-loading {
   background: rgba(147, 191, 231, 0.1);
-}
-/*-----------------------------------------------------------------------------
-Icon colors
------------------------------------------------------------------------------*/
-.fa-home {
-  color: #bf9129;
-}
-.fa-pencil {
-  color: #d68929;
-}
-.fa-question-circle {
-  color: #e6d857;
-}
-.fa-hand-rock-o {
-  color: #e69e3c;
-}
-.fa-heartbeat {
-  color: #c73439;
-}
-.fa-tachometer {
-  color: #60c9e6;
-}
-.fa-book {
-  color: #c1632d;
-}
-.fa-cubes {
-  color: #90d5be;
-}
-.fa-clock-o {
-  color: #59c29c;
-}
-.fa-newspaper-o {
-  color: #67d537;
-}
-.fa-calendar-plus-o {
-  color: rgba(173, 107, 203, 0.75);
-}
-.fa-id-card-o {
-  color: rgba(200, 143, 0, 0.9);
-}
-.fa-user-circle {
-  color: #7199d5;
-}
-.fa-user-o {
-  color: #7ca2d5;
-}
-.fa-envelope {
-  color: #506fd5;
-}
-.fa-envelope-o {
-  color: #d53c39;
-}
-.fa-info-circle {
-  color: #d5c639;
-}
-.fa-sign-out {
-  color: #d5a138;
 }
 /*-----------------------------------------------------------------------------
 Cardio
