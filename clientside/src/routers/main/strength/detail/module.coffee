@@ -201,7 +201,6 @@ class View extends Marionette.View
 
   updateViews: ->
 
-    ###
     @showChildView 'note', new NoteView
       sConf: @model
 
@@ -224,7 +223,6 @@ class View extends Marionette.View
 
     @showChildView 'workout', new Workout.View
       model: @summaryModel
-###
 
     @updateAfterDateChange()
 
