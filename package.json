@@ -91,6 +91,7 @@
     "pm2": "*",
     "read-file": "*",
     "run-sequence": "*",
+    "rgb-hex": "*",
     "npm-check-updates": "*"
   }
 }

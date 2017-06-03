@@ -177,8 +177,9 @@ gulp.task 'js:bundle', (callback) ->
     resolve:
 
       modules: [
-        "node_modules"
-        "./clientside/scripts"
+        "node_modules"         # NPM modules
+        "./clientside/scripts" # 3rd party library
+        "./clientside/src/lib" # Our library
       ]
 
       alias:
@@ -192,7 +193,6 @@ gulp.task 'js:bundle', (callback) ->
         highstock:                  'highstock.js'
         bootstrap:                  'bootstrap.js'
         'bootstrap.validator':      'bootstrap.validator.js'
-        jquery:                     'jquery.js'
         'jquery.ui':                'jquery-ui.js'
         mmenu:                      'jquery.mmenu.all.min.js'
         touchspin:                  'jquery.bootstrap-touchspin.js'

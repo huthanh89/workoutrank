@@ -3,11 +3,10 @@
 #-------------------------------------------------------------------------------
 
 moment       = require 'moment'
-Color        = require 'color'
+Color        = require 'color/module'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 Highstocks   = require 'highstock'
-Highcharts   = require 'highcharts'
 viewTemplate = require './view.jade'
 
 #-------------------------------------------------------------------------------
@@ -15,6 +14,7 @@ viewTemplate = require './view.jade'
 #-------------------------------------------------------------------------------
 
 chartModel = (collection) ->
+
   data = []
 
   collection.each (model) ->
@@ -35,7 +35,7 @@ chartModel = (collection) ->
 seriesData = (model, chart) ->
 
   index = 0
-  color = Color Highcharts.getOptions().colors[index]
+  color = Color.indexColorHex(index)
 
   return {
     type:    chart
@@ -48,8 +48,8 @@ seriesData = (model, chart) ->
     marker:
       enabled: true
       radius:  3
-    color:     color.clone().darken(0.2).hslString()
-    lineColor: color.clone().darken(0.2).hslString()
+    color:     color
+    lineColor: color
     fillColor:
       linearGradient:
         x1: 0
@@ -59,11 +59,11 @@ seriesData = (model, chart) ->
       stops: [
         [
           0
-          color.hslString()
+          Color.opacityColor color, .1
         ]
         [
           1
-          color.clearer(1).hslString()
+          color
         ]
       ]
 

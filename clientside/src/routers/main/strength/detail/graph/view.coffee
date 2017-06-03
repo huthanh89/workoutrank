@@ -4,11 +4,11 @@
 
 _            = require 'lodash'
 moment       = require 'moment'
-Color        = require 'color'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 Highcharts   = require 'highcharts'
 Highstocks   = require 'highstock'
+Color        = require 'color/module'
 viewTemplate = require './view.jade'
 
 
@@ -61,13 +61,13 @@ seriesData = (model, type, chart) ->
   if type is 0
 
     index = 2
-    color = Color Highcharts.getOptions().colors[index]
+    color = Color.indexColorHex(index)
 
     return _.assign result,
       name: 'Reps'
       data:  model.get('repData')
-      color:     color.clone().darken(0.5).hslString()
-      lineColor: color.clone().darken(0.5).hslString()
+      color:     color
+      lineColor: color
       fillColor:
         linearGradient:
           x1: 0
@@ -77,25 +77,25 @@ seriesData = (model, type, chart) ->
         stops: [
           [
             0
-            color.hslString()
+            Color.opacityColor color, .1
           ]
           [
             1
-            color.clearer(1).hslString()
+            color
           ]
         ]
   else
 
     index = 3
-    color = Color Highcharts.getOptions().colors[index]
+    color = Color.indexColorHex(index)
 
     return _.assign result,
       name: 'Weights'
       data:  model.get('weightData')
       tooltip:
         valueSuffix: ' lb'
-      color:     color.clone().darken(0.3).hslString()
-      lineColor: color.clone().darken(0.3).hslString()
+      color:     color
+      lineColor: color
       fillColor:
         linearGradient:
           x1: 0
@@ -105,11 +105,11 @@ seriesData = (model, type, chart) ->
         stops: [
           [
             0
-            color.hslString()
+            Color.opacityColor color, .1
           ]
           [
             1
-            color.clearer(1).hslString()
+            color
           ]
         ]
 
