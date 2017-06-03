@@ -3,7 +3,6 @@
 #-------------------------------------------------------------------------------
 
 $           = require 'jquery'
-_           = require 'lodash'
 Highstock   = require 'highstock'
 Application = require './application'
 
@@ -30,7 +29,7 @@ window.jQuery = window.$ = require 'jquery'
 require 'mmenu'
 require 'bootstrap'
 
-# Console out if bootstrap is not working.
+# Dispaly error log if bootstrap is not working.
 unless $().modal
   console.log 'bootstrap is not working.'
 

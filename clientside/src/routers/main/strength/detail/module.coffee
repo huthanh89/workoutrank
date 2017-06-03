@@ -196,10 +196,12 @@ class View extends Marionette.View
       sLogs: @collection
       sConf: @model
       date:  @date
+
     return
 
   updateViews: ->
 
+    ###
     @showChildView 'note', new NoteView
       sConf: @model
 
@@ -222,6 +224,7 @@ class View extends Marionette.View
 
     @showChildView 'workout', new Workout.View
       model: @summaryModel
+###
 
     @updateAfterDateChange()
 

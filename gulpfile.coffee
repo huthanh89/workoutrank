@@ -190,8 +190,6 @@ gulp.task 'js:bundle', (callback) ->
         'backbone.modal':           'backbone.modal-bundled.js'
         'backbone.validation':      'backbone.validation.js'
         'socket.io':                'socket.io.js'
-        async:                      'async.js'
-        highcharts:                 'highcharts.js'
         'highcharts-more':          'highcharts-more.js'
         highstock:                  'highstock.js'
         bootstrap:                  'bootstrap.js'
