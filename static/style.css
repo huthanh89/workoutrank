@@ -21747,7 +21747,7 @@ Strength
   width: 100%;
 }
 #strength-table-view tbody tr:hover {
-  color: rgba(196, 25, 24, 0.78);
+  color: rgba(50, 50, 51, 0.78);
   background: rgba(191, 191, 191, 0.28);
 }
 #strength-table-view tbody tr {
@@ -21956,11 +21956,11 @@ Home
   cursor: pointer;
 }
 .home-list :hover {
-  color: rgba(196, 25, 24, 0.78);
+  color: rgba(50, 50, 51, 0.78);
   background: rgba(191, 191, 191, 0.28);
 }
 .home-list :hover a {
-  color: rgba(196, 25, 24, 0.78);
+  color: rgba(50, 50, 51, 0.78);
   background: rgba(191, 191, 191, 0.28);
 }
 .home-journal-counters {
@@ -22076,7 +22076,7 @@ Cardio
   width: 100%;
 }
 #cardio-table-view tbody tr:hover {
-  color: rgba(196, 25, 24, 0.78);
+  color: rgba(50, 50, 51, 0.78);
   background: rgba(191, 191, 191, 0.28);
 }
 #cardio-table-view tbody tr {
