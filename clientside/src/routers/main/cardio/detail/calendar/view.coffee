@@ -47,9 +47,9 @@ class View extends Marionette.View
     ]
     @reduce()
 
-  onRender: ->
+  onAttach: ->
 
-    datepicker = @ui.calendar.datepicker
+    @ui.calendar.datepicker
       beforeShowDay: (date) =>
 
         rank = @dates[moment(date).startOf('day')]
@@ -79,9 +79,6 @@ class View extends Marionette.View
               classes: ''
               tooltip: ''
             }
-    return
-
-  onAttach: ->
 
     medals = _.valuesIn @dates
 
