@@ -124,10 +124,13 @@ getMean = (data) -> _.mean(_.map(data, (record) -> record.y))
 #-------------------------------------------------------------------------------
 
 plotLine = (text, value) ->
+
+  color = '#5d595a'
+
   return {
     value:      value
     width:      2
-    color:     'red'
+    color:      color
     dashStyle: 'shortdash'
     zIndex:     5
     label:
@@ -137,7 +140,7 @@ plotLine = (text, value) ->
       x:      5
       style:
         fontWeight: 'bold'
-        color:      '#d82a2a'
+        color:      color
   }
 
 #-------------------------------------------------------------------------------

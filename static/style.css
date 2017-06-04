@@ -21904,9 +21904,10 @@ Schedule
 #schedule-widget .fc-event {
   height: 25px;
   font-size: 18px;
+  color: #0e0e0e;
 }
 #schedule-widget .fc-event :hover {
-  background: rgba(212, 209, 212, 0.7);
+  background: rgba(235, 232, 235, 0.7);
 }
 #schedule-widget .fc-event span {
   font-size: 14px;
@@ -21964,7 +21965,7 @@ Home
 }
 .home-journal-counters {
   float: right;
-  color: #2d353e;
+  color: #3e3e3e;
 }
 .home-journal-counters .fa {
   color: #3e3e3e;

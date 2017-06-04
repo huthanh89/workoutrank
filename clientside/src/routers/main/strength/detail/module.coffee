@@ -169,9 +169,6 @@ class View extends Marionette.View
 
   onAttach: ->
 
-    #@ui.add.hide() unless Backbone.Radio.channel('user').request 'isOwner'
-    #@ui.edit.hide() unless Backbone.Radio.channel('user').request 'isOwner'
-
     @updateViews()
 
     if @collection.length is 0
