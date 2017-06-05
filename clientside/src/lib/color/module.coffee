@@ -2,6 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
+console.log 'here'
+
 Color      = require 'color'
 rgbHex     = require 'rgb-hex'
 Highcharts = require 'highcharts'

@@ -499,6 +499,19 @@ gulp.task 'production', (callback) ->
   return
 
 #-------------------------------------------------------------------------------
+# Task to just build scripts,
+#-------------------------------------------------------------------------------
+
+gulp.task 'build', (callback) ->
+  runSequence 'lint',
+    'compile:client:js',
+    'compile:server:js',
+    'compile:css',
+    'compile:index',
+    callback
+  return
+
+#-------------------------------------------------------------------------------
 # Default task use for development.
 #-------------------------------------------------------------------------------
 
