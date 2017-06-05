@@ -58,7 +58,7 @@ class View extends Marionette.View
   bindings:
     '#weight-modal-timestamp':
       observe: 'date'
-      onGet: (value) -> moment(value).format('YYYY/MM/DD - HH:mm:ss a')
+      onGet: (value) -> moment(value).format('MMMM DD, YYYY - HH:mm a')
 
     '#weight-modal-weight':
       observe: 'weight'
