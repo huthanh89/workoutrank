@@ -46,7 +46,7 @@ minifyCSS  = require 'gulp-cssnano'
 # Config Variable
 #-------------------------------------------------------------------------------
 
-Production = true
+Production = false
 
 #-------------------------------------------------------------------------------
 # Javascript minify
