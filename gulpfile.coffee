@@ -179,10 +179,12 @@ gulp.task 'js:bundle', (callback) ->
 
     resolve:
 
+      # Specified location of scripts.
+
       modules: [
         "node_modules"         # NPM modules
-        "./clientside/scripts" # 3rd party library
-        "./clientside/src/lib" # Our library
+        "./clientside/scripts" # 3rd party local library
+        "./clientside/src/lib" # Our local library
       ]
 
       alias:
