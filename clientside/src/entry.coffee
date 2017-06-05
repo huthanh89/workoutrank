@@ -2,13 +2,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-
-console.log 'start'
-
 $           = require 'jquery'
-
-console.log $
-
 Highstock   = require 'highstock'
 Application = require './application'
 
