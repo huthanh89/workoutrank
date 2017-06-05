@@ -62,13 +62,7 @@ config = require('./config');
 
 routers = require('./routers/module');
 
-mongoose.connect('mongodb://localhost:27017/local', {
-  user: 'admin',
-  pass: '1234',
-  auth: {
-    authdb: 'admin'
-  }
-});
+mongoose.connect(config.databaseUrl, config.databaseOptions);
 
 db = mongoose.connection;
 

@@ -50,15 +50,7 @@ routers      = require './routers/module'
 
 # Connect to Database.
 
-##mongoose.connect config.developmentURL
-#mongoose.connect config.productionURL
-
-#mongoose.connect 'mongodb://54.201.171.251:27017/local',
-mongoose.connect 'mongodb://localhost:27017/local',
-  user: 'admin'
-  pass: '1234'
-  auth:
-    authdb: 'admin'
+mongoose.connect config.databaseUrl, config.databaseOptions
 
 db = mongoose.connection
 

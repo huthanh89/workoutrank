@@ -1,17 +1,36 @@
+
+#--------------------------------------------------------------
+# Database Configurations
+#--------------------------------------------------------------
+
+production = true
+
+# Port to host app.
+
+port = 5000
+
+# MongoDB url
+
+databaseUrl = 'mongodb://localhost:27017/local'
+
+databaseOptions = {}
+
+# MongoDB auth
+
+if production
+  databaseOptions =
+    user: 'admin'
+    pass: '1234'
+    auth:
+      authdb: 'admin'
+
 #--------------------------------------------------------------
 # Exports
 #--------------------------------------------------------------
 
-# Port to host app.
 
-exports.port = 5000
-
-# MongoDB development path.
-
-exports.developmentURL = 'mongodb://localhost:27017/local'
-
-# MongoDB production path.
-
-exports.productionURL = 'mongodb://admin:1234@localhost:27017/local'
+exports.port            = port
+exports.databaseUrl     = databaseUrl
+exports.databaseOptions = databaseOptions
 
 #--------------------------------------------------------------
