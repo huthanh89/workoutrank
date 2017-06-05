@@ -62,7 +62,7 @@ config = require('./config');
 
 routers = require('./routers/module');
 
-mongoose.connect(config.developmentURL);
+mongoose.connect(config.productionURL);
 
 
 /*
