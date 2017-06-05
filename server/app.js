@@ -62,16 +62,13 @@ config = require('./config');
 
 routers = require('./routers/module');
 
-mongoose.connect(config.productionURL);
-
-
-/*
-mongoose.connect 'mongodb://54.201.171.251:27017/local',
-  user: 'admin'
-  pass: '1234'
-  auth:
+mongoose.connect('mongodb://localhost:27017/local', {
+  user: 'admin',
+  pass: '1234',
+  auth: {
     authdb: 'admin'
- */
+  }
+});
 
 db = mongoose.connection;
 
