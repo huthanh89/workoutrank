@@ -7,6 +7,7 @@ moment       = require 'moment'
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
+Color        = require 'color/module'
 viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
@@ -42,7 +43,8 @@ class Collection extends Backbone.Collection
 
   parse: (response, options) ->
 
-    result = []
+    result  = []
+    opacity = 0.6
 
     # Parse Strength Logs.
 
@@ -55,7 +57,7 @@ class Collection extends Backbone.Collection
           start:   new Date moment(date)
           end:     new Date moment(date)
           title:   sConf.get('name')
-          color:   '#fcbc28'
+          color:   Color.opacityColor '#fcbc28', opacity
           modelID: sConf.id
           type:    'sLog'
       return
@@ -73,7 +75,7 @@ class Collection extends Backbone.Collection
           start:   new Date moment(date)
           end:     new Date moment(date)
           title:   cConf.get('name')
-          color:   '#e0571d'
+          color:   Color.opacityColor '#e03224', opacity
           modelID: cConf.id
           type:    'cLog'
       return
@@ -87,7 +89,7 @@ class Collection extends Backbone.Collection
         start:   new Date moment(date)
         end:     new Date moment(date)
         title:   'Weight'
-        color:   '#709de5'
+        color:   Color.opacityColor '#4a79b1', opacity
         modelID: wLog.id
         type:    'wLog'
       return
