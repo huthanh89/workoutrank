@@ -46,7 +46,7 @@ minifyCSS  = require 'gulp-cssnano'
 # Set Production false when in development.
 #-------------------------------------------------------------------------------
 
-production = false
+production = true
 
 #-------------------------------------------------------------------------------
 # Process environment variable.
