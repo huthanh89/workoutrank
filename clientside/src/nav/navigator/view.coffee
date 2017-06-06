@@ -21,6 +21,8 @@ class View extends Marionette.View
 
   template: viewTemplate
 
+  ui:
+
   events:
     'click li': (element) ->
       @select element.target
@@ -54,6 +56,7 @@ class View extends Marionette.View
           $(@el).find('li').removeClass 'active'
         return
 
+    return
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
