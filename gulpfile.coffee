@@ -43,10 +43,16 @@ minifyJS   = require 'gulp-minify'
 minifyCSS  = require 'gulp-cssnano'
 
 #-------------------------------------------------------------------------------
-# Config Variable
+# Set Production false when in development.
 #-------------------------------------------------------------------------------
 
-Production = false
+production = false
+
+#-------------------------------------------------------------------------------
+# Process environment variable.
+#-------------------------------------------------------------------------------
+
+process.env.production = production
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -142,7 +148,7 @@ gulp.task 'js:bundle', (callback) ->
 
   # XXX Not yet tested. Bundle-min.js file size still look the same.
 
-  if Production
+  if production
     webpackPlugins.push [
       new webpack.DefinePlugin({
         'process.env':
@@ -406,7 +412,7 @@ gulp.task 'read:log', ->
 gulp.task 'inject:js', ->
 
   sources = gulp.src(['static/bundle.js'])
-  sources = gulp.src(['static/bundle-min.js']) if Production
+  sources = gulp.src(['static/bundle-min.js']) if production
 
   options =
     ignorePath:  'static'
@@ -430,7 +436,7 @@ gulp.task 'html:to:jade', ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'production:variable', ->
-  Production = true
+  production = true
   return
 
 #-------------------------------------------------------------------------------

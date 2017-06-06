@@ -62,6 +62,8 @@ config = require('./config');
 
 routers = require('./routers/module');
 
+mongoose.Promise = global.Promise;
+
 mongoose.connect(config.databaseUrl, config.databaseOptions);
 
 db = mongoose.connection;
