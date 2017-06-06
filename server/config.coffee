@@ -3,7 +3,7 @@
 # Database Configurations
 #--------------------------------------------------------------
 
-production = true
+production = false
 
 # Port to host app.
 

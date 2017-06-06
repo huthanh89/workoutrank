@@ -17,23 +17,6 @@ Highstock.setOptions
   }
 
 #-------------------------------------------------------------------------------
-# Hacks and workaround.asdf
-#
-#   Bootstrap jquery plugins expect jQuery to be on 'window' or 'this' object.
-#
-#-------------------------------------------------------------------------------
-
-window.jQuery = window.$ = require 'jquery'
-
-# Require all plugins that requires jquery.
-require 'mmenu'
-require 'bootstrap'
-
-# Dispaly error log if bootstrap is not working.
-unless $().modal
-  console.log 'bootstrap is not working.'
-
-#-------------------------------------------------------------------------------
 # Google Analytics
 #-------------------------------------------------------------------------------
 
