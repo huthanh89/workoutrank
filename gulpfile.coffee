@@ -46,13 +46,14 @@ minifyCSS  = require 'gulp-cssnano'
 # Set Production false when in development.
 #-------------------------------------------------------------------------------
 
-production = true
+production = false
 
 #-------------------------------------------------------------------------------
 # Process environment variable.
 #-------------------------------------------------------------------------------
 
-process.env.production = production
+#process.env.production = production
+process.env.production = true
 
 #-------------------------------------------------------------------------------
 # Javascript minify
