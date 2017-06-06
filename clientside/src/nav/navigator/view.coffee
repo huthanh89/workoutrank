@@ -22,6 +22,7 @@ class View extends Marionette.View
   template: viewTemplate
 
   ui:
+    container: '#navigator-bottom-container'
 
   events:
     'click li': (element) ->
@@ -56,7 +57,28 @@ class View extends Marionette.View
           $(@el).find('li').removeClass 'active'
         return
 
+  # Workaround to hide bottom navigator when mobile keybaord is up.
+  # The navigator is too obtrusive, so we want to hide them.
+
+  onAttach: ->
+    $('body').delegate 'input', 'focusin', (element) =>
+      if element.target.type in ['number', 'text']
+        @ui.container.addClass 'hidden'
+      return
+
+    $('body').delegate 'input', 'focusout', =>
+      @ui.container.removeClass 'hidden'
+      return
+
+    $('body').delegate 'textarea', 'focusin', =>
+      @ui.container.addClass 'hidden'
+      return
+
+    $('body').delegate 'textarea', 'focusout', =>
+      @ui.container.removeClass 'hidden'
+      return
     return
+
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
