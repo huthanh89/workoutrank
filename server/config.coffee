@@ -13,7 +13,7 @@ port = 5000
 
 # MongoDB url
 
-databaseUri = 'mongodb://localhost:27017/local'
+databaseUrl = 'mongodb://localhost:27017/local'
 
 databaseOptions =
   user: ''
@@ -36,7 +36,7 @@ if production
 
 
 exports.port            = port
-exports.databaseUri     = databaseUri
+exports.databaseUrl     = databaseUrl
 exports.databaseOptions = databaseOptions
 
 #--------------------------------------------------------------

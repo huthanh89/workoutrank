@@ -54,7 +54,7 @@ mongoose.Promise = global.Promise
 
 # Connect to Database.
 
-mongoose.connect config.databaseUri, config.databaseOptions
+mongoose.connect config.databaseUrl, config.databaseOptions
 
 db = mongoose.connection
 
