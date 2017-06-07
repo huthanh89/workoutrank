@@ -5,8 +5,6 @@
 
 # Production variable.
 
-console.log '>>>>>>>', process.env.foo
-
 production = true
 
 # Port to host app.
