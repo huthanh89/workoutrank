@@ -46,13 +46,14 @@ minifyCSS  = require 'gulp-cssnano'
 # Set production flag to false when in development.
 #-------------------------------------------------------------------------------
 
-production = true
+production = false
 
 #-------------------------------------------------------------------------------
 # Server process environment variable.
 #-------------------------------------------------------------------------------
 
-process.env.production = if production then 'production' else 'development'
+serverProduction = true
+process.env.production = if serverProduction then 'production' else 'development'
 
 #-------------------------------------------------------------------------------
 # Javascript minify
