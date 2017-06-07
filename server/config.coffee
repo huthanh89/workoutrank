@@ -23,7 +23,7 @@ databaseOptions =
 
 # MongoDB auth with username and password.
 
-if production is true
+if production
 
   databaseOptions =
     user: 'admin'

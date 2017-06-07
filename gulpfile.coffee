@@ -46,13 +46,13 @@ minifyCSS  = require 'gulp-cssnano'
 # Set production flag to false when in development.
 #-------------------------------------------------------------------------------
 
-production = false
+production = true
 
 #-------------------------------------------------------------------------------
 # Server process environment variable.
 #-------------------------------------------------------------------------------
 
-process.env.production = true
+process.env.production = production
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -146,6 +146,7 @@ gulp.task 'js:bundle', (callback) ->
     })
   ]
 
+  ###
   # XXX Not yet tested. Bundle-min.js file size still look the same.
 
   if production
@@ -159,6 +160,7 @@ gulp.task 'js:bundle', (callback) ->
       new webpack.optimize.OccurrenceOrderPlugin()
       new webpack.optimize.UglifyJsPlugin()
     ]
+###
 
   options =
 
