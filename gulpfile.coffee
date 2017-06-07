@@ -52,7 +52,7 @@ production = false
 # Server process environment variable.
 #-------------------------------------------------------------------------------
 
-process.env.production = production
+process.env.production = true
 
 #-------------------------------------------------------------------------------
 # Javascript minify
