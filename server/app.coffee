@@ -50,9 +50,11 @@ routers      = require './routers/module'
 
 # Handle deprecated "mpromise" library warning.
 
-#mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise
 
 # Connect to Database.
+
+console.log config.databaseOptions
 
 mongoose.connect config.databaseUrl, config.databaseOptions
 
