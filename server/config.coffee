@@ -22,7 +22,7 @@ databaseOptions =
     authdb: ''
 
 
-console.log '>>>>>>>>>>>', production, process.NODE_SYS
+console.log '>>>>>>>>>>>', production, process.env
 
 # MongoDB auth with username and password.
 
