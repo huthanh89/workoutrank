@@ -21,6 +21,9 @@ databaseOptions =
   auth:
     authdb: ''
 
+
+console.log '>>>>>>>>>>>', production
+
 # MongoDB auth with username and password.
 
 if production
