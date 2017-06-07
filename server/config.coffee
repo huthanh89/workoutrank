@@ -5,7 +5,7 @@
 
 # Production variable is set in gulp file.
 
-production = process.env.production is 'production'
+production = process.env.NODE_SYS is 'production'
 
 # Port to host app.
 
@@ -22,7 +22,7 @@ databaseOptions =
     authdb: ''
 
 
-console.log '>>>>>>>>>>>', production, process.env.production
+console.log '>>>>>>>>>>>', production, process.NODE_SYS
 
 # MongoDB auth with username and password.
 
