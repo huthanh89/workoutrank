@@ -49,13 +49,6 @@ minifyCSS  = require 'gulp-cssnano'
 production = false
 
 #-------------------------------------------------------------------------------
-# Server process environment variable.
-#-------------------------------------------------------------------------------
-
-serverProduction = true
-process.env.production = if serverProduction then 'production' else 'development'
-
-#-------------------------------------------------------------------------------
 # Javascript minify
 #-------------------------------------------------------------------------------
 
