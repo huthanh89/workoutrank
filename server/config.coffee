@@ -5,8 +5,7 @@
 
 # Production variable is set in gulp file.
 
-#production = process.env.production
-production = true
+production = process.env.production
 
 # Port to host app.
 

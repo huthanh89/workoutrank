@@ -54,6 +54,8 @@ seriesData = (model, type, chart) ->
     index = 2
     color = Color.indexColorHex(index)
 
+    color = '#70ff79'
+
     return _.assign result,
       name: 'Duration'
       data:  model.get('durationData')

@@ -56,8 +56,6 @@ class View extends Marionette.View
     noteEnable: '#cardio-modal-note-enable'
     note:       '#cardio-modal-note'
     duration:   '#cardio-modal-duration'
-    intensity:  '#cardio-modal-intensity'
-    speed:      '#cardio-modal-speed'
 
   bindings:
 
@@ -71,14 +69,6 @@ class View extends Marionette.View
 
     '#cardio-modal-duration':
       observe: 'duration'
-      onSet: (value) -> parseInt(value)
-
-    '#cardio-modal-intensity':
-      observe: 'intensity'
-      onSet: (value) -> parseInt(value)
-
-    '#cardio-modal-speed':
-      observe: 'speed'
       onSet: (value) -> parseInt(value)
 
     '#cardio-modal-note': 'note'
@@ -109,8 +99,6 @@ class View extends Marionette.View
 
     'hidden.bs.modal': ->
       @ui.duration.TouchSpin('destroy')
-      @ui.intensity.TouchSpin('destroy')
-      @ui.speed.TouchSpin('destroy')
       @unstickit()
       return
 
@@ -135,32 +123,15 @@ class View extends Marionette.View
     if @collection.length
       latestModel = @collection.at(@collection.length - 1)
       @model.set 'duration',  latestModel.get('duration')
-      @model.set 'intensity', latestModel.get('intensity')
-      @model.set 'speed',     latestModel.get('speed')
 
   onRender: ->
 
     @ui.duration.TouchSpin
-      postfix:          'minutes'
+      postfix:          'minute'
       buttondown_class: 'btn btn-info'
       buttonup_class:   'btn btn-info'
       min:              0
       max:              9999
-
-    @ui.intensity.TouchSpin
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
-      min:              0
-      max:              100
-      step:             1
-
-    @ui.speed.TouchSpin
-      postfix:          'mph'
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
-      min:              0
-      max:              100
-      step:             1
 
     @stickit()
 
