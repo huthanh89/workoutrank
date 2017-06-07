@@ -58,8 +58,6 @@ class Router extends Marionette.AppRouter
 
   feedbacks: ->
 
-    console.log 'here'
-
     navChannel.request('nav:main')
 
     collection = new Feedback.Collection()
