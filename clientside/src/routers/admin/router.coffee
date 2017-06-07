@@ -3,7 +3,6 @@
 #-------------------------------------------------------------------------------
 
 async      = require 'async'
-Backbone   = require 'backbone'
 Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 Account    = require './account/module'
@@ -59,7 +58,7 @@ class Router extends Marionette.AppRouter
 
   feedbacks: ->
 
-    @navChannel.request('nav:main')
+    navChannel.request('nav:main')
 
     collection = new Feedback.Collection()
     collection.fetch
