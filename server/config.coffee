@@ -22,7 +22,7 @@ databaseOptions =
     authdb: ''
 
 
-console.log '>>>>>>>>>>>', production
+console.log '>>>>>>>>>>>', production, process.env.production
 
 # MongoDB auth with username and password.
 
