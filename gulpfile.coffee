@@ -32,7 +32,6 @@ livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
 html2jade  = require 'gulp-html2jade'
 uglify     = require 'gulp-uglify'
-#uglify     = require 'gulp-uglifyjs'
 
 # Lint
 

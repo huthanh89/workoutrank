@@ -3,16 +3,17 @@
 #-------------------------------------------------------------------------------
 
 Color      = require 'color'
-#rgbHex     = require 'rgb-hex'
 Highcharts = require 'highcharts'
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-colorHex = (color) -> '#000000'
-#  hexColor = rgbHex(color[0], color[1], color[2], color[3])
-#  return "##{hexColor}"
+rgb2hex = (red, green, blue) ->
+  rgb = blue | green << 8 | red << 16
+  return '#' + (0x1000000 + rgb).toString(16).slice(1)
+
+colorHex = (color) -> rgb2hex(color[0], color[1], color[2])
 
 indexColorRGB = (index) ->
   color = Color Highcharts.getOptions().colors[index]
