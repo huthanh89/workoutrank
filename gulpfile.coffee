@@ -2,11 +2,13 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-gulp        = require 'gulp'
-webpack     = require 'webpack'
-path        = require 'path'
-read        = require 'read-file'
-runSequence = require 'run-sequence'
+gulp           = require 'gulp'
+webpack        = require 'webpack'
+path           = require 'path'
+read           = require 'read-file'
+runSequence    = require 'run-sequence'
+pump           = require 'pump'
+webpackOptions = require './webpack.config'
 
 #-------------------------------------------------------------------------------
 # Gulp Plugins
@@ -30,6 +32,7 @@ livereload = require 'gulp-livereload'
 nodemon    = require 'gulp-nodemon'
 html2jade  = require 'gulp-html2jade'
 uglify     = require 'gulp-uglify'
+#uglify     = require 'gulp-uglifyjs'
 
 # Lint
 
@@ -54,18 +57,22 @@ production = false
 
 # XXX minify and uglify result in a hanged process when gulp.
 
-gulp.task 'minify-js', ->
-  return gulp.src('./static/bundle.js')
-  .pipe(uglify())
-  #.pipe(minifyJS())
-  .pipe(rename('bundle-min.js'))
-  .pipe(gulp.dest('static'))
+gulp.task 'minify:js', (callback) ->
+
+  pump([
+    gulp.src('static/bundle.js')
+    uglify()
+    rename('bundle-min.js')
+    gulp.dest('static')
+  ], callback)
+
+  return
 
 #-------------------------------------------------------------------------------
 # CSS minify
 #-------------------------------------------------------------------------------
 
-gulp.task 'minify-css', ->
+gulp.task 'minify:css', ->
   return gulp.src('./static/style.css')
   .pipe(minifyCSS
       discardComments:
@@ -133,96 +140,7 @@ gulp.task 'coffee:to:js:server', ->
 
 gulp.task 'js:bundle', (callback) ->
 
-  webpackPlugins = [
-    new webpack.ProvidePlugin({
-      $:      'jquery'
-      jQuery: 'jquery'
-    })
-  ]
-
-  ###
-  # XXX Not yet tested. Bundle-min.js file size still look the same.
-
-  if production
-    webpackPlugins.push [
-      new webpack.DefinePlugin({
-        'process.env':
-          NODE_ENV: 'production'
-      })
-      new webpack.optimize.DedupePlugin()
-      new webpack.optimize.LimitChunkCountPlugin()
-      new webpack.optimize.OccurrenceOrderPlugin()
-      new webpack.optimize.UglifyJsPlugin()
-    ]
-###
-
-  options =
-
-    entry: [
-      './clientside/src/entry.coffee'
-    ]
-
-    output:
-      path:      path.join(__dirname, 'static')
-      filename: 'bundle.js'
-
-    module:
-
-      rules: [
-        test:   /\.coffee$/
-        loader: 'coffee-loader'
-      ,
-        test:   /\.jade$/
-        loader: 'jade-loader'
-      ,
-        test:   /\.pug$/
-        loader: 'pug-loader'
-      ]
-
-    resolve:
-
-      # Specified location of scripts.
-
-      modules: [
-        "node_modules"         # NPM modules
-        "./clientside/scripts" # 3rd party local library
-        "./clientside/src/lib" # Our local library
-      ]
-
-      alias:
-        'backbone.paginator':       'backbone.paginator.js'
-        'backbone.modal':           'backbone.modal-bundled.js'
-        'backbone.validation':      'backbone.validation.js'
-        'socket.io':                'socket.io.js'
-        'highcharts-more':          'highcharts-more.js'
-        highstock:                  'highstock.js'
-        bootstrap:                  'bootstrap.js'
-        'bootstrap.validator':      'bootstrap.validator.js'
-        'jquery.ui':                'jquery-ui.js'
-        mmenu:                      'jquery.mmenu.all.min.js'
-        touchspin:                  'jquery.bootstrap-touchspin.js'
-        multiselect:                'jquery.bootstrap-multiselect.js'
-        datepicker:                 'jquery.bootstrap-datepicker.js'
-        JQPlugin:                   'jquery.plugin.js'
-        'bootstrap.datetimepicker': 'bootstrap.datetimepicker.js'
-        'bootstrap.paginate':       'bootstrap.paginate.js'
-        toastr:                     'toastr.js'
-        fullcalendar:               'fullcalendar.js'
-        sweetalert:                 'sweetalert.min.js'
-        gauge:                      'gauge.js'
-        waypoint:                   'jquery.waypoints.js'
-        infinite:                   'jquery.infinite.js'
-
-      # Resolve files ending with the following extension.
-
-      extensions: [
-        '.coffee'
-        '.js'
-      ]
-
-    plugins: webpackPlugins
-
-  webpack options, (err) =>
+  webpack webpackOptions, (err) =>
     if err
       throw new PluginError('webpack', err)
     callback null
@@ -371,6 +289,12 @@ gulp.task 'report:size', (callback) ->
     title: '----- bundle(minified).js -----'
   .pipe(gulp.dest('static'))
 
+  gulp.src('./static/bundle.js')
+  .pipe size
+    showFiles: true
+    title: '----- bundle.js -----'
+  .pipe(gulp.dest('static'))
+
   gulp.src('./static/style.css')
   .pipe size
     showFiles: true
@@ -428,14 +352,6 @@ gulp.task 'html:to:jade', ->
   .pipe(gulp.dest('static'))
 
 #-------------------------------------------------------------------------------
-# Set production variable to true.
-#-------------------------------------------------------------------------------
-
-gulp.task 'production:variable', ->
-  production = true
-  return
-
-#-------------------------------------------------------------------------------
 # Perform a production start with pm2
 #-------------------------------------------------------------------------------
 
@@ -473,8 +389,8 @@ gulp.task 'compile:client:js', (callback) ->
   return
 
 gulp.task 'minify', [
-  'minify-css'
-  'minify-js'
+  'minify:css'
+  'minify:js'
 ]
 
 gulp.task 'compile:index', (callback) ->
@@ -488,13 +404,12 @@ gulp.task 'compile:index', (callback) ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'production', (callback) ->
-  runSequence 'production:variable',
-    'lint',
+  runSequence 'lint',
     'compile:css',
     'compile:client:js',
     'minify',
     'compile:index',
-    'shell:npm:version',
+    #'shell:npm:version',
     'read:log',
     'report:size',
     callback
