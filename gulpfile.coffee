@@ -48,7 +48,7 @@ minifyCSS  = require 'gulp-cssnano'
 # Set production flag to false when in development.
 #-------------------------------------------------------------------------------
 
-production = false
+production = true
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -411,19 +411,6 @@ gulp.task 'production', (callback) ->
     #'shell:npm:version',
     'read:log',
     'report:size',
-    callback
-  return
-
-#-------------------------------------------------------------------------------
-# Task to just build scripts,
-#-------------------------------------------------------------------------------
-
-gulp.task 'build', (callback) ->
-  runSequence 'lint',
-    'compile:client:js',
-    'compile:server:js',
-    'compile:css',
-    'compile:index',
     callback
   return
 
