@@ -48,8 +48,12 @@ minifyCSS  = require 'gulp-cssnano'
 # Set production flag to false when in development.
 #-------------------------------------------------------------------------------
 
-production = false
+production = true
 
+#-------------------------------------------------------------------------------
+# Stream, node server when created will be pass into this variable for use
+# in any gulp task.
+#-------------------------------------------------------------------------------
 
 stream = {}
 

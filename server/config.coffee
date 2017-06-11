@@ -5,7 +5,7 @@
 
 # Production variable.
 
-production = false
+production = true
 
 # Port to host app.
 
