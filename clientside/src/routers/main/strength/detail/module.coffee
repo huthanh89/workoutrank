@@ -169,6 +169,8 @@ class View extends Marionette.View
 
   onAttach: ->
 
+    console.log 'aaaadsf'
+
     @updateViews()
 
     if @collection.length is 0

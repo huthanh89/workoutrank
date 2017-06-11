@@ -50,6 +50,9 @@ minifyCSS  = require 'gulp-cssnano'
 
 production = false
 
+
+stream = {}
+
 #-------------------------------------------------------------------------------
 # Javascript minify
 #-------------------------------------------------------------------------------
@@ -215,8 +218,8 @@ gulp.task 'fonts', ->
 # Nodemon
 #
 #  Restarts server if any changes has been made to any javascript files.
-#  Only monitor files from the server directory. Nodemon will restart
-#  the server on any file changes.
+#  Pass in ignore option. Ignore any file change. We do not want nodemon
+#  to automatically restart the server on any file changes.
 #-------------------------------------------------------------------------------
 
 
@@ -224,7 +227,7 @@ gulp.task 'nodemon', (callback) ->
 
   stream = nodemon
     script: 'server/app.coffee'
-    monitor: ['server']
+    ignore: ['*']
     ext:     'js html coffee'
 
   # XXX The page reload here does not work when server first starts.
@@ -235,6 +238,11 @@ gulp.task 'nodemon', (callback) ->
 
   callback()
 
+  return
+
+gulp.task 'restart:server', (callback) ->
+  stream.emit('restart')
+  callback()
   return
 
 #-------------------------------------------------------------------------------
@@ -256,10 +264,11 @@ gulp.task 'watch', ->
 
   gulp.watch [
     './server/**'
-  ], [
-    'coffeelint'
-    'compile:server:js'
-  ]
+  ], ->
+    runSequence 'coffeelint',
+    'compile:server:js',
+    'restart:server'
+    return
 
   gulp.watch [
     './clientside/styles/css/**',
@@ -299,11 +308,12 @@ gulp.task 'watch', ->
 
 gulp.task 'report:size', (callback) ->
 
-  gulp.src('./static/bundle-min.js')
-  .pipe size
-    showFiles: true
-    title: '----- bundle(minified).js -----'
-  .pipe(gulp.dest('static'))
+  if production
+    gulp.src('./static/bundle-min.js')
+    .pipe size
+      showFiles: true
+      title: '----- bundle(minified).js -----'
+    .pipe(gulp.dest('static'))
 
   gulp.src('./static/bundle.js')
   .pipe size
@@ -317,7 +327,7 @@ gulp.task 'report:size', (callback) ->
     title: '----- style.css -----'
   .pipe(gulp.dest('static'))
 
-  callback
+  callback()
   return
 
 #-------------------------------------------------------------------------------
@@ -422,17 +432,17 @@ gulp.task 'minify', (callback) ->
   return
 
 #-------------------------------------------------------------------------------
-# Production task to build and report app.
+# Task to build and report app.
 #-------------------------------------------------------------------------------
 
-gulp.task 'production', (callback) ->
+gulp.task 'build', (callback) ->
   runSequence 'lint',
-    'compile:css',
     'compile:client:js',
-    'minify',
+    'compile:server:js',
+    'compile:css',
     'compile:index',
     #'shell:npm:version',
-    'read:log',
+    #'read:log',
     'report:size',
     callback
   return
@@ -442,11 +452,7 @@ gulp.task 'production', (callback) ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'default', (callback) ->
-  runSequence 'lint',
-    'compile:client:js',
-    'compile:server:js',
-    'compile:css',
-    'compile:index',
+  runSequence 'build',
     'watch',
     'nodemon',
     callback
