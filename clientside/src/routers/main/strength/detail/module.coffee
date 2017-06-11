@@ -189,10 +189,12 @@ class View extends Marionette.View
       date:  @date
       type:  if @model.get('body') is true then 'rep' else 'weight'
 
+    ###
     @showChildView 'goal', new GoalView
       sLogs: @collection
       sConf: @model
       date:  @date
+###
 
     return
 
@@ -200,6 +202,7 @@ class View extends Marionette.View
 
     @showChildView 'note', new NoteView
       sConf: @model
+
 
     ###
     @showChildView 'goal', new GoalView

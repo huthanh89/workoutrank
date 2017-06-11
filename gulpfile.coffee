@@ -48,7 +48,7 @@ minifyCSS  = require 'gulp-cssnano'
 # Set production flag to false when in development.
 #-------------------------------------------------------------------------------
 
-production = true
+production = false
 
 #-------------------------------------------------------------------------------
 # Javascript minify
@@ -57,34 +57,34 @@ production = true
 # XXX minify and uglify result in a hanged process when gulp.
 
 gulp.task 'minify:js', (callback) ->
-
   pump([
     gulp.src('static/bundle.js')
     uglify()
     rename('bundle-min.js')
     gulp.dest('static')
   ], callback)
-
   return
 
 #-------------------------------------------------------------------------------
 # CSS minify
 #-------------------------------------------------------------------------------
 
-gulp.task 'minify:css', ->
-  return gulp.src('./static/style.css')
+gulp.task 'minify:css', (callback) ->
+  gulp.src('./static/style.css')
   .pipe(minifyCSS
       discardComments:
         removeAll: true
     )
   .pipe(gulp.dest('static'))
+  callback()
+  return
 
 #-------------------------------------------------------------------------------
 # Coffee script Lint
 #-------------------------------------------------------------------------------
 
-gulp.task 'coffeelint', ->
-  return gulp.src([
+gulp.task 'coffeelint', (callback) ->
+  gulp.src([
     './server/**/*.coffee'
     './clientside/**/*.coffee'
   ])
@@ -95,6 +95,9 @@ gulp.task 'coffeelint', ->
       level: 'ignore'
   )
   .pipe(coffeeLint.reporter('coffeelint-stylish'))
+
+  callback()
+  return
 
 #-------------------------------------------------------------------------------
 # Less Lint
@@ -179,14 +182,14 @@ gulp.task 'css:concat', ->
   ])
   .pipe(concat('style.css'))
   .pipe gulp.dest('./static/')
-#  .pipe(livereload())
 
 #-------------------------------------------------------------------------------
 # Page reload
 #-------------------------------------------------------------------------------
 
-gulp.task 'page:reload', ->
+gulp.task 'page:reload', (callback) ->
   livereload.reload()
+  callback()
   return
 
 #-------------------------------------------------------------------------------
@@ -212,15 +215,26 @@ gulp.task 'fonts', ->
 # Nodemon
 #
 #  Restarts server if any changes has been made to any javascript files.
+#  Only monitor files from the server directory. Nodemon will restart
+#  the server on any file changes.
 #-------------------------------------------------------------------------------
 
-gulp.task 'nodemon', ->
-  nodemon
+
+gulp.task 'nodemon', (callback) ->
+
+  stream = nodemon
     script: 'server/app.coffee'
-    ext: 'html js coffee'
-    env:
-      'NODE_ENV': 'development'
-    task: 'page:reload'
+    monitor: ['server']
+    ext:     'js html coffee'
+
+  # XXX The page reload here does not work when server first starts.
+
+  stream.on 'start', ->
+    gulp.start('page:reload')
+    return
+
+  callback()
+
   return
 
 #-------------------------------------------------------------------------------
@@ -250,29 +264,32 @@ gulp.task 'watch', ->
   gulp.watch [
     './clientside/styles/css/**',
     './clientside/styles/**'
-  ], [
-    'lesslint'
-    'compile:css'
-  ]
+  ], ->
+    runSequence 'lesslint',
+      'compile:css',
+      'page:reload'
+    return
 
   gulp.watch [
     './clientside/src/**/*.coffee'
-  ], [
-    'coffeelint'
-    'compile:client:js'
-  ]
+  ], ->
+    runSequence 'compile:client:js',
+      'page:reload'
+    return
 
   gulp.watch [
     './clientside/src/**/*.jade'
-  ], [
-    'compile:client:js'
-  ]
+  ], ->
+    runSequence 'compile:client:js',
+      'page:reload'
+    return
 
   gulp.watch [
     './clientside/src/**/*.pug'
-  ], [
-    'compile:client:js'
-  ]
+  ],  ->
+    runSequence 'compile:client:js',
+      'page:reload'
+    return
 
   return
 
@@ -370,32 +387,38 @@ gulp.task 'lint', [
 
 gulp.task 'compile:server:js', (callback) ->
   runSequence 'coffee:to:js:server',
-    'page:reload',
     callback
   return
 
 gulp.task 'compile:css', (callback) ->
   runSequence 'less:to:css',
     'css:concat'
-    'page:reload',
     callback
   return
 
 gulp.task 'compile:client:js', (callback) ->
-  runSequence 'js:bundle',
-    'page:reload',
-    callback
+  if production
+    runSequence 'js:bundle',
+      'minify:js'
+      callback
+  else
+    runSequence 'js:bundle',
+      callback
   return
-
-gulp.task 'minify', [
-  'minify:css'
-  'minify:js'
-]
 
 gulp.task 'compile:index', (callback) ->
   runSequence 'inject:js',
     'html:to:jade',
     callback
+  return
+
+gulp.task 'minify', (callback) ->
+  if production
+    runSequence 'minify:css',
+      'minify:js',
+      callback
+  else
+    callback()
   return
 
 #-------------------------------------------------------------------------------
@@ -419,13 +442,13 @@ gulp.task 'production', (callback) ->
 #-------------------------------------------------------------------------------
 
 gulp.task 'default', (callback) ->
-  runSequence 'nodemon',
-    'lint',
+  runSequence 'lint',
     'compile:client:js',
     'compile:server:js',
     'compile:css',
     'compile:index',
     'watch',
+    'nodemon',
     callback
   return
 
