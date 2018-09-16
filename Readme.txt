@@ -1,11 +1,8 @@
 Development startup instruction:
 	- start "mongod" (mongodb server)
 	- "npm start" / "gulp" (start node server)
-
-start app with pm2 on production server.
+Start app with pm2 on production server.
     pm2 start ./server/app.js
-
-
 Install Node
 	- install packages from package.json
 Install mongodb
