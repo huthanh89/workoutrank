@@ -8,6 +8,10 @@ Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
 viewTemplate = require './view.pug'
 
+Highcharts = require 'highcharts'
+require 'highcharts/highcharts-more'
+#require 'highcharts/modules/solid-gauge'
+
 #-------------------------------------------------------------------------------
 # Plugins
 #-------------------------------------------------------------------------------
@@ -51,6 +55,7 @@ class View extends Marionette.View
 
   ui:
     level: '.strength-goal-level'
+    gauge: '.strength-goal-gauge-container'
 
   serializeData: ->
     return {
@@ -76,41 +81,36 @@ class View extends Marionette.View
 
   onAttach: ->
 
-    target = $(@el).find('.strength-goal-gauge')[0]
     min    = @model.get('bronze')
     max    = @model.get('gold')
     min    = if min is max then 0 else min
     color  = if @type is 'rep' then '#00ffa4' else '#FE7935'
-
-    opts =
-      lines:            12
-      angle:            0.15
-      lineWidth:        0.44
-      limitMax:        'false'
-      colorStart:       color
-      colorStop:        color
-      strokeColor:     '#E0E0E0'
-      generateGradient: true
-      pointer:
-        length:      0.8
-        strokeWidth: 0.035
-        color:      '#000000'
-
-    gauge  = new Gauge.Gauge(target).setOptions(opts)
-
-    gauge.minValue       = min
-    gauge.maxValue       = max
-    gauge.animationSpeed = 1
-
-    value = _.clamp(@model.get('value'), min, max)
-
-    gauge.set value
+    value  = _.clamp(@model.get('value'), min, max)
 
     scale = d3.scaleLinear()
-    .domain([min, max])
-    .range([0, 100])
+      .domain([min, max])
+      .range([0, 100])
 
-    @ui.level.html _.round(scale(value), 0)
+    percent = _.round(scale(value), 0)
+
+    new Highcharts.chart
+      chart:
+        renderTo: @ui.gauge[0]
+      title: false
+      yAxis:
+        min: 0
+        max: 100
+        title:
+          text: 'Speed'
+      credits:
+        enabled: false
+
+      series: [
+        name: @type
+        type: 'bar'
+        color: color
+        data: [percent]
+      ]
 
     return
 

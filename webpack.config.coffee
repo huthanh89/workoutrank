@@ -54,7 +54,9 @@ Options =
       'backbone.modal':           'backbone.modal-bundled.js'
       'backbone.validation':      'backbone.validation.js'
       'socket.io':                'socket.io.js'
-      'highcharts-more':          'highcharts-more.js'
+#      'highcharts-more':          'highcharts-more.js'
+#      'highcharts-solid-gauge':   'highcharts-solid-gauge.js'
+
       highstock:                  'highstock.js'
       bootstrap:                  'bootstrap.js'
       'bootstrap.validator':      'bootstrap.validator.js'

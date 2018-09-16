@@ -4,9 +4,9 @@
 
 moment       = require 'moment'
 Color        = require 'color/module'
+Highstocks   = require 'highcharts/highstock'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
-Highstocks   = require 'highstock'
 viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------

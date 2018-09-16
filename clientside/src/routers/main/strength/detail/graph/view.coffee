@@ -4,13 +4,12 @@
 
 _            = require 'lodash'
 moment       = require 'moment'
+Highcharts   = require 'highcharts'
+Highstocks   = require 'highcharts/highstock'
 Backbone     = require 'backbone'
 Marionette   = require 'backbone.marionette'
-Highcharts   = require 'highcharts'
-Highstocks   = require 'highstock'
 Color        = require 'color/module'
 viewTemplate = require './view.pug'
-
 
 #-------------------------------------------------------------------------------
 # Given a collection, condense the collection to a single chart model.

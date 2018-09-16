@@ -5,9 +5,9 @@
 _            = require 'lodash'
 moment       = require 'moment'
 Backbone     = require 'backbone'
-Marionette   = require 'backbone.marionette'
 Highcharts   = require 'highcharts'
-Highstocks   = require 'highstock'
+Highstocks   = require 'highcharts/highstock'
+Marionette   = require 'backbone.marionette'
 Color        = require 'color/module'
 viewTemplate = require './view.pug'
 
