@@ -43,6 +43,7 @@
     "gulp-pug": "^4.0.1",
     "highcharts": "6.1.4",
     "highcharts-more": "^0.1.7",
+    "html": "^1.0.0",
     "htmlmin": "0.0.7",
     "imports-loader": "0.8.0",
     "jade": "1.11.0",
