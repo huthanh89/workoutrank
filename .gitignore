@@ -1,8 +1,5 @@
 /.idea
 /bin
 /node_modules
-
-/ztest/node_modules
-
 /README.md
 /webapp.iml

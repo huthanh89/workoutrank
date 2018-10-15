@@ -1,0 +1,1072 @@
+/*-----------------------------------------------------------------------------
+Body
+-----------------------------------------------------------------------------*/
+html {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+body {
+  background: #F8F8FF;
+  overflow-x: hidden;
+  padding: 0;
+  width: 100%;
+  font-family: sans-serif;
+  max-width: 1920px;
+  margin: auto;
+}
+/*-----------------------------------------------------------------------------
+#Header
+-----------------------------------------------------------------------------*/
+#navbar-container {
+  height: 45px;
+}
+@media (max-width: 767px) {
+  #navbar-container {
+    display: none;
+  }
+}
+/*-----------------------------------------------------------------------------
+Basic Nav Bar
+-----------------------------------------------------------------------------*/
+#basic-nav-container {
+  position: relative;
+  top: 0;
+  padding: 3.5px;
+  height: 45px;
+  width: 100%;
+  text-align: center;
+  background: white;
+  border-bottom: solid 1px darkgray;
+  z-index: 9999!important;
+  box-shadow: 0 0 2px #888888;
+}
+@media (max-width: 1000px) {
+  #basic-nav-container {
+    margin: 0;
+    left: 0;
+  }
+}
+#basic-nav-container button {
+  float: right;
+  margin-right: 15px;
+}
+@media (max-width: 767px) {
+  #basic-nav-container button {
+    float: none;
+    margin-right: 5px;
+  }
+}
+#basic-nav-logo {
+  height: 35px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+#basic-nav-banner {
+  height: 20px;
+  cursor: pointer;
+}
+/*-----------------------------------------------------------------------------
+Index Nav Bar
+-----------------------------------------------------------------------------*/
+#index-nav-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  padding: 3.5px;
+  margin: auto;
+  margin-left: -500px;
+  height: 45px;
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+  background: white;
+  border-bottom: solid 1px darkgray;
+  z-index: 9999!important;
+  box-shadow: 0 0 25px #888888;
+  opacity: 0.9;
+}
+@media (max-width: 1000px) {
+  #index-nav-container {
+    margin: 0;
+    left: 0;
+  }
+}
+#index-nav-container button {
+  float: right;
+  margin-right: 15px;
+}
+@media (max-width: 767px) {
+  #index-nav-container button {
+    float: none;
+    margin-right: 5px;
+  }
+}
+#index-nav-logo {
+  height: 35px;
+  float: left;
+  margin-left: 5px;
+  cursor: pointer;
+}
+#index-nav-banner {
+  margin-top: 8px;
+  height: 20px;
+  float: left;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  #index-nav-banner {
+    display: none;
+  }
+}
+/*-----------------------------------------------------------------------------
+Index landing page
+-----------------------------------------------------------------------------*/
+#index-container {
+  max-width: 1000px;
+  margin: auto;
+  margin-top: 45px;
+  box-shadow: 0 0 25px #888888;
+  padding: 0!important;
+  background: white;
+}
+#index-section1 {
+  max-height: 400px;
+}
+#index-section1 .carousel-inner {
+  max-height: 400px;
+  text-align: center;
+}
+#index-section1 .carousel-inner h1 {
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  font-family: Georgia;
+  color: white;
+}
+#index-section1 .carousel-inner > .item > img {
+  margin: 0 auto;
+}
+#index-section1 .carousel-control {
+  z-index: 10;
+  height: 400px;
+}
+@media (max-width: 767px) {
+  #index-section1 {
+    height: 250px;
+  }
+  #index-section1 .carousel {
+    height: 250px;
+  }
+  #index-section1 .carousel-inner h1 {
+    color: transparent;
+  }
+  #index-section1 .carousel-inner .item > img {
+    height: 250px;
+  }
+  #index-section1 .carousel-control {
+    z-index: 10;
+    height: 250px;
+  }
+}
+#index-btn-group-bottom {
+  text-align: center;
+  height: 250px;
+  padding-top: 10px;
+}
+#index-btn-group-bottom h3 {
+  color: grey;
+}
+#index-btn-group-bottom h3 i {
+  color: #ffd700;
+}
+#index-btn-group-bottom button {
+  margin: 10px;
+  border-radius: 10px;
+  border: 2px whitesmoke solid;
+}
+#index-google-play {
+  text-align: center;
+  padding-bottom: 15px;
+}
+.index-section {
+  width: 100%;
+  text-align: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.index-section .index-section-text {
+  height: 300px;
+  min-height: 300px;
+  padding: 80px 60px 60px 60px;
+  color: gray!important;
+}
+.index-section .index-section-text h3 {
+  color: gray;
+}
+@media (max-width: 767px) {
+  .index-section .index-section-text {
+    height: auto;
+    max-height: 150px;
+    min-height: 150px;
+    padding: 0 5px;
+    margin: 0;
+  }
+}
+.index-section .index-section-image-container {
+  padding: 15px;
+}
+.index-section .index-section-image {
+  max-width: 100%;
+}
+/*-----------------------------------------------------------------------------
+Content
+-----------------------------------------------------------------------------*/
+#content {
+  padding-top: 10px;
+}
+@media (min-width: 1200px) {
+  #content {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+}
+@media (min-device-width: 800px) and (max-width: 1200px) {
+  #content {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+@media (max-width: 767px) {
+  #content {
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+}
+/*-----------------------------------------------------------------------------
+Footer
+-----------------------------------------------------------------------------*/
+#footer {
+  text-align: center;
+  padding-bottom: 45px;
+}
+/*-----------------------------------------------------------------------------
+About
+-----------------------------------------------------------------------------*/
+#about-view-container {
+  padding: 0 10%;
+}
+/*-----------------------------------------------------------------------------
+Feedback
+-----------------------------------------------------------------------------*/
+#feedback-editor {
+  max-height: 150px;
+  max-width: 100%;
+  height: 150px;
+  width: 100%;
+}
+#feedback-view-container {
+  float: none;
+  margin: 0 auto;
+  padding: 0 10%;
+}
+/*-----------------------------------------------------------------------------
+Page loader
+-----------------------------------------------------------------------------*/
+#loader-page-spinner {
+  position: fixed;
+  width: 100%;
+  bottom: -20%;
+  height: 100%;
+  z-index: 99999!important;
+  background: transparent;
+}
+@media (min-width: 1980px) {
+  #loader-page-spinner {
+    left: 50%;
+    width: 100px;
+  }
+}
+#loader-page-spinner .sk-fading-circle {
+  width: 100px;
+  height: 100px;
+}
+#loader-page-spinner .sk-circle:before {
+  background-color: #8cb4ef;
+}
+/*-----------------------------------------------------------------------------
+Icon colors
+-----------------------------------------------------------------------------*/
+.fa-home {
+  color: #bf9129;
+}
+.fa-pencil {
+  color: #d68929;
+}
+.fa-question-circle {
+  color: #e6d857;
+}
+.fa-hand-rock-o {
+  color: #e69e3c;
+}
+.fa-heartbeat {
+  color: #c73439;
+}
+.fa-tachometer {
+  color: #60c9e6;
+}
+.fa-book {
+  color: #b45a2b;
+}
+.fa-cubes {
+  color: #839c90;
+}
+.fa-clock-o {
+  color: #59c29c;
+}
+.fa-newspaper-o {
+  color: #67d537;
+}
+.fa-calendar-plus-o {
+  color: rgba(173, 107, 203, 0.75);
+}
+.fa-id-card-o {
+  color: rgba(200, 143, 0, 0.9);
+}
+.fa-user-circle {
+  color: #7199d5;
+}
+.fa-user-o {
+  color: #7ca2d5;
+}
+.fa-envelope {
+  color: #506fd5;
+}
+.fa-envelope-o {
+  color: #d53c39;
+}
+.fa-info-circle {
+  color: #d5c639;
+}
+.fa-sign-out {
+  color: #d5a138;
+}
+/*-----------------------------------------------------------------------------1
+Login
+-----------------------------------------------------------------------------*/
+#login-view-container {
+  float: none;
+  margin: 0 auto;
+  text-align: center;
+}
+#login-forgot-user {
+  float: left;
+}
+#login-signup {
+  float: right;
+}
+#login-google-play {
+  height: 65px;
+  cursor: pointer;
+}
+/*-----------------------------------------------------------------------------
+Signup
+-----------------------------------------------------------------------------*/
+#signup-view-container {
+  float: none;
+  margin: 0 auto;
+}
+#signup-birthday {
+  background: white !important;
+}
+#signup-recaptcha-container {
+  width: 300px;
+  height: 80px;
+}
+@media (max-width: 767px) {
+  #signup-recaptcha-container {
+    margin: 0 auto;
+  }
+}
+#signup-recaptcha {
+  position: absolute;
+  z-index: 9999!important;
+}
+@media (max-width: 767px) {
+  #signup-recaptcha {
+    right: 10px;
+  }
+}
+/*-----------------------------------------------------------------------------
+Top Nav Bar
+-----------------------------------------------------------------------------*/
+.nav-icon {
+  height: 20px;
+  line-height: 20px;
+}
+.nav-divider-vertical {
+  height: 50px;
+  margin: 0 1px;
+  border-right: 1px solid #FFF;
+  border-left: 1px solid #F2F2F2;
+}
+#navbar-logo {
+  position: relative;
+  width: 43px;
+  height: 43px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+#navbar-banner {
+  position: relative;
+  width: 120px;
+  height: 20px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.navbar {
+  background: white;
+}
+/*-----------------------------------------------------------------------------
+Bottom Nav for mobile view
+-----------------------------------------------------------------------------*/
+#navigator-bottom-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  height: 45px;
+  width: 100%;
+  text-align: center;
+  background: white;
+  z-index: 9999!important;
+}
+@media (min-width: 767px) {
+  #navigator-bottom-container {
+    display: none;
+  }
+}
+#navigator-bottom-container li {
+  width: 20%;
+  position: absolute;
+  display: inline-block;
+  border: solid lightgray 1.5px;
+  height: 45px;
+  padding-top: 12px;
+  color: gray;
+  cursor: pointer;
+  font-size: 15px;
+}
+#navigator-bottom-container .active {
+  color: #6e97b5;
+  background: rgba(234, 234, 234, 0.89);
+}
+#navigator-bottom-container #navigator-bottom-weight {
+  left: 0;
+}
+#navigator-bottom-container #navigator-bottom-schedule {
+  left: 20%;
+}
+#navigator-bottom-container #navigator-bottom-home {
+  left: 40%;
+}
+#navigator-bottom-container #navigator-bottom-cardio {
+  left: 60%;
+}
+#navigator-bottom-container #navigator-bottom-journal {
+  left: 80%;
+}
+/*-----------------------------------------------------------------------------
+Page nav
+-----------------------------------------------------------------------------*/
+.page-nav-btn {
+  width: 70px;
+  height: 35px;
+  text-align: center;
+}
+/*-----------------------------------------------------------------------------
+Left Sliding Menu
+-----------------------------------------------------------------------------*/
+.mm-menu {
+  margin-top: 52px;
+  z-index: 9999!important;
+}
+/*-----------------------------------------------------------------------------
+Multiselect
+-----------------------------------------------------------------------------*/
+.multiselect-button {
+  color: black;
+  text-align: left;
+  background-color: white;
+  border: solid 1px lightgray;
+  border-radius: 4px;
+  box-shadow: none;
+}
+/*-----------------------------------------------------------------------------
+Exercise
+-----------------------------------------------------------------------------*/
+.exercise-table-view tbody td {
+  cursor: pointer;
+}
+.exercise-select {
+  min-width: 25px;
+  text-align: center;
+}
+#exercise-back-home {
+  min-width: 70px;
+}
+/*-----------------------------------------------------------------------------
+Strength
+-----------------------------------------------------------------------------*/
+#strength-detail-schedule-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 5px 0 0;
+}
+#strength-detail-schedule-container button {
+  width: 100%;
+}
+#strength-history-panel {
+  padding: 7px;
+}
+#strength-detail-add-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 0 0 5px;
+}
+#strength-detail-add-container button {
+  width: 100%;
+}
+#strength-table-view tbody tr:hover {
+  color: rgba(50, 50, 51, 0.78);
+  background: rgba(191, 191, 191, 0.28);
+}
+#strength-table-view tbody tr {
+  cursor: pointer;
+}
+#strength-table-null {
+  text-align: center;
+}
+#strength-graph {
+  min-width: 70px;
+}
+#strength-paginate-list {
+  width: 100%;
+  margin: auto;
+  white-space: nowrap;
+  list-style-type: none;
+}
+#strength-table thead {
+  font-weight: 600;
+}
+.strength-filter-btn {
+  height: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.strength-filter-btn i {
+  position: relative;
+  bottom: 5px;
+}
+.strength-calendar-td-gold {
+  font-weight: bold;
+  color: #2B2922;
+  background: #fff53c;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid #f2d401 !important;
+}
+.strength-calendar-td-silver {
+  font-weight: bold;
+  color: #2B2922;
+  background: rgba(175, 198, 200, 0.49);
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid rgba(124, 146, 194, 0.58) !important;
+}
+.strength-calendar-td-bronze {
+  font-weight: bold;
+  color: #2B2922;
+  background: #edba69;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid #d35f26 !important;
+}
+#strength-calendar-ui {
+  text-align: center;
+}
+#strength-calendar-ui .datepicker {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+#strength-date-datepicker-container {
+  background: rgba(186, 196, 196, 0.29);
+  text-align: center;
+  padding-top: 10px;
+  height: 40px;
+}
+#strength-date-datepicker-container #strength-date-datepicker {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+#strength-date-prev {
+  z-index: 0;
+}
+#strength-date-next {
+  z-index: 0;
+}
+#strength-table .progress {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+#strength-modal-note {
+  height: 150px;
+}
+/*---------------*/
+.strength-goal-gauge-container {
+  text-align: center;
+}
+.strength-goal-span-container {
+  text-align: left;
+  font-weight: bold;
+}
+.strength-goal-gauge {
+  margin: 0;
+  position: relative;
+  width: 240px;
+  height: 120px;
+  bottom: 10px;
+}
+/*-----------------------------------------------------------------------------
+Weight
+-----------------------------------------------------------------------------*/
+#weight-date-datepicker {
+  text-align: center;
+  font-size: 18px;
+  z-index: 0;
+}
+#weight-date-prev {
+  z-index: 0;
+}
+#weight-date-next {
+  z-index: 0;
+}
+#weight-calendar-ui {
+  text-align: center;
+}
+#weight-calendar-ui .datepicker {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.weight-calendar-td {
+  font-weight: bold;
+  color: #2B2922;
+  background: #ffcc66;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid orange !important;
+}
+#weight-modal-note {
+  height: 150px;
+}
+/*-----------------------------------------------------------------------------
+Calendar
+-----------------------------------------------------------------------------*/
+#calendar-table-edit {
+  position: relative;
+  top: 2px;
+  margin-right: 10px;
+}
+#calendar-view-container .fc-event {
+  color: #0e0e0e;
+  height: 20px;
+  font-size: 15px;
+}
+/*-----------------------------------------------------------------------------
+Schedule
+-----------------------------------------------------------------------------*/
+#schedule-table-edit {
+  position: relative;
+  top: 2px;
+  margin-right: 10px;
+}
+#schedule-widget .fc-event {
+  height: 25px;
+  font-size: 18px;
+  color: #0e0e0e;
+}
+#schedule-widget .fc-event :hover {
+  background: rgba(235, 232, 235, 0.7);
+}
+#schedule-widget .fc-event span {
+  font-size: 14px;
+}
+#schedule-target-container {
+  width: 100%;
+  word-wrap: break-word;
+}
+/*-----------------------------------------------------------------------------
+Logs
+-----------------------------------------------------------------------------*/
+.logs-master-filter-btn {
+  width: 200px;
+}
+/*-----------------------------------------------------------------------------
+Home
+-----------------------------------------------------------------------------*/
+#home-info-list {
+  display: inline-block;
+  list-style-type: none;
+  position: relative;
+  right: 20px;
+}
+#home-user-heading {
+  height: 45px;
+}
+#home-user-picture-container {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  left: 23px;
+  top: 3px;
+  border: rgba(149, 147, 151, 0.62) 1px solid;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 50%;
+}
+#home-user-picture {
+  position: relative;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+}
+.home-list {
+  cursor: pointer;
+}
+.home-list :hover {
+  color: rgba(50, 50, 51, 0.78);
+  background: rgba(191, 191, 191, 0.28);
+}
+.home-list :hover a {
+  color: rgba(50, 50, 51, 0.78);
+  background: rgba(191, 191, 191, 0.28);
+}
+.home-journal-counters {
+  float: right;
+  color: #1596c5;
+}
+.home-journal-counters .fa {
+  color: #1598c7;
+}
+/*-----------------------------------------------------------------------------
+Profile
+-----------------------------------------------------------------------------*/
+#profile-weight {
+  z-index: 0;
+}
+.profile-weight-btn {
+  z-index: 0!important;
+}
+#profile-picture-container {
+  position: relative;
+  margin-left: 50%;
+  right: 100px;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  border: rgba(90, 89, 91, 0.82) 2px solid;
+}
+#profile-picture {
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+}
+#profile-picture-delete {
+  cursor: pointer;
+  margin-left: 50%;
+  position: absolute;
+  top: 55px;
+  left: 100px;
+  color: rgba(67, 68, 70, 0.61);
+}
+/*-----------------------------------------------------------------------------
+Custom classes
+-----------------------------------------------------------------------------*/
+.locder-icon {
+  z-index: 1000;
+  font-size: 250px;
+  color: #FFFFFF;
+  color: rgba(0, 0, 0, 0.3);
+}
+.page-header {
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+.noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.date-navigate-btn {
+  height: 38px;
+}
+.btn-full-width {
+  display: block;
+  width: 100%;
+}
+.col-center {
+  float: none;
+  margin: 0 auto;
+}
+.panel-center {
+  text-align: center;
+}
+.panel-heading h3 {
+  font-weight: bold;
+}
+/*-----------------------------------------------------------------------------
+Admin accounts
+-----------------------------------------------------------------------------*/
+#admin-accounts-table {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+/*-----------------------------------------------------------------------------
+Timeline
+-----------------------------------------------------------------------------*/
+.infinite-loading {
+  background: rgba(147, 191, 231, 0.1);
+}
+/*-----------------------------------------------------------------------------
+Cardio
+-----------------------------------------------------------------------------*/
+#cardio-detail-schedule-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 5px 0 0;
+}
+#cardio-detail-schedule-container button {
+  width: 100%;
+}
+#cardio-history-panel {
+  padding: 7px;
+}
+#cardio-detail-add-container {
+  position: relative;
+  bottom: 7px;
+  padding: 0 0 0 5px;
+}
+#cardio-detail-add-container button {
+  width: 100%;
+}
+#cardio-table-view tbody tr:hover {
+  color: rgba(50, 50, 51, 0.78);
+  background: rgba(191, 191, 191, 0.28);
+}
+#cardio-table-view tbody tr {
+  cursor: pointer;
+}
+#cardio-table-null {
+  text-align: center;
+}
+#cardio-graph {
+  min-width: 70px;
+}
+#cardio-paginate-list {
+  width: 100%;
+  margin: auto;
+  white-space: nowrap;
+  list-style-type: none;
+}
+#cardio-table thead {
+  font-weight: 600;
+}
+.cardio-filter-btn {
+  height: 25px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.cardio-filter-btn i {
+  position: relative;
+  bottom: 5px;
+}
+.cardio-calendar-td-gold {
+  font-weight: bold;
+  color: #2B2922;
+  background: #fff53c;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid #f2d401 !important;
+}
+.cardio-calendar-td-silver {
+  font-weight: bold;
+  color: #2B2922;
+  background: rgba(175, 198, 200, 0.49);
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid rgba(124, 146, 194, 0.58) !important;
+}
+.cardio-calendar-td-bronze {
+  font-weight: bold;
+  color: #2B2922;
+  background: #edba69;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid #d35f26 !important;
+}
+#cardio-calendar-ui {
+  text-align: center;
+}
+#cardio-calendar-ui .datepicker {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+#cardio-date-datepicker-container {
+  background: rgba(186, 196, 196, 0.29);
+  text-align: center;
+  padding-top: 10px;
+  height: 40px;
+}
+#cardio-date-datepicker-container #cardio-date-datepicker {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+#cardio-date-prev {
+  z-index: 0;
+}
+#cardio-date-next {
+  z-index: 0;
+}
+#cardio-table .progress {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+#cardio-modal-note {
+  height: 150px;
+}
+.cardio-goal-gauge-container {
+  text-align: center;
+}
+.cardio-goal-span-container {
+  text-align: left;
+  font-weight: bold;
+}
+.cardio-goal-gauge {
+  margin: 0;
+  position: relative;
+  width: 240px;
+  height: 120px;
+  bottom: 10px;
+}
+/*-----------------------------------------------------------------------------
+                              End of Document
+-----------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------------
+Custom theme wrapper to Bootstrap.
+-----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+Navbar
+-----------------------------------------------------------------------------*/
+.navbar {
+  background: white;
+}
+.navbar ul {
+  top: 50px;
+}
+/*-----------------------------------------------------------------------------
+Carousel
+-----------------------------------------------------------------------------*/
+.carousel-indicators li {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 10px;
+  text-indent: 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+.carousel-indicators .active {
+  width: 10px;
+  height: 10px;
+  margin: 10px;
+  background-color: rgba(42, 69, 104, 0.67);
+}
+/*-----------------------------------------------------------------------------
+Jumbotron
+-----------------------------------------------------------------------------*/
+.jumbotron {
+  position: absolute;
+  background: rgba(76, 175, 80, 0);
+  border: none;
+  bottom: 20px;
+  color: darkcyan;
+  margin-right: 5%;
+  margin-left: 5%;
+  text-align: center;
+}
+/*-----------------------------------------------------------------------------
+Anchor
+-----------------------------------------------------------------------------*/
+a:hover {
+  cursor: pointer;
+}
+/*-----------------------------------------------------------------------------
+Breadcrumb
+-----------------------------------------------------------------------------*/
+.breadcrumb {
+  background: white;
+}
+/*-----------------------------------------------------------------------------
+Table
+-----------------------------------------------------------------------------*/
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  background-color: #D3E1EE;
+}
+/*-----------------------------------------------------------------------------
+Form
+-----------------------------------------------------------------------------*/
+label {
+  font-weight: bold;
+}
+/*-----------------------------------------------------------------------------
+Panel
+-----------------------------------------------------------------------------*/
+.panel {
+  margin-bottom: 12px;
+}
+.panel .panel-heading {
+  background: rgba(81, 139, 201, 0.21);
+}
+.panel .panel-heading .panel-title {
+  color: rgba(51, 47, 51, 0.73);
+}
+/*-----------------------------------------------------------------------------
+Progress bar
+-----------------------------------------------------------------------------*/
+.progress-bar-danger {
+  background: rgba(218, 19, 11, 0.76);
+}
+.progress-bar-warning {
+  background: #ffea57;
+}
+.progress-bar-success {
+  background: rgba(83, 197, 48, 0.78);
+}
+/*-----------------------------------------------------------------------------
+End of file
+-----------------------------------------------------------------------------*/
