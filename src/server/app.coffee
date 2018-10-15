@@ -8,6 +8,7 @@ require 'coffee-script/register'
 # Register all models to mongoose object.
 #--------------------------------------------------------------
 
+
 require './models/facebook'
 require './models/feedback'
 require './models/google'
@@ -54,11 +55,11 @@ mongoose.Promise = global.Promise
 
 # Connect to Database.
 
-mongoose.connect config.databaseUrl, config.databaseOptions
-
+#mongoose.connect config.databaseUrl, config.databaseOptions
+mongoose.connect config.databaseUrl
 db = mongoose.connection
 
-db.on 'error', console.error.bind(console, 'connection error:')
+db.on 'error', console.error.bind(console, 'MongoDB Connection Error:')
 
 db.on 'open', ->
   console.log 'MongoDb connection opened.'
@@ -98,7 +99,7 @@ server = http.createServer(app)
 #--------------------------------------------------------------
 
 app.set 'views', './static'
-app.set 'view engine', 'jade'
+app.set 'view engine', 'html'
 
 #--------------------------------------------------------------
 # APP configurations for headers etc.
@@ -109,6 +110,7 @@ app.use logger('dev')
 # Compress all requests.
 
 app.use compression()
+
 
 # Handle cookie and session before defining routes.
 # cookie parser should be used before the session.
@@ -189,7 +191,7 @@ for url in [
     res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
     next()
     return
-  , express.static(path.join(__dirname, '../static'), { maxAge: 86400000 })
+  , express.static(path.join(__dirname, '../src/server'), { maxAge: 86400000 })
 
 # By the time the user gets here, there is no more route handlers.
 # Return a NOT FOUND 404 error and render the error page.

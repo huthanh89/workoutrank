@@ -158,7 +158,7 @@ gulp.task('start-server', () => {
     nodemon({
         script: 'src/server/app.js',
         ext:    'js html',
-        watch: ['server.js'],
+        watch: ['src/server/app.js'],
         env:  { 'NODE_ENV': 'development' }
     });
 
@@ -210,7 +210,8 @@ gulp.task('default', [
 // Watch changes
 //-----------------------------------------------------------------------------//
 
-gulp.watch('src/js/**',   ['compile-js']);
+gulp.watch('src/client/js/**',   ['compile-js']);
+gulp.watch('src/server/**/*.coffee',   ['compile-server']);
 gulp.watch('src/css/**',  ['compile-css']);
 gulp.watch('src/html/**', ['compile-html']);
 

@@ -79,11 +79,13 @@ routers = require('./routers/module');
 mongoose.Promise = global.Promise;
 
 // Connect to Database.
-mongoose.connect(config.databaseUrl, config.databaseOptions);
+
+//mongoose.connect config.databaseUrl, config.databaseOptions
+mongoose.connect(config.databaseUrl);
 
 db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB Connection Error:'));
 
 db.on('open', function() {
   console.log('MongoDb connection opened.');
@@ -125,7 +127,7 @@ server = http.createServer(app);
 //--------------------------------------------------------------
 app.set('views', './static');
 
-app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
 //--------------------------------------------------------------
 // APP configurations for headers etc.
@@ -211,7 +213,7 @@ for (i = 0, len = ref.length; i < len; i++) {
   app.use(url, function(req, res, next) {
     res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
     next();
-  }, express.static(path.join(__dirname, '../static'), {
+  }, express.static(path.join(__dirname, '../src/server'), {
     maxAge: 86400000
   }));
 }
