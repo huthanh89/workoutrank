@@ -45,6 +45,8 @@ auth         = require './auth'
 config       = require './config'
 routers      = require './routers/module'
 
+html = require 'html'
+
 #--------------------------------------------------------------
 # Database Connection
 #--------------------------------------------------------------
@@ -98,16 +100,24 @@ server = http.createServer(app)
 #   /bin/www will look in this folder.
 #--------------------------------------------------------------
 
-app.set 'views', './static'
-app.set 'view engine', 'html'
+# Tell express to look for views in the following directory.
 
+console.log('>>>>>', path.join(__dirname, "../../dist"))
+
+app.set("views", path.join(__dirname, "../../dist"));
+
+# Set view engine to be interpret as html.
+
+#app.set('view engine', 'html');
+app.set('view engine', 'jade');
+###
 #--------------------------------------------------------------
 # APP configurations for headers etc.
 #--------------------------------------------------------------
 
 app.use logger('dev')
 
-# Compress all requests.
+# Gzip files when serving to reduce file size.
 
 app.use compression()
 
@@ -173,6 +183,8 @@ app.use routers.indexRouter
 app.use routers.mainRouter
 app.use routers.userRouter
 
+###
+
 # Location of static files starting from the root or app.js.
 # Cache these static files for 24 hours in maxAge.
 # Set expiration of static files as well for SEO optimization.
@@ -188,18 +200,20 @@ for url in [
   '/admin'
 ]
   app.use url, (req, res, next) ->
+    console.log(path.join(__dirname, '../../dist'))
     res.setHeader 'Expires', new Date(Date.now() + 2592000000).toUTCString()
     next()
     return
-  , express.static(path.join(__dirname, '../src/server'), { maxAge: 86400000 })
+  , express.static(path.join(__dirname, '../../dist'), { maxAge: 86400000 })
 
 # By the time the user gets here, there is no more route handlers.
 # Return a NOT FOUND 404 error and render the error page.
 
 app.get '*', (req, res) ->
-  res.status 404
+  console.log('-------------- 4 0 4 ----------')
+ # res.status 404
   res.render('404.jade')
-  res.end()
+#  res.end()
   return
 
 # If an error occurred in the app, catch it in the middleware.
