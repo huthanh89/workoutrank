@@ -1,13 +1,6 @@
 #--------------------------------------------------------------
-# Coffeescript plugin to read .coffee files.
-#--------------------------------------------------------------
-
-require 'coffee-script/register'
-
-#--------------------------------------------------------------
 # Register all models to mongoose object.
 #--------------------------------------------------------------
-
 
 require './models/facebook'
 require './models/feedback'
@@ -37,15 +30,12 @@ mongoose     = require 'mongoose'
 bodyParser   = require 'body-parser'
 cookieParser = require 'cookie-parser'
 session      = require 'express-session'
-http         = require 'http'
 compression  = require 'compression'
 MongoStore   = require('connect-mongo')(session)
 passport     = require 'passport'
 auth         = require './auth'
 config       = require './config'
-routers      = require './routers/module'
-
-html = require 'html'
+#routers      = require './routers/module'
 
 #--------------------------------------------------------------
 # Database Connection
@@ -64,7 +54,7 @@ db = mongoose.connection
 db.on 'error', console.error.bind(console, 'MongoDB Connection Error:')
 
 db.on 'open', ->
-  console.log 'MongoDb connection opened.'
+  console.log 'MongoDb connection opened'
   return
 
 #--------------------------------------------------------------
@@ -87,12 +77,6 @@ app      = express()
 adminApp = require './admin/app'
 
 #--------------------------------------------------------------
-# Create server using app.
-#--------------------------------------------------------------
-
-server = http.createServer(app)
-
-#--------------------------------------------------------------
 # Configure view engine to render EJS templates.
 #
 #   Set view's folder location and use jade as the engine
@@ -102,9 +86,7 @@ server = http.createServer(app)
 
 # Tell express to look for views in the following directory.
 
-console.log('>>>>>', path.join(__dirname, "../../dist"))
-
-app.set("views", path.join(__dirname, "../../dist"));
+app.set("views", path.join(__dirname, "dist"));
 
 # Set view engine to be interpret as html.
 
@@ -183,7 +165,6 @@ app.use routers.indexRouter
 app.use routers.mainRouter
 app.use routers.userRouter
 
-###
 
 # Location of static files starting from the root or app.js.
 # Cache these static files for 24 hours in maxAge.
@@ -206,9 +187,9 @@ for url in [
     return
   , express.static(path.join(__dirname, '../../dist'), { maxAge: 86400000 })
 
+
 # By the time the user gets here, there is no more route handlers.
 # Return a NOT FOUND 404 error and render the error page.
-
 app.get '*', (req, res) ->
   console.log('-------------- 4 0 4 ----------')
  # res.status 404
@@ -224,12 +205,19 @@ app.use (err, req, res) ->
   console.trace()
   res.render 'error', error: err
   return
+###
+
+
+app.get '/', (req, res) ->
+  console.log 'rendering it'
+  res.send 'foodd23'
+  return
 
 #--------------------------------------------------------------
 # Listen on port
 #--------------------------------------------------------------
 
-server.listen config.port, ->
+app.listen config.port, ->
   console.log 'Express server listening on port %d in %s mode',
     config.port, app.get('env')
   return

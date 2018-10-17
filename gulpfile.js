@@ -86,7 +86,8 @@ gulp.task('compile-js', (cb) => {
 
     let config = _.assignIn(webpackConfig, {
         entry: './src/client/js/index.coffee',
-        mode:  'development'
+        mode:  'development',
+        target: 'node'
     });
 
     let reload = function(){
@@ -101,16 +102,26 @@ gulp.task('compile-js', (cb) => {
         .pipe(gulp.dest('dist/js')).on('end', reload);
 });
 
+gulp.task('compile-server', (cb) => {
 
-gulp.task('compile-server', () => {
+    let config = _.assignIn(webpackConfig, {
+        entry:  './src/server/app.coffee',
+        mode:   'development',
+        target: 'node'
+    });
+    
+    let reload = function(){
+        livereload.reload();
+        cb();
+    };
 
-    return gulp.src('./src/server/app.coffee')
-    .pipe(
-      coffee({bare: true}).on('error', gutil.log)
-    )
-    .pipe(gulp.dest('./src/server'))
+    gulp.src(__filename)
+        .pipe(webpack({
+            config: config
+        }))
+        .pipe(rename('server.js'))
+        .pipe(gulp.dest('./')).on('end', reload);
 });
-
 
 gulp.task('compile-css', (cb) => {
 
@@ -156,9 +167,9 @@ gulp.task('compile-html', (cb) => {
 gulp.task('start-server', () => {
 
     nodemon({
-        script: 'src/server/app.js',
+        script: 'server.js',
         ext:    'js html',
-        watch: ['src/server/app.js'],
+        watch: ['server.js'],
         env:  { 'NODE_ENV': 'development' }
     });
 
@@ -210,8 +221,8 @@ gulp.task('default', [
 // Watch changes
 //-----------------------------------------------------------------------------//
 
-gulp.watch('src/client/js/**',   ['compile-js']);
-gulp.watch('src/server/**/*.coffee',   ['compile-server']);
+gulp.watch('src/client/js/**', ['compile-js']);
+gulp.watch('src/server/**/*.coffee', ['compile-server']);
 gulp.watch('src/css/**',  ['compile-css']);
 gulp.watch('src/html/**', ['compile-html']);
 
