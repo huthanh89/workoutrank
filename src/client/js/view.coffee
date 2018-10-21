@@ -6,9 +6,9 @@
 Radio        = require 'backbone.radio'
 Toastr       = require 'toastr'
 Marionette   = require 'backbone.marionette'
-#Nav          = require './nav/module'
-#LoaderView   = require './loader/view'
-#FooterView   = require './footer/view'
+Nav          = require './nav/module'
+LoaderView   = require './loader/view'
+FooterView   = require './footer/view'
 viewTemplate = require './view.pug'
 
 #-------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class View extends Marionette.View
 
   constructor: (options) ->
 
-    super(optons);
+    super(options);
 
     user = options.user
 
@@ -120,12 +120,10 @@ class View extends Marionette.View
             return
         return
 
-  ###
   onRender: ->
     @showChildView 'navigator', new Nav.Navigator()
     @showChildView 'footer',    new FooterView()
     return
-###
 
 #-------------------------------------------------------------------------------
 # Exports

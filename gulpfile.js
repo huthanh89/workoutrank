@@ -18,11 +18,7 @@ const open          = require('gulp-open');
 const concat        = require('gulp-concat');
 const merge         = require('merge-stream');
 const order         = require("gulp-order");
-const coffee        = require('gulp-coffee');
-const gutil         = require('gulp-util')
-
-var nodeExternals = require('webpack-node-externals');
-
+const nodeExternals = require('webpack-node-externals');
 
 //-----------------------------------------------------------------------------//
 // Tasks
@@ -87,7 +83,7 @@ gulp.task('minify-img', () => {
 
 gulp.task('compile-js', (cb) => {
 
-    let config = _.assignIn(webpackConfig, {
+    let config = _.assignIn(webpackConfig(), {
         entry:  './src/client/js/index.coffee',
         mode:   'development',
         target: 'web'
@@ -107,7 +103,7 @@ gulp.task('compile-js', (cb) => {
 
 gulp.task('compile-server', (cb) => {
 
-    let config = _.assignIn(webpackConfig, {
+    let config = _.assignIn(webpackConfig(), {
         entry:  './src/server/app.coffee',
         mode:   'development',
         target: 'node',
@@ -193,7 +189,6 @@ gulp.task('browser', () => {
         uri: 'http://localhost:5000'
     }));
 });
-
 
 //-----------------------------------------------------------------------------//
 // Main tasks

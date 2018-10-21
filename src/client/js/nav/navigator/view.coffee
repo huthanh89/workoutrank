@@ -46,8 +46,8 @@ class View extends Marionette.View
     rootChannel.request selector.data('route')
     return
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
 
     @route = ''
 

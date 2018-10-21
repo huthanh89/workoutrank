@@ -31,8 +31,8 @@ class View extends Marionette.View
       @channel.request 'signup'
       return
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @channel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------

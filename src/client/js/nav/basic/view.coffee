@@ -25,8 +25,8 @@ class View extends Marionette.View
       return
 ###
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @channel = Radio.channel('root')
 
 #-------------------------------------------------------------------------------
