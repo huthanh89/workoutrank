@@ -26,6 +26,17 @@ index = (req, res) ->
   res.render 'index'
   return
 
+for url in [
+  '/'
+  '/signup'
+  '/login'
+  '/about'
+  '/feedback'
+  '/forgot'
+  '/reset'
+]
+  router.use url, express.static(__dirname + '/dist')
+
 router.get '/',         index
 router.get '/signup',   index
 router.get '/login',    index

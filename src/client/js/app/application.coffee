@@ -8,11 +8,12 @@ GCT         = require '../gct'
 Backbone    = require 'backbone'
 Radio       = require 'backbone.radio'
 Marionette  = require 'backbone.marionette'
-IndexRouter = require './routers/index/router'
-MainRouter  = require './routers/main/router'
+#IndexRouter = require './routers/index/router'
+#MainRouter  = require './routers/main/router'
 #UserRouter  = require './routers/user/router'
 #AdminRouter = require './routers/admin/router'
 RootView    = require './view'
+Router      = require './router'
 
 #-------------------------------------------------------------------------------
 # Channels
@@ -96,8 +97,13 @@ class Application extends Marionette.Application
     @showView new RootView
       user: new User()
 
-    # All router must be initialized before backbone.history starts to work.
+    console.log('start')
 
+    # All router must be initialized before backbone.history starts to work.
+    
+    Router.initialize()
+
+    ###
     new IndexRouter
       mode:          'auto'
       trailingSlash: 'ignore'
@@ -106,7 +112,6 @@ class Application extends Marionette.Application
       mode:          'auto'
       trailingSlash: 'ignore'
 
-    ###
     new UserRouter
       mode:          'auto'
       trailingSlash: 'ignore'
@@ -127,7 +132,7 @@ class Application extends Marionette.Application
     Backbone.history.start
       pushState:  true
       hashChange: false
-
+    
     return
 
 #-------------------------------------------------------------------------------

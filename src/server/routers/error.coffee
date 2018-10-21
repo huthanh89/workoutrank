@@ -5,7 +5,7 @@
 class Err extends Error
 
   constructor: (options) ->
-    super
+    super(options)
     if options?.status
       @status = options.status
     if options?.statusText

@@ -24,8 +24,12 @@ index = (req, res, next) ->
   res.render 'index'
   return
 
-router.get '/account', middlewares, index
-router.get '/profile', middlewares, index
+for url in [
+  '/account'
+  '/profile'
+]
+  router.use url, express.static(__dirname + '/dist')
+  router.get '/account', middlewares, index
 
 #-------------------------------------------------------------------------------
 # Import Routes
@@ -40,9 +44,7 @@ Profile = require './profile/module'
 #-------------------------------------------------------------------------------
 
 router.get '/api/user',    middlewares, User.get
-
 router.get '/api/account', middlewares, Account.get
-
 router.get '/api/profile', middlewares, Profile.get
 router.put '/api/profile', middlewares, Profile.put
 

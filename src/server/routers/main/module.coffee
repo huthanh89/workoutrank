@@ -33,6 +33,7 @@ urls = [
 ]
 
 for url in urls
+  router.use url, express.static(__dirname + '/dist')
   router.get url, middlewares,(req, res) ->
     res.render 'index'
     return
