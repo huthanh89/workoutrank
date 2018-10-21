@@ -21,6 +21,9 @@ const order         = require("gulp-order");
 const coffee        = require('gulp-coffee');
 const gutil         = require('gulp-util')
 
+var nodeExternals = require('webpack-node-externals');
+
+
 //-----------------------------------------------------------------------------//
 // Tasks
 //-----------------------------------------------------------------------------//
@@ -87,7 +90,8 @@ gulp.task('compile-js', (cb) => {
     let config = _.assignIn(webpackConfig, {
         entry: './src/client/js/index.coffee',
         mode:  'development',
-        target: 'node'
+        target: 'node',
+        externals: [nodeExternals()]
     });
 
     let reload = function(){
@@ -107,7 +111,10 @@ gulp.task('compile-server', (cb) => {
     let config = _.assignIn(webpackConfig, {
         entry:  './src/server/app.coffee',
         mode:   'development',
-        target: 'node'
+        target: 'node',
+        node: {
+            __dirname: false
+        }
     });
     
     let reload = function(){
