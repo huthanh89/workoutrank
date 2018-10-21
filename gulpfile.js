@@ -88,10 +88,9 @@ gulp.task('minify-img', () => {
 gulp.task('compile-js', (cb) => {
 
     let config = _.assignIn(webpackConfig, {
-        entry: './src/client/js/index.coffee',
-        mode:  'development',
-        target: 'node',
-        externals: [nodeExternals()]
+        entry:  './src/client/js/index.coffee',
+        mode:   'development',
+        target: 'web'
     });
 
     let reload = function(){
@@ -112,6 +111,7 @@ gulp.task('compile-server', (cb) => {
         entry:  './src/server/app.coffee',
         mode:   'development',
         target: 'node',
+        externals: [nodeExternals()],
         node: {
             __dirname: false
         }

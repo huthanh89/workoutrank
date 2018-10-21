@@ -30,6 +30,30 @@ module.exports = {
       './src/client/vendor/js'
     ],
 
+    alias: {
+      'backbone.paginator':       'backbone.paginator.js',
+      'backbone.modal':           'backbone.modal-bundled.js',
+      'backbone.validation':      'backbone.validation.js',
+      'socket.io':                'socket.io.js',
+      highstock:                  'highstock.js',
+      bootstrap:                  'bootstrap.js',
+      'bootstrap.validator':      'bootstrap.validator.js',
+      'jquery.ui':                'jquery-ui.js',
+      mmenu:                      'jquery.mmenu.all.js',
+      touchspin:                  'jquery.bootstrap-touchspin.js',
+      multiselect:                'jquery.bootstrap-multiselect.js',
+      datepicker:                 'jquery.bootstrap-datepicker.js',
+      JQPlugin:                   'jquery.plugin.js',
+      'bootstrap.datetimepicker': 'bootstrap.datetimepicker.js',
+      'bootstrap.paginate':       'bootstrap.paginate.js',
+      toastr:                     'toastr.js',
+      fullcalendar:               'fullcalendar.js',
+      sweetalert:                 'sweetalert.js',
+      gauge:                      'gauge.js',
+      waypoint:                   'jquery.waypoints.js',
+      infinite:                   'jquery.infinite.js'
+    },
+
     // Import the following, using only the file name without its extension.
 
     extensions: ['.js', '.coffee']
