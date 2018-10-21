@@ -10,6 +10,7 @@ _ = require 'lodash'
 
 module.exports.isAuthenticated = (req, res, next) ->
 
+  ###
   if req.xhr and not req.isAuthenticated()
     res
     .status 401
@@ -20,7 +21,8 @@ module.exports.isAuthenticated = (req, res, next) ->
 
   else
     next()
-
+###
+  next()
   return
 
 

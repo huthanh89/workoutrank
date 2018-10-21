@@ -4,16 +4,16 @@
 
 Index  = require './index/module'
 Signup = require './signup/module'
+Login  = require './login/module'
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-exports.Index = Index
-
 exports.initialize = ->
     new Index.Router()
     new Signup.Router()
+    new Login.Router()
     return
     
 #-------------------------------------------------------------------------------

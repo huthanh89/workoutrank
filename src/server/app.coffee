@@ -62,6 +62,7 @@ app.use bodyParser.json
 
 app.use bodyParser.urlencoded
   extended: false
+
 # Able to read client's cookie.
 
 app.use cookieParser()
@@ -80,16 +81,28 @@ app.use session
     mongooseConnection: mongoose.connection
     clear_interval:     604800
 
-app.use passport.initialize()
-app.use passport.session()
-
 app.use (req, res, next) ->
   res.setHeader    'X-XSS-Protection', '1; mode=block'
   res.removeHeader 'server'
   res.removeHeader 'x-powered-by'
   next()
   return
-  
+
+#--------------------------------------------------------------
+# Configure and initialize passport.
+#--------------------------------------------------------------
+
+passport.serializeUser auth.serializeUser
+passport.deserializeUser auth.deserializeUser
+
+passport.use auth.localStrategy
+passport.use auth.facebookStrategy
+passport.use auth.twitterStrategy
+passport.use auth.googleStrategy
+
+app.use passport.initialize()
+app.use passport.session()
+
 #--------------------------------------------------------------
 # Database Connection
 #--------------------------------------------------------------

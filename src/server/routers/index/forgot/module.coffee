@@ -30,7 +30,7 @@ transporter = nodemailer.createTransport smtpTransport
   service: 'gmail'
   auth:
     user: 'vietxoulja12@gmail.com'
-    pass: 'xoujas12'
+    pass: ''
 
 #-------------------------------------------------------------------------------
 # Post
