@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-async      = require 'async'
 Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 AppRouter  = require 'marionette.approuter'
@@ -22,6 +21,13 @@ userChannel = Radio.channel('user')
 
 class Router extends AppRouter.default
   
+  constructor: (options) ->
+    super(options)
+    rootChannel.reply
+      signup: =>
+        @controller.signup()
+        return
+
   controller:
     'signup': ->
       rootChannel.request('rootview').showChildView 'content', new View()

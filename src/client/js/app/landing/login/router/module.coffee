@@ -2,7 +2,6 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-async      = require 'async'
 Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 AppRouter  = require 'marionette.approuter'
