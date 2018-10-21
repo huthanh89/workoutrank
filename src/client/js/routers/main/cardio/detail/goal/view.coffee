@@ -22,7 +22,7 @@ class View extends Marionette.View
     durationGauge: '.cardio-goal-duration-gauge-container'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'date'
       'cLogs'

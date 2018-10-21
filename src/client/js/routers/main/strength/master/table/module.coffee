@@ -78,7 +78,7 @@ class NullView extends Marionette.View
   template: nullTemplate
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]
@@ -119,7 +119,7 @@ class ItemView extends Marionette.View
       return
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]
@@ -182,7 +182,7 @@ class View extends Marionette.CompositeView
     header: '.strength-table-th'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]

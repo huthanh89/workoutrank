@@ -21,7 +21,7 @@ class View extends Marionette.View
     table: '#cardio-table-container'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
       'cLogs'

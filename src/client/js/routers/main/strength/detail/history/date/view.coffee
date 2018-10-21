@@ -34,7 +34,7 @@ class View extends Marionette.View
       return
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'date'
       'channel'

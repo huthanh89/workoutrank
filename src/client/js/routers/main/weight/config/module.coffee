@@ -43,7 +43,7 @@ class Model extends Backbone.Model
     last:   new Date()
 
   constructor: (attributes, options) ->
-    super
+    super(attributes, options)
     @update options.wLogs
 
   update: (wLogs) =>
@@ -91,8 +91,8 @@ class View extends Marionette.View
         bmi = _.round ((weight / (height * height)) * 703), 2
         return bmi
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @userChannel = Backbone.Radio.channel('user').request('user')
 
   onRender: ->

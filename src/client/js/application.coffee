@@ -8,7 +8,7 @@ GCT         = require './gct'
 Backbone    = require 'backbone'
 Radio       = require 'backbone.radio'
 Marionette  = require 'backbone.marionette'
-#IndexRouter = require './routers/index/router'
+IndexRouter = require './routers/index/router'
 #MainRouter  = require './routers/main/router'
 #UserRouter  = require './routers/user/router'
 #AdminRouter = require './routers/admin/router'
@@ -62,20 +62,22 @@ class Application extends Marionette.Application
     else
       $('#navigator').show()
 
+    ###
     @googleAnalytics.send(route)
     if route is 'signup'
       @googleTrackingConversion.send()
+    ###
     return
 
   onStart: ->
 
     # Start Google analytics
 
-    @googleAnalytics = new GA()
+#    @googleAnalytics = new GA()
 
     # Start Google adword conversion tracker.
 
-    @googleTrackingConversion = new GCT()
+ #   @googleTrackingConversion = new GCT()
 
     rootChannel.reply
 
@@ -94,13 +96,12 @@ class Application extends Marionette.Application
     @showView new RootView
       user: new User()
 
-    ###
     # All router must be initialized before backbone.history starts to work.
 
     new IndexRouter
       mode:          'auto'
       trailingSlash: 'ignore'
-
+    ###
     new MainRouter
       mode:          'auto'
       trailingSlash: 'ignore'

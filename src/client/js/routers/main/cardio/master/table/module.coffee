@@ -49,7 +49,7 @@ class Collection extends Backbone.Collection
   model: Model
 
   constructor: (models, options) ->
-    super
+    super(models, options)
     _.each models, (model) ->
       cLog = options.cLogs.get(model.id)
       if cLog
@@ -67,7 +67,7 @@ class NullView extends Marionette.View
   template: nullTemplate
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]
@@ -102,7 +102,7 @@ class ItemView extends Marionette.View
       return
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]
@@ -165,7 +165,7 @@ class View extends Marionette.CompositeView
     header: '.cardio-table-th'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]

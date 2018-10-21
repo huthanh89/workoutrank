@@ -91,7 +91,7 @@ class View extends Marionette.View
 ###
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
     ]

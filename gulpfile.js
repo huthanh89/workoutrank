@@ -78,7 +78,7 @@ gulp.task('minify-img', () => {
             ]
         })
     ]))
-    .pipe(gulp.dest('dist/asset'));
+    .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('compile-js', (cb) => {
@@ -128,7 +128,7 @@ gulp.task('compile-server', (cb) => {
 
 gulp.task('compile-css', (cb) => {
 
-    let cssStream = gulp.src('src/vendor/*.css')
+    let cssStream = gulp.src('src/client/vendor/**/*.css')
         .pipe(concat("vendors.css"));
 
     let reload = function(){

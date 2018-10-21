@@ -98,8 +98,8 @@ class View extends Marionette.View
       if checked then @ui.note.removeClass('hide') else @ui.note.addClass('hide')
       return
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @model.set('date', moment())
 
     # If there are data, use the latest data found in collection

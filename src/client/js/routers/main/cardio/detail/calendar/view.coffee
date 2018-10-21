@@ -41,7 +41,7 @@ class View extends Marionette.View
     calendar: '#cardio-calendar-ui'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'type'
     ]

@@ -21,7 +21,7 @@ class View extends Marionette.View
     table: '#strength-table-container'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
       'sLogs'

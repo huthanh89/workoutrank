@@ -111,7 +111,7 @@ class View extends Marionette.View
     chart: '#body-graph-chart'
 
   constructor: (options) ->
-    super
+    super(options)
     @model = chartModel options.sLogs
 
   onAttach: ->

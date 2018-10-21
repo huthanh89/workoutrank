@@ -44,7 +44,7 @@ class View extends Marionette.View
     bronzeDuration: '#cardio-challenge-duration-bronze'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'cLogs'
       'date'

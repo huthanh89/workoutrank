@@ -19,7 +19,7 @@ class View extends Marionette.View
     muscle: '#strength-filter-muscle'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'tableCollection'
       'muscle'

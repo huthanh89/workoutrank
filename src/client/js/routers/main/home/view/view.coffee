@@ -98,8 +98,8 @@ class View extends Marionette.View
       rootChannel.request('admin:feedbacks')
       return
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @user = userChannel.request 'user'
 
   onRender: ->

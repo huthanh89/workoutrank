@@ -117,8 +117,8 @@ class View extends Marionette.CompositeView
       rootChannel.request 'home'
       return
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
 
     length = @collection.length
 

@@ -35,7 +35,7 @@ class View extends Marionette.View
     calendar: '#schedule-widget'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'channel'
       'calendarEvents'

@@ -21,8 +21,8 @@ rootChannel = Radio.channel('root')
 
 class Router extends Marionette.AppRouter
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
 
     @rootView = rootChannel.request('rootview')
 

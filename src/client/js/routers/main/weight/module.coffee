@@ -43,7 +43,7 @@ class Collection extends Backbone.Collection
   comparator: 'date'
 
   constructor: ->
-    super
+    super(options)
     @url = "/api/wlogs"
 
 #-------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class View extends Marionette.View
       return
 
   constructor: ->
-    super
+    super(options)
 
     @dateModel = new Date.Model()
 

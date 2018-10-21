@@ -46,7 +46,7 @@ class Collection extends Backbone.Collection
   comparator: 'date'
 
   constructor: (attributes, options) ->
-    super
+    super(attributes, options)
     @url = "/api/strengths/#{options.id}/log"
 
 #-------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ class View extends Marionette.View
       return
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'strengthID'
       'wLogs'

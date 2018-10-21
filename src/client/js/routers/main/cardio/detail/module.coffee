@@ -48,7 +48,7 @@ class Collection extends Backbone.Collection
   comparator: 'date'
 
   constructor: (attributes, options) ->
-    super
+    super(attributes, options)
     @url = "/api/clogs/#{options.id}"
 
   parse: (response) ->

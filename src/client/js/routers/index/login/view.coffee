@@ -18,8 +18,8 @@ class View extends Marionette.View
   regions:
     login: '#login-view'
 
-  constructor: ->
-    super
+  constructor: (options) ->
+    super(options)
     @channel = Backbone.Radio.channel('channel')
 
   onAttach: ->

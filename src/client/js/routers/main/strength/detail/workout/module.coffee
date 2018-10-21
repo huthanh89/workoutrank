@@ -49,7 +49,7 @@ class Model extends Backbone.Model
     note:   ''
 
   constructor: (attributes, options) ->
-    super
+    super(attributes, options)
     @update options.sConf, options.sLogs
 
   update: (sConf, sLogs) =>

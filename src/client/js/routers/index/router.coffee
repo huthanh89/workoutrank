@@ -5,6 +5,7 @@
 Backbone     = require 'backbone'
 Radio        = require 'backbone.radio'
 Marionette   = require 'backbone.marionette'
+AppRouter    = require 'marionette.approuter'
 Feedback     = require './feedback/module'
 Forgot       = require './forgot/module'
 Reset        = require './reset/module'
@@ -25,11 +26,13 @@ userChannel = Radio.channel('user')
 # Router
 #-------------------------------------------------------------------------------
 
-class Router extends Marionette.AppRouter
+class Router extends AppRouter.default
 
-  constructor: ->
+  constructor: (options) ->
 
-    super
+    console.log(options);
+
+    super(options)
 
     @rootView = rootChannel.request('rootview')
 

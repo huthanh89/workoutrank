@@ -24,7 +24,7 @@ class View extends Marionette.View
     weightGauge: '.strength-goal-weight-gauge-container'
 
   constructor: (options) ->
-    super
+    super(options)
     @mergeOptions options, [
       'date'
       'sLogs'
