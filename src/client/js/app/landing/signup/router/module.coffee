@@ -25,6 +25,7 @@ class Router extends AppRouter.default
     super(options)
     rootChannel.reply
       signup: =>
+        rootChannel.request('navigate', 'signup')
         @controller.signup()
         return
 

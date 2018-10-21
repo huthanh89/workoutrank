@@ -119,6 +119,7 @@ class View extends Marionette.View
       @ui.picture[0].src = @model.get('profilePic').data
 
     # Scroll to top of page.
+    
     window.scrollTo 0, 0
 
     return

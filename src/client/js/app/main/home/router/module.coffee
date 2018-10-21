@@ -28,6 +28,7 @@ class Router extends AppRouter.default
     super(options)
     rootChannel.reply
       home: =>
+        rootChannel.request('navigate', 'home')
         @controller.home()
         return
 

@@ -25,6 +25,7 @@ class Router extends AppRouter.default
     super(options)
     rootChannel.reply
       index: =>
+        rootChannel.request('navigate', 'index')
         @controller.index()
         return
 

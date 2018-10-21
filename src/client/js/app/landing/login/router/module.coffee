@@ -25,6 +25,7 @@ class Router extends AppRouter.default
     super(options)
     rootChannel.reply
       login: =>
+        rootChannel.request('navigate', 'login')
         @controller.login()
         return
 
