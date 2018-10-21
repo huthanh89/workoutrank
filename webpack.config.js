@@ -27,6 +27,7 @@ module.exports = function(){
       modules: [
         'node_modules', 
         './src/client/js',
+        './src/client/js/app/lib',
         './src/client/vendor/js'
       ],
       
@@ -35,8 +36,6 @@ module.exports = function(){
         'backbone.modal':           'backbone.modal-bundled.js',
         'backbone.validation':      'backbone.validation.js',
         'socket.io':                'socket.io.js',
-        highstock:                  'highstock.js',
-        bootstrap:                  'bootstrap.js',
         'bootstrap.validator':      'bootstrap.validator.js',
         'jquery.ui':                'jquery-ui.js',
         mmenu:                      'jquery.mmenu.all.js',

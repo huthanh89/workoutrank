@@ -9,23 +9,7 @@ window.jQuery = window.$ = require 'jquery';
 # Imports
 #-------------------------------------------------------------------------------
 
-Highstock   = require 'highstock'
-Application = require './application'
-
-# Load in Bootstrap
-#-------------------------------------------------------------------------------
-
-#import 'bootstrap'
-
-#-------------------------------------------------------------------------------
-# Set Highstock option for through out our project to change the date
-# to GMT +0
-#-------------------------------------------------------------------------------
-
-Highstock.setOptions
-  global: {
-    useUTC: false
-  }
+Application = require './app/application'
 
 #-------------------------------------------------------------------------------
 # Starting point.
