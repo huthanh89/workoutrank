@@ -97,8 +97,6 @@ class Application extends Marionette.Application
     @showView new RootView
       user: new User()
 
-    console.log('start')
-
     # All router must be initialized before backbone.history starts to work.
     
     Router.initialize()

@@ -24,16 +24,13 @@ class Router extends AppRouter.default
   
   constructor: (options) ->
     super(options)
-    @rootView = rootChannel.request('rootview')
     rootChannel.reply
-      'index': ->
-        rootChannel.request 'navigate', 'index'
-        @index()
+      login: =>
+        @controller.login()
         return
 
   controller:
     login: ->
-      console.log 'LOGIN'
       rootChannel.request('rootview').showChildView 'content', new View()
       return
 

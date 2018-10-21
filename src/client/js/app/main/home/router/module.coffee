@@ -3,6 +3,7 @@
 #-------------------------------------------------------------------------------
 
 async      = require 'async'
+Backbone   = require 'backbone'
 Radio      = require 'backbone.radio'
 Marionette = require 'backbone.marionette'
 AppRouter  = require 'marionette.approuter'
@@ -25,11 +26,9 @@ class Router extends AppRouter.default
   
   constructor: (options) ->
     super(options)
-    @rootView = rootChannel.request('rootview')
     rootChannel.reply
-      'home': =>
-        rootChannel.request 'navigate', 'home'
-        @home()
+      home: =>
+        @controller.home()
         return
 
   controller:

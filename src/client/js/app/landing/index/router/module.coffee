@@ -24,11 +24,9 @@ class Router extends AppRouter.default
   
   constructor: (options) ->
     super(options)
-    @rootView = rootChannel.request('rootview')
     rootChannel.reply
-      'index': ->
-        rootChannel.request 'navigate', 'index'
-        @index()
+      index: =>
+        @controller.index()
         return
 
   controller:
