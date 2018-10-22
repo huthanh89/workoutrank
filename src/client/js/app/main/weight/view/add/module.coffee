@@ -116,6 +116,8 @@ class View extends Marionette.View
 
   onRender: ->
 
+    console.log 'ernder'
+
     date = @model.get('date')
 
     @ui.weight.TouchSpin
