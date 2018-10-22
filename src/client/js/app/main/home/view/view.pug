@@ -1,126 +1,78 @@
 .row
     .col-md-7.col-center
-        .panel.panel-default
-            .panel-heading.panel-center#home-user-heading
-                .float-right
-                    i.fa.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
-                #home-user-picture-container
-                    img#home-user-picture(src="images/profile-icon.png" alt="No Profile Picture")
-                h3.panel-title Journals
-            ul.list-group.home-list
+        .card
+            .card-header#home-user-heading
+                i.fa.fa-fw.fa-lg.fa-question-circle.home-help#home-help(style="cursor:pointer")
+                .text-center Journals
+            ul.list-group.list-group-flush.home-list
                 li.list-group-item#home-strengths
                     i.nav-icon.fa-fw.fa-lg.fas.fa-dumbbell
-                    a
-                        b
-                            span &nbsp
-                            | Strength Training
+                    b.ml-2 Strength Training
                     .home-journal-counters
                         i.fa.fa-fw.fa-lg.fa-book
-                        span#home-sconf-count 0
-                        span &nbsp
+                        span#home-sconf-count.mr-2 0
                         i.fas.fa-fw.fa-lg.fa-pencil-alt
                         span#home-slog-count 0
                 li.list-group-item#home-cardios
                     i.nav-icon.fa.fa-fw.fa-lg.fa-heartbeat
-                    a
-                        b
-                            span &nbsp
-                            | Cardio Training
+                    b.ml-2Cardio Training
                     .home-journal-counters
                         i.fa.fa-fw.fa-lg.fa-book
-                        span#home-cconf-count 0
-                        span &nbsp
+                        span#home-cconf-count.mr-2 0
                         i.fas.fa-fw.fa-lg.fa-pencil-alt
                         span#home-clog-count 0
                 li.list-group-item#home-weights
                     i.nav-icon.fa-fw.fa-lg.fas.fa-weight
-                    a
-                        b
-                            span &nbsp
-                            | Weight Logs
+                    b.ml-2 Weight Logs
                     .home-journal-counters
                         i.fas.fa-fw.fa-lg.fa-pencil-alt
                         span#home-wlog-count 0
 .row
     .col-md-7.col-center
-        .panel.panel-default
-            .panel-heading.panel-center
-                h3.panel-title Events
-            ul.list-group.home-list
+        .card
+            .card-header.text-center Events
+            ul.list-group.list-group-flush.home-list
                 li.list-group-item#home-schedule
                     i.nav-icon.far.fa-fw.fa-lg.fa-clock
-                    a
-                        b
-                            span &nbsp
-                            | Daily Schedule
+                    b.ml-2 Daily Schedule
                 //li.list-group-item#home-timeline
                     i.nav-icon.fa.fa-fw.fa-lg.fa-newspaper-o
-                    a
-                        b
-                            span &nbsp
-                            | Timeline
+                    b.ml-2 Timeline
                 li.list-group-item#home-calendar
                     i.nav-icon.far.fa-fw.fa-lg.fa-calendar-alt
-                    a
-                        b
-                            span &nbsp
-                            | History Calendar
+                    b.ml-2 History Calendar
 
-.row#home-admin-accounts-container.hide
+.row.d-none#home-admin-accounts-container
     .col-md-7.col-center
-        .panel.panel-default
-            .panel-heading.panel-center
-                h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-user-secret
-                    span &nbsp
-                    | Admin
-            ul.list-group.home-list
+        .card
+            .card-header.text-center Admin
+            ul.list-group.list-group-flush.home-list
                 li.list-group-item#home-admin-accounts
                     i.nav-icon.fa.fa-fw.fa-lg.fa-users
-                    a
-                        b
-                            span &nbsp
-                            | Accounts
+                    b.ml-2 Accounts
                     span.badge#home-user-count 0
 
             ul.list-group.home-list
                 li.list-group-item#home-admin-feedbacks
                     i.nav-icon.fa.fa-fw.fa-lg.fa-commenting
-                    a
-                        b
-                            span &nbsp
-                            | Feedback
+                    b.ml-2 Feedback
                     span.badge#home-feedback-count 0
                 li.list-group-item#home-admin-images
                     i.nav-icon.fa.fa-fw.fa-lg.fa-picture-o
-                    span
-                        b
-                            span &nbsp
-                            | Images
+                    b.ml-2 Images
                     span.badge#home-image-count 0
                 li.list-group-item#home-admin-shedules
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar
-                    span
-                        b
-                            span &nbsp
-                            | Schedules
+                    i.nav-icon.fa.fa-fw.fa-lg.fa-calendar.mr-2
+                    b.ml-2 Schedules
                     span.badge#home-schedule-count 0
 .row
     .col-md-7.col-center
-        .panel.panel-default
-            .panel.panel-default
-                .panel-heading.panel-center
-                    h3.panel-title Settings
-            ul.list-group.home-list
+        .card
+            .card-header.text-center Settings
+            ul.list-group.list-group-flush.home-list
                 li.list-group-item#home-profile
                     i.nav-icon.fas.fa-fw.fa-lg.fa-user-cog
-                    a
-                        b
-                            span &nbsp
-                            | Profile 
+                    b.ml-2 Profile 
                 li.list-group-item#home-account
                     i.nav-icon.fas.fa-fw.fa-lg.fa-id-card
-                    a
-                        b
-                            span &nbsp
-                            | Account
+                    b.ml-2 Account
