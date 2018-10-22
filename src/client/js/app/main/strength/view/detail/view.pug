@@ -1,7 +1,9 @@
 #strength-modal-view
 .row
     .col-md-8.col-center
-        ol.breadcrumb(style='margin-bottom: 5px;')
+        ol.breadcrumb.d-block
+            .float-right
+                i.fas.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
             li#strength-home
                 a Home
             li#strength-journals
@@ -9,8 +11,6 @@
             li.active
                 span Entry
                 i.fa.fa-fw.fa-lg.fa-pencil
-            .pull-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
 .row
     .col-md-8.col-center
         .panel.panel-default

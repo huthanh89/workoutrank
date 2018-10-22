@@ -1,15 +1,9 @@
 .row
     .col-md-7.col-center
-        ol.breadcrumb(style='margin-bottom: 5px;')
-            li.active
-                span Home
-                i.fa.fa-fw.fa-lg.fa-home
-            .float-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
-.row
-    .col-md-7.col-center
         .panel.panel-default
             .panel-heading.panel-center#home-user-heading
+                .float-right
+                    i.fa.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
                 #home-user-picture-container
                     img#home-user-picture(src="images/profile-icon.png" alt="No Profile Picture")
                 h3.panel-title Journals
@@ -47,21 +41,6 @@
                     .home-journal-counters
                         i.fas.fa-fw.fa-lg.fa-pencil-alt
                         span#home-wlog-count 0
-//.row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading.panel-center
-                h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-users
-                    span &nbsp
-                    | Social
-            ul.list-group.home-list
-                li.list-group-item#home-social-profile
-                    i.nav-icon.fa.fa-fw.fa-lg.fa-id-badge
-                    a
-                        b
-                            span &nbsp
-                            | My Profile
 .row
     .col-md-7.col-center
         .panel.panel-default

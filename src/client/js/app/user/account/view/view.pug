@@ -1,21 +1,19 @@
 .row
-    .col-md-8.col-center
-        ol.breadcrumb(style='margin-bottom: 5px;')
+    .col-md-7.col-center
+        ol.breadcrumb
             li#account-home
                 a Home
             li.active
                 span Account
-                span &nbsp
-                i.fa.fa-fw.fa-lg.fa-user-circle
 .row
-    .col-md-8.col-center
+    .col-md-7.col-center
         .panel.panel-default
             .panel-heading
-                h3.panel-title Account
+                h3.panel-title 
+                    span Account
             .panel-body
                 #account-summary
                 .col-xs-12
-                    button.btn.btn-default.pull-right#account-logout
-                        i.nav-icon.fa.fa-fw.fa-lg.fa-sign-out
-                        span &nbsp
-                        span Log Out
+                    button.btn.btn-warning.pull-right#account-logout
+                        i.nav-icon.fas.fa-fw.fa-lg.fa-sign-out-alt
+                        span.ml-2 Log Out

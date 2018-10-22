@@ -3,14 +3,13 @@
         #strength-modal-view
 .row
     .col-xs-12
-        ol.breadcrumb(style='margin-bottom: 5px;')
+        ol.breadcrumb.d-block
+            .float-right
+                i.fa.fa-fw.fa-lg.fa-question-circle#strength-help(style="cursor:pointer")
             li#strength-home
                 a Home
             li.active#strength-journals
                 span Strength
-                i.fa.fa-fw.fa-lg.fa-hand-rock-o
-            .pull-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#strength-help(style="cursor:pointer")
 .row
     .col-sm-12
         .panel.panel-default
@@ -22,8 +21,5 @@
                         span Add Exercise
                 .pull-right
                     #strength-filter-view
-                h3.panel-title
-                    i.fa.fa-fw.fa-lg.fa-book
-                    | Strength Training
             .panel-body
                 #strength-table-view
