@@ -2,8 +2,9 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Home   = require './home/module'
-Weight = require './weight/module'
+Home     = require './home/module'
+Strength = require './strength/module'
+Weight   = require './weight/module'
 
 #-------------------------------------------------------------------------------
 # Exports
@@ -11,6 +12,7 @@ Weight = require './weight/module'
 
 exports.initialize = ->
     new Home.Router()
+    new Strength.Router()
     new Weight.Router()
     return
     

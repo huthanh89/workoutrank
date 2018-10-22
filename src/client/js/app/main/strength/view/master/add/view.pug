@@ -1,0 +1,42 @@
+.modal.fade(role="dialog")#strength-modal-dialog
+    .modal-dialog.modal-sm
+        .modal-content
+
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Create Exercise
+
+            .modal-body
+                form.form-horizontal
+                    .form-group
+                        .col-xs-12
+                            label.control-label(for='strength-modal-muscle') Which muscles are you targeting?
+                        .col-xs-12
+                            select.form-control#strength-modal-muscle(multiple='multiple')
+                    .form-group
+                        .col-xs-12
+                            label.control-label(for='strength-modal-name') Give this exercise a name
+                        .col-xs-12
+                            input.form-control#strength-modal-name(type='text' required minlength="1" maxlength="25")
+                            .help-block.with-errors
+                    .form-group
+                        .col-xs-12
+                            .checkbox
+                                label
+                                    input(type='checkbox')#strength-modal-body
+                                    | Will use my body as weights
+                    .form-group
+                        .col-xs-12
+                            .checkbox
+                                label
+                                    input(type='checkbox')#strength-modal-note-enable
+                                    | Add note
+                        .col-xs-12
+                            textarea.hide.form-control#strength-modal-note(placeholder='Optional' minlength="1" maxlength="250")
+                    hr
+                    .form-group
+                        .col-xs-12
+                            .pull-right
+                                button.btn.btn-default.btn-lg.mr-2(data-dismiss="modal" type='button') Cancel
+                                button.btn.btn-primary.btn-lg#strength-modal-submit(type="submit")
+                                    span Add

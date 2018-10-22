@@ -26,6 +26,7 @@ urls = [
   '/calendar'
   '/schedule'
   '/strengths'
+  '/strengths/:id'
   '/cardios'
   '/weights'
   '/body'
@@ -66,7 +67,7 @@ middlewares = [
 router.get '/api/home', middlewares, Home.get
 
 #-------------------------------------------------------------------------------
-# Strengths
+# Strengths API
 #-------------------------------------------------------------------------------
 
 # Get all strength exercises belonging to a user.
@@ -86,7 +87,7 @@ router.get '/api/strengths/:sid/log', middlewares, Strength.log
 router.delete '/api/strengths/:sid', middlewares, Strength.delete
 
 #-------------------------------------------------------------------------------
-# Strength Logs
+# Strength Logs API
 #-------------------------------------------------------------------------------
 
 router.get    '/api/slogs',      middlewares, SLog.list
@@ -96,7 +97,7 @@ router.put    '/api/slogs/:sid', middlewares, SLog.put
 router.delete '/api/slogs/:sid', middlewares, SLog.delete
 
 #-------------------------------------------------------------------------------
-# Cardio Conf
+# Cardio Conf API
 #-------------------------------------------------------------------------------
 
 router.get    '/api/cardios',      middlewares, Cardio.list
@@ -106,7 +107,7 @@ router.post   '/api/cardios',      middlewares, Cardio.post
 router.delete '/api/cardios/:cid', middlewares, Cardio.delete
 
 #-------------------------------------------------------------------------------
-# Cardio Logs
+# Cardio Logs API
 #-------------------------------------------------------------------------------
 
 router.get    '/api/clogs',      middlewares, CLog.list
@@ -116,7 +117,7 @@ router.put    '/api/clogs/:cid', middlewares, CLog.put
 router.delete '/api/clogs/:cid', middlewares, CLog.delete
 
 #-------------------------------------------------------------------------------
-# Image
+# Image API
 #-------------------------------------------------------------------------------
 
 router.get    '/api/images',      middlewares, Image.list
@@ -126,7 +127,7 @@ router.put    '/api/images/:cid', middlewares, Image.put
 router.delete '/api/images/:cid', middlewares, Image.delete
 
 #-------------------------------------------------------------------------------
-# Schedule
+# Schedule API
 #-------------------------------------------------------------------------------
 
 # Post a new schedule record.
@@ -139,7 +140,7 @@ router.post '/api/schedule', middlewares, Schedule.post
 router.put '/api/schedule/:sid', middlewares, Schedule.put
 
 #-------------------------------------------------------------------------------
-# Weight Logs
+# Weight Logs API
 #-------------------------------------------------------------------------------
 
 # Get all slogs.
