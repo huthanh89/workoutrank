@@ -35,36 +35,8 @@ class Router extends AppRouter.default
   controller:
     home: ->
       navChannel.request('nav:main')
-      rootChannel.request 'spin:page:loader', true
-      
-      async.waterfall [
-
-        (callback) ->
-
-          user = userChannel.request('user')
-
-          user.fetch
-            success: ->
-              return callback null
-            error: (model, error) -> callback error
-
-        (callback) ->
-
-          model = new Model.default()
-          model.fetch
-            success: (model) -> callback null, model
-            error: (model, error) -> callback error
-
-      ], (error, model) =>
-
-        rootChannel.request 'spin:page:loader', false
-        if error
-          rootChannel.request 'message:error', error
-
-        rootChannel.request('rootview').showChildView 'content', new View
-          model: model 
-        return
-
+      rootChannel.request('rootview').showChildView 'content', new View
+        model: new Model.default()
       return
 
   appRoutes:

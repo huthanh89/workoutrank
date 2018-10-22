@@ -3,17 +3,13 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-GA          = require '../ga'
-GCT         = require '../gct'
-Backbone    = require 'backbone'
-Radio       = require 'backbone.radio'
-Marionette  = require 'backbone.marionette'
-#IndexRouter = require './routers/index/router'
-#MainRouter  = require './routers/main/router'
-#UserRouter  = require './routers/user/router'
-#AdminRouter = require './routers/admin/router'
-RootView    = require './view'
-Router      = require './router'
+GA         = require '../ga'
+GCT        = require '../gct'
+Backbone   = require 'backbone'
+Radio      = require 'backbone.radio'
+Marionette = require 'backbone.marionette'
+RootView   = require './view'
+Router     = require './router'
 
 #-------------------------------------------------------------------------------
 # Channels

@@ -113,8 +113,6 @@ class Router extends AppRouter.default
 
   home: ->
 
-    console.log '>>>>>>>> home'
-
     navChannel.request('nav:main')
     rootChannel.request 'spin:page:loader', true
 

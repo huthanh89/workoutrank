@@ -90,6 +90,7 @@ class View extends Marionette.View
           @getRegion('loader').empty()
         return
 
+    ###
     navChannel.reply
 
       'nav:index': =>
@@ -119,7 +120,7 @@ class View extends Marionette.View
             rootChannel.request 'message:error', response
             return
         return
-
+###
   onRender: ->
     @showChildView 'navigator', new Nav.Navigator()
     @showChildView 'footer',    new FooterView()
