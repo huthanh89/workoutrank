@@ -1,26 +1,17 @@
-
 #-------------------------------------------------------------------------------
 # Imports
 #-------------------------------------------------------------------------------
 
-Landing = require './landing/module'
-Main    = require './main/module'
-User    = require './user/module'
-
-#-------------------------------------------------------------------------------
-
-
-Router =
-    initialize: ->
-        Landing.initialize()
-        Main.initialize()
-        User.initialize()
-        return
+Profile = require './profile/module'
+#Account = require './account/module'
 
 #-------------------------------------------------------------------------------
 # Exports
 #-------------------------------------------------------------------------------
 
-module.exports = Router
-
+exports.initialize = ->
+    new Profile.Router()
+    #new Account.Router()
+    return
+    
 #-------------------------------------------------------------------------------
