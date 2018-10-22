@@ -2,7 +2,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-Home = require './home/module'
+Home   = require './home/module'
+Weight = require './weight/module'
 
 #-------------------------------------------------------------------------------
 # Exports
@@ -10,6 +11,7 @@ Home = require './home/module'
 
 exports.initialize = ->
     new Home.Router()
+    new Weight.Router()
     return
     
 #-------------------------------------------------------------------------------

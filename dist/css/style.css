@@ -22630,21 +22630,9 @@ Basic Nav Bar
   z-index: 9999!important;
   box-shadow: 0 0 2px #888888;
 }
-@media (max-width: 1000px) {
-  #basic-nav-container {
-    margin: 0;
-    left: 0;
-  }
-}
 #basic-nav-container button {
   float: right;
   margin-right: 15px;
-}
-@media (max-width: 767px) {
-  #basic-nav-container button {
-    float: none;
-    margin-right: 5px;
-  }
 }
 #basic-nav-logo {
   height: 35px;
@@ -22675,21 +22663,9 @@ Index Nav Bar
   box-shadow: 0 0 25px #888888;
   opacity: 0.9;
 }
-@media (max-width: 1000px) {
-  #index-nav-container {
-    margin: 0;
-    left: 0;
-  }
-}
 #index-nav-container button {
   float: right;
   margin-right: 15px;
-}
-@media (max-width: 767px) {
-  #index-nav-container button {
-    float: none;
-    margin-right: 5px;
-  }
 }
 #index-nav-logo {
   height: 35px;
@@ -22813,24 +22789,6 @@ Content
 -----------------------------------------------------------------------------*/
 #content {
   padding-top: 10px;
-}
-@media (min-width: 1200px) {
-  #content {
-    margin-left: 15%;
-    margin-right: 15%;
-  }
-}
-@media (min-device-width: 800px) and (max-width: 1200px) {
-  #content {
-    margin-left: 10%;
-    margin-right: 10%;
-  }
-}
-@media (max-width: 767px) {
-  #content {
-    margin-left: 1%;
-    margin-right: 1%;
-  }
 }
 /*-----------------------------------------------------------------------------
 Footer

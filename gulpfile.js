@@ -225,7 +225,7 @@ gulp.task('default', [
 
 gulp.watch('src/client/js/**', ['compile-js']);
 gulp.watch('src/server/**/*.coffee', ['compile-server']);
-gulp.watch('src/css/**',  ['compile-css']);
-gulp.watch('src/html/**', ['compile-html']);
+gulp.watch('src/client/css/**',  ['compile-css']);
+gulp.watch('src/client/html/**', ['compile-html']);
 
 //-----------------------------------------------------------------------------//
