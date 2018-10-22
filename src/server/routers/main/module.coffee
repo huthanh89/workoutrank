@@ -22,12 +22,12 @@ middlewares = [
 
 urls = [
   '/home'
-  '/exercise'
   '/calendar'
   '/schedule'
   '/strengths'
   '/strengths/:id'
   '/cardios'
+  '/cardios/:id'
   '/weights'
   '/body'
   '/timeline'

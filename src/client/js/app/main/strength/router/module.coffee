@@ -133,8 +133,8 @@ class Router extends AppRouter.default
       return
 
   appRoutes:
-    'strengths/':    'strengths'
-    'strengths/:id': 'strengthDetail'
+    'strengths/':     'strengths'
+    'strengths/:id/': 'strengthDetail'
 
 #-------------------------------------------------------------------------------
 # Exports
