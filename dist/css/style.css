@@ -17887,9 +17887,6 @@ Icon colors
 .fa-heartbeat {
   color: #c73439;
 }
-.fa-tachometer {
-  color: #60c9e6;
-}
 .fa-book {
   color: #b45a2b;
 }
@@ -17915,7 +17912,7 @@ Icon colors
   color: #7ca2d5;
 }
 .fa-envelope {
-  color: #506fd5;
+  color: #5e616b;
 }
 .fa-envelope-o {
   color: #d53c39;
@@ -17925,6 +17922,12 @@ Icon colors
 }
 .fa-sign-out {
   color: #d5a138;
+}
+.fa-dumbbell {
+  color: #7191b8;
+}
+.fa-weight {
+  color: #9db871;
 }
 /*-----------------------------------------------------------------------------1
 Login
@@ -18301,7 +18304,7 @@ Home
 -----------------------------------------------------------------------------*/
 .home-help {
   position: absolute;
-  top: 15px;
+  top: 10px;
   right: 10px;
 }
 #home-info-list {
@@ -18414,6 +18417,9 @@ Custom classes
 }
 .card {
   margin: 10px 0;
+}
+.card-header {
+  padding: 5px 0;
 }
 /*-----------------------------------------------------------------------------
 Admin accounts
