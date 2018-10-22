@@ -1,19 +1,18 @@
 .row
     .col-md-7.col-center
-        ol.breadcrumb
-            li#account-home
-                a Home
-            li.active
-                span Account
+        nav
+            ol.breadcrumb
+                li.breadcrumb-item#account-home
+                    a Home
+                li.breadcrumb-item.active
+                    span Account
 .row
     .col-md-7.col-center
-        .panel.panel-default
-            .panel-heading
-                h3.panel-title 
-                    span Account
-            .panel-body
+        .card
+            .card-header
+                b Account
+            .card-body
                 #account-summary
-                .col-xs-12
-                    button.btn.btn-warning.pull-right#account-logout
-                        i.nav-icon.fas.fa-fw.fa-lg.fa-sign-out-alt
-                        span.ml-2 Log Out
+                button.btn.btn-warning.float-right#account-logout
+                    i.nav-icon.fas.fa-fw.fa-lg.fa-sign-out-alt
+                    span.ml-2 Log Out

@@ -1,18 +1,17 @@
 .row
     .col-md-7.col-center.mb-2
-        ol.breadcrumb.d-block
-            .pull-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#profile-help(style="cursor:pointer")
-            li#profile-home
-                a Home
-            li.active
-                span Profile
+        nav
+            i.fa.fa-fw.fa-lg.fa-question-circle.breadcrumb-help#profile-help(style="cursor:pointer")
+            ol.breadcrumb
+                li.breadcrumb-item#profile-home
+                    a Home
+                li.breadcrumb-item.active
+                    span Profile
 .row
     .col-md-7.col-center
-        .panel.panel-default
-            .panel-heading
-                h3.panel-title Profile
-            .panel-body
+        .card
+            .card-header Profile
+            .card-body
                 form.form-horizontal
                     .form-group
                         #profile-picture-container
