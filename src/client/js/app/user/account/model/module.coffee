@@ -9,7 +9,16 @@ Backbone = require 'backbone';
 #-------------------------------------------------------------------------------
 
 class Model extends Backbone.Model
-    url: '/api/home'
+
+    idAttribute: '_id'
+
+    urlRoot: '/api/account'
+
+    defaults:
+        firstname: ''
+        lastname:  ''
+        email:     ''
+        weight:    null
 
 #-------------------------------------------------------------------------------
 # Export

@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 
 Profile = require './profile/module'
-#Account = require './account/module'
+Account = require './account/module'
 
 #-------------------------------------------------------------------------------
 # Exports
@@ -11,7 +11,7 @@ Profile = require './profile/module'
 
 exports.initialize = ->
     new Profile.Router()
-    #new Account.Router()
+    new Account.Router()
     return
     
 #-------------------------------------------------------------------------------

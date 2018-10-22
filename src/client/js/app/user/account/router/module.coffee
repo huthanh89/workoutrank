@@ -27,48 +27,27 @@ class Router extends AppRouter.default
   constructor: (options) ->
     super(options)
     rootChannel.reply
-      home: =>
-        rootChannel.request('navigate', 'home')
-        @controller.home()
+      account: =>
+        rootChannel.request('navigate', 'account')
+        @controller.account()
         return
 
   controller:
-    home: ->
+    account: ->
       navChannel.request('nav:main')
-      rootChannel.request 'spin:page:loader', true
-      
-      async.waterfall [
-
-        (callback) ->
-
-          user = userChannel.request('user')
-
-          user.fetch
-            success: ->
-              return callback null
-            error: (model, error) -> callback error
-
-        (callback) ->
-
-          model = new Model.default()
-          model.fetch
-            success: (model) -> callback null, model
-            error: (model, error) -> callback error
-
-      ], (error, model) =>
-
-        rootChannel.request 'spin:page:loader', false
-        if error
-          rootChannel.request 'message:error', error
-
-        rootChannel.request('rootview').showChildView 'content', new View
-          model: model 
-        return
-
+      model = new Model.default()
+      model.fetch
+        success: (model) =>
+          rootChannel.request('rootview').showChildView 'content', new View.default
+            model: model
+          return
+        error: (model, response) ->
+          rootChannel.request 'message', 'danger', "Error: #{response.responseText}"
+          return
       return
 
   appRoutes:
-    'home/': 'home'
+    'account/': 'account'
 
 #-------------------------------------------------------------------------------
 # Exports
