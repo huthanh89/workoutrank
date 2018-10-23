@@ -1,11 +1,10 @@
 .modal.fade(role="dialog")#strength-modal-dialog
     .modal-dialog.modal-sm
         .modal-content
-
             .modal-header
-                button.close(type='button', data-dismiss='modal') ×
                 h4.modal-title Create Exercise
-
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
             .modal-body
                 form.form-horizontal
                     .form-group
@@ -23,20 +22,16 @@
                         .col-xs-12
                             .checkbox
                                 label
-                                    input(type='checkbox')#strength-modal-body
+                                    input.mr-2#strength-modal-body(type='checkbox')
                                     | Will use my body as weights
                     .form-group
                         .col-xs-12
                             .checkbox
                                 label
-                                    input(type='checkbox')#strength-modal-note-enable
+                                    input.mr-2#strength-modal-note-enable(type='checkbox')
                                     | Add note
                         .col-xs-12
                             textarea.hide.form-control#strength-modal-note(placeholder='Optional' minlength="1" maxlength="250")
-                    hr
-                    .form-group
-                        .col-xs-12
-                            .pull-right
-                                button.btn.btn-default.btn-lg.mr-2(data-dismiss="modal" type='button') Cancel
-                                button.btn.btn-primary.btn-lg#strength-modal-submit(type="submit")
-                                    span Add
+            .modal-footer
+                button.btn.btn-default.mr-2(data-dismiss="modal" type='button') Cancel
+                button.btn.btn-primary#strength-modal-submit(type="submit") Save

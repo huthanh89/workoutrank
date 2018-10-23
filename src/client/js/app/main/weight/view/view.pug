@@ -1,37 +1,35 @@
 #weight-modal-view
 .row
     .col-md-12
-        ol.breadcrumb.d-block
-            .float-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#weight-help(style="cursor:pointer")
-            li#weight-home
-                a Home
-            li.active
-                span Weight
-                i.fa.fa-fw.fa-lg.fa-tachometer
+        nav
+            i.fa.fa-fw.fa-lg.fa-question-circle.breadcrumb-help.mr-2#weight-help(style="cursor:pointer")
+            ol.breadcrumb
+                li.breadcrumb-item#weight-home
+                    a Home
+                li.breadcrumb-item.active
+                    span Weight
 .row
-    .col-md-6
-        .panel.panel-default
-            .panel-heading.clearfix
-                .pull-right
-                    button.btn.btn-xs.btn-primary#weight-detail-add
+    .col-lg-6
+        .card
+            .card-header
+                .float-right
+                    button.btn.btn-sm.btn-primary#weight-detail-add
                         i.fa.fa-fw.fa-plus
-                        span &nbsp
                         span Log Weight
-                h3.panel-title Weight Logs
-            .panel-body
+                span Weight Journal
+            .card-body
                 #weight-date-view
             #weight-table-view
-    .col-md-6
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #weight-calendar-view
 .row
-    .col-md-6
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #weight-graph-view
-    .col-md-6
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #weight-reduce-view

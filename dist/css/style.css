@@ -17878,9 +17878,6 @@ Icon colors
 .fa-pencil {
   color: #d68929;
 }
-.fa-question-circle {
-  color: #e6d857;
-}
 .fa-hand-rock-o {
   color: #e69e3c;
 }
@@ -18070,8 +18067,9 @@ Breadcrumb
   cursor: pointer;
 }
 .breadcrumb-help {
+  color: #d3d348;
   position: absolute;
-  right: 10px;
+  right: 20px;
   top: 20px;
 }
 /*-----------------------------------------------------------------------------
@@ -18420,12 +18418,15 @@ Custom classes
   width: 100%;
 }
 .col-center {
-  float: none;
   margin: 0 auto;
-  padding: 0;
+}
+.card {
+  margin-bottom: 10px;
 }
 .card-header {
   padding: 7px 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 /*-----------------------------------------------------------------------------
 Admin accounts

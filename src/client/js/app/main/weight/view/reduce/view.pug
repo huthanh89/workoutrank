@@ -1,43 +1,38 @@
-
-.row
-    .col-xs-6
-        label.pull-right Current
-    .col-xs-6
-        p#body-reduce-current-weight
-.row
-    .col-xs-6
-        label.pull-right BMI
-    .col-xs-6
-        p#body-reduce-bmi
-hr
-.row
-    .col-xs-6
-        label.pull-right Maximum
-    .col-xs-6
-        p#body-reduce-max
-.row
-    .col-xs-6
-        label.pull-right Minimum
-    .col-xs-6
-        p#body-reduce-min
-.row
-    .col-xs-6
-        label.pull-right Average
-    .col-xs-6
-        p#body-reduce-avg
-hr
-.row
-    .col-xs-6
-        label.pull-right First Entry
-    .col-xs-6
-        p#body-reduce-first
-.row
-    .col-xs-6
-        label.pull-right Last Entry
-    .col-xs-6
-        p#body-reduce-last
-.row
-    .col-xs-6
-        label.pull-right Total Logs
-    .col-xs-6
-        span#body-reduce-count
+table.table.table-sm.table-hover.table-striped
+    thead
+        tr
+            th
+            th
+    tbody
+        tr
+            td  
+                b.float-right Current Weight
+            td#body-reduce-current-weight
+        tr
+            td  
+                b.float-right BMI (Body Mass Index)
+            td#body-reduce-bmi
+        tr
+            td  
+                b.float-right Maximum
+            td#body-reduce-max
+        tr
+            td  
+                b.float-right Minimum
+            td#body-reduce-min
+        tr
+            td  
+                b.float-right Average
+            td#body-reduce-avg
+        tr
+            td  
+                b.float-right First Entry
+            td#body-reduce-first
+        tr
+            td  
+                b.float-right Last Entry
+            td#body-reduce-last
+        tr
+            td  
+                b.float-right Total Logs
+            td#body-reduce-count
