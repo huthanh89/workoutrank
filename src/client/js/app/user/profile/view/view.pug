@@ -25,11 +25,11 @@
                     .form-group.form-row
                         label.col-sm-3.control-label(for='profile-firstname') First Name
                         .col-sm-9
-                            input.form-control#profile-firstname(type='text', placeholder='First Name', name='firstname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                            input.form-control.form-control-sm#profile-firstname(type='text', placeholder='First Name', name='firstname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
                     .form-group.form-row
                         label.col-sm-3.control-label(for='profile-lastname') Last Name
                         .col-sm-9
-                            input.form-control#profile-lastname(type='text', placeholder='Last Name', name='lastname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
+                            input.form-control.form-control-sm#profile-lastname(type='text', placeholder='Last Name', name='lastname', autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required minlength="2" maxlength="15")
                     .form-group.row#profile-gender
                         label.col-sm-3.control-label(for='profile-gender') Gender
                         .col-sm-9
@@ -44,18 +44,18 @@
                     .form-group.form-row#profile-height-container
                         label.col-sm-3.control-label(for='profile-height') Height (inch)
                         .col-sm-9
-                            input.form-control#profile-height(type="number", placeholder=0 required)
+                            input.form-control.form-control-sm#profile-height(type="number", placeholder=0 required)
                     .form-group.form-row#profile-weight-container
                         label.col-sm-3.control-label(for='profile-weight') Weight (pound)
                         .col-sm-9
-                            input.form-control#profile-weight(type="number", placeholder=0 required)
+                            input.form-control.form-control-sm#profile-weight(type="number", placeholder=0 required)
                     .form-group.form-row
                         label.col-sm-3.control-label(for='profile-birthday') Birthday
                         .col-sm-9
                             .input-group.date
-                                input.form-control#profile-birthday(type='date', name='date',placeholder='yyyy-mm-dd', required)
+                                input.form-control.form-control-sm#profile-birthday(type='date', name='date',placeholder='yyyy-mm-dd', required)
                     .form-group
                         .col-xs-12
                             .float-right
-                                button.btn.btn-lg.btn-primary#profile-submit
+                                button.btn.btn-primary#profile-submit
                                     span Update Profile

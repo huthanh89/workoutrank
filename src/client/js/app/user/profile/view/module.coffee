@@ -149,14 +149,14 @@ class View extends Marionette.View
     @ui.submit.hide() unless userChannel.request 'isOwner'
 
     @ui.height.TouchSpin
-      buttondown_class: 'btn btn-secondary profile-weight-btn'
-      buttonup_class:   'btn btn-secondary profile-weight-btn'
+      buttondown_class: 'btn btn-sm btn-info profile-weight-btn'
+      buttonup_class:   'btn btn-sm btn-info profile-weight-btn'
       min:              1
       max:              99999
 
     @ui.weight.TouchSpin
-      buttondown_class: 'btn btn-secondary profile-weight-btn'
-      buttonup_class:   'btn btn-secondary profile-weight-btn'
+      buttondown_class: 'btn btn-sm btn-info profile-weight-btn'
+      buttonup_class:   'btn btn-sm btn-info profile-weight-btn'
       min:              1
       max:              99999
 
