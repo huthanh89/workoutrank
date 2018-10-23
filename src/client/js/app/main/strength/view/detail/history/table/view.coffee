@@ -30,7 +30,7 @@ class Collection extends Backbone.Collection
 #-------------------------------------------------------------------------------
 
 class NullView extends Marionette.View
-  tagName: 'tr'
+  tagName: 'div'
   template: nullTemplate
 
 #-------------------------------------------------------------------------------

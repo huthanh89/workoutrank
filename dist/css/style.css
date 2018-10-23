@@ -18213,6 +18213,9 @@ Strength
 #strength-modal-note {
   height: 150px;
 }
+#strength-note-container {
+  padding: 10px;
+}
 /*---------------*/
 .strength-goal-gauge-container {
   text-align: center;
