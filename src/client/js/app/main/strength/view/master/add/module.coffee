@@ -76,6 +76,7 @@ class View extends Marionette.View
       return
 
     'submit': (event) ->
+
       event.preventDefault()
       rootChannel.request 'spin:page:loader', true
 
