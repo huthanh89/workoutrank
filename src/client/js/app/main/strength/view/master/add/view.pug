@@ -29,9 +29,9 @@
                             .checkbox
                                 label
                                     input.mr-2#strength-modal-note-enable(type='checkbox')
-                                    | Add note
+                                    | Add comment (optional)
                         .col-xs-12
-                            textarea.hide.form-control.form-control-sm#strength-modal-note(placeholder='Optional' minlength="1" maxlength="250")
+                            textarea.d-none.form-control.form-control-sm#strength-modal-note(placeholder='Write a comment...' minlength="1" maxlength="250")
             .modal-footer
                 button.btn.btn-default.mr-2(data-dismiss="modal" type='button') Cancel
                 button.btn.btn-primary#strength-modal-submit(type="submit") Save

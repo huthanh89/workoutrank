@@ -9,31 +9,31 @@
 
             .modal-body
                 form.form-horizontal(novalidate)
-                    .form-group.form-group-row
+                    .form-group
                         label.control-label
                             b Timestamp
                         p.form-control-static
                             span.mr-2#strength-modal-timestamp-date
                             span.mr-2 -
                             i.mr-2#strength-modal-timestamp-time
-                    .form-group.form-group-row#strength-modal-weight-container
+                    .form-group#strength-modal-weight-container
                         label.control-label
                             b Weight (lb)
                         input.form-control.form-control-sm#strength-modal-weight(type="number", placeholder='' required)
-                    .form-group.form-group-row#strength-modal-weight-label-container
+                    .form-group#strength-modal-weight-label-container
                         label.control-label Using Body
                         p.form-control-static
                             span#strength-modal-weight-label
-                    .form-group.form-group-row
+                    .form-group
                         label.control-label
                             b Reps
                         input.form-control.form-control-sm#strength-modal-rep(type="number", placeholder='' required)
-                    .form-group.form-group-row
+                    .form-group
                         .checkbox
                             label
                                 input.mr-2#strength-modal-note-enable(type='checkbox')
-                                | Add comment
-                        textarea.hide.form-control#strength-modal-note(type="text", placeholder='Optional')
+                                | Add comment (optional)
+                        textarea.d-none.form-control#strength-modal-note(type="text", placeholder='Write a comment...')
             
             .modal-footer
                 button.btn.btn-default.mr-1(data-dismiss="modal" type='button') Cancel

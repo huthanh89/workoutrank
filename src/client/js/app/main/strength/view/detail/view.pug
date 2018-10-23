@@ -13,9 +13,9 @@
 .row
     .col-lg-6
         .card
-            .card-header
+            .card-header.bg-secondary.text-white
                 span.float-right#strength-detail-edit
-                    i.fa.fa-fw.fa-lg.fa-wrench(style="color:gray; cursor:pointer;")
+                    i.fa.fa-fw.fa-wrench(style="cursor:pointer;")
                 span#strength-title
             .card-body
                 .row
@@ -27,26 +27,28 @@
                         button.btn.btn-primary#strength-detail-add
                             i.fas.fa-fw.fa-edit.mr-1
                             span Add Entry
+                .row#strength-note-container
+                    .col-12
+                        hr
+                        #strength-note-view
+                .row
+                    .col-12
+                        br
+                        #strength-challenge-view
     .col-lg-6
         .card
             .card-body#strength-history-panel
                 #strength-history-view
-.row#strength-note-container
-    .col-lg-6
-        .card
-            .card-body
-                #strength-note-view
 .row
-    .col-lg-6
-        .card
-            .card-header Daily Challenges
-            .card-body
-                #strength-challenge-view
     .col-lg-6
         .card
             .card-header Performance Level
             .card-body#strength-goal-panel
                 #strength-goal-view
+    .col-lg-6
+        .card
+            .card-body
+                #strength-graph-view
 .row
     .col-lg-6
         .card
@@ -55,15 +57,11 @@
                 #strength-calendar-view
     .col-lg-6
         .card
-            .card-body
-                #strength-graph-view
-.row
-    .col-lg-6
-        .card
+            .card-header Record
             .card-body
                 #strength-summary-view
     .col-lg-6
         .card
-            .card-header Summary
+            .card-header Journal
             .card-body
                 #strength-workout-view

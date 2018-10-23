@@ -125,8 +125,9 @@ class View extends Marionette.View
       return
 
     'click #strength-modal-note-enable': ->
+      console.log 'click'
       checked = @ui.noteEnable.is(':checked')
-      if checked then @ui.note.removeClass('hide') else @ui.note.addClass('hide')
+      if checked then @ui.note.removeClass('d-none') else @ui.note.addClass('d-none')
       return
 
   constructor: (options) ->
