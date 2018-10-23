@@ -111,7 +111,7 @@ class ItemView extends Marionette.View
 
     '.strength-table-td-updated':
       observe: 'updated'
-      onGet: (value) -> if value then moment(value).from(moment()) else '---'
+      onGet: (value) -> if value then moment(value).from(moment()) else 'None'
 
   events:
     'click': ->
@@ -144,9 +144,9 @@ class ItemView extends Marionette.View
 
       # Choose the color.
 
-      if(0 < percent <= 33) then bar.addClass('progress-bar-danger')
-      else if(33 < percent <= 66) then bar.addClass('progress-bar-warning')
-      else bar.addClass('progress-bar-success')
+      if(0 < percent <= 33) then bar.addClass('bg-danger')
+      else if(33 < percent <= 66) then bar.addClass('bg-warning')
+      else bar.addClass('bg-success')
 
       # Update width size.
 
