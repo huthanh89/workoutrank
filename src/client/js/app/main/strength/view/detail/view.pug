@@ -1,79 +1,69 @@
 #strength-modal-view
 .row
-    .col-md-8.col-center
-        ol.breadcrumb.d-block
-            .float-right
-                i.fas.fa-fw.fa-lg.fa-question-circle#home-help(style="cursor:pointer")
-            li#strength-home
+    .col-md-12
+        i.fas.fa-fw.fa-lg.fa-question-circle.breadcrumb-help#home-help(style="cursor:pointer")
+        ol.breadcrumb
+            li.breadcrumb-item#strength-home
                 a Home
-            li#strength-journals
+            li.breadcrumb-item#strength-journals
                 a Strength
-            li.active
+            li.breadcrumb-item.active
                 span Entry
                 i.fa.fa-fw.fa-lg.fa-pencil
 .row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading.panel-center
-                span.pull-left#strength-detail-edit
+    .col-lg-6
+        .card
+            .card-header
+                span.float-right#strength-detail-edit
                     i.fa.fa-fw.fa-lg.fa-wrench(style="color:gray; cursor:pointer;")
-                h3.panel-title#strength-title
-            .panel-body
-                .col-xs-6#strength-detail-schedule-container
-                    button.btn.btn-default#strength-schedule-btn
-                        i.fa.fa-fw.fa-lg.fa-clock-o
-                            span &nbsp
-                        span Schedule
-                .col-xs-6#strength-detail-add-container
-                    button.btn.btn-primary#strength-detail-add
-                        i.fa.fa-fw.fa-lg.fa-pencil-square-o
-                        span &nbsp
-                        span Add Entry
-.row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-body#strength-history-panel
+                span#strength-title
+            .card-body
+                .row
+                    .col-6#strength-detail-schedule-container
+                        button.btn.btn-default#strength-schedule-btn
+                            i.far.fa-fw.fa-clock.mr-2
+                            span Schedule
+                    .col-6#strength-detail-add-container
+                        button.btn.btn-primary#strength-detail-add
+                            i.fas.fa-fw.fa-edit.mr-2
+                            span Add Entry
+    .col-lg-6
+        .card
+            .card-body#strength-history-panel
                 #strength-history-view
 .row#strength-note-container
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #strength-note-view
 .row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading.clearfix
-                h3.panel-title Daily Challenges
-            .panel-body
+    .col-lg-6
+        .card
+            .card-header Daily Challenges
+            .card-body
                 #strength-challenge-view
-.row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading
-                h3.panel-title Performance Level
-            .panel-body#strength-goal-panel
+    .col-lg-6
+        .card
+            .card-header Performance Level
+            .card-body#strength-goal-panel
                 #strength-goal-view
 .row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading
-                h3.panel-title Overall Stats
-            .panel-body
+    .col-lg-6
+        .card
+            .card-header Overall Stats
+            .card-body
                 #strength-calendar-view
-.row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #strength-graph-view
 .row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-body
+    .col-lg-6
+        .card
+            .card-body
                 #strength-summary-view
-.row
-    .col-md-8.col-center
-        .panel.panel-default
-            .panel-heading.clearfix
-                h3.panel-title Summary
-            .panel-body
+    .col-lg-6
+        .card
+            .card-header Summary
+            .card-body
                 #strength-workout-view

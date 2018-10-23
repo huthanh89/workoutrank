@@ -81,9 +81,9 @@ class ItemView extends Marionette.View
         span = "<span>#{value}</span>"
 
         if value < 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-down' style='color:red'></i>"
         else if value > 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-up' style='color:green;'></i>"
         else
           return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
 
@@ -119,9 +119,9 @@ class ItemView extends Marionette.View
         span = "<span>#{value}</span>"
 
         if value < 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:red'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-down' style='color:red'></i>"
         else if value > 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:green;'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-up' style='color:green;'></i>"
         else
           return "<i class='fa fa-fw fa-lg fa-minus' style='color:green;'></i>"
 

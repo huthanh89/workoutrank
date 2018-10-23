@@ -83,22 +83,22 @@ class ItemView extends Marionette.View
       updateMethod: 'html'
       onGet: (value) ->
         if value > 0
-          return "<span style='color:red;'>+#{value}</span>"
-        else if value < 0
-          return "<span style='color:green;'>#{value}</span>"
-        else
           return "<span style='color:green;'>+#{value}</span>"
+        else if value < 0
+          return "<span style='color:red;'>#{value}</span>"
+        else
+          return "<span style='color:red;'>+#{value}</span>"
 
     '.strength-table-td-percent':
       observe:      'percent'
       updateMethod: 'html'
       onGet: (value) ->
         if value > 0
-          return "<span style='color:red;'>(+#{value}%)</span>"
-        else if value < 0
-          return "<span style='color:green;'>(#{value}%)</span>"
-        else
           return "<span style='color:green;'>(+#{value}%)</span>"
+        else if value < 0
+          return "<span style='color:red;'>(#{value}%)</span>"
+        else
+          return "<span style='color:red;'>(+#{value}%)</span>"
 
     '.strength-table-td-growth':
       observe:      'change'
@@ -108,9 +108,9 @@ class ItemView extends Marionette.View
         span = "<span>#{value}</span>"
 
         if value < 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-down' style='color:#3b9f38'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-down' style='color:rgba(232, 33, 30, 0.84);'></i>"
         else if value > 0
-          return "<i class='fa fa-fw fa-lg fa-long-arrow-up' style='color:rgba(232, 33, 30, 0.84);'></i>"
+          return "<i class='fas fa-fw fa-lg fa-arrow-up' style='color:#3b9f38';'></i>"
         else
           return "<i class='fa fa-fw fa-lg fa-minus' style='color:#3b9f38'></i>"
 
