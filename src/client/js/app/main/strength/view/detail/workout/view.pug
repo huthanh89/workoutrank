@@ -1,31 +1,26 @@
-.row
-    .col-xs-6
-            label.pull-right Name
-    .col-xs-6
-        p#strength-summary-name
-.row
-    .col-xs-6
-        label.pull-right Muscle
-    .col-xs-6
-        p#strength-summary-muscle
-.row
-    .col-xs-6
-        label.pull-right Uses Body
-    .col-xs-6
-        #strength-summary-body
-hr
-.row
-    .col-xs-6
-        label.pull-right First Entry
-    .col-xs-6
-        p#strength-summary-first
-.row
-    .col-xs-6
-        label.pull-right Last Entry
-    .col-xs-6
-        p#strength-summary-last
-.row
-    .col-xs-6
-        label.pull-right Total Logs
-    .col-xs-6
-        p#strength-summary-count
+table.table.table-sm.table-striped
+    tbody
+        tr
+            td
+                b.float-right Name
+            td#strength-summary-name
+        tr
+            td
+                b.float-right Muscle
+            td#strength-summary-muscle 
+        tr
+            td
+                b.float-right Use own body weight
+            td#strength-summary-body
+        tr
+            td
+                b.float-right First Entry
+            td#strength-summary-first
+        tr
+            td
+                b.float-right Last Entry
+            td#strength-summary-last
+        tr
+            td
+                b.float-right Total Logs
+            td#strength-summary-count

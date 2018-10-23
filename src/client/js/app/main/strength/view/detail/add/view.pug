@@ -1,56 +1,40 @@
-.modal.fade(role="dialog")
-    .modal-dialog.modal-sm
+.modal.fade
+    .modal-dialog.modal-sm(role="document")
         .modal-content
-
+            
             .modal-header
-                button.close(type='button', data-dismiss='modal') ×
-                h4.modal-title Add a new session
+                h4.modal-title Add new session
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
 
             .modal-body
                 form.form-horizontal(novalidate)
-                    .form-group
-                        .col-xs-12
-                            label.control-label Timestamp
-                        .col-xs-12
-                            p.form-control-static
-                                span#strength-modal-timestamp-date
-                                span &nbsp
-                                span -
-                                span &nbsp
-                                i
-                                    u#strength-modal-timestamp-time
-                    .form-group#strength-modal-weight-container
-                        .col-xs-12
-                            label.control-label Weight
-                        .col-xs-12
-                            input.form-control#strength-modal-weight(type="number", placeholder='' required)
-                    .form-group#strength-modal-weight-label-container
-                        .col-xs-12
-                            label.control-label Using Body
-                        .col-xs-12
-                            p.form-control-static
-                                span#strength-modal-weight-label
-                    hr
-                    .form-group
-                        .col-xs-12
-                            label.control-label Reps
-                        .col-xs-12
-                            input.form-control#strength-modal-rep(type="number", placeholder='' required)
-                    .form-group
-                        .col-xs-12
-                            .checkbox
-                                label
-                                    input(type='checkbox')#strength-modal-note-enable
-                                    | Add comment
-                        .col-xs-12
-                            textarea.hide.form-control#strength-modal-note(type="text", placeholder='Optional')
-                    hr
-                    .form-group
-                        .pull-right
-                            .col-xs-12
-                                button.btn.btn-default.btn-lg(data-dismiss="modal" type='button') Cancel
-                                span &nbsp
-                                button.btn.btn-primary.btn-lg(type="submit")
-                                    i.fa.fa-fw.fa-lg.fa-save
-                                    span &nbsp
-                                    span save
+                    .form-group.form-group-row
+                        label.control-label
+                            b Timestamp
+                        p.form-control-static
+                            span.mr-2#strength-modal-timestamp-date
+                            span.mr-2 -
+                            i.mr-2#strength-modal-timestamp-time
+                    .form-group.form-group-row#strength-modal-weight-container
+                        label.control-label
+                            b Weight (lb)
+                        input.form-control.form-control-sm#strength-modal-weight(type="number", placeholder='' required)
+                    .form-group.form-group-row#strength-modal-weight-label-container
+                        label.control-label Using Body
+                        p.form-control-static
+                            span#strength-modal-weight-label
+                    .form-group.form-group-row
+                        label.control-label
+                            b Reps
+                        input.form-control.form-control-sm#strength-modal-rep(type="number", placeholder='' required)
+                    .form-group.form-group-row
+                        .checkbox
+                            label
+                                input.mr-2#strength-modal-note-enable(type='checkbox')
+                                | Add comment
+                        textarea.hide.form-control#strength-modal-note(type="text", placeholder='Optional')
+            
+            .modal-footer
+                button.btn.btn-default.mr-1(data-dismiss="modal" type='button') Cancel
+                button.btn.btn-primary(type="submit") Save

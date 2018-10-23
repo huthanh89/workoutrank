@@ -45,7 +45,7 @@ class View extends Marionette.View
   template: viewTemplate
 
   ui:
-    dialog: '#strength-modal-dialog'
+    dialog: '#strength-detail-modal-dialog'
     name:   '#strength-modal-name'
     muscle: '#strength-modal-muscle'
     body:   '#strength-modal-body'

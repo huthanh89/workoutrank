@@ -158,8 +158,8 @@ class View extends Marionette.View
   onRender: ->
 
     @ui.rep.TouchSpin
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
+      buttondown_class: 'btn btn-sm btn-info'
+      buttonup_class:   'btn btn-sm btn-info'
       min:              0
       max:              99999
 
@@ -168,9 +168,8 @@ class View extends Marionette.View
     else
       @ui.labelView.hide()
       @ui.weight.TouchSpin
-        postfix:          'pounds'
-        buttondown_class: 'btn btn-info'
-        buttonup_class:   'btn btn-info'
+        buttondown_class: 'btn btn-sm btn-info'
+        buttonup_class:   'btn btn-sm btn-info'
         min:              0
         max:              99999
         step:             5

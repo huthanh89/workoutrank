@@ -18182,6 +18182,7 @@ Strength
 }
 #strength-calendar-ui {
   text-align: center;
+  margin: auto;
 }
 #strength-calendar-ui .datepicker {
   display: block;
