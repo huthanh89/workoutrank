@@ -36,7 +36,7 @@ class View extends Marionette.View
       buttonClass: 'btn btn-default strength-filter-btn'
       buttonWidth:  35
       templates:
-        button: '<span class="multiselect dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-filter"></i></span>'
+        button: '<span class="multiselect dropdown-toggle" data-toggle="dropdown"><i class="fas fa-filter"></i></span>'
 
       # Filter pageable collection on change.
 

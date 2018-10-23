@@ -2,24 +2,23 @@
     .col-xs-12
         #strength-modal-view
 .row
-    .col-xs-12
-        ol.breadcrumb.d-block
-            .float-right
-                i.fa.fa-fw.fa-lg.fa-question-circle#strength-help(style="cursor:pointer")
-            li#strength-home
-                a Home
-            li.active#strength-journals
-                span Strength
+    .col-lg-7.col-center
+        nav
+            i.fa.fa-fw.fa-lg.fa-question-circle.breadcrumb-help#strength-help(style="cursor:pointer")
+            ol.breadcrumb
+                li.breadcrumb-item#strength-home
+                    a Home
+                li.breadcrumb-item.active#strength-journals
+                    span Strength
 .row
-    .col-sm-12
-        .panel.panel-default
-            .panel-heading.clearfix
-                .pull-right
+    .col-lg-7.col-center
+        .card
+            .card-header
+                .float-right
                     button.btn.btn-xs.btn-primary#strength-add
                         i.fa.fa-fw.fa.fa-plus
-                        span &nbsp
-                        span Add Exercise
-                .pull-right
+                        span.ml-1 Add Exercise
+                .float-right
                     #strength-filter-view
-            .panel-body
+            .card-body
                 #strength-table-view
