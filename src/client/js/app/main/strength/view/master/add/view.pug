@@ -11,12 +11,12 @@
                         .col-xs-12
                             label.control-label(for='strength-modal-muscle') Which muscles are you targeting?
                         .col-xs-12
-                            select.form-control#strength-modal-muscle(multiple='multiple')
+                            select.form-control.form-control-sm#strength-modal-muscle(multiple='multiple')
                     .form-group
                         .col-xs-12
                             label.control-label(for='strength-modal-name') Give this exercise a name
                         .col-xs-12
-                            input.form-control#strength-modal-name(type='text' required minlength="1" maxlength="25")
+                            input.form-control.form-control-sm#strength-modal-name(type='text' required minlength="1" maxlength="25")
                             .help-block.with-errors
                     .form-group
                         .col-xs-12
@@ -31,7 +31,7 @@
                                     input.mr-2#strength-modal-note-enable(type='checkbox')
                                     | Add note
                         .col-xs-12
-                            textarea.hide.form-control#strength-modal-note(placeholder='Optional' minlength="1" maxlength="250")
+                            textarea.hide.form-control.form-control-sm#strength-modal-note(placeholder='Optional' minlength="1" maxlength="250")
             .modal-footer
                 button.btn.btn-default.mr-2(data-dismiss="modal" type='button') Cancel
                 button.btn.btn-primary#strength-modal-submit(type="submit") Save

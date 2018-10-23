@@ -11,25 +11,19 @@
                 form.form-horizontal
                     #weight-modal-basic.tab-pane.active(role='tabpanel')
                         .form-group.form-row
-                            .col-xs-12
-                                label.form-control-label
-                                    b Timestamp
-                            .col-xs-12
-                                p.form-control-static#weight-modal-timestamp
+                            label.form-control-label
+                                b Timestamp
+                            p.form-control-static#weight-modal-timestamp
                         .form-group.form-row
-                            .col-xs-12
-                                label.form-control-label
-                                    b Weight
-                            .col-xs-12
-                                input.form-control-sm#weight-modal-weight(type="number", step="0.1" placeholder=0 required)
+                            label.form-control-label
+                                b Weight
+                            input.form-control.form-control-sm#weight-modal-weight(type="number", step="0.1" placeholder=0 required)
                         .form-group.form-row
-                            .col-xs-12
-                                .checkbox
-                                    label
-                                        input.mr-2#weight-modal-note-enable(type='checkbox')
-                                        | Add note
-                            .col-xs-12
-                                textarea.hide.form-control#weight-modal-note(placeholder='Optional' minlength="1" maxlength="250")
+                            .checkbox
+                                label
+                                    input.mr-2#weight-modal-note-enable(type='checkbox')
+                                    | Add note
+                            textarea.hide.form-control.form-control-sm#weight-modal-note(placeholder='Optional' minlength="1" maxlength="250")
             .modal-footer
                 button.btn.btn-default.mr-2(data-dismiss="modal" type='button') Cancel
                 button.btn.btn-primary(type="submit") Save

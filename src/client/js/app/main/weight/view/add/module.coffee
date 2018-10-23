@@ -116,13 +116,11 @@ class View extends Marionette.View
 
   onRender: ->
 
-    console.log 'ernder'
-
     date = @model.get('date')
 
     @ui.weight.TouchSpin
-      buttondown_class: 'btn btn-info'
-      buttonup_class:   'btn btn-info'
+      buttondown_class: 'btn btn-sm btn-info'
+      buttonup_class:   'btn btn-sm btn-info'
       min:               1
       max:               99999
       step:              0.1
